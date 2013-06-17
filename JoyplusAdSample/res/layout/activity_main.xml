@@ -1,0 +1,45 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity" >
+
+     <RelativeLayout
+        android:id="@+id/adsdkContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" >
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/show_banner"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="20dp"
+        android:onClick="onClickShowBanner"
+        android:text="Show Banner" />
+
+    <Button
+        android:id="@+id/show_video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/show_banner"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:onClick="onClickShowVideoInterstitial"
+        android:text="Show Video/Interstitial" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="31dp"
+        android:gravity="center"
+        android:text="Please set AdServer URL and PublisherID in MainActivity.java first!" />
+
+</RelativeLayout>
