@@ -48,7 +48,6 @@ import android.net.Uri;
 import android.os.Handler;
 import android.provider.Settings.Secure;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -68,6 +67,7 @@ import com.joyplus.adkey.BannerAd;
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.banner.InAppWebView;
 import com.joyplus.adkey.mraid.MoPubView.LocationAwareness;
+import com.joyplus.adkey.widget.Log;
 
 import java.io.IOException;
 import java.lang.reflect.Method;

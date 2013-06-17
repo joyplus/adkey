@@ -21,13 +21,13 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import com.joyplus.adkey.Const;
+import com.joyplus.adkey.widget.Log;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.JsResult;

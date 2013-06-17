@@ -19,9 +19,10 @@ import com.joyplus.adkey.video.RichMediaActivity;
 import com.joyplus.adkey.video.RichMediaAd;
 import com.joyplus.adkey.video.TrackerService;
 import com.joyplus.adkey.video.VideoData;
+import com.joyplus.adkey.widget.Log;
 
 public class AdManager {
-
+	
 	private static HashMap<Long, AdManager> sRunningAds = new HashMap<Long, AdManager>();
 
 	private String mPublisherId;
@@ -72,6 +73,7 @@ public class AdManager {
 	}
 
 	public void requestAd() {
+		Log.i(Const.TAG,"AdManager--->requestAd");
 		if (!mEnabled) {
 			return;
 		}

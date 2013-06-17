@@ -41,8 +41,7 @@ public class MainActivity extends Activity implements AdListener
 	}
 
 	public void onClickShowVideoInterstitial(View v) {
-		mManager.requestAd();
-//		mManager.showAd("file:///android_asset/yyc.html");
+		mManager.requestAd();		
 	}
 	
 	@Override

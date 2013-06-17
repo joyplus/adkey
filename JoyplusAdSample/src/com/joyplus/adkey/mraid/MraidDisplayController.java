@@ -7,6 +7,7 @@ import com.joyplus.adkey.mraid.MraidView.NativeCloseButtonStyle;
 import com.joyplus.adkey.mraid.MraidView.PlacementType;
 import com.joyplus.adkey.mraid.MraidView.ViewState;
 import com.joyplus.adkey.video.ResourceManager;
+import com.joyplus.adkey.widget.Log;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -19,7 +20,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Handler;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;

@@ -3,11 +3,11 @@ package com.joyplus.adkey.mraid;
 
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.banner.InAppWebView;
+import com.joyplus.adkey.widget.Log;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 
 class MraidBrowserController extends MraidAbstractController {
     private static final String LOGTAG = "MraidBrowserController";

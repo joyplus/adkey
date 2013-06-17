@@ -29,7 +29,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
-import android.util.Log;
+
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
@@ -57,6 +57,7 @@ import com.joyplus.adkey.video.MediaController.OnUnpauseListener;
 import com.joyplus.adkey.video.SDKVideoView.OnStartListener;
 import com.joyplus.adkey.video.SDKVideoView.OnTimeEventListener;
 import com.joyplus.adkey.video.WebViewClient.OnPageLoadedListener;
+import com.joyplus.adkey.widget.Log;
 
 public class RichMediaActivity extends Activity {
 
@@ -919,18 +920,21 @@ public class RichMediaActivity extends Activity {
 		}
 	
 		Downloader downloader = new Downloader(path, RichMediaActivity.this);
+		if (path.startsWith("http:") 
+				|| path.startsWith("https:")){
+			downloader.download();
+			Log.i(Const.TAG, "download starting");
+		}
+			
 		
 		File file = new File(Const.DOWNLOAD_PATH+Const.DOWNLoAD_PLAY_FILE+Util.ExternalName);
 		if(!file.exists())
 		{
-			Log.i("在线","在线播放");
+			Log.i(Const.TAG,"Play OnLine");
 		}else{
+			Log.i(Const.TAG,"Play LocalCacheFile");
 			path = Const.DOWNLOAD_PATH+Const.DOWNLoAD_PLAY_FILE+Util.ExternalName;
 		}
-		if (path.startsWith("http:") 
-				|| path.startsWith("https:"))
-			downloader.download();
-		
 		this.mVideoView.setVideoPath(path);
 	}
 	

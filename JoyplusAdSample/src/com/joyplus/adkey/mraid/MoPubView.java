@@ -40,7 +40,6 @@ import android.content.IntentFilter;
 import android.location.Location;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebViewDatabase;
 import android.widget.FrameLayout;
@@ -50,6 +49,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 import com.joyplus.adkey.AdListener;
+import com.joyplus.adkey.widget.Log;
 
 public class MoPubView extends FrameLayout {
 

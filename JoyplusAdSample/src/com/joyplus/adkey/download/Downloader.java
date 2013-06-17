@@ -8,6 +8,7 @@ import java.net.URL;
 
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.Util;
+import com.joyplus.adkey.widget.Log;
 
 import android.content.Context;
 
@@ -130,8 +131,8 @@ public class Downloader {
 					if (state == PAUSE||state == STOP) {
 						return;
 					}
-					android.util.Log.i("Downloader:compeleteSize",Integer.toString(compeleteSize));
-					android.util.Log.i("Downloader:fileSize", Integer.toString(fileSize));
+					Log.i("Downloader:compeleteSize",Integer.toString(compeleteSize));
+					Log.i("Downloader:fileSize", Integer.toString(fileSize));
 				}
 			} catch (Exception e) {
 				state = STOP;

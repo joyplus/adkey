@@ -38,12 +38,13 @@ import com.joyplus.adkey.Ad;
 import com.joyplus.adkey.AdListener;
 import com.joyplus.adkey.mraid.BaseInterstitialAdapter.BaseInterstitialAdapterListener;
 import com.joyplus.adkey.mraid.MoPubView.LocationAwareness;
+import com.joyplus.adkey.widget.Log;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
-import android.util.Log;
+
 
 public class MoPubInterstitial implements AdListener {
     
