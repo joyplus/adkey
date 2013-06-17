@@ -903,38 +903,40 @@ public class RichMediaActivity extends Activity {
 		}
 		this.mVideoLastPosition = 0;
 		String path = this.mVideoData.videoUrl;
-		URL url = null;
-		try
+		if(Util.CACHE_MODE)
 		{
-			url = new URL(this.mVideoData.videoUrl);
-		} catch (MalformedURLException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if(url!=null){
-			Util.ExternalName = "."+Util.getExtensionName(url.getPath());
-		}else
-		{
-			Util.ExternalName = ".mp4";
-		}
-	
-		Downloader downloader = new Downloader(path, RichMediaActivity.this);
-		if (path.startsWith("http:") 
-				|| path.startsWith("https:")){
-			downloader.download();
-			Log.i(Const.TAG, "download starting");
-		}
-			
+			URL url = null;
+			try
+			{
+				url = new URL(this.mVideoData.videoUrl);
+			} catch (MalformedURLException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(url!=null){
+				Util.ExternalName = "."+Util.getExtensionName(url.getPath());
+			}else
+			{
+				Util.ExternalName = ".mp4";
+			}
 		
-		File file = new File(Const.DOWNLOAD_PATH+Const.DOWNLoAD_PLAY_FILE+Util.ExternalName);
-		if(!file.exists())
-		{
-			Log.i(Const.TAG,"Play OnLine");
-		}else{
-			Log.i(Const.TAG,"Play LocalCacheFile");
-			path = Const.DOWNLOAD_PATH+Const.DOWNLoAD_PLAY_FILE+Util.ExternalName;
+			Downloader downloader = new Downloader(path, RichMediaActivity.this);
+			if (path.startsWith("http:") 
+					|| path.startsWith("https:")){
+				downloader.download();
+				Log.i(Const.TAG, "download starting");
+			}
+			File file = new File(Const.DOWNLOAD_PATH+Const.DOWNLoAD_PLAY_FILE+Util.ExternalName);
+			if(!file.exists())
+			{
+				Log.i(Const.TAG,"Play OnLine");
+			}else{
+				Log.i(Const.TAG,"Play LocalCacheFile");
+				path = Const.DOWNLOAD_PATH+Const.DOWNLoAD_PLAY_FILE+Util.ExternalName;
+			}
 		}
+		
 		this.mVideoView.setVideoPath(path);
 	}
 	

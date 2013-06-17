@@ -51,6 +51,10 @@ public class Util {
 	private static int sSlideInBottomAnimationId = 0;
 	private static int sSlideOutBottomAnimationId = 0;
 	public static String ExternalName = null;
+	//if DEBUE_MODE= false,log'll not printf
+	public static boolean DEBUE_MODE = true;
+	//if CACHE_MODE is true,adkey support VideoAd's cacheDisplay
+	public static boolean CACHE_MODE = true;
 
 	public static boolean isNetworkAvailable(Context ctx) {
 		int networkStatePermission = ctx

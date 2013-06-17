@@ -1,6 +1,6 @@
 package com.joyplus.adkey.widget;
 
-import com.joyplus.adkey.Const;
+import com.joyplus.adkey.Util;
 
 /**
  * @author yyc
@@ -9,7 +9,7 @@ import com.joyplus.adkey.Const;
 
 public final class Log {
 	
-	private static boolean mbLoggable = Const.DEBUE_MODE; 
+	private static boolean mbLoggable = Util.DEBUE_MODE; 
 	
 	public static void setLoggable(boolean bLoggable)
 	{

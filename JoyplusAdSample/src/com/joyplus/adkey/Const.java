@@ -13,8 +13,6 @@ public interface Const {
 	public static final String DOWNLOADING_FILE = "jp_adv_ing";
 	public static final String DOWNLOAD_READY_FILE = "jp_adv_temp";
 	public static final String DOWNLoAD_PLAY_FILE = "jp_adv_done";
-	//if DEBUE_MODE= false,log'll not printf
-	public static final boolean DEBUE_MODE = true;
 	
 	/*
 	 * application vares

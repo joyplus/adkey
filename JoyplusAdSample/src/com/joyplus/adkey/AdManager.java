@@ -55,7 +55,20 @@ public class AdManager {
 		ResourceManager.cancel();
 
 	}
-
+	
+	public AdManager(Context ctx, final String requestURL, final String publisherId,
+			final boolean includeLocation,boolean cacheMode)
+					throws IllegalArgumentException {
+		AdManager.setmContext(ctx);
+		this.requestURL = requestURL;
+		this.mPublisherId = publisherId;
+		this.mIncludeLocation = includeLocation;
+		this.mRequestThread = null;
+		this.mHandler = new Handler();
+		Util.CACHE_MODE = cacheMode;
+		initialize();
+	}
+	
 	public AdManager(Context ctx, final String requestURL, final String publisherId,
 			final boolean includeLocation)
 					throws IllegalArgumentException {
