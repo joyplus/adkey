@@ -433,6 +433,11 @@ public class Util {
         }   
         return filename;   
     }
-
-	
+	/*
+	 * get device name 
+	 */
+	@SuppressWarnings("static-access")
+	public static String GetDeviceName(){
+		return new Build().MODEL;
+	}
 }

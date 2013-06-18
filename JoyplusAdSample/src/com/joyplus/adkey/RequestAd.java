@@ -22,6 +22,7 @@ public abstract class RequestAd<T> {
 			throws RequestException {
 		if (is == null) {
 			String url = request.toString();
+			url = url+"&ds="+Util.GetDeviceName();
 			DefaultHttpClient client = new DefaultHttpClient();
 			HttpConnectionParams.setSoTimeout(client.getParams(),
 					Const.SOCKET_TIMEOUT);

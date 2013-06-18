@@ -22,6 +22,7 @@ import org.xml.sax.XMLReader;
 import com.joyplus.adkey.AdRequest;
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.RequestException;
+import com.joyplus.adkey.Util;
 
 
 public class RequestVideoList {
@@ -31,7 +32,7 @@ public class RequestVideoList {
 
 	public HashMap<String, Long> sendRequest(AdRequest request)
 			throws RequestException {
-		String url = request.toString() + "&listads=1";
+		String url = request.toString() + "&listads=1"+"&ds="+Util.GetDeviceName();
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpConnectionParams.setSoTimeout(client.getParams(),
 				Const.SOCKET_TIMEOUT);

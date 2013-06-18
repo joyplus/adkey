@@ -3,15 +3,14 @@ package com.joyplus.adkey.sample;
 import com.joyplus.adkey.Ad;
 import com.joyplus.adkey.AdListener;
 import com.joyplus.adkey.AdManager;
-import com.joyplus.adkey.banner.AdView;
 import com.joyplus.adkey.example.R;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class Logo extends Activity implements AdListener{
@@ -99,5 +98,16 @@ public class Logo extends Activity implements AdListener{
 		finish();
 	}
 	
-	
+	// 返回键
+		@Override
+		public boolean dispatchKeyEvent(KeyEvent event) {
+			if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+				if (event.getAction() == KeyEvent.ACTION_DOWN
+						&& event.getRepeatCount() == 0) {
+					if(mManager!=null)
+						mManager.release();
+				}
+			}
+			return super.dispatchKeyEvent(event);
+		}
 }
