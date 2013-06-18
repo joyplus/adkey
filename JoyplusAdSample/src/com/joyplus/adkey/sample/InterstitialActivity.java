@@ -13,22 +13,21 @@ import android.widget.Toast;
 
 public class InterstitialActivity extends Activity implements AdListener
 {
-	private RelativeLayout layout = null;
 	private AdManager mManager = null;
+	private String publisherId = "038ec9c3d97315b24be739b204f0ea07";//要显示广告的publisherId
+	private boolean cacheMode = false;//该广告加载时是否用本地缓存
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.interstitial);
-		layout = (RelativeLayout) findViewById(R.id.adsdkContent);
 	}
 	
 	public void onClickShowVideoOnline(View v){
 		if(mManager!=null)
 			mManager.release();
 		
-		mManager = new AdManager(this, "http://adv.yue001.com/md.request.php",
-				"038ec9c3d97315b24be739b204f0ea07", true, false);
+		mManager = new AdManager(this,publisherId,cacheMode);
 		mManager.setListener(this);
 		mManager.requestAd();
 	}
@@ -36,9 +35,9 @@ public class InterstitialActivity extends Activity implements AdListener
 	public void onClickShowVideoCache(View v){
 		if(mManager!=null)
 			mManager.release();
-		
-		mManager = new AdManager(this, "http://adv.yue001.com/md.request.php",
-				"038ec9c3d97315b24be739b204f0ea07", true, true);
+		if(!cacheMode)
+			cacheMode = true;
+		mManager = new AdManager(this,publisherId,cacheMode);
 		mManager.setListener(this);
 		mManager.requestAd();
 	}

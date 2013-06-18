@@ -29,9 +29,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:layout_marginBottom="31dp"
         android:gravity="center"
-        android:text="This is demo of joyplus's adkey!" />
+        android:textSize="30dp"
+        android:text="This is a demo of joyplus's adkey!" />
 
 </RelativeLayout>

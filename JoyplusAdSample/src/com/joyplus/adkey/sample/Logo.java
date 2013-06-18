@@ -15,10 +15,9 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class Logo extends Activity implements AdListener{
-	private RelativeLayout layout;
-	private AdView mAdView;
 	private AdManager mManager;
-	
+	private String publisherId = "038ec9c3d97315b24be739b204f0ea07";//要显示广告的publisherId
+	private boolean cacheMode = false;//该广告加载时是否用本地缓存
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -28,16 +27,14 @@ public class Logo extends Activity implements AdListener{
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN); // 设置全屏显示
 		
-		layout = (RelativeLayout) findViewById(R.id.adsdkContent);
 		
-		final Intent intent = new Intent(Logo.this, MainActivity.class);// AndroidMainScreen为主界面
-		startActivity(intent);
-		Logo.this.finish();
-//		mManager = new AdManager(this, "http://adv.yue001.com/md.request.php",
-//				"038ec9c3d97315b24be739b204f0ea07", true);
+//		final Intent intent = new Intent(Logo.this, MainActivity.class);// AndroidMainScreen为主界面
+//		startActivity(intent);
+//		Logo.this.finish();
+		mManager = new AdManager(this,publisherId,cacheMode);
 		
-//		mManager.setListener(this);
-//		mManager.requestAd();
+		mManager.setListener(this);
+		mManager.requestAd();
 	}
 
 	@Override

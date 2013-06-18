@@ -4,13 +4,6 @@
     android:layout_height="match_parent"
     tools:context=".InterstitialActivity" >
 
-    <RelativeLayout
-        android:id="@+id/adsdkContent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" >
-    </RelativeLayout>
 	<TextView 
 	    android:id="@+id/textView1"
 	    android:layout_width="wrap_content"

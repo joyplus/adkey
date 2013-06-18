@@ -59,22 +59,7 @@ public class RequestRichMediaAd extends RequestAd<RichMediaAd> {
 			XMLReader xr = sp.getXMLReader();
 			ResponseHandler myHandler = new ResponseHandler();
 			xr.setContentHandler(myHandler);
-//			InputSource src = new InputSource(inputStream);
-			String in = "<ad type=\"video\" animation=\"fade-in\">"+
-				     "<video orientation=\"portrait\">"+
-				       "<creative delivery=\"streaming\" type=\"application/mp4\" display=\"fullscreen\" width=\"200\" height=\"400\" bitrate=\"100\">"+			         
-				        "http://218.76.97.41:80/play/166761ABF893224CD2D42830639A057C804061C0.mp4"+
-				       "</creative>"+
-				      "<skipbutton show=\"1\" showafter=\"0\"/>"+
-				     "<navigation show=\"0\">"+
-				        "<topbar custombackgroundurl=\"\" show=\"0\" title=\"fixed\" titlecontent=\"\"/>"+
-				        "<bottombar custombackgroundurl=\"\" show=\"0\" "+
-				           "backbutton=\"0\" forwardbutton=\"0\" reloadbutton=\"0\"  externalbutton=\"0\" timer=\"0\"/>"+
-				       "</navigation>"+
-				    "</video>"+
-				    "</ad>";
-			ByteArrayInputStream is = new ByteArrayInputStream(in.getBytes("ISO-8859-1"));
-			InputSource src = new InputSource(is);
+			InputSource src = new InputSource(inputStream);
 			src.setEncoding(RESPONSE_ENCODING);
 			xr.parse(src);
 			return myHandler.getRichMediaAd();

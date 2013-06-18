@@ -766,8 +766,10 @@ public class RichMediaActivity extends Activity {
 		this.mVideoView = new SDKVideoView(this, this.mVideoWidth,
 				this.mVideoHeight, this.mVideoData.display);
 		this.mVideoLayout.addView(this.mVideoView,
-				new FrameLayout.LayoutParams(LayoutParams.FILL_PARENT,
-						LayoutParams.FILL_PARENT, Gravity.CENTER));
+				new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT/2,
+				LayoutParams.WRAP_CONTENT/2, Gravity.CENTER));//MATCH_PARENT
+//				new FrameLayout.LayoutParams(this.mVideoWidth*3,
+//						this.mVideoHeight*3, Gravity.CENTER));//在这个位置可以进行画面的改动
 		if (this.mVideoData.showHtmlOverlay) {
 			this.mOverlayView = new WebFrame(this, false, false, false);
 			this.mOverlayView.setEnableZoom(false);
@@ -785,7 +787,7 @@ public class RichMediaActivity extends Activity {
 			else
 				this.mOverlayView.setMarkup(this.mVideoData.htmlOverlayMarkup);
 			final FrameLayout.LayoutParams overlayParams = new FrameLayout.LayoutParams(
-					LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+					LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 			if (this.mVideoData.showBottomNavigationBar
 					&& this.mVideoData.showTopNavigationBar) {
 				overlayParams.bottomMargin = (int) (this.mWindowWidth * 0.11875);
@@ -818,8 +820,8 @@ public class RichMediaActivity extends Activity {
 			this.mMediaController
 			.setOnReplayListener(this.mOnVideoReplayListener);
 		this.mVideoLayout.addView(this.mMediaController,
-				new FrameLayout.LayoutParams(LayoutParams.FILL_PARENT,
-						LayoutParams.FILL_PARENT, Gravity.FILL_HORIZONTAL));
+				new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+						LayoutParams.MATCH_PARENT, Gravity.FILL_HORIZONTAL));//fill_parent
 		if (this.mVideoData.showSkipButton) {
 
 			this.mSkipButton = new ImageView(this);
@@ -882,8 +884,8 @@ public class RichMediaActivity extends Activity {
 		loadingText.setText(Const.LOADING);
 		this.mLoadingView.addView(loadingText, params);
 		this.mVideoLayout.addView(this.mLoadingView,
-				new FrameLayout.LayoutParams(LayoutParams.FILL_PARENT,
-						LayoutParams.FILL_PARENT, Gravity.CENTER));
+				new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+						LayoutParams.MATCH_PARENT, Gravity.CENTER));//fill_parent
 
 		this.mVideoView.setOnPreparedListener(this.mOnVideoPreparedListener);
 		this.mVideoView
@@ -1038,9 +1040,6 @@ public class RichMediaActivity extends Activity {
 				case Const.INTERSTITIAL_TO_VIDEO:
 					this.mType = RichMediaActivity.TYPE_INTERSTITIAL;
 					break;
-//				case Const.LOCALVIDEO:
-//					this.mType = TYPE_LOCALVIDEO;
-//					break;
 				}
 			switch (this.mType) {
 			case TYPE_VIDEO:
@@ -1049,11 +1048,6 @@ public class RichMediaActivity extends Activity {
 			case TYPE_INTERSTITIAL:
 				this.initInterstitialView();
 				break;
-//			case TYPE_LOCALVIDEO:
-//				/*
-//				 * play local file
-//				 */
-//				break;
 			}
 		}
 
@@ -1086,8 +1080,6 @@ public class RichMediaActivity extends Activity {
 		}
 		
 		this.mCustomViewCallback.onCustomViewHidden();
-//		if(this.mRootLayout==null)
-//			initRootLayout();
 		this.mRootLayout.setVisibility(View.VISIBLE);
 		this.setContentView(this.mRootLayout);
 	}
@@ -1155,7 +1147,6 @@ public class RichMediaActivity extends Activity {
 				this.mVideoTimeoutTimer.schedule(autocloseTask,
 						Const.VIDEO_LOAD_TIMEOUT);
 			}
-
 			break;
 		case TYPE_INTERSTITIAL:
 			switch (this.mInterstitialData.interstitialType) {
@@ -1199,8 +1190,6 @@ public class RichMediaActivity extends Activity {
 				});
 				this.mCustomVideoView.start();
 			}
-//			if(this.mRootLayout==null)
-//				initRootLayout();
 			this.mRootLayout.setVisibility(View.GONE);
 			this.mCustomView.setVisibility(View.VISIBLE);
 			this.setContentView(this.mCustomView);

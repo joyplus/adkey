@@ -16,6 +16,8 @@ public class AdViewActivity extends Activity implements AdListener
 {
 	private RelativeLayout layout;
 	private AdView mAdView;
+	private String publisherId = "152c965b2381d2ee18bdf3e729ccccf6";//要显示广告的publisherId
+	private boolean animation = false;//该广告加载时是否用动画效果
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -30,8 +32,7 @@ public class AdViewActivity extends Activity implements AdListener
 		if (mAdView != null) {
 			removeBanner();
 		}
-		mAdView = new AdView(this, "http://adv.yue001.com/md.request.php",
-		"152c965b2381d2ee18bdf3e729ccccf6", true, true);
+		mAdView = new AdView(this, publisherId,animation);
 		mAdView.setAdListener(this);
 		layout.addView(mAdView);
 	}
