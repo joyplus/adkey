@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity" >
+    tools:context=".InterstitialActivity" >
 
     <RelativeLayout
         android:id="@+id/adsdkContent"
@@ -11,14 +11,20 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" >
     </RelativeLayout>
-
+	<TextView 
+	    android:id="@+id/textView1"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:textSize="30dp"
+	    android:text="Insterstitial ad!"/>
     <Button
         android:id="@+id/showVideoInsterstitialOnline"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
         android:onClick="onClickShowVideoOnline"
+        android:layout_below="@id/textView1"
+        android:layout_marginTop="20dp"
         android:text="Show VideoInsterstitialOnline" />
 
     <Button
@@ -26,9 +32,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/showVideoInsterstitialOnline"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
         android:onClick="onClickShowVideoCache"
+        android:layout_marginTop="20dp"
         android:text="Show VideoInsterstitialCache" />
 
 </RelativeLayout>

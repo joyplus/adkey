@@ -31,7 +31,7 @@ public class AdViewActivity extends Activity implements AdListener
 			removeBanner();
 		}
 		mAdView = new AdView(this, "http://adv.yue001.com/md.request.php",
-		"038ec9c3d97315b24be739b204f0ea07", true, true);
+		"152c965b2381d2ee18bdf3e729ccccf6", true, true);
 		mAdView.setAdListener(this);
 		layout.addView(mAdView);
 	}

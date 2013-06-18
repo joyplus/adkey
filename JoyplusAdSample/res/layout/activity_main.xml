@@ -4,14 +4,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
-     <RelativeLayout
-        android:id="@+id/adsdkContent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" >
-    </RelativeLayout>
-
     <Button
         android:id="@+id/show_banner"
         android:layout_width="fill_parent"
@@ -40,6 +32,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="31dp"
         android:gravity="center"
-        android:text="Please set AdServer URL and PublisherID in MainActivity.java first!" />
+        android:text="This is demo of joyplus's adkey!" />
 
 </RelativeLayout>

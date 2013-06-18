@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity" >
+    tools:context=".AdViewActivity" >
 
     <RelativeLayout
         android:id="@+id/adsdkContent"
@@ -11,12 +11,18 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" >
     </RelativeLayout>
-
+	<TextView 
+	    android:id="@+id/textView1"
+	    android:layout_height="wrap_content"
+	    android:layout_width="fill_parent"
+	    android:textSize="30dp"
+	    android:text="Banner ad!"/>
     <Button
         android:id="@+id/show_banner"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:layout_below="@id/textView1"
         android:layout_marginTop="20dp"
         android:onClick="onClickShowBanner"
         android:text="Show AdView" />
