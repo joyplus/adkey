@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.joyplus.adkey"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="17" />
+	
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <!-- Optional. This permission allow us to send the device id to uniquely identified that device -->
+	<uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
+    <!-- Optional. This permission allow us to send the network connection type and provide better ads -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+    <!-- Optional. This permission allow us to send the device location and provide more targeted ads-->
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
+    <!-- Optional. This permission allow us to send the device location and provide more targeted ads-->
+	<uses-permission android:name="android.permission.ACCESS_COURSE_LOCATION"></uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    
+    <application android:debuggable="true">
+        <activity android:name="com.adsdk.sdk.video.RichMediaActivity"
+              android:configChanges="keyboard|keyboardHidden|orientation"/>
+        <activity android:name="com.adsdk.sdk.banner.InAppWebView"></activity>
+    </application>
+
+</manifest>
