@@ -31,7 +31,7 @@ public class Downloader {
 		/*
 		 * if the Const.DOWNLOAD_PATH doesn't exists,mkdirs this folder
 		 */
-		File cacheDir = new File(Const.DOWNLOAD_PATH+Util.GetPackage(context));
+		File cacheDir = new File(Const.DOWNLOAD_PATH+Util.VideoFileDir);
 		if (!cacheDir.exists())
 			cacheDir.mkdirs();
 	}
@@ -89,7 +89,7 @@ public class Downloader {
 		@Override
 		public void run() {
 			// 标记此线程为true
-			localfile = Const.DOWNLOAD_PATH+Util.GetPackage(context)+Const.DOWNLOADING_FILE;
+			localfile = Const.DOWNLOAD_PATH+Util.VideoFileDir+Const.DOWNLOADING_FILE;
 			
 			HttpURLConnection connection = null;
 			RandomAccessFile randomAccessFile = null;
@@ -113,7 +113,7 @@ public class Downloader {
 						/*
 						 * be sure there hasn't adv_temp.mp4
 						 */
-						File file = new File(Const.DOWNLOAD_PATH+Util.GetPackage(context)+Const.DOWNLOAD_READY_FILE);
+						File file = new File(Const.DOWNLOAD_PATH+Util.VideoFileDir+Const.DOWNLOAD_READY_FILE);
 						if(file.exists())
 						{
 							file.delete();
@@ -122,15 +122,15 @@ public class Downloader {
 						/*
 						 * set adv_temp to adv_temp.mp4
 						 */
-						File filetemp = new File(Const.DOWNLOAD_PATH+Util.GetPackage(context)+Const.DOWNLOADING_FILE);
+						File filetemp = new File(Const.DOWNLOAD_PATH+Util.VideoFileDir+Const.DOWNLOADING_FILE);
 						if(filetemp.exists())
 						{
-							File filedone = new File(Const.DOWNLOAD_PATH+Util.GetPackage(context)+Const.DOWNLOAD_PLAY_FILE+Util.ExternalName);
+							File filedone = new File(Const.DOWNLOAD_PATH+Util.VideoFileDir+Const.DOWNLOAD_PLAY_FILE+Util.ExternalName);
 							if(!filedone.exists())
 							{
 								filetemp.renameTo(filedone);
 							}else{
-								filetemp.renameTo(new File(Const.DOWNLOAD_PATH+Util.GetPackage(context)+Const.DOWNLOAD_READY_FILE));
+								filetemp.renameTo(new File(Const.DOWNLOAD_PATH+Util.VideoFileDir+Const.DOWNLOAD_READY_FILE));
 							}
 						}
 					}

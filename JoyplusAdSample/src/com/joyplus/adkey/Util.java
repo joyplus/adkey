@@ -58,6 +58,7 @@ public class Util {
 	public static boolean CACHE_MODE = true;
 	//video PublisherId
 	public static String PublisherId = null;
+	public static String VideoFileDir = null;
 	
 	public static boolean isNetworkAvailable(Context ctx) {
 		int networkStatePermission = ctx
@@ -440,8 +441,9 @@ public class Util {
 	/*
 	 * By application's package name Get Download path
 	 */
-	public static String GetPackage(Context context){
-		return "/"+context.getPackageName()+"/"+PublisherId+"/";
+	public static void GetPackage(Context context){
+		if(context!=null)
+			VideoFileDir = context.getPackageName()+"/"+PublisherId+"/";
 	}
 	/*
 	 * get device name 

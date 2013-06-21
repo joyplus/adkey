@@ -281,7 +281,7 @@ public class AdManager {
 	}
 
 	public boolean isCacheLoaded(){
-		File file = new File(Const.DOWNLOAD_PATH+Util.GetPackage(mContext));
+		File file = new File(Const.DOWNLOAD_PATH+Util.VideoFileDir);
 		if(file.exists()){
 			String[] temp = file.list();
 			for(int i = 0;i<temp.length;i++)
@@ -327,7 +327,7 @@ public class AdManager {
 					{
 						Util.ExternalName = ".mp4";
 					}
-					File file = new File(Const.DOWNLOAD_PATH + Util.GetPackage(mContext)+Const.DOWNLOAD_PLAY_FILE
+					File file = new File(Const.DOWNLOAD_PATH + Util.VideoFileDir+Const.DOWNLOAD_PLAY_FILE
 							+ Util.ExternalName);
 					if (!file.exists())
 					{
@@ -373,6 +373,11 @@ public class AdManager {
 	}
 	
 	private void initialize() throws IllegalArgumentException {
+		/*
+		 * init Util.VideoFileDir
+		 */
+		Util.GetPackage(mContext);
+		
 		mUserAgent = Util.getDefaultUserAgentString(getContext());
 		this.mUniqueId1 = Util.getTelephonyDeviceId(getContext());
 		this.mUniqueId2 = Util.getDeviceId(getContext());

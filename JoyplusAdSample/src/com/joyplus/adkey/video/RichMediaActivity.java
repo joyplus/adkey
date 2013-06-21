@@ -1057,7 +1057,7 @@ public class RichMediaActivity extends Activity
 				downloader.download();
 				Log.i(Const.TAG, "download starting");
 			}
-			File file = new File(Const.DOWNLOAD_PATH + Util.GetPackage(RichMediaActivity.this)+Const.DOWNLOAD_PLAY_FILE
+			File file = new File(Const.DOWNLOAD_PATH + Util.VideoFileDir+Const.DOWNLOAD_PLAY_FILE
 					+ Util.ExternalName);
 			if (!file.exists())
 			{
@@ -1065,7 +1065,7 @@ public class RichMediaActivity extends Activity
 			} else
 			{
 				Log.i(Const.TAG, "Play LocalCacheFile");
-				path = Const.DOWNLOAD_PATH + Util.GetPackage(RichMediaActivity.this)+Const.DOWNLOAD_PLAY_FILE
+				path = Const.DOWNLOAD_PATH + Util.VideoFileDir+Const.DOWNLOAD_PLAY_FILE
 						+ Util.ExternalName;
 			}
 		}
