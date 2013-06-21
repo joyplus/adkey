@@ -116,4 +116,11 @@ public class VideoData implements Serializable {
 	public void setStartEvents(Vector<String> startEvents) {
 		this.startEvents = startEvents;
 	}
+	
+	/*
+	 * getVideoUrl
+	 */
+	public String getVideoUrl(){
+		return videoUrl;
+	}
 }

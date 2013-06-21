@@ -125,14 +125,18 @@ public class Downloader {
 						File filetemp = new File(Const.DOWNLOAD_PATH+Const.DOWNLOADING_FILE);
 						if(filetemp.exists())
 						{
-							filetemp.renameTo(new File(Const.DOWNLOAD_PATH+Const.DOWNLOAD_READY_FILE));
+							File filedone = new File(Const.DOWNLOAD_PATH+Const.DOWNLOAD_PLAY_FILE+Util.ExternalName);
+							if(!filedone.exists())
+							{
+								filetemp.renameTo(filedone);
+							}else{
+								filetemp.renameTo(new File(Const.DOWNLOAD_PATH+Const.DOWNLOAD_READY_FILE));
+							}
 						}
 					}
 					if (state == PAUSE||state == STOP) {
 						return;
 					}
-					Log.i("Downloader:compeleteSize",Integer.toString(compeleteSize));
-					Log.i("Downloader:fileSize", Integer.toString(fileSize));
 				}
 			} catch (Exception e) {
 				state = STOP;

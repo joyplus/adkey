@@ -2,8 +2,11 @@ package com.joyplus.adkey;
 
 import static com.joyplus.adkey.Const.AD_EXTRA;
 
+import java.io.File;
 import java.io.InputStream;
 import java.lang.Thread.UncaughtExceptionHandler;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 
 import android.app.Activity;
@@ -85,7 +88,7 @@ public class AdManager {
 	public void setListener(AdListener listener) {
 		this.mListener = listener;
 	}
-
+	
 	public void requestAd() {
 		Log.i(Const.TAG,"AdManager--->requestAd");
 		if (!mEnabled) {
@@ -255,7 +258,7 @@ public class AdManager {
 	public boolean isAdLoaded() {
 		return (mResponse != null);
 	}
-
+	
 	public void requestAdAndShow(long timeout) {
 		AdListener l = mListener;
 
@@ -274,6 +277,21 @@ public class AdManager {
 		showAd();
 	}
 
+	public boolean isCacheLoaded(){
+		File file = new File(Const.DOWNLOAD_PATH);
+		if(file.exists()){
+			String[] temp = file.list();
+			for(int i = 0;i<temp.length;i++)
+			{
+				if(temp[i].contains(Const.DOWNLOAD_PLAY_FILE))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	public void showAd() {
 		Activity activity = (Activity) getContext();
 
@@ -287,17 +305,63 @@ public class AdManager {
 		boolean result = false;
 		try {
 			if (Util.isNetworkAvailable(getContext())) {
-				ad.setTimestamp(System.currentTimeMillis());
-				Intent intent = new Intent(activity,
-						RichMediaActivity.class);
-				intent.putExtra(AD_EXTRA, ad);
-				activity.startActivityForResult(intent, 0);
-				int enterAnim = Util.getEnterAnimation(ad.getAnimation());
-				int exitAnim = Util.getExitAnimation(ad.getAnimation());
-				RichMediaActivity.setActivityAnimation(activity,
-						enterAnim, exitAnim);
-				result = true;
-				sRunningAds.put(ad.getTimestamp(), this);
+				VideoData video = ad.getVideo();
+				if(Util.CACHE_MODE&&video!=null){					
+					String path = video.getVideoUrl();
+					URL url = null;
+					try
+					{
+						url = new URL(path);
+					} catch (MalformedURLException e)
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					if (url != null)
+					{
+						Util.ExternalName = "." + Util.getExtensionName(url.getPath());
+					} else
+					{
+						Util.ExternalName = ".mp4";
+					}
+					File file = new File(Const.DOWNLOAD_PATH + Const.DOWNLOAD_PLAY_FILE
+							+ Util.ExternalName);
+					if (!file.exists())
+					{
+						Downloader downloader = new Downloader(path, mContext);
+						if (path.startsWith("http:") || path.startsWith("https:"))
+						{
+							downloader.download();
+							Log.i(Const.TAG, "download starting");
+							notifyAdClose(ad, true);
+						}
+					}else{
+						ad.setTimestamp(System.currentTimeMillis());
+						Intent intent = new Intent(activity,
+								RichMediaActivity.class);
+						intent.putExtra(AD_EXTRA, ad);
+						activity.startActivityForResult(intent, 0);
+						int enterAnim = Util.getEnterAnimation(ad.getAnimation());
+						int exitAnim = Util.getExitAnimation(ad.getAnimation());
+						RichMediaActivity.setActivityAnimation(activity,
+								enterAnim, exitAnim);
+						result = true;
+						sRunningAds.put(ad.getTimestamp(), this);
+						
+					}
+				}else{
+					ad.setTimestamp(System.currentTimeMillis());
+					Intent intent = new Intent(activity,
+							RichMediaActivity.class);
+					intent.putExtra(AD_EXTRA, ad);
+					activity.startActivityForResult(intent, 0);
+					int enterAnim = Util.getEnterAnimation(ad.getAnimation());
+					int exitAnim = Util.getExitAnimation(ad.getAnimation());
+					RichMediaActivity.setActivityAnimation(activity,
+							enterAnim, exitAnim);
+					result = true;
+					sRunningAds.put(ad.getTimestamp(), this);
+				}
 			}
 		} catch (Exception e) {
 		} finally {
