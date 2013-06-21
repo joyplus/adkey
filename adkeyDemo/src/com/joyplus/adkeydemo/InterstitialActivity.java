@@ -26,7 +26,8 @@ public class InterstitialActivity extends Activity implements AdListener
 	public void onClickShowVideoOnline(View v){
 		if(mManager!=null)
 			mManager.release();
-		
+		if(cacheMode)
+			cacheMode = false;
 		mManager = new AdManager(this,publisherId,cacheMode);
 		mManager.setListener(this);
 		mManager.requestAd();
