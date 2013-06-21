@@ -2,6 +2,7 @@ package com.joyplus.adkey;
 
 import static com.joyplus.adkey.Const.PREFS_DEVICE_ID;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
@@ -55,7 +56,9 @@ public class Util {
 	public static boolean DEBUE_MODE = true;
 	//if CACHE_MODE is true,adkey support VideoAd's cacheDisplay
 	public static boolean CACHE_MODE = true;
-
+	//video PublisherId
+	public static String PublisherId = null;
+	
 	public static boolean isNetworkAvailable(Context ctx) {
 		int networkStatePermission = ctx
 				.checkCallingOrSelfPermission(Manifest.permission.ACCESS_NETWORK_STATE);
@@ -433,11 +436,31 @@ public class Util {
         }   
         return filename;   
     }
+	
+	/*
+	 * By application's package name Get Download path
+	 */
+	public static String GetPackage(Context context){
+		return "/"+context.getPackageName()+"/"+PublisherId+"/";
+	}
 	/*
 	 * get device name 
 	 */
 	@SuppressWarnings("static-access")
 	public static String GetDeviceName(){
 		return new Build().MODEL;
+	}
+	
+	/*
+	 * save a class by Serialie
+	 */
+	public void saveClassToSeriale(java.io.ObjectOutputStream out)throws IOException {
+//		out.
+	}
+	/*
+	 * get a class from SerialieData
+	 */
+	public void getClassFromSeriale(){
+		
 	}
 }

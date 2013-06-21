@@ -59,11 +59,12 @@ public class AdManager {
 
 	}
 	/*
-	 * @author
+	 * @author yyc
 	 */
 	public AdManager(Context ctx, final String publisherId,final boolean cacheMode)
 			throws IllegalArgumentException {
 		AdManager.setmContext(ctx);
+		Util.PublisherId = publisherId;
 		this.requestURL = Const.REQUESTURL;
 		this.mPublisherId = publisherId;
 		this.mIncludeLocation = true;
@@ -76,6 +77,7 @@ public class AdManager {
 	public AdManager(Context ctx, final String requestURL, final String publisherId,
 			final boolean includeLocation)
 					throws IllegalArgumentException {
+		Util.PublisherId = publisherId;
 		AdManager.setmContext(ctx);
 		this.requestURL = requestURL;
 		this.mPublisherId = publisherId;
@@ -108,6 +110,7 @@ public class AdManager {
 					try {
 						RequestRichMediaAd requestAd = new RequestRichMediaAd();
 						AdRequest request = getRequest();
+						
 						mResponse = requestAd.sendRequest(request);
 						if(mResponse.getVideo()!=null && android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.FROYO){
 							notifyNoAdFound();
@@ -278,7 +281,7 @@ public class AdManager {
 	}
 
 	public boolean isCacheLoaded(){
-		File file = new File(Const.DOWNLOAD_PATH);
+		File file = new File(Const.DOWNLOAD_PATH+Util.GetPackage(mContext));
 		if(file.exists()){
 			String[] temp = file.list();
 			for(int i = 0;i<temp.length;i++)
@@ -324,7 +327,7 @@ public class AdManager {
 					{
 						Util.ExternalName = ".mp4";
 					}
-					File file = new File(Const.DOWNLOAD_PATH + Const.DOWNLOAD_PLAY_FILE
+					File file = new File(Const.DOWNLOAD_PATH + Util.GetPackage(mContext)+Const.DOWNLOAD_PLAY_FILE
 							+ Util.ExternalName);
 					if (!file.exists())
 					{

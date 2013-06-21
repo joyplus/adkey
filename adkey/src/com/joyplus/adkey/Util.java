@@ -440,4 +440,10 @@ public class Util {
 	public static String GetDeviceName(){
 		return new Build().MODEL;
 	}
+
+	public static String GetPackage(Context context)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

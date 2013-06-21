@@ -8,7 +8,7 @@ public interface Const {
 	 * download video fileDir
 	 * @author
 	 */
-	public static final String DOWNLOAD_PATH = Environment.getExternalStorageDirectory()+"/adsdk/video/";
+	public static final String DOWNLOAD_PATH = Environment.getExternalStorageDirectory()+"/adsdk/";
 	
 	public static final String DOWNLOADING_FILE = "jp_adv_ing";
 	public static final String DOWNLOAD_READY_FILE = "jp_adv_temp";

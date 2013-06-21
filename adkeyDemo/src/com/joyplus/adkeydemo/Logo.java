@@ -16,7 +16,7 @@ import android.widget.Toast;
 public class Logo extends Activity implements AdListener{
 	private AdManager mManager;
 	private String publisherId = "03f9d5d1ead2ac506a91f2c0f5c21d46";//要显示广告的publisherId
-	private boolean cacheMode = false;//该广告加载时是否用本地缓存
+	private boolean cacheMode = true;//该广告加载时是否用本地缓存
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

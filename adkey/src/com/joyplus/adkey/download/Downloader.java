@@ -24,14 +24,13 @@ public class Downloader {
 	private static final int STOP = 4;//停止
 	private static final int FAILED = 5;//失败
 	private int state = INIT;
-
 	public Downloader(String urlstr, Context context) {
 		this.urlstr = urlstr;
 		this.context = context;
 		/*
 		 * if the Const.DOWNLOAD_PATH doesn't exists,mkdirs this folder
 		 */
-		File cacheDir = new File(Const.DOWNLOAD_PATH);
+		File cacheDir = new File(Const.DOWNLOAD_PATH+Util.GetPackage(context));
 		if (!cacheDir.exists())
 			cacheDir.mkdirs();
 	}
