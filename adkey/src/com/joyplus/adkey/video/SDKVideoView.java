@@ -304,10 +304,10 @@ public class SDKVideoView extends SurfaceView implements MediaPlayerControl {
 			/*
 			 * play completion，update adv.mp4
 			 */
-			File file_temp = new File(Const.DOWNLOAD_PATH+Const.DOWNLOAD_READY_FILE);
+			File file_temp = new File(Const.DOWNLOAD_PATH+Util.VideoFileDir+Const.DOWNLOAD_READY_FILE);
 			if(file_temp.exists())
 			{
-				File file = new File(Const.DOWNLOAD_PATH+Const.DOWNLOAD_PLAY_FILE+Util.ExternalName);
+				File file = new File(Const.DOWNLOAD_PATH+Util.VideoFileDir+Const.DOWNLOAD_PLAY_FILE+Util.ExternalName);
 				if(file.exists())
 				{
 					file.delete();

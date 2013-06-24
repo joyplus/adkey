@@ -16,8 +16,7 @@ public class AdViewActivity extends Activity implements AdListener
 	private RelativeLayout layout;
 	private AdView mAdView;
 	private String publisherId = "dabb5c604c9dd34e4ee519c9c2fdcd52";//要显示广告的publisherId
-
-	private boolean animation = false;//该广告加载时是否用动画效果
+	private boolean animation = true;//该广告加载时是否用动画效果
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -26,7 +25,6 @@ public class AdViewActivity extends Activity implements AdListener
 		setContentView(R.layout.adview);
 		layout = (RelativeLayout) findViewById(R.id.adsdkContent);
 	}
-	
 
 	public void onClickShowBanner(View view) {
 		if (mAdView != null) {

@@ -126,12 +126,10 @@ public class Downloader {
 						if(filetemp.exists())
 						{
 							File filedone = new File(Const.DOWNLOAD_PATH+Util.VideoFileDir+Const.DOWNLOAD_PLAY_FILE+Util.ExternalName);
-							if(!filedone.exists())
-							{
-								filetemp.renameTo(filedone);
-							}else{
-								filetemp.renameTo(new File(Const.DOWNLOAD_PATH+Util.VideoFileDir+Const.DOWNLOAD_READY_FILE));
+							if(filedone.exists()){
+								filedone.delete();
 							}
+							filetemp.renameTo(filedone);
 						}
 					}
 					if (state == PAUSE||state == STOP) {
