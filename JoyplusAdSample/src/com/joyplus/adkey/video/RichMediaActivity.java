@@ -10,8 +10,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
 
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -165,7 +164,6 @@ public class RichMediaActivity extends Activity
 	public static final int TYPE_VIDEO = 1;
 	public static final int TYPE_INTERSTITIAL = 2;
 	
-	// public static final int TYPE_LOCALVIDEO = 3;//add by yyc
 	
 	public static void setActivityAnimation(final Activity activity,
 			final int in, final int out)
@@ -406,9 +404,14 @@ public class RichMediaActivity extends Activity
 				{
 				}
 			}
-			RichMediaActivity.this.mResult = true;
-			RichMediaActivity.this.setResult(Activity.RESULT_OK);
-			RichMediaActivity.this.finish();
+			if(mVideoData!=null&&mVideoData.width>0)
+			{
+				replayVideo();
+			}else{
+				RichMediaActivity.this.mResult = true;
+				RichMediaActivity.this.setResult(Activity.RESULT_OK);
+				RichMediaActivity.this.finish();
+			}
 		}
 	};
 	
@@ -832,10 +835,13 @@ public class RichMediaActivity extends Activity
 		}
 	}
 	
+	@SuppressLint("NewApi")
 	private void initRootLayout()
 	{
 		this.mRootLayout = new FrameLayout(this);
-		this.mRootLayout.setBackgroundColor(Color.BLACK);
+//		this.mRootLayout.setX(300);
+//		this.mRootLayout.setY(300);
+		this.mRootLayout.setBackgroundColor(Color.TRANSPARENT);
 	}
 	
 	private void initVideoView()
@@ -881,16 +887,17 @@ public class RichMediaActivity extends Activity
 		this.mVideoView = new SDKVideoView(this, this.mVideoWidth,
 				this.mVideoHeight, this.mVideoData.display);
 		this.mVideoLayout.addView(this.mVideoView,
-				new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT / 2,
-						LayoutParams.WRAP_CONTENT / 2, Gravity.CENTER));// MATCH_PARENT
-		// new FrameLayout.LayoutParams(this.mVideoWidth*3,
-		// this.mVideoHeight*3, Gravity.CENTER));//在这个位置可以进行画面的改动
+//				new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+//						LayoutParams.MATCH_PARENT, Gravity.CENTER));// MATCH_PARENT
+		 new FrameLayout.LayoutParams(this.mVideoWidth,
+		 this.mVideoHeight, Gravity.CENTER));//在这个位置可以进行画面的改动
 		if (this.mVideoData.showHtmlOverlay)
 		{
 			this.mOverlayView = new WebFrame(this, false, false, false);
 			this.mOverlayView.setEnableZoom(false);
 			this.mOverlayView.setOnClickListener(this.mOverlayClickListener);
-			this.mOverlayView.setBackgroundColor(Color.TRANSPARENT);
+			this.mOverlayView.setBackgroundColor(Color.TRANSPARENT); 
+			
 			
 			if (this.mVideoData.showHtmlOverlayAfter > 0)
 			{
@@ -1110,7 +1117,6 @@ public class RichMediaActivity extends Activity
 	@Override
 	public void onCreate(final Bundle icicle)
 	{
-		
 		super.onCreate(icicle);
 		this.mResult = false;
 		this.mPageLoaded = false;
@@ -1235,6 +1241,10 @@ public class RichMediaActivity extends Activity
 	{
 		if (keyCode == KeyEvent.KEYCODE_BACK)
 		{
+			if(mVideoData!=null&&mVideoData.width>0)
+				this.mCanClose = true;
+			else
+				this.mCanClose = false;
 			this.goBack();
 			return true;
 		}
@@ -1401,5 +1411,7 @@ public class RichMediaActivity extends Activity
 		if (this.mMediaController != null)
 			this.mMediaController.replay();
 	}
+	
+	
 	
 }

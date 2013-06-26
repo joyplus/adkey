@@ -78,5 +78,4 @@ public class AdViewActivity extends Activity implements AdListener
 		// TODO Auto-generated method stub
 		Log.i(Const.TAG,"AdViewActivity--->noAdFound");
 	}
-	
 }

@@ -20,6 +20,11 @@ public class MainActivity extends Activity
 		startActivity(intent);
 	}
 	
+	public void onClickSmallWindow(View v){
+		Intent intent = new Intent(MainActivity.this,SmallActivity.class);
+		startActivity(intent);
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
