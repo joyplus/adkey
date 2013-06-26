@@ -839,8 +839,6 @@ public class RichMediaActivity extends Activity
 	private void initRootLayout()
 	{
 		this.mRootLayout = new FrameLayout(this);
-//		this.mRootLayout.setX(300);
-//		this.mRootLayout.setY(300);
 		this.mRootLayout.setBackgroundColor(Color.TRANSPARENT);
 	}
 	
@@ -1411,7 +1409,5 @@ public class RichMediaActivity extends Activity
 		if (this.mMediaController != null)
 			this.mMediaController.replay();
 	}
-	
-	
-	
+
 }
