@@ -839,7 +839,7 @@ public class RichMediaActivity extends Activity
 	private void initRootLayout()
 	{
 		this.mRootLayout = new FrameLayout(this);
-		this.mRootLayout.setBackgroundColor(Color.TRANSPARENT);
+		this.mRootLayout.setBackgroundColor(Color.BLACK);
 	}
 	
 	private void initVideoView()

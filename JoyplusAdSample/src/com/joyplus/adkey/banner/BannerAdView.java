@@ -290,9 +290,7 @@ public class BannerAdView extends RelativeLayout {
 	}
 
 	private void showContent() {
-
 		try {
-
 			WebView webView;
 			if (this.viewFlipper.getCurrentView() == this.firstWebView)
 				webView = this.secondWebView;
@@ -304,13 +302,33 @@ public class BannerAdView extends RelativeLayout {
 						this.response.getImageUrl(),
 						this.response.getBannerWidth(),
 						this.response.getBannerHeight());
+				
 				text = Uri.encode(Const.HIDE_BORDER + text);
 				webView.loadData(text, "text/html", Const.ENCODING);
 				this.notifyLoadAdSucceeded();
 			} else if (this.response.getType() == Const.TEXT) {
-				final String text = Uri.encode(Const.HIDE_BORDER
-						+ this.response.getText());
-				webView.loadData(text, "text/html", Const.ENCODING);
+				/*
+				 * frank
+				 */
+				String text = this.response.getText();
+				int startInd = this.response.getText().indexOf(
+						"mAdserveAdImage")+22;
+				int endInd = this.response.getText().indexOf(
+						"/>", startInd)-12;
+				String thisImageText = this.response.getText()
+						.substring(startInd, endInd);
+				text = Uri.encode(Const.HIDE_BORDER + text);
+//				final String text = Uri.encode(Const.HIDE_BORDER
+//						+ this.response.getText());
+				if(thisImageText.startsWith("http:")||thisImageText.startsWith("https:"))
+				{
+					webView.loadData(text, "text/html", Const.ENCODING);
+				}else{
+					String baseUrl = "file:///mnt/sdcard/";
+					text = Const.HIDE_BORDER
+							+ "<img src='test.jpg'/>";
+					webView.loadDataWithBaseURL(baseUrl, text, "text/html", "utf-8", null);
+				}
 				this.notifyLoadAdSucceeded();
 			} 
 
