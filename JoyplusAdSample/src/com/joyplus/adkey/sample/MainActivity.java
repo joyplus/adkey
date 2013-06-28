@@ -25,6 +25,11 @@ public class MainActivity extends Activity
 		startActivity(intent);
 	}
 	
+	public void onClickScreenSaver(View v){
+		Intent intent = new Intent(MainActivity.this,ScreenSaverActivity.class);
+		startActivity(intent);
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{

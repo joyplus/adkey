@@ -41,6 +41,9 @@
         <activity android:name="com.joyplus.adkey.sample.AdViewActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
+         <activity android:name="com.joyplus.adkey.sample.ScreenSaverActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity android:name="com.joyplus.adkey.sample.SmallActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar"/>

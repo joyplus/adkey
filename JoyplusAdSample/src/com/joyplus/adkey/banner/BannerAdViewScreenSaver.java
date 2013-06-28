@@ -1,32 +1,21 @@
 package com.joyplus.adkey.banner;
 
-import static com.joyplus.adkey.Const.TAG;
-
 import java.io.File;
 import java.io.InputStream;
-import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.MessageFormat;
-import java.util.Random;
-import java.util.Timer;
 
-import android.Manifest;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.PackageManager;
+
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.location.Location;
-import android.location.LocationManager;
+
 import android.net.Uri;
 import android.os.Handler;
-import android.telephony.TelephonyManager;
-import android.view.MotionEvent;
-import android.view.View;
+
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.webkit.WebSettings;
@@ -35,16 +24,14 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.ViewFlipper;
-
 import com.joyplus.adkey.AdListener;
-import com.joyplus.adkey.AdRequest;
 import com.joyplus.adkey.BannerAd;
 import com.joyplus.adkey.Const;
-import com.joyplus.adkey.RequestBannerAd;
+
 import com.joyplus.adkey.Util;
 import com.joyplus.adkey.data.ClickType;
 
-public class BannerAdView extends RelativeLayout {
+public class BannerAdViewScreenSaver extends RelativeLayout {
 
 	public static final int LIVE = 0;
 	public static final int TEST = 1;
@@ -84,11 +71,11 @@ public class BannerAdView extends RelativeLayout {
 		;
 	}
 
-	public BannerAdView(final Context context, final BannerAd response, final AdListener adListener) {
+	public BannerAdViewScreenSaver(final Context context, final BannerAd response, final AdListener adListener) {
 		this(context, response, false, adListener);
 	}
 
-	public BannerAdView(final Context context, final InputStream xml, final boolean animation){
+	public BannerAdViewScreenSaver(final Context context, final InputStream xml, final boolean animation){
 		super(context);
 		this.xml = xml;
 		mContext = context;
@@ -96,7 +83,7 @@ public class BannerAdView extends RelativeLayout {
 		this.initialize(context);
 	}
 
-	public BannerAdView(final Context context, final BannerAd response, final boolean animation, final AdListener adListener) {
+	public BannerAdViewScreenSaver(final Context context, final BannerAd response, final boolean animation, final AdListener adListener) {
 		super(context);
 		this.response = response;
 		mContext = context;
@@ -313,8 +300,25 @@ public class BannerAdView extends RelativeLayout {
 				 * yyc
 				 */
 				String text = this.response.getText();
+				int startInd = this.response.getText().indexOf(
+						"mAdserveAdImage")+22;
+				int endInd = this.response.getText().indexOf(
+						"/>", startInd)-12;
+				String thisImageText = this.response.getText()
+						.substring(startInd, endInd);
 				text = Uri.encode(Const.HIDE_BORDER + text);
-				webView.loadData(text, "text/html", Const.ENCODING);
+//				if(thisImageText.startsWith("http:")||thisImageText.startsWith("https:"))
+//				{
+//					webView.loadData(text, "text/html", Const.ENCODING);
+//				}else{
+					String baseUrl = "file://"+Const.DOWNLOAD_PATH+Util.VideoFileDir;
+					File file = new File(Const.DOWNLOAD_PATH+Util.VideoFileDir);
+					String temp[] = file.list();
+					text = Const.HIDE_BORDER
+							+ "<img src='"+temp[(++Util.PicNum)%3]+"'/>";
+					file = null;
+					webView.loadDataWithBaseURL(baseUrl, text, "text/html", "utf-8", null);
+//				}
 				this.notifyLoadAdSucceeded();
 			} 
 

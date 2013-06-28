@@ -80,16 +80,15 @@ public class PicDownloader {
 						Util.pic_downloaders.put(Util.pic_downloaders.size(), urlstr);
 					}else{
 						File file = new File(Const.DOWNLOAD_PATH+Util.VideoFileDir);
-						int temp = (Util.PicDownloadNum++)%3;
 						for(int i = 0;i<file.list().length;i++)
 						{
 							if(file.list()[i].contains(""+1)){
-								File filetemp =  new File(Const.DOWNLOAD_PATH+Util.VideoFileDir+file.list()[temp]);
+								File filetemp =  new File(Const.DOWNLOAD_PATH+Util.VideoFileDir+file.list()[i]);
 								filetemp.delete();
 							}
 						}
 						Util.pic_downloaders.put(0, urlstr);
-						localfile = Const.DOWNLOAD_PATH+Util.VideoFileDir+(temp)+Util.ExternalName;
+						localfile = Const.DOWNLOAD_PATH+Util.VideoFileDir+(1)+Util.ExternalName;
 					}
 					
 				}

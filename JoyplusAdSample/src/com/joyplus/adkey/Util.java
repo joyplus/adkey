@@ -66,6 +66,10 @@ public class Util {
 	//pic download key-value
 	public static Map<Integer, String> pic_downloaders = new HashMap<Integer, String>();
 	
+	//pic for loop's number
+	public static int PicNum = 0;
+	public static int PicDownloadNum = 0;
+	
 	public static boolean isNetworkAvailable(Context ctx) {
 		int networkStatePermission = ctx
 				.checkCallingOrSelfPermission(Manifest.permission.ACCESS_NETWORK_STATE);
@@ -471,4 +475,5 @@ public class Util {
 	public void getClassFromSeriale(){
 		
 	}
+	
 }

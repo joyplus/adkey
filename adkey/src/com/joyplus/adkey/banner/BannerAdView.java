@@ -2,12 +2,14 @@ package com.joyplus.adkey.banner;
 
 import static com.joyplus.adkey.Const.TAG;
 
+import java.io.File;
 import java.io.InputStream;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.MessageFormat;
+import java.util.Random;
 import java.util.Timer;
 
 import android.Manifest;
@@ -290,9 +292,7 @@ public class BannerAdView extends RelativeLayout {
 	}
 
 	private void showContent() {
-
 		try {
-
 			WebView webView;
 			if (this.viewFlipper.getCurrentView() == this.firstWebView)
 				webView = this.secondWebView;
@@ -304,13 +304,34 @@ public class BannerAdView extends RelativeLayout {
 						this.response.getImageUrl(),
 						this.response.getBannerWidth(),
 						this.response.getBannerHeight());
+				
 				text = Uri.encode(Const.HIDE_BORDER + text);
 				webView.loadData(text, "text/html", Const.ENCODING);
 				this.notifyLoadAdSucceeded();
 			} else if (this.response.getType() == Const.TEXT) {
-				final String text = Uri.encode(Const.HIDE_BORDER
-						+ this.response.getText());
-				webView.loadData(text, "text/html", Const.ENCODING);
+				/*
+				 * yyc
+				 */
+				String text = this.response.getText();
+				int startInd = this.response.getText().indexOf(
+						"mAdserveAdImage")+22;
+				int endInd = this.response.getText().indexOf(
+						"/>", startInd)-12;
+				String thisImageText = this.response.getText()
+						.substring(startInd, endInd);
+				text = Uri.encode(Const.HIDE_BORDER + text);
+				if(thisImageText.startsWith("http:")||thisImageText.startsWith("https:"))
+				{
+					webView.loadData(text, "text/html", Const.ENCODING);
+				}else{
+					String baseUrl = "file://"+Const.DOWNLOAD_PATH+Util.VideoFileDir;
+					File file = new File(Const.DOWNLOAD_PATH+Util.VideoFileDir);
+					String temp[] = file.list();
+					text = Const.HIDE_BORDER
+							+ "<img src='"+temp[(++Util.PicNum)%3]+"'/>";
+					file = null;
+					webView.loadDataWithBaseURL(baseUrl, text, "text/html", "utf-8", null);
+				}
 				this.notifyLoadAdSucceeded();
 			} 
 
@@ -323,5 +344,4 @@ public class BannerAdView extends RelativeLayout {
 		} catch (final Throwable t) {
 		}
 	}
-
 }

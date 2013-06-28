@@ -1,35 +1,26 @@
 package com.joyplus.adkey;
 
-import static com.joyplus.adkey.Const.AD_EXTRA;
-
 import java.io.File;
 import java.io.InputStream;
 import java.lang.Thread.UncaughtExceptionHandler;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Handler;
 import android.view.View;
 import android.widget.FrameLayout;
-
-import com.joyplus.adkey.download.Downloader;
 import com.joyplus.adkey.video.ResourceManager;
-import com.joyplus.adkey.video.RichMediaActivity;
 import com.joyplus.adkey.video.RichMediaAd;
 import com.joyplus.adkey.video.RichMediaView;
 import com.joyplus.adkey.video.TrackerService;
-import com.joyplus.adkey.video.VideoData;
 import com.joyplus.adkey.widget.Log;
 
-public class AdManager {
+public class AdSmallManager{
 	
-	private static HashMap<Long, AdManager> sRunningAds = new HashMap<Long, AdManager>();
+	private static HashMap<Long, AdSmallManager> sRunningAds = new HashMap<Long, AdSmallManager>();
+	private FrameLayout layout;
 	private String mPublisherId;
 	private String mUniqueId1;
 	private String mUniqueId2;
@@ -45,13 +36,13 @@ public class AdManager {
 
 	private String mUserAgent;
 
-	public static AdManager getAdManager(RichMediaAd ad) {
-		AdManager adManager = sRunningAds.remove(ad.getTimestamp());
+	public static AdSmallManager getAdManager(RichMediaAd ad) {
+		AdSmallManager adManager = sRunningAds.remove(ad.getTimestamp());
 		return adManager;
 	}
 
 	public static void closeRunningAd(RichMediaAd ad, boolean result) {
-		AdManager adManager = sRunningAds.remove(ad.getTimestamp());
+		AdSmallManager adManager = sRunningAds.remove(ad.getTimestamp());
 		adManager.notifyAdClose(ad, result);
 	}
 
@@ -63,9 +54,9 @@ public class AdManager {
 	/*
 	 * @author yyc
 	 */
-	public AdManager(Context ctx, final String publisherId,final boolean cacheMode)
+	public AdSmallManager(Context ctx, final String publisherId,final boolean cacheMode)
 			throws IllegalArgumentException {
-		AdManager.setmContext(ctx);
+		AdSmallManager.setmContext(ctx);
 		Util.PublisherId = publisherId;
 		this.requestURL = Const.REQUESTURL;
 		this.mPublisherId = publisherId;
@@ -76,11 +67,29 @@ public class AdManager {
 		initialize();
 	}
 	
-	public AdManager(Context ctx, final String requestURL, final String publisherId,
+	/*
+	 * test
+	 */
+	public AdSmallManager(Context ctx, final String publisherId,final boolean cacheMode,View v)
+			throws IllegalArgumentException {
+		AdSmallManager.setmContext(ctx);
+		mContext = ctx;
+		Util.PublisherId = publisherId;
+		this.requestURL = Const.REQUESTURL;
+		this.mPublisherId = publisherId;
+		this.mIncludeLocation = true;
+		this.mRequestThread = null;
+		this.mHandler = new Handler();
+		Util.CACHE_MODE = cacheMode;
+		layout = (FrameLayout)v;
+		initialize();
+	}
+	
+	public AdSmallManager(Context ctx, final String requestURL, final String publisherId,
 			final boolean includeLocation)
 					throws IllegalArgumentException {
 		Util.PublisherId = publisherId;
-		AdManager.setmContext(ctx);
+		AdSmallManager.setmContext(ctx);
 		this.requestURL = requestURL;
 		this.mPublisherId = publisherId;
 		this.mIncludeLocation = includeLocation;
@@ -308,70 +317,71 @@ public class AdManager {
 		}
 		RichMediaAd ad = mResponse;
 		boolean result = false;
-		try {
-			if (Util.isNetworkAvailable(getContext())) {
-				VideoData video = ad.getVideo();
-				if(Util.CACHE_MODE&&video!=null){					
-					String path = video.getVideoUrl();
-					URL url = null;
-					try
-					{
-						url = new URL(path);
-					} catch (MalformedURLException e)
-					{
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					if (url != null)
-					{
-						Util.ExternalName = "." + Util.getExtensionName(url.getPath());
-					} else
-					{
-						Util.ExternalName = ".mp4";
-					}
-					File file = new File(Const.DOWNLOAD_PATH + Util.VideoFileDir+Const.DOWNLOAD_PLAY_FILE
-							+ Util.ExternalName);
-					if (!file.exists())
-					{
-						Downloader downloader = new Downloader(path, mContext);
-						if (path.startsWith("http:") || path.startsWith("https:"))
-						{
-							downloader.download();
-							Log.i(Const.TAG, "download starting");
-							notifyAdClose(ad, true);
-						}
-					}else{
-						ad.setTimestamp(System.currentTimeMillis());
-						Intent intent = new Intent(activity,
-								RichMediaActivity.class);
-						intent.putExtra(AD_EXTRA, ad);
-						activity.startActivityForResult(intent, 0);
-						int enterAnim = Util.getEnterAnimation(ad.getAnimation());
-						int exitAnim = Util.getExitAnimation(ad.getAnimation());
-						RichMediaActivity.setActivityAnimation(activity,
-								enterAnim, exitAnim);
-						result = true;
-						sRunningAds.put(ad.getTimestamp(), this);
-						
-					}
-				}else{
-					ad.setTimestamp(System.currentTimeMillis());
-					Intent intent = new Intent(activity,
-							RichMediaActivity.class);
-					intent.putExtra(AD_EXTRA, ad);
-					activity.startActivityForResult(intent, 0);
-					int enterAnim = Util.getEnterAnimation(ad.getAnimation());
-					int exitAnim = Util.getExitAnimation(ad.getAnimation());
-					RichMediaActivity.setActivityAnimation(activity,
-							enterAnim, exitAnim);
-					result = true;
-					sRunningAds.put(ad.getTimestamp(), this);
-				}
-			}
-		} catch (Exception e) {
-		} finally {
-			notifyAdShown(ad, result);
-		}
+		new RichMediaView(mContext,ad,layout);
+//		try {
+//			if (Util.isNetworkAvailable(getContext())) {
+//				VideoData video = ad.getVideo();
+//				if(Util.CACHE_MODE&&video!=null){					
+//					String path = video.getVideoUrl();
+//					URL url = null;
+//					try
+//					{
+//						url = new URL(path);
+//					} catch (MalformedURLException e)
+//					{
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//					if (url != null)
+//					{
+//						Util.ExternalName = "." + Util.getExtensionName(url.getPath());
+//					} else
+//					{
+//						Util.ExternalName = ".mp4";
+//					}
+//					File file = new File(Const.DOWNLOAD_PATH + Util.VideoFileDir+Const.DOWNLOAD_PLAY_FILE
+//							+ Util.ExternalName);
+//					if (!file.exists())
+//					{
+//						Downloader downloader = new Downloader(path, mContext);
+//						if (path.startsWith("http:") || path.startsWith("https:"))
+//						{
+//							downloader.download();
+//							Log.i(Const.TAG, "download starting");
+//							notifyAdClose(ad, true);
+//						}
+//					}else{
+//						ad.setTimestamp(System.currentTimeMillis());
+//						Intent intent = new Intent(activity,
+//								RichMediaActivity.class);
+//						intent.putExtra(AD_EXTRA, ad);
+//						activity.startActivityForResult(intent, 0);
+//						int enterAnim = Util.getEnterAnimation(ad.getAnimation());
+//						int exitAnim = Util.getExitAnimation(ad.getAnimation());
+//						RichMediaActivity.setActivityAnimation(activity,
+//								enterAnim, exitAnim);
+//						result = true;
+//						sRunningAds.put(ad.getTimestamp(), this);
+//						
+//					}
+//				}else{
+//					ad.setTimestamp(System.currentTimeMillis());
+//					Intent intent = new Intent(activity,
+//							RichMediaActivity.class);
+//					intent.putExtra(AD_EXTRA, ad);
+//					activity.startActivityForResult(intent, 0);
+//					int enterAnim = Util.getEnterAnimation(ad.getAnimation());
+//					int exitAnim = Util.getExitAnimation(ad.getAnimation());
+//					RichMediaActivity.setActivityAnimation(activity,
+//							enterAnim, exitAnim);
+//					result = true;
+//					sRunningAds.put(ad.getTimestamp(), this);
+//				}
+//			}
+//		} catch (Exception e) {
+//		} finally {
+//			notifyAdShown(ad, result);
+//		}
 	}
 	
 	private void initialize() throws IllegalArgumentException {
@@ -469,7 +479,7 @@ public class AdManager {
 	}
 
 	private static void setmContext(Context mContext) {
-		AdManager.mContext = mContext;
+		AdSmallManager.mContext = mContext;
 	}
 
 }

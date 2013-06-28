@@ -11,7 +11,9 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.security.MessageDigest;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 
 import android.Manifest;
@@ -31,13 +33,14 @@ import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-
+import android.widget.FrameLayout;
 import com.joyplus.adkey.video.RichMediaAd;
 
 public class Util {
@@ -59,6 +62,12 @@ public class Util {
 	//video PublisherId
 	public static String PublisherId = null;
 	public static String VideoFileDir = null;
+	
+	//pic download key-value
+	public static Map<Integer, String> pic_downloaders = new HashMap<Integer, String>();
+	
+	//pic for loop's number
+	public static int PicNum = 0;
 	
 	public static boolean isNetworkAvailable(Context ctx) {
 		int networkStatePermission = ctx
@@ -465,4 +474,5 @@ public class Util {
 	public void getClassFromSeriale(){
 		
 	}
+	
 }
