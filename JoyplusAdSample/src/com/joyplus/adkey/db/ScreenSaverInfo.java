@@ -1,21 +1,17 @@
 package com.joyplus.adkey.db;
 
+/**
+ * @author yyc
+ *
+ */
 public class ScreenSaverInfo{
 
 	private String url;
-	private String time;
+	private String baseurl;
+	private String filename;
 	private String publishid;
 	private String type;
-
-	public ScreenSaverInfo(String url, String time, String publishid,
-			String type)
-	{
-		super();
-		this.url = url;
-		this.time = time;
-		this.publishid = publishid;
-		this.type = type;
-	}
+	private String time;
 	public String getUrl()
 	{
 		return url;
@@ -24,13 +20,21 @@ public class ScreenSaverInfo{
 	{
 		this.url = url;
 	}
-	public String getTime()
+	public String getBaseurl()
 	{
-		return time;
+		return baseurl;
 	}
-	public void setTime(String time)
+	public void setBaseurl(String baseurl)
 	{
-		this.time = time;
+		this.baseurl = baseurl;
+	}
+	public String getFilename()
+	{
+		return filename;
+	}
+	public void setFilename(String filename)
+	{
+		this.filename = filename;
 	}
 	public String getPublishid()
 	{
@@ -48,10 +52,34 @@ public class ScreenSaverInfo{
 	{
 		this.type = type;
 	}
+	public String getTime()
+	{
+		return time;
+	}
+	public void setTime(String time)
+	{
+		this.time = time;
+	}
+	public ScreenSaverInfo(String url, String baseurl, String filename,
+			String publishid, String type, String time)
+	{
+		super();
+		this.url = url;
+		this.baseurl = baseurl;
+		this.filename = filename;
+		this.publishid = publishid;
+		this.type = type;
+		this.time = time;
+	}
+	public ScreenSaverInfo(){
+		super();
+	}
 	@Override
 	public String toString()
 	{
-		return "ScreenSaverCache [url=" + url + ", time=" + time
-				+ ", publishid=" + publishid + ", type=" + type + "]";
+		return "ScreenSaverInfo [url=" + url + ", baseurl=" + baseurl
+				+ ", filename=" + filename + ", publishid=" + publishid
+				+ ", type=" + type + ", time=" + time + "]";
 	}
+	
 }

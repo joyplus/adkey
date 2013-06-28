@@ -195,7 +195,6 @@ public class BannerAdViewScreenSaver extends RelativeLayout {
 			}
 		};
 		final float scale = mContext.getResources().getDisplayMetrics().density;
-//		this.setLayoutParams(new RelativeLayout.LayoutParams((int)(300*scale+0.5f), (int)(50*scale+0.5f)));
 		this.setLayoutParams(new RelativeLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 				,android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
 		final FrameLayout.LayoutParams webViewParams = new FrameLayout.LayoutParams(
@@ -299,28 +298,32 @@ public class BannerAdViewScreenSaver extends RelativeLayout {
 				/*
 				 * yyc
 				 */
+				
 				String text = this.response.getText();
 				int startInd = this.response.getText().indexOf(
-						"mAdserveAdImage")+22;
-				int endInd = this.response.getText().indexOf(
-						"/>", startInd)-12;
-				String thisImageText = this.response.getText()
-						.substring(startInd, endInd);
+						"mAdserveAdImage") + 22;
+				int endInd = this.response.getText().indexOf("/>", startInd) - 12;
+				String thisImageText = this.response.getText().substring(
+						startInd, endInd);
 				text = Uri.encode(Const.HIDE_BORDER + text);
-//				if(thisImageText.startsWith("http:")||thisImageText.startsWith("https:"))
-//				{
-//					webView.loadData(text, "text/html", Const.ENCODING);
-//				}else{
-					String baseUrl = "file://"+Const.DOWNLOAD_PATH+Util.VideoFileDir;
-					File file = new File(Const.DOWNLOAD_PATH+Util.VideoFileDir);
-					String temp[] = file.list();
-					text = Const.HIDE_BORDER
-							+ "<img src='"+temp[(++Util.PicNum)%3]+"'/>";
-					file = null;
-					webView.loadDataWithBaseURL(baseUrl, text, "text/html", "utf-8", null);
-//				}
+				
+				String baseUrl = "file://";
+				int downloadLength = Util.pic_info.size();
+				int temp = 0;
+				if(downloadLength!=0)
+				{
+					temp = (Util.PicNum++)%downloadLength;
+					baseUrl = baseUrl+Util.pic_info.get(temp).getBaseurl();
+					text =  Const.HIDE_BORDER + "<img src='"
+							+ Util.pic_info.get(temp).getFilename() + "'/>";
+				}else{
+					//default
+				}
+				webView.loadDataWithBaseURL(baseUrl, text, "text/html",
+						"utf-8", null);
+				
 				this.notifyLoadAdSucceeded();
-			} 
+			}
 
 			if (this.viewFlipper.getCurrentView() == this.firstWebView) {
 				this.viewFlipper.showNext();

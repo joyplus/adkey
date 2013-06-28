@@ -79,7 +79,7 @@ public class SmallActivity extends Activity implements AdListener
 	public void OnClose(View v){
 		if(mManager!=null)
 			mManager.release();
-		finish();
+//		finish();
 	}
 	
 }

@@ -41,6 +41,8 @@ import android.view.animation.TranslateAnimation;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
+
+import com.joyplus.adkey.db.ScreenSaverInfo;
 import com.joyplus.adkey.video.RichMediaAd;
 
 public class Util {
@@ -65,9 +67,11 @@ public class Util {
 	
 	//pic download key-value
 	public static Map<Integer, String> pic_downloaders = new HashMap<Integer, String>();
+	public static Map<Integer, ScreenSaverInfo> pic_info = new HashMap<Integer, ScreenSaverInfo>();
 	
 	//pic for loop's number
 	public static int PicNum = 0;
+	//pic for download number
 	public static int PicDownloadNum = 0;
 	
 	public static boolean isNetworkAvailable(Context ctx) {

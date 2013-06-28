@@ -49,7 +49,6 @@ public class AdSmallManager{
 	public void release() {
 		TrackerService.release();
 		ResourceManager.cancel();
-
 	}
 	/*
 	 * @author yyc
