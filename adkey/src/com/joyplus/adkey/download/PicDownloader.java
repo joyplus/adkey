@@ -8,6 +8,7 @@ import java.net.URL;
 
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.Util;
+import com.joyplus.adkey.db.ScreenSaverInfo;
 
 import android.content.Context;
 
@@ -65,33 +66,77 @@ public class PicDownloader {
 		@Override
 		public void run() {
 			// 标记此线程为true
-			if(Util.pic_downloaders.size()==0)
+//			if(Util.pic_downloaders.size()==0)
+//			{
+//				localfile = Const.DOWNLOAD_PATH+Util.VideoFileDir+(Util.pic_downloaders.size())+Util.ExternalName;
+//				Util.pic_downloaders.put(Util.pic_downloaders.size(), urlstr);
+//			}else{
+//				if(Util.pic_downloaders.containsValue(urlstr))
+//				{
+//					return;
+//				}else{
+//					if(Util.pic_downloaders.size()<3)
+//					{	
+//						localfile = Const.DOWNLOAD_PATH+Util.VideoFileDir+(Util.pic_downloaders.size())+Util.ExternalName;
+//						Util.pic_downloaders.put(Util.pic_downloaders.size(), urlstr);
+//					}else{
+//						File file = new File(Const.DOWNLOAD_PATH+Util.VideoFileDir);
+//						int temp = (Util.PicDownloadNum++)%3;
+//						for(int i = 0;i<file.list().length;i++)
+//						{
+//							if(file.list()[i].contains(""+0)){
+//								File filetemp =  new File(Const.DOWNLOAD_PATH+Util.VideoFileDir+file.list()[temp]);
+//								filetemp.delete();
+//							}
+//						}
+//						Util.pic_downloaders.put(0, urlstr);
+//						localfile = Const.DOWNLOAD_PATH+Util.VideoFileDir+(temp)+Util.ExternalName;
+//					}
+//					
+//				}
+//			}
+			ScreenSaverInfo screenSaverInfo = new ScreenSaverInfo();
+			screenSaverInfo.setBaseurl(Const.DOWNLOAD_PATH+Util.VideoFileDir);
+			screenSaverInfo.setUrl(urlstr);
+//			screenSaverInfo.setFilename(Util.pic_info.size()+Util.ExternalName);
+			screenSaverInfo.setPublishid(Util.PublisherId);
+			for(int i = 0;i< Util.pic_info.size();i++)
 			{
-				localfile = Const.DOWNLOAD_PATH+Util.VideoFileDir+(Util.pic_downloaders.size()+1)+Util.ExternalName;
-				Util.pic_downloaders.put(Util.pic_downloaders.size(), urlstr);
-			}else{
-				if(Util.pic_downloaders.containsValue(urlstr))
+				if(Util.pic_info.get(i).getBaseurl().equalsIgnoreCase(urlstr))
 				{
 					return;
-				}else{
-					if(Util.pic_downloaders.size()<3)
-					{	
-						localfile = Const.DOWNLOAD_PATH+Util.VideoFileDir+(Util.pic_downloaders.size()+1)+Util.ExternalName;
-						Util.pic_downloaders.put(Util.pic_downloaders.size(), urlstr);
-					}else{
-						File file = new File(Const.DOWNLOAD_PATH+Util.VideoFileDir);
-						for(int i = 0;i<file.list().length;i++)
-						{
-							if(file.list()[i].contains(""+1)){
-								File filetemp =  new File(Const.DOWNLOAD_PATH+Util.VideoFileDir+file.list()[i]);
-								filetemp.delete();
-							}
-						}
-						Util.pic_downloaders.put(0, urlstr);
-						localfile = Const.DOWNLOAD_PATH+Util.VideoFileDir+(1)+Util.ExternalName;
-					}
-					
 				}
+			}
+			if(Util.pic_info.size()==0)
+			{
+				localfile = Const.DOWNLOAD_PATH+Util.VideoFileDir+(Util.pic_info.size())+Util.ExternalName;
+				File file = new File(localfile);
+				if(file.exists())
+					file.delete();
+				screenSaverInfo.setFilename(0+Util.ExternalName);
+				Util.pic_info.put(0, screenSaverInfo);
+			}else if(Util.pic_info.size() == 1){
+				localfile = Const.DOWNLOAD_PATH+Util.VideoFileDir+(Util.pic_info.size())+Util.ExternalName;
+				File file = new File(localfile);
+				if(file.exists())
+					file.delete();
+				screenSaverInfo.setFilename(1+Util.ExternalName);
+				Util.pic_info.put(1, screenSaverInfo);
+			}else if(Util.pic_info.size() == 2){
+				localfile = Const.DOWNLOAD_PATH+Util.VideoFileDir+(Util.pic_info.size())+Util.ExternalName;
+				File file = new File(localfile);
+				if(file.exists())
+					file.delete();
+				screenSaverInfo.setFilename(2+Util.ExternalName);
+				Util.pic_info.put(2, screenSaverInfo);
+			}else{
+				int temp = (Util.PicDownloadNum++)%3;
+				localfile = Const.DOWNLOAD_PATH+Util.VideoFileDir+(temp)+Util.ExternalName;
+				File file = new File(localfile);
+				if(file.exists())
+					file.delete();
+				screenSaverInfo.setFilename(temp+Util.ExternalName);
+				Util.pic_info.put(temp, screenSaverInfo);
 			}
 			HttpURLConnection connection = null;
 			RandomAccessFile randomAccessFile = null;
