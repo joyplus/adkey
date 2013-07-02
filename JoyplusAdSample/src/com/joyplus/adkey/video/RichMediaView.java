@@ -22,6 +22,7 @@ import com.joyplus.adkey.Const;
 import com.joyplus.adkey.RequestRichMediaAd;
 import com.joyplus.adkey.Util;
 import com.joyplus.adkey.download.Downloader;
+import com.joyplus.adkey.download.ImpressionThread;
 import com.joyplus.adkey.video.InterstitialController.OnResetAutocloseListener;
 import com.joyplus.adkey.video.MediaController.OnPauseListener;
 import com.joyplus.adkey.video.MediaController.OnReplayListener;
@@ -32,6 +33,7 @@ import com.joyplus.adkey.video.SDKVideoView.OnStartListener;
 import com.joyplus.adkey.video.SDKVideoView.OnTimeEventListener;
 import com.joyplus.adkey.video.WebViewClient.OnPageLoadedListener;
 import com.joyplus.adkey.widget.Log;
+import com.miaozhen.mzmonitor.MZMonitor;
 
 import android.app.Activity;
 import android.content.Context;
@@ -443,6 +445,13 @@ public class RichMediaView extends FrameLayout
 		@Override
 		public void onPrepared(final MediaPlayer mp)
 		{
+			if(Util.mImpressionUrl!=null)
+			{
+				new ImpressionThread().start();
+			}
+			if(Util.MIAOZHENFLAG){
+				MZMonitor.adTrack(mContext, Const.SMALLWINDOW_VIDEO);
+			}
 			
 			if (mVideoTimeoutTimer != null)
 			{

@@ -11,6 +11,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import android.content.pm.ActivityInfo;
 
 import com.joyplus.adkey.Const;
+import com.joyplus.adkey.Util;
 
 public class ResponseHandler extends DefaultHandler {
 
@@ -26,6 +27,8 @@ public class ResponseHandler extends DefaultHandler {
 	private boolean insideVideo = false;
 	private boolean insideInterstitial = false;
 	private boolean insideVideoList = false;
+	
+	private String mImpressionUrl;
 
 	@Override
 	public void characters(char[] ch, int start, int length)
@@ -42,6 +45,12 @@ public class ResponseHandler extends DefaultHandler {
 			}
 			VideoData video = getRichMediaAd().getVideo();
 			video.videoUrl = contents.toString().trim();
+		} else if (localName.equals("impressionurl")){
+			mImpressionUrl = contents.toString().trim();
+			if(mImpressionUrl!=null)
+			{
+				Util.mImpressionUrl = mImpressionUrl;
+			}
 		} else if (localName.equals("duration")) {
 			if ((getRichMediaAd() == null) || (getRichMediaAd().getVideo() == null)) {
 				throw new SAXException("Duration tag found outside video node");
@@ -334,7 +343,8 @@ public class ResponseHandler extends DefaultHandler {
 					inter.allowTapNavigationBars = getBoolean(attributes
 							.getValue("allowtap"));
 				}
-			} else if (localName.equals("topbar")) {
+			} 	
+			else if (localName.equals("topbar")) {
 				if (insideVideo) {
 					if ((getRichMediaAd() == null)
 							|| (getRichMediaAd().getVideo() == null)) {

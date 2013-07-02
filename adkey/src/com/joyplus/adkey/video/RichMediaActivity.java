@@ -49,6 +49,7 @@ import com.joyplus.adkey.AdManager;
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.Util;
 import com.joyplus.adkey.download.Downloader;
+import com.joyplus.adkey.download.ImpressionThread;
 import com.joyplus.adkey.video.InterstitialController.OnResetAutocloseListener;
 import com.joyplus.adkey.video.MediaController.OnPauseListener;
 import com.joyplus.adkey.video.MediaController.OnReplayListener;
@@ -57,6 +58,7 @@ import com.joyplus.adkey.video.SDKVideoView.OnStartListener;
 import com.joyplus.adkey.video.SDKVideoView.OnTimeEventListener;
 import com.joyplus.adkey.video.WebViewClient.OnPageLoadedListener;
 import com.joyplus.adkey.widget.Log;
+import com.miaozhen.mzmonitor.MZMonitor;
 
 public class RichMediaActivity extends Activity
 {
@@ -1074,7 +1076,13 @@ public class RichMediaActivity extends Activity
 						+ Util.ExternalName;
 			}
 		}
-		
+		if(Util.mImpressionUrl!=null)
+		{
+			new ImpressionThread().start();
+		}
+		if(Util.MIAOZHENFLAG){
+			MZMonitor.adTrack(RichMediaActivity.this, Const.SMALLWINDOW_VIDEO);
+		}
 		this.mVideoView.setVideoPath(path);
 		
 	}

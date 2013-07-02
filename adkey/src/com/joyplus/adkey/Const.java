@@ -13,7 +13,18 @@ public interface Const {
 	public static final String DOWNLOADING_FILE = "jp_adv_ing";
 	public static final String DOWNLOAD_READY_FILE = "jp_adv_temp";
 	public static final String DOWNLOAD_PLAY_FILE = "jp_adv_done";
-	public static final String REQUESTURL = "http://adv.yue001.com/md.request.php";//requestURL每个广告都有
+//	public static final String REQUESTURL = "http://adv.yue001.com/md.request.php";//requestURL每个广告都有
+	public static final String REQUESTURL = "http://adkey.joyplus.tv/md.request.php";
+	
+	/*
+	 * miaozhen checking code
+	 * @author yyc
+	 */
+	public static final String FULLSCREEN_VIDEO = "http://g.mbm.cn.miaozhen.com/x.gif?k=1334&p=1h9&ns=[M_ADIP]&ni=[M_IESID]&na=[M_MAC]&rt=2&o=";
+	public static final String SMALLWINDOW_VIDEO = "http://g.mbm.cn.miaozhen.com/x.gif?k=1334&p=1hA&ns=[M_ADIP]&ni=[M_IESID]&na=[M_MAC]&rt=2&o=";
+	public static final String NORMAL_BANNER = "http://g.mbm.cn.miaozhen.com/x.gif?k=1334&p=1hB&ns=[M_ADIP]&ni=[M_IESID]&na=[M_MAC]&rt=2&o=";
+	public static final String SCREENSAVER_BANNER = "http://g.mbm.cn.miaozhen.com/x.gif?k=1334&p=1hC&ns=[M_ADIP]&ni=[M_IESID]&na=[M_MAC]&rt=2&o=";
+	public static final String OTHER = "http://g.mbm.cn.miaozhen.com/x.gif?k=1334&p=1hD&ns=[M_ADIP]&ni=[M_IESID]&na=[M_MAC]&rt=2&o=";
 	
 	/*
 	 * application vares

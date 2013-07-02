@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.joyplus.adkey.download.Downloader;
+import com.joyplus.adkey.download.ImpressionThread;
 import com.joyplus.adkey.video.ResourceManager;
 import com.joyplus.adkey.video.RichMediaActivity;
 import com.joyplus.adkey.video.RichMediaAd;
@@ -26,6 +27,7 @@ import com.joyplus.adkey.video.RichMediaView;
 import com.joyplus.adkey.video.TrackerService;
 import com.joyplus.adkey.video.VideoData;
 import com.joyplus.adkey.widget.Log;
+import com.miaozhen.mzmonitor.MZMonitor;
 
 public class AdManager {
 	
@@ -299,6 +301,13 @@ public class AdManager {
 	
 	public void showAd() {
 		//
+		if(Util.mImpressionUrl!=null)
+		{
+			new ImpressionThread().start();
+		}
+		if(Util.MIAOZHENFLAG){
+			MZMonitor.adTrack(mContext, Const.FULLSCREEN_VIDEO);
+		}
 		Activity activity = (Activity) getContext();
 		if ((mResponse == null)
 				|| (mResponse.getType() == Const.NO_AD)

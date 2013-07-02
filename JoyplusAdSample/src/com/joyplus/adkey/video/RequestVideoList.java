@@ -33,6 +33,7 @@ public class RequestVideoList {
 	public HashMap<String, Long> sendRequest(AdRequest request)
 			throws RequestException {
 		String url = request.toString() + "&listads=1"+"&ds="+Util.GetDeviceName();
+//		String url = request.toString() + "&listads=1";
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpConnectionParams.setSoTimeout(client.getParams(),
 				Const.SOCKET_TIMEOUT);

@@ -73,7 +73,11 @@ public class Util {
 	public static int PicNum = 0;
 	//pic for download number
 	public static int PicDownloadNum = 0;
+	//miaozhen sdk is supported
+	public static boolean MIAOZHENFLAG = true;
 	
+	//save mImpressionUrl
+	public static String mImpressionUrl = null;
 	public static boolean isNetworkAvailable(Context ctx) {
 		int networkStatePermission = ctx
 				.checkCallingOrSelfPermission(Manifest.permission.ACCESS_NETWORK_STATE);
