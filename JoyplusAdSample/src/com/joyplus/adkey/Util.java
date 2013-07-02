@@ -42,7 +42,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 
-import com.joyplus.adkey.db.ScreenSaverInfo;
+import com.joyplus.adkey.data.ScreenSaverInfo;
 import com.joyplus.adkey.video.RichMediaAd;
 
 public class Util {

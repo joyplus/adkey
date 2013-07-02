@@ -18,6 +18,7 @@ public class SerializeManager{
 	 * @param o,the Object you write must implements Serializable
 	 */
 	public void writeSerializableData(String path, Object o){
+		
 		try
 		{
 			FileOutputStream fop = new FileOutputStream(path);

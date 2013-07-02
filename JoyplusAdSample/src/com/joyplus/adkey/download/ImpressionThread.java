@@ -24,6 +24,7 @@ public class ImpressionThread extends Thread{
 	public void run()
 	{
 		// TODO Auto-generated method stub
+		//impression参数
 		String url = Util.mImpressionUrl+"&ds="+Util.GetDeviceName();
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpConnectionParams.setSoTimeout(client.getParams(),

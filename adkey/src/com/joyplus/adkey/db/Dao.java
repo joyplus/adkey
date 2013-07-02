@@ -5,6 +5,8 @@ package com.joyplus.adkey.db;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.joyplus.adkey.data.ScreenSaverInfo;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;

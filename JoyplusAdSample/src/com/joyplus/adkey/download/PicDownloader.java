@@ -8,7 +8,7 @@ import java.net.URL;
 
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.Util;
-import com.joyplus.adkey.db.ScreenSaverInfo;
+import com.joyplus.adkey.data.ScreenSaverInfo;
 
 import android.content.Context;
 

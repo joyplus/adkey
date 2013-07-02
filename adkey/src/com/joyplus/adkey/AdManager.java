@@ -18,6 +18,7 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.joyplus.adkey.banner.AdViewScreenSaver;
 import com.joyplus.adkey.download.Downloader;
 import com.joyplus.adkey.download.ImpressionThread;
 import com.joyplus.adkey.video.ResourceManager;
@@ -27,9 +28,11 @@ import com.joyplus.adkey.video.RichMediaView;
 import com.joyplus.adkey.video.TrackerService;
 import com.joyplus.adkey.video.VideoData;
 import com.joyplus.adkey.widget.Log;
+import com.joyplus.adkey.widget.SerializeManager;
 import com.miaozhen.mzmonitor.MZMonitor;
 
-public class AdManager {
+public class AdManager
+{
 	
 	private static HashMap<Long, AdManager> sRunningAds = new HashMap<Long, AdManager>();
 	private String mPublisherId;
@@ -44,29 +47,36 @@ public class AdManager {
 	private boolean mEnabled = true;
 	private RichMediaAd mResponse;
 	private String requestURL;
-
+	
 	private String mUserAgent;
-
-	public static AdManager getAdManager(RichMediaAd ad) {
+	
+	private SerializeManager serializeManager = null;
+	
+	public static AdManager getAdManager(RichMediaAd ad)
+	{
 		AdManager adManager = sRunningAds.remove(ad.getTimestamp());
 		return adManager;
 	}
-
-	public static void closeRunningAd(RichMediaAd ad, boolean result) {
+	
+	public static void closeRunningAd(RichMediaAd ad, boolean result)
+	{
 		AdManager adManager = sRunningAds.remove(ad.getTimestamp());
 		adManager.notifyAdClose(ad, result);
 	}
-
-	public void release() {
+	
+	public void release()
+	{
 		TrackerService.release();
 		ResourceManager.cancel();
-
+		
 	}
+	
 	/*
 	 * @author yyc
 	 */
-	public AdManager(Context ctx, final String publisherId,final boolean cacheMode)
-			throws IllegalArgumentException {
+	public AdManager(Context ctx, final String publisherId,
+			final boolean cacheMode) throws IllegalArgumentException
+	{
 		AdManager.setmContext(ctx);
 		Util.PublisherId = publisherId;
 		this.requestURL = Const.REQUESTURL;
@@ -78,9 +88,10 @@ public class AdManager {
 		initialize();
 	}
 	
-	public AdManager(Context ctx, final String requestURL, final String publisherId,
-			final boolean includeLocation)
-					throws IllegalArgumentException {
+	public AdManager(Context ctx, final String requestURL,
+			final String publisherId, final boolean includeLocation)
+			throws IllegalArgumentException
+	{
 		Util.PublisherId = publisherId;
 		AdManager.setmContext(ctx);
 		this.requestURL = requestURL;
@@ -90,156 +101,292 @@ public class AdManager {
 		this.mHandler = new Handler();
 		initialize();
 	}
-
-	public void setListener(AdListener listener) {
+	
+	public void setListener(AdListener listener)
+	{
 		this.mListener = listener;
 	}
 	
-	public void requestAd() {
-		Log.i(Const.TAG,"AdManager--->requestAd");
-		if (!mEnabled) {
+	public void requestAd()
+	{
+		Log.i(Const.TAG, "AdManager--->requestAd");
+		if (!mEnabled)
+		{
 			return;
 		}
-		if (mRequestThread == null) {
+		if (mRequestThread == null)
+		{
 			mResponse = null;
-			mRequestThread = new Thread(new Runnable() {
+			mRequestThread = new Thread(new Runnable()
+			{
 				@Override
-				public void run() {
-					while (ResourceManager.isDownloading()) {
-						try {
+				public void run()
+				{
+					while (ResourceManager.isDownloading())
+					{
+						try
+						{
 							Thread.sleep(200);
-						} catch (InterruptedException e) {
+						} catch (InterruptedException e)
+						{
 						}
 					}
-					try {
+					try
+					{
 						RequestRichMediaAd requestAd = new RequestRichMediaAd();
 						AdRequest request = getRequest();
+						// if hasn't net,the writeSerializableData function
+						// doesn't called
+						String path = Const.DOWNLOAD_PATH + Util.VideoFileDir
+								+ "ad";
+						File cacheDir = new File(Const.DOWNLOAD_PATH+Util.VideoFileDir);
+						if (!cacheDir.exists())
+							cacheDir.mkdirs();
 						
-						mResponse = requestAd.sendRequest(request);
-						if(mResponse.getVideo()!=null && android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.FROYO){
-							notifyNoAdFound();
+						mResponse = (RichMediaAd) serializeManager
+								.readSerializableData(path);
+						if (mResponse != null)
+						{
+							RichMediaAd nextResponse = requestAd
+									.sendRequest(request);
+							serializeManager.writeSerializableData(path,
+									nextResponse);
+						} else
+						{
+							
+							mResponse = requestAd.sendRequest(request);
+							serializeManager.writeSerializableData(path,
+									mResponse);
 						}
-						else if (mResponse.getType() == Const.VIDEO_TO_INTERSTITIAL || mResponse.getType() == Const.INTERSTITIAL_TO_VIDEO || mResponse.getType() == Const.VIDEO || mResponse.getType() == Const.INTERSTITIAL ) {
-							if (mListener != null) {
-								mHandler.post(new Runnable() {
-
+						
+						if (mResponse.getVideo() != null
+								&& android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.FROYO)
+						{
+							notifyNoAdFound();
+						} else if (mResponse.getType() == Const.VIDEO_TO_INTERSTITIAL
+								|| mResponse.getType() == Const.INTERSTITIAL_TO_VIDEO
+								|| mResponse.getType() == Const.VIDEO
+								|| mResponse.getType() == Const.INTERSTITIAL)
+						{
+							if (mListener != null)
+							{
+								mHandler.post(new Runnable()
+								{
+									
 									@Override
-									public void run() {
+									public void run()
+									{
 										mListener.adLoadSucceeded(mResponse);
 									}
 								});
 							}
-						} else if (mResponse.getType() == Const.NO_AD){
-							if (mListener != null) {
-								mHandler.post(new Runnable() {
-
+						} else if (mResponse.getType() == Const.NO_AD)
+						{
+							if (mListener != null)
+							{
+								mHandler.post(new Runnable()
+								{
+									
 									@Override
-									public void run() {
+									public void run()
+									{
+										notifyNoAdFound();
+									}
+								});
+							}
+						} else
+						{
+							if (mListener != null)
+							{
+								mHandler.post(new Runnable()
+								{
+									
+									@Override
+									public void run()
+									{
 										notifyNoAdFound();
 									}
 								});
 							}
 						}
-						else {
-							if (mListener != null) {
-								mHandler.post(new Runnable() {
-
-									@Override
-									public void run() {
-										notifyNoAdFound();
-									}
-								});
-							}
-						}
-					} catch (Throwable t) {
-						mResponse = new RichMediaAd();
-						mResponse.setType(Const.AD_FAILED);
-						if (mListener != null) {
-							t.printStackTrace();
-
-							mHandler.post(new Runnable() {
-
-								@Override
-								public void run() {
-									notifyNoAdFound();
-
+					} catch (Throwable t)
+					{
+						String path = Const.DOWNLOAD_PATH + Util.VideoFileDir
+								+ "ad";
+						mResponse = (RichMediaAd) serializeManager
+								.readSerializableData(path);
+						if (mResponse != null)
+						{
+							if (mResponse.getVideo() != null
+									&& android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.FROYO)
+							{
+								notifyNoAdFound();
+							} else if (mResponse.getType() == Const.VIDEO_TO_INTERSTITIAL
+									|| mResponse.getType() == Const.INTERSTITIAL_TO_VIDEO
+									|| mResponse.getType() == Const.VIDEO
+									|| mResponse.getType() == Const.INTERSTITIAL)
+							{
+								if (mListener != null)
+								{
+									mHandler.post(new Runnable()
+									{
+										
+										@Override
+										public void run()
+										{
+											mListener
+													.adLoadSucceeded(mResponse);
+										}
+									});
 								}
-							});
+							} else if (mResponse.getType() == Const.NO_AD)
+							{
+								if (mListener != null)
+								{
+									mHandler.post(new Runnable()
+									{
+										
+										@Override
+										public void run()
+										{
+											notifyNoAdFound();
+										}
+									});
+								}
+							} else
+							{
+								if (mListener != null)
+								{
+									mHandler.post(new Runnable()
+									{
+										
+										@Override
+										public void run()
+										{
+											notifyNoAdFound();
+										}
+									});
+								}
+							}
+						} else
+						{
+							mResponse = new RichMediaAd();
+							mResponse.setType(Const.AD_FAILED);
+							if (mListener != null)
+							{
+								t.printStackTrace();
+								
+								mHandler.post(new Runnable()
+								{
+									
+									@Override
+									public void run()
+									{
+										notifyNoAdFound();
+										
+									}
+								});
+							}
 						}
 					}
 					mRequestThread = null;
 				}
 			});
 			mRequestThread
-			.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
-
-				@Override
-				public void uncaughtException(Thread thread,
-						Throwable ex) {
-					mResponse = new RichMediaAd();
-					mResponse.setType(Const.AD_FAILED);
-					mRequestThread = null;
-				}
-			});
+					.setUncaughtExceptionHandler(new UncaughtExceptionHandler()
+					{
+						
+						@Override
+						public void uncaughtException(Thread thread,
+								Throwable ex)
+						{
+							mResponse = new RichMediaAd();
+							mResponse.setType(Const.AD_FAILED);
+							mRequestThread = null;
+						}
+					});
 			mRequestThread.start();
 		}
 	}
-
-	public void setRequestURL(String requestURL){
+	
+	public void setRequestURL(String requestURL)
+	{
 		this.requestURL = requestURL;
 	}
-
-	public void requestAd(final InputStream xml) {
-		if (!mEnabled) {
+	
+	public void requestAd(final InputStream xml)
+	{
+		if (!mEnabled)
+		{
 			return;
 		}
-		if (mRequestThread == null) {
+		if (mRequestThread == null)
+		{
 			mResponse = null;
-			mRequestThread = new Thread(new Runnable() {
+			mRequestThread = new Thread(new Runnable()
+			{
 				@Override
-				public void run() {
-					while (ResourceManager.isDownloading()) {
-						try {
+				public void run()
+				{
+					while (ResourceManager.isDownloading())
+					{
+						try
+						{
 							Thread.sleep(200);
-						} catch (InterruptedException e) {
+						} catch (InterruptedException e)
+						{
 						}
 					}
-					try {
-						RequestRichMediaAd requestAd = new RequestRichMediaAd(xml);
+					try
+					{
+						RequestRichMediaAd requestAd = new RequestRichMediaAd(
+								xml);
 						AdRequest request = getRequest();
 						mResponse = requestAd.sendRequest(request);
-						if (mResponse.getType() != Const.NO_AD) {
-							if (mListener != null) {
-								mHandler.post(new Runnable() {
-
+						if (mResponse.getType() != Const.NO_AD)
+						{
+							if (mListener != null)
+							{
+								mHandler.post(new Runnable()
+								{
+									
 									@Override
-									public void run() {
+									public void run()
+									{
 										mListener.adLoadSucceeded(mResponse);
 									}
 								});
 							}
-						} else {
-							if (mListener != null) {
-								mHandler.post(new Runnable() {
-
+						} else
+						{
+							if (mListener != null)
+							{
+								mHandler.post(new Runnable()
+								{
+									
 									@Override
-									public void run() {
+									public void run()
+									{
 										notifyNoAdFound();
 									}
 								});
 							}
 						}
-					} catch (Throwable t) {
+					} catch (Throwable t)
+					{
 						mResponse = new RichMediaAd();
 						mResponse.setType(Const.AD_FAILED);
-						if (mListener != null) {
-
-							mHandler.post(new Runnable() {
-
+						if (mListener != null)
+						{
+							
+							mHandler.post(new Runnable()
+							{
+								
 								@Override
-								public void run() {
+								public void run()
+								{
 									notifyNoAdFound();
-
+									
 								}
 							});
 						}
@@ -248,49 +395,58 @@ public class AdManager {
 				}
 			});
 			mRequestThread
-			.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
-
-				@Override
-				public void uncaughtException(Thread thread,
-						Throwable ex) {
-					mResponse = new RichMediaAd();
-					mResponse.setType(Const.AD_FAILED);
-					mRequestThread = null;
-				}
-			});
+					.setUncaughtExceptionHandler(new UncaughtExceptionHandler()
+					{
+						
+						@Override
+						public void uncaughtException(Thread thread,
+								Throwable ex)
+						{
+							mResponse = new RichMediaAd();
+							mResponse.setType(Const.AD_FAILED);
+							mRequestThread = null;
+						}
+					});
 			mRequestThread.start();
 		}
 	}
-
-	public boolean isAdLoaded() {
+	
+	public boolean isAdLoaded()
+	{
 		return (mResponse != null);
 	}
 	
-	public void requestAdAndShow(long timeout) {
+	public void requestAdAndShow(long timeout)
+	{
 		AdListener l = mListener;
-
+		
 		mListener = null;
 		requestAd();
 		long now = System.currentTimeMillis();
 		long timeoutTime = now + timeout;
-		while ((!isAdLoaded()) && (now < timeoutTime)) {
-			try {
+		while ((!isAdLoaded()) && (now < timeoutTime))
+		{
+			try
+			{
 				Thread.sleep(200);
-			} catch (InterruptedException e) {
+			} catch (InterruptedException e)
+			{
 			}
 			now = System.currentTimeMillis();
 		}
 		mListener = l;
 		showAd();
 	}
-
-	public boolean isCacheLoaded(){
-		File file = new File(Const.DOWNLOAD_PATH+Util.VideoFileDir);
-		if(file.exists()){
+	
+	public boolean isCacheLoaded()
+	{
+		File file = new File(Const.DOWNLOAD_PATH + Util.VideoFileDir);
+		if (file.exists())
+		{
 			String[] temp = file.list();
-			for(int i = 0;i<temp.length;i++)
+			for (int i = 0; i < temp.length; i++)
 			{
-				if(temp[i].contains(Const.DOWNLOAD_PLAY_FILE))
+				if (temp[i].contains(Const.DOWNLOAD_PLAY_FILE))
 				{
 					return true;
 				}
@@ -299,71 +455,55 @@ public class AdManager {
 		return false;
 	}
 	
-	public void showAd() {
+	public void showAd()
+	{
 		//
-		if(Util.mImpressionUrl!=null)
+//		if (Util.mImpressionUrl != null)
+//		{
+//			new ImpressionThread().start();
+//		}
+		if (Util.MIAOZHENFLAG)
 		{
-			new ImpressionThread().start();
-		}
-		if(Util.MIAOZHENFLAG){
 			MZMonitor.adTrack(mContext, Const.FULLSCREEN_VIDEO);
 		}
 		Activity activity = (Activity) getContext();
-		if ((mResponse == null)
-				|| (mResponse.getType() == Const.NO_AD)
-				|| (mResponse.getType() == Const.AD_FAILED)) {
+		if ((mResponse == null) || (mResponse.getType() == Const.NO_AD)
+				|| (mResponse.getType() == Const.AD_FAILED))
+		{
 			notifyAdShown(mResponse, false);
 			return;
 		}
 		RichMediaAd ad = mResponse;
 		boolean result = false;
-		try {
-			if (Util.isNetworkAvailable(getContext())) {
-				VideoData video = ad.getVideo();
-				if(Util.CACHE_MODE&&video!=null){					
-					String path = video.getVideoUrl();
-					URL url = null;
-					try
-					{
-						url = new URL(path);
-					} catch (MalformedURLException e)
-					{
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					if (url != null)
-					{
-						Util.ExternalName = "." + Util.getExtensionName(url.getPath());
-					} else
-					{
-						Util.ExternalName = ".mp4";
-					}
-					File file = new File(Const.DOWNLOAD_PATH + Util.VideoFileDir+Const.DOWNLOAD_PLAY_FILE
-							+ Util.ExternalName);
-					if (!file.exists())
-					{
-						Downloader downloader = new Downloader(path, mContext);
-						if (path.startsWith("http:") || path.startsWith("https:"))
-						{
-							downloader.download();
-							Log.i(Const.TAG, "download starting");
-							notifyAdClose(ad, true);
-						}
-					}else{
-						ad.setTimestamp(System.currentTimeMillis());
-						Intent intent = new Intent(activity,
-								RichMediaActivity.class);
-						intent.putExtra(AD_EXTRA, ad);
-						activity.startActivityForResult(intent, 0);
-						int enterAnim = Util.getEnterAnimation(ad.getAnimation());
-						int exitAnim = Util.getExitAnimation(ad.getAnimation());
-						RichMediaActivity.setActivityAnimation(activity,
-								enterAnim, exitAnim);
-						result = true;
-						sRunningAds.put(ad.getTimestamp(), this);
-						
-					}
-				}else{
+		try
+		{
+			// if (Util.isNetworkAvailable(getContext())) {
+			download();
+			VideoData video = ad.getVideo();
+			if (Util.CACHE_MODE && video != null)
+			{
+				String path = video.getVideoUrl();
+				URL url = null;
+				try
+				{
+					url = new URL(path);
+				} catch (MalformedURLException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if (url != null)
+				{
+					Util.ExternalName = "."
+							+ Util.getExtensionName(url.getPath());
+				} else
+				{
+					Util.ExternalName = ".mp4";
+				}
+				File file = new File(Const.DOWNLOAD_PATH + Util.VideoFileDir
+						+ Const.DOWNLOAD_PLAY_FILE + Util.ExternalName);
+				if (file.exists())
+				{
 					ad.setTimestamp(System.currentTimeMillis());
 					Intent intent = new Intent(activity,
 							RichMediaActivity.class);
@@ -371,77 +511,157 @@ public class AdManager {
 					activity.startActivityForResult(intent, 0);
 					int enterAnim = Util.getEnterAnimation(ad.getAnimation());
 					int exitAnim = Util.getExitAnimation(ad.getAnimation());
-					RichMediaActivity.setActivityAnimation(activity,
-							enterAnim, exitAnim);
+					RichMediaActivity.setActivityAnimation(activity, enterAnim,
+							exitAnim);
 					result = true;
 					sRunningAds.put(ad.getTimestamp(), this);
+				} else
+				{
+					notifyAdClose(ad, true);
 				}
+			} else
+			{
+				ad.setTimestamp(System.currentTimeMillis());
+				Intent intent = new Intent(activity, RichMediaActivity.class);
+				intent.putExtra(AD_EXTRA, ad);
+				activity.startActivityForResult(intent, 0);
+				int enterAnim = Util.getEnterAnimation(ad.getAnimation());
+				int exitAnim = Util.getExitAnimation(ad.getAnimation());
+				RichMediaActivity.setActivityAnimation(activity, enterAnim,
+						exitAnim);
+				result = true;
+				sRunningAds.put(ad.getTimestamp(), this);
 			}
-		} catch (Exception e) {
-		} finally {
+			// }
+		} catch (Exception e)
+		{
+		} finally
+		{
 			notifyAdShown(ad, result);
 		}
 	}
 	
-	private void initialize() throws IllegalArgumentException {
+	private void download()
+	{
+		String path = Const.DOWNLOAD_PATH + Util.VideoFileDir + "ad";
+		RichMediaAd tempAd = (RichMediaAd) serializeManager
+				.readSerializableData(path);
+		if (tempAd != null)
+		{
+			VideoData video = tempAd.getVideo();
+			if (Util.CACHE_MODE && video != null)
+			{
+				String Download_path = video.getVideoUrl();
+				URL url = null;
+				try
+				{
+					url = new URL(Download_path);
+				} catch (MalformedURLException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if (url != null)
+				{
+					Util.ExternalName = "."
+							+ Util.getExtensionName(url.getPath());
+				} else
+				{
+					Util.ExternalName = ".mp4";
+				}
+				// File file = new File(Const.DOWNLOAD_PATH +
+				// Util.VideoFileDir+Const.DOWNLOAD_PLAY_FILE +
+				// Util.ExternalName);
+				
+				Downloader downloader = new Downloader(Download_path, mContext);
+				if (Download_path.startsWith("http:")
+						|| Download_path.startsWith("https:"))
+				{
+					downloader.download();
+					Log.i(Const.TAG, "download starting");
+					// notifyAdClose(tempAd, true);
+				}
+				
+			}
+		}
+	}
+	
+	private void initialize() throws IllegalArgumentException
+	{
 		/*
 		 * init Util.VideoFileDir
 		 */
 		Util.GetPackage(mContext);
-		
+		serializeManager = new SerializeManager();
 		mUserAgent = Util.getDefaultUserAgentString(getContext());
 		this.mUniqueId1 = Util.getTelephonyDeviceId(getContext());
 		this.mUniqueId2 = Util.getDeviceId(getContext());
-		if ((mPublisherId == null) || (mPublisherId.length() == 0)) {
+		if ((mPublisherId == null) || (mPublisherId.length() == 0))
+		{
 			throw new IllegalArgumentException(
 					"User Id cannot be null or empty");
 		}
-		if ((mUniqueId2 == null) || (mUniqueId2.length() == 0)) {
+		if ((mUniqueId2 == null) || (mUniqueId2.length() == 0))
+		{
 			throw new IllegalArgumentException(
 					"System Device Id cannot be null or empty");
 		}
 		mEnabled = (Util.getMemoryClass(getContext()) > 16);
 		Util.initializeAnimations(getContext());
-
+		
 	}
-
-	private void notifyNoAdFound() {
-		if (mListener != null) {
-			mHandler.post(new Runnable() {
+	
+	private void notifyNoAdFound()
+	{
+		if (mListener != null)
+		{
+			mHandler.post(new Runnable()
+			{
 				@Override
-				public void run() {
+				public void run()
+				{
 					mListener.noAdFound();
 				}
 			});
 		}
 		this.mResponse = null;
 	}
-
-	private void notifyAdShown(final RichMediaAd ad, final boolean ok) {
-		if (mListener != null) {
-			mHandler.post(new Runnable() {
+	
+	private void notifyAdShown(final RichMediaAd ad, final boolean ok)
+	{
+		if (mListener != null)
+		{
+			mHandler.post(new Runnable()
+			{
 				@Override
-				public void run() {
+				public void run()
+				{
 					mListener.adShown(ad, ok);
 				}
 			});
 		}
 		this.mResponse = null;
 	}
-
-	private void notifyAdClose(final RichMediaAd ad, final boolean ok) {
-		if (mListener != null) {
-			mHandler.post(new Runnable() {
+	
+	private void notifyAdClose(final RichMediaAd ad, final boolean ok)
+	{
+		if (mListener != null)
+		{
+			mHandler.post(new Runnable()
+			{
 				@Override
-				public void run() {
+				public void run()
+				{
 					mListener.adClosed(ad, ok);
 				}
 			});
 		}
 	}
-
-	private AdRequest getRequest() {
-		if (mRequest == null) {
+	
+	private AdRequest getRequest()
+	{
+		if (mRequest == null)
+		{
 			mRequest = new AdRequest();
 			mRequest.setDeviceId(mUniqueId1);
 			mRequest.setDeviceId2(mUniqueId2);
@@ -450,35 +670,41 @@ public class AdManager {
 			mRequest.setUserAgent2(Util.buildUserAgent());
 		}
 		Location location = null;
-		if (this.mIncludeLocation) {
+		if (this.mIncludeLocation)
+		{
 			location = Util.getLocation(getContext());
 		}
-		if (location != null) {
+		if (location != null)
+		{
 			mRequest.setLatitude(location.getLatitude());
 			mRequest.setLongitude(location.getLongitude());
-		} else {
+		} else
+		{
 			mRequest.setLatitude(0.0);
 			mRequest.setLongitude(0.0);
 		}
 		mRequest.setConnectionType(Util.getConnectionType(getContext()));
 		mRequest.setIpAddress(Util.getLocalIpAddress());
 		mRequest.setTimestamp(System.currentTimeMillis());
-
+		
 		mRequest.setType(AdRequest.VAD);
 		mRequest.setRequestURL(this.requestURL);
 		return mRequest;
 	}
-
-	private Context getContext() {
+	
+	private Context getContext()
+	{
 		return getmContext();
 	}
-
-	private static Context getmContext() {
+	
+	private static Context getmContext()
+	{
 		return mContext;
 	}
-
-	private static void setmContext(Context mContext) {
+	
+	private static void setmContext(Context mContext)
+	{
 		AdManager.mContext = mContext;
 	}
-
+	
 }
