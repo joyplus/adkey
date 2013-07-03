@@ -49,7 +49,10 @@ public class ResponseHandler extends DefaultHandler {
 			mImpressionUrl = contents.toString().trim();
 			if(mImpressionUrl!=null)
 			{
-				Util.mImpressionUrl = mImpressionUrl;
+				if(richMediaAd!=null)
+				{
+					richMediaAd.setmImpressionUrl(mImpressionUrl);
+				}
 			}
 		} else if (localName.equals("duration")) {
 			if ((getRichMediaAd() == null) || (getRichMediaAd().getVideo() == null)) {

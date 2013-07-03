@@ -234,8 +234,7 @@ public class AdManager
 										@Override
 										public void run()
 										{
-											mListener
-													.adLoadSucceeded(mResponse);
+											mListener.adLoadSucceeded(mResponse);
 										}
 									});
 								}
@@ -457,11 +456,6 @@ public class AdManager
 	
 	public void showAd()
 	{
-		//
-//		if (Util.mImpressionUrl != null)
-//		{
-//			new ImpressionThread().start();
-//		}
 		if (Util.MIAOZHENFLAG)
 		{
 			MZMonitor.adTrack(mContext, Const.FULLSCREEN_VIDEO);

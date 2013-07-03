@@ -8,6 +8,7 @@ import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.PublicKey;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -445,10 +446,7 @@ public class RichMediaView extends FrameLayout
 		@Override
 		public void onPrepared(final MediaPlayer mp)
 		{
-			if(Util.mImpressionUrl!=null)
-			{
-				new ImpressionThread().start();
-			}
+			new ImpressionThread(mContext,mAd.getmImpressionUrl(),Util.PublisherId,Util.AD_TYPE.SMALL_WINDOW_VIDEO).start();
 			if(Util.MIAOZHENFLAG){
 				MZMonitor.adTrack(mContext, Const.SMALLWINDOW_VIDEO);
 			}

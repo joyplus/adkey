@@ -887,8 +887,6 @@ public class RichMediaActivity extends Activity
 		this.mVideoView = new SDKVideoView(this, this.mVideoWidth,
 				this.mVideoHeight, this.mVideoData.display);
 		this.mVideoLayout.addView(this.mVideoView,
-//				new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
-//						LayoutParams.MATCH_PARENT, Gravity.CENTER));// MATCH_PARENT
 		 new FrameLayout.LayoutParams(this.mVideoWidth,
 		 this.mVideoHeight, Gravity.CENTER));//在这个位置可以进行画面的改动
 		if (this.mVideoData.showHtmlOverlay)
@@ -1076,10 +1074,9 @@ public class RichMediaActivity extends Activity
 						+ Util.ExternalName;
 			}
 		}
-		if(Util.mImpressionUrl!=null)
-		{
-			new ImpressionThread().start();
-		}
+		
+		new ImpressionThread(RichMediaActivity.this, mAd.getmImpressionUrl(), Util.PublisherId,Util.AD_TYPE.FULL_SCREEN_VIDEO).start();
+
 		if(Util.MIAOZHENFLAG){
 			MZMonitor.adTrack(RichMediaActivity.this, Const.SMALLWINDOW_VIDEO);
 		}

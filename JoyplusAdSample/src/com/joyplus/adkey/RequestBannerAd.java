@@ -124,10 +124,7 @@ public class RequestBannerAd extends RequestAd<BannerAd> {
 				response.setType(Const.TEXT);
 				response.setText(this.getValue(doc, "htmlString"));
 				String mImpressionUrl = this.getValue(doc, "impressionurl");
-				if(mImpressionUrl!=null)
-				{
-					Util.mImpressionUrl = mImpressionUrl;
-				}
+				response.setmImpressionUrl(mImpressionUrl);
 				String skipOverlay = this.getAttribute(doc, "htmlString", "skipoverlaybutton");
 				if (skipOverlay != null){
 					response.setSkipOverlay(Integer.parseInt(skipOverlay));

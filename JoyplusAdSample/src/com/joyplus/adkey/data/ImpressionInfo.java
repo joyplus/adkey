@@ -17,9 +17,10 @@ public class ImpressionInfo{
 		
 	}
 	
-	public ImpressionInfo(String publisher_id,String ad_id,String display_num){
+	public ImpressionInfo(String publisher_id,String ad_id,String ad_type,String display_num){
 		this.publisher_id = publisher_id;
 		this.ad_id = ad_id;
+		this.ad_type = ad_type;
 		this.display_num = display_num;
 	}
 	

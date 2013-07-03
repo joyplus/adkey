@@ -20,6 +20,18 @@ public class RichMediaAd implements Ad {
 	private VideoData         video;
 	private InterstitialData  interstitial;
 	private long              timestamp;
+	
+	private String mImpressionUrl;
+
+	public String getmImpressionUrl()
+	{
+		return mImpressionUrl;
+	}
+
+	public void setmImpressionUrl(String mImpressionUrl)
+	{
+		this.mImpressionUrl = mImpressionUrl;
+	}
 
 	@Override
 	public int getType() {

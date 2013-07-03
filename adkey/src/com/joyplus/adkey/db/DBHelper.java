@@ -22,8 +22,8 @@ public class DBHelper extends SQLiteOpenHelper {
 	 */
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-//		db.execSQL("create table if not exists impression(_id integer PRIMARY KEY AUTOINCREMENT,"
-//				+"publisher_id char,ad_id char,ad_type char,display_num char,column1 char,column2 char,column3 char,create_date TimeStamp NOT NULL DEFAULT (datetime('now','localtime')))");
+		db.execSQL("create table if not exists impression_info(_id integer PRIMARY KEY AUTOINCREMENT,"
+				+"publisher_id char,ad_id char,ad_type char,display_num char,column1 char,column2 char,column3 char,create_date TimeStamp NOT NULL DEFAULT (datetime('now','localtime')))");
 //		db.execSQL("create table if not exists screen_info(_id integer PRIMARY KEY AUTOINCREMENT,  "
 //				+ "url char,publishid char,type char,number1 char, number2 char, number 3,create_date TimeStamp NOT NULL DEFAULT (datetime('now','localtime')))");
 		

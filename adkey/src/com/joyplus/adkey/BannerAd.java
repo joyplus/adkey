@@ -20,6 +20,18 @@ public class BannerAd implements Ad {
 	private int refresh;
 	private boolean scale;
 	private boolean skipPreflight;
+	
+	private String mImpressionUrl;
+
+	public String getmImpressionUrl()
+	{
+		return mImpressionUrl;
+	}
+
+	public void setmImpressionUrl(String mImpressionUrl)
+	{
+		this.mImpressionUrl = mImpressionUrl;
+	}
 
 	public int getBannerHeight() {
 		return this.bannerHeight;

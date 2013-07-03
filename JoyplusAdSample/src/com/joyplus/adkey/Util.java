@@ -46,6 +46,10 @@ import com.joyplus.adkey.data.ScreenSaverInfo;
 import com.joyplus.adkey.video.RichMediaAd;
 
 public class Util {
+	public enum AD_TYPE {
+		FULL_SCREEN_VIDEO, SMALL_WINDOW_VIDEO, BANNER_IMAGE, SCREEN_SAVER
+	};
+	
 	private static int sFadeInAnimationId = 0;
 	private static int sFadeOutAnimationId = 0;
 	private static int sSlideInRightAnimationId = 0;
@@ -75,9 +79,6 @@ public class Util {
 	public static int PicDownloadNum = 0;
 	//miaozhen sdk is supported
 	public static boolean MIAOZHENFLAG = true;
-	
-	//save mImpressionUrl
-	public static String mImpressionUrl = null;
 	public static boolean isNetworkAvailable(Context ctx) {
 		int networkStatePermission = ctx
 				.checkCallingOrSelfPermission(Manifest.permission.ACCESS_NETWORK_STATE);
