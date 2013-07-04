@@ -13,8 +13,8 @@ public interface Const {
 	public static final String DOWNLOADING_FILE = "jp_adv_ing";
 	public static final String DOWNLOAD_READY_FILE = "jp_adv_temp";
 	public static final String DOWNLOAD_PLAY_FILE = "jp_adv_done";
-//	public static final String REQUESTURL = "http://adv.yue001.com/md.request.php";//requestURL每个广告都有
-	public static final String REQUESTURL = "http://adkey.joyplus.tv/md.request.php";
+	public static final String REQUESTURL = "http://adv.yue001.com/md.request.php";//requestURL每个广告都有
+//	public static final String REQUESTURL = "http://adkey.joyplus.tv/md.request.php";
 	
 	/*
 	 * miaozhen checking code
@@ -30,6 +30,7 @@ public interface Const {
 	 * application vares
 	 */
 	public static final String TAG = "ADKEY";
+	public static final int MESSAGE_DELAY_REQUEST = 0;
 	public static final String ENCODING = "UTF-8";
 	public static final String RESPONSE_ENCODING = "ISO-8859-1";
 	public static final String VERSION = "4.1.6";

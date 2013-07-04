@@ -71,12 +71,8 @@ public class Util {
 	
 	//pic download key-value
 	public static Map<Integer, String> pic_downloaders = new HashMap<Integer, String>();
-	public static Map<Integer, ScreenSaverInfo> pic_info = new HashMap<Integer, ScreenSaverInfo>();
 	
-	//pic for loop's number
-	public static int PicNum = 0;
-	//pic for download number
-	public static int PicDownloadNum = 0;
+	public static int ScreenSaverAdNum = -1;
 	//miaozhen sdk is supported
 	public static boolean MIAOZHENFLAG = true;
 	public static boolean isNetworkAvailable(Context ctx) {

@@ -295,9 +295,6 @@ public class BannerAdViewScreenSaver extends RelativeLayout {
 				webView.loadData(text, "text/html", Const.ENCODING);
 				this.notifyLoadAdSucceeded();
 			} else if (this.response.getType() == Const.TEXT) {
-				/*
-				 * yyc
-				 */
 				
 				String text = this.response.getText();
 				int startInd = this.response.getText().indexOf(
@@ -308,17 +305,9 @@ public class BannerAdViewScreenSaver extends RelativeLayout {
 				text = Uri.encode(Const.HIDE_BORDER + text);
 				
 				String baseUrl = "file://";
-				int downloadLength = Util.pic_info.size();
-				int temp = 0;
-				if(downloadLength!=0)
-				{
-					temp = (Util.PicNum++)%downloadLength;
-					baseUrl = baseUrl+Util.pic_info.get(temp).getBaseurl();
-					text =  Const.HIDE_BORDER + "<img src='"
-							+ Util.pic_info.get(temp).getFilename() + "'/>";
-				}else{
-					//default
-				}
+				baseUrl = baseUrl+Const.DOWNLOAD_PATH+Util.VideoFileDir;
+				text =  Const.HIDE_BORDER + "<img src='"
+						+ (Util.ScreenSaverAdNum%3)+Util.ExternalName + "'/>";
 				webView.loadDataWithBaseURL(baseUrl, text, "text/html",
 						"utf-8", null);
 				

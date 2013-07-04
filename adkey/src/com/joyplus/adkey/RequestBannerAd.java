@@ -1,8 +1,5 @@
 package com.joyplus.adkey;
 
-import static com.joyplus.adkey.Const.RESPONSE_ENCODING;
-
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
