@@ -1,5 +1,6 @@
 package com.joyplus.adkeydemo;
 
+
 import android.os.Bundle;
 import android.view.View;
 import android.app.Activity;
@@ -15,6 +16,16 @@ public class MainActivity extends Activity
 
 	public void onClickShowVideoInterstitial(View v) {
 		Intent intent = new Intent(MainActivity.this,InterstitialActivity.class);
+		startActivity(intent);
+	}
+	
+	public void onClickSmallWindow(View v){
+		Intent intent = new Intent(MainActivity.this,SmallActivity.class);
+		startActivity(intent);
+	}
+	
+	public void onClickScreenSaver(View v){
+		Intent intent = new Intent(MainActivity.this,ScreenSaverActivity.class);
 		startActivity(intent);
 	}
 	

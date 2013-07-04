@@ -295,20 +295,11 @@ public class BannerAdViewScreenSaver extends RelativeLayout {
 				webView.loadData(text, "text/html", Const.ENCODING);
 				this.notifyLoadAdSucceeded();
 			} else if (this.response.getType() == Const.TEXT) {
-				
-				String text = this.response.getText();
-				int startInd = this.response.getText().indexOf(
-						"mAdserveAdImage") + 22;
-				int endInd = this.response.getText().indexOf("/>", startInd) - 12;
-				String thisImageText = this.response.getText().substring(
-						startInd, endInd);
-				text = Uri.encode(Const.HIDE_BORDER + text);
-				
 				String baseUrl = "file://";
 				baseUrl = baseUrl+Const.DOWNLOAD_PATH+Util.VideoFileDir;
-				text =  Const.HIDE_BORDER + "<img src='"
+				String textPath =  Const.HIDE_BORDER + "<img src='"
 						+ (Util.ScreenSaverAdNum%3)+Util.ExternalName + "'/>";
-				webView.loadDataWithBaseURL(baseUrl, text, "text/html",
+				webView.loadDataWithBaseURL(baseUrl, textPath, "text/html",
 						"utf-8", null);
 				
 				this.notifyLoadAdSucceeded();

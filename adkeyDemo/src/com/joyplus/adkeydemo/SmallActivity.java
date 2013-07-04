@@ -2,42 +2,30 @@ package com.joyplus.adkeydemo;
 
 import com.joyplus.adkey.Ad;
 import com.joyplus.adkey.AdListener;
-import com.joyplus.adkey.AdManager;
-
+import com.joyplus.adkey.AdSmallManager;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
-public class InterstitialActivity extends Activity implements AdListener
+public class SmallActivity extends Activity implements AdListener
 {
-	private AdManager mManager = null;
-	private String publisherId = "03f9d5d1ead2ac506a91f2c0f5c21d46";//要显示广告的publisherId
-	private boolean cacheMode = false;//该广告加载时是否用本地缓存
+	private FrameLayout layout;
+	private AdSmallManager mManager = null;
+	private String publisherId = "dabb5c604c9dd34e4ee519c9c2fdcd52";//要显示广告的publisherId
+	private boolean cacheMode = true;//该广告加载时是否用本地缓存
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.interstitial);
-	}
-	
-	public void onClickShowVideoOnline(View v){
+		setContentView(R.layout.small);
+		layout = (FrameLayout) findViewById(R.id.adsdkContent);
+		
 		if(mManager!=null)
 			mManager.release();
-		if(cacheMode)
-			cacheMode = false;
-		mManager = new AdManager(this,publisherId,cacheMode);
-		mManager.setListener(this);
-		mManager.requestAd();
-	}
-	
-	public void onClickShowVideoCache(View v){
-		if(mManager!=null)
-			mManager.release();
-		if(!cacheMode)
-			cacheMode = true;
-		mManager = new AdManager(this,publisherId,cacheMode);
+		
+		mManager = new AdSmallManager(this,publisherId,cacheMode,layout);
 		mManager.setListener(this);
 		mManager.requestAd();
 	}
@@ -76,7 +64,7 @@ public class InterstitialActivity extends Activity implements AdListener
 	public void noAdFound()
 	{
 		// TODO Auto-generated method stub
-		Toast.makeText(InterstitialActivity.this, "No ad found!", Toast.LENGTH_LONG)
+		Toast.makeText(SmallActivity.this, "No ad found!", Toast.LENGTH_LONG)
 			.show();
 	}
 	
@@ -86,4 +74,11 @@ public class InterstitialActivity extends Activity implements AdListener
 		if(mManager!=null)
 			mManager.release();
 	}
+	
+	public void OnClose(View v){
+		if(mManager!=null)
+			mManager.release();
+//		finish();
+	}
+	
 }

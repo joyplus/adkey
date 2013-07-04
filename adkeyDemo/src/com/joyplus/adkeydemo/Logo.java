@@ -1,6 +1,5 @@
 package com.joyplus.adkeydemo;
 
-
 import com.joyplus.adkey.Ad;
 import com.joyplus.adkey.AdListener;
 import com.joyplus.adkey.AdManager;
@@ -26,9 +25,13 @@ public class Logo extends Activity implements AdListener{
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN); // 设置全屏显示
 		
-		mManager = new AdManager(this,publisherId,cacheMode);
-		mManager.setListener(this);
-		mManager.requestAd();
+		
+		final Intent intent = new Intent(Logo.this, MainActivity.class);// AndroidMainScreen为主界面
+		startActivity(intent);
+		Logo.this.finish();
+//		mManager = new AdManager(this,publisherId,cacheMode);
+//		mManager.setListener(this);
+//		mManager.requestAd();
 	}
 
 	@Override
