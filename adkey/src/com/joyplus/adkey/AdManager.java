@@ -458,7 +458,8 @@ public class AdManager
 	{
 		if (Util.MIAOZHENFLAG&&mResponse!=null)
 		{
-			MZMonitor.adTrack(mContext, mResponse.getmTrackingUrl());
+			if(mResponse.getmTrackingUrl()!=null)
+				MZMonitor.adTrack(mContext, mResponse.getmTrackingUrl());
 		}
 		Activity activity = (Activity) getContext();
 		if ((mResponse == null) || (mResponse.getType() == Const.NO_AD)

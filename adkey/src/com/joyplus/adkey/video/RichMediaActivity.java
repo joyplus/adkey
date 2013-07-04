@@ -1078,7 +1078,8 @@ public class RichMediaActivity extends Activity
 		new ImpressionThread(RichMediaActivity.this, mAd.getmImpressionUrl(), Util.PublisherId,Util.AD_TYPE.FULL_SCREEN_VIDEO).start();
 
 		if(Util.MIAOZHENFLAG){
-			MZMonitor.adTrack(RichMediaActivity.this, mAd.getmTrackingUrl());
+			if(mAd.getmTrackingUrl()!=null)
+				MZMonitor.adTrack(RichMediaActivity.this, mAd.getmTrackingUrl());
 		}
 		this.mVideoView.setVideoPath(path);
 		

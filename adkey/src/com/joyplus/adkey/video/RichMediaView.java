@@ -448,7 +448,8 @@ public class RichMediaView extends FrameLayout
 		{
 			new ImpressionThread(mContext,mAd.getmImpressionUrl(),Util.PublisherId,Util.AD_TYPE.SMALL_WINDOW_VIDEO).start();
 			if(Util.MIAOZHENFLAG){
-				MZMonitor.adTrack(mContext, mAd.getmTrackingUrl());
+				if(mAd.getmTrackingUrl()!=null)
+					MZMonitor.adTrack(mContext, mAd.getmTrackingUrl());
 			}
 			
 			if (mVideoTimeoutTimer != null)
