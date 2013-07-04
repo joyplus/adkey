@@ -456,9 +456,9 @@ public class AdManager
 	
 	public void showAd()
 	{
-		if (Util.MIAOZHENFLAG)
+		if (Util.MIAOZHENFLAG&&mResponse!=null)
 		{
-			MZMonitor.adTrack(mContext, Const.FULLSCREEN_VIDEO);
+			MZMonitor.adTrack(mContext, mResponse.getmTrackingUrl());
 		}
 		Activity activity = (Activity) getContext();
 		if ((mResponse == null) || (mResponse.getType() == Const.NO_AD)

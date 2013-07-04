@@ -29,6 +29,7 @@ public class ResponseHandler extends DefaultHandler {
 	private boolean insideVideoList = false;
 	
 	private String mImpressionUrl;
+	private String mTrackingUrl;
 
 	@Override
 	public void characters(char[] ch, int start, int length)
@@ -52,6 +53,16 @@ public class ResponseHandler extends DefaultHandler {
 				if(richMediaAd!=null)
 				{
 					richMediaAd.setmImpressionUrl(mImpressionUrl);
+				}
+			}
+		} else if(localName.equals("trackingurl"))
+		{
+			mTrackingUrl = contents.toString().trim();
+			if(mTrackingUrl!=null)
+			{
+				if(richMediaAd!=null)
+				{
+					richMediaAd.setmTrackingUrl(mTrackingUrl);
 				}
 			}
 		} else if (localName.equals("duration")) {

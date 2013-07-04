@@ -22,6 +22,17 @@ public class RichMediaAd implements Ad {
 	private long              timestamp;
 	
 	private String mImpressionUrl;
+	private String mTrackingUrl;
+	
+	public String getmTrackingUrl()
+	{
+		return mTrackingUrl;
+	}
+
+	public void setmTrackingUrl(String mTrackingUrl)
+	{
+		this.mTrackingUrl = mTrackingUrl;
+	}
 
 	public String getmImpressionUrl()
 	{
