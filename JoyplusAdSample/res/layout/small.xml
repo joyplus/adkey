@@ -16,4 +16,5 @@
         android:layout_height="wrap_content"
         android:scaleType="fitXY" >
     </FrameLayout>
+
 </LinearLayout>
