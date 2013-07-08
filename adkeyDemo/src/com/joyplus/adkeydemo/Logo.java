@@ -14,19 +14,19 @@ import android.widget.Toast;
 
 public class Logo extends Activity implements AdListener{
 	private AdManager mManager;
-	private String publisherId = "03f9d5d1ead2ac506a91f2c0f5c21d46";//要显示广告的publisherId
-	private boolean cacheMode = true;//该广告加载时是否用本地缓存
+	private String publisherId = "03f9d5d1ead2ac506a91f2c0f5c21d46";//瑕佹樉绀哄箍鍛婄殑publisherId
+	private boolean cacheMode = true;//璇ュ箍鍛婂姞杞芥椂鏄惁鐢ㄦ湰鍦扮紦瀛�
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);// 不显示标题
-		setContentView(R.layout.logo);// 显示welcom.xml
+		requestWindowFeature(Window.FEATURE_NO_TITLE);// 涓嶆樉绀烘爣棰�
+		setContentView(R.layout.logo);// 鏄剧ずwelcom.xml
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN); // 设置全屏显示
+				WindowManager.LayoutParams.FLAG_FULLSCREEN); // 璁剧疆鍏ㄥ睆鏄剧ず
 		
 		
-		final Intent intent = new Intent(Logo.this, MainActivity.class);// AndroidMainScreen为主界面
+		final Intent intent = new Intent(Logo.this, MainActivity.class);// AndroidMainScreen涓轰富鐣岄潰
 		startActivity(intent);
 		Logo.this.finish();
 //		mManager = new AdManager(this,publisherId,cacheMode);
@@ -57,15 +57,15 @@ public class Logo extends Activity implements AdListener{
 	public void adClicked()
 	{
 		// TODO Auto-generated method stub
-		Toast.makeText(Logo.this, "广告点击事件", Toast.LENGTH_SHORT).show();
+		Toast.makeText(Logo.this, "骞垮憡鐐瑰嚮浜嬩欢", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	public void adClosed(Ad ad, boolean completed)
 	{
 		// TODO Auto-generated method stub
-		Toast.makeText(Logo.this, "关闭了", Toast.LENGTH_SHORT).show();
-		final Intent intent = new Intent(Logo.this, MainActivity.class);// AndroidMainScreen为主界面
+		Toast.makeText(Logo.this, "adClosed", Toast.LENGTH_SHORT).show();
+		final Intent intent = new Intent(Logo.this, MainActivity.class);// AndroidMainScreen涓轰富鐣岄潰
 		startActivity(intent);
 		Logo.this.finish();
 	}
@@ -82,7 +82,7 @@ public class Logo extends Activity implements AdListener{
 	public void adShown(Ad ad, boolean succeeded)
 	{
 		// TODO Auto-generated method stub
-		Toast.makeText(Logo.this, "广告显示事件", Toast.LENGTH_SHORT).show();
+		Toast.makeText(Logo.this, "骞垮憡鏄剧ず浜嬩欢", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -91,12 +91,12 @@ public class Logo extends Activity implements AdListener{
 		// TODO Auto-generated method stub
 		Toast.makeText(Logo.this, "No ad found!", Toast.LENGTH_LONG).show();
 		
-		Intent intent = new Intent(Logo.this, MainActivity.class);// AndroidMainScreen为主界面
+		Intent intent = new Intent(Logo.this, MainActivity.class);// AndroidMainScreen涓轰富鐣岄潰
 		startActivity(intent);
 		finish();
 	}
 	
-	// 返回键
+	// 杩斿洖閿�
 		@Override
 		public boolean dispatchKeyEvent(KeyEvent event) {
 			if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
