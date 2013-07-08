@@ -49,7 +49,7 @@ public class ResponseHandler extends DefaultHandler {
 			video.videoUrl = contents.toString().trim();
 		} else if (localName.equals("impressionurl")){
 			mImpressionUrl = contents.toString().trim();
-			if(mImpressionUrl!=null)
+			if(URLUtil.isHttpsUrl(mImpressionUrl)||URLUtil.isHttpUrl(mImpressionUrl))
 			{
 				if(richMediaAd!=null)
 				{
@@ -59,7 +59,7 @@ public class ResponseHandler extends DefaultHandler {
 		} else if(localName.equals("trackingurl"))
 		{
 			mTrackingUrl = contents.toString().trim();
-			if(URLUtil.isHttpsUrl(mTrackingUrl))
+			if(URLUtil.isHttpsUrl(mTrackingUrl)||URLUtil.isHttpUrl(mTrackingUrl))
 			{
 				if(richMediaAd!=null)
 				{

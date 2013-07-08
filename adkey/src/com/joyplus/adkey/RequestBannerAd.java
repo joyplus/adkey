@@ -123,9 +123,12 @@ public class RequestBannerAd extends RequestAd<BannerAd> {
 				response.setType(Const.TEXT);
 				response.setText(this.getValue(doc, "htmlString"));
 				String mImpressionUrl = this.getValue(doc, "impressionurl");
-				response.setmImpressionUrl(mImpressionUrl);
+				if(URLUtil.isHttpsUrl(mImpressionUrl)||URLUtil.isHttpUrl(mImpressionUrl))
+				{
+					response.setmImpressionUrl(mImpressionUrl);
+				}
 				String mTrackingUrl = this.getValue(doc, "trackingurl");
-				if(URLUtil.isHttpsUrl(mTrackingUrl))
+				if(URLUtil.isHttpsUrl(mTrackingUrl)||URLUtil.isHttpUrl(mTrackingUrl))
 				{
 					response.setmTrackingUrl(mTrackingUrl);
 				}
