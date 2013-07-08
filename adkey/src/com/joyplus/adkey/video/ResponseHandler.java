@@ -9,6 +9,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import android.content.pm.ActivityInfo;
+import android.webkit.URLUtil;
 
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.Util;
@@ -58,7 +59,7 @@ public class ResponseHandler extends DefaultHandler {
 		} else if(localName.equals("trackingurl"))
 		{
 			mTrackingUrl = contents.toString().trim();
-			if(mTrackingUrl!=null)
+			if(URLUtil.isHttpsUrl(mTrackingUrl))
 			{
 				if(richMediaAd!=null)
 				{

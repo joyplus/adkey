@@ -13,6 +13,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import android.webkit.URLUtil;
+
 import com.joyplus.adkey.data.ClickType;
 
 public class RequestBannerAd extends RequestAd<BannerAd> {
@@ -123,7 +125,11 @@ public class RequestBannerAd extends RequestAd<BannerAd> {
 				String mImpressionUrl = this.getValue(doc, "impressionurl");
 				response.setmImpressionUrl(mImpressionUrl);
 				String mTrackingUrl = this.getValue(doc, "trackingurl");
-				response.setmTrackingUrl(mTrackingUrl);
+				if(URLUtil.isHttpsUrl(mTrackingUrl))
+				{
+					response.setmTrackingUrl(mTrackingUrl);
+				}
+					
 				String skipOverlay = this.getAttribute(doc, "htmlString", "skipoverlaybutton");
 				if (skipOverlay != null){
 					response.setSkipOverlay(Integer.parseInt(skipOverlay));
