@@ -48,8 +48,11 @@ import android.widget.VideoView;
 import com.joyplus.adkey.AdManager;
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.Util;
+import com.joyplus.adkey.banner.AdViewScreenSaver;
+import com.joyplus.adkey.download.DisplayImgDownloader;
 import com.joyplus.adkey.download.Downloader;
 import com.joyplus.adkey.download.ImpressionThread;
+import com.joyplus.adkey.download.PicDownloader;
 import com.joyplus.adkey.video.InterstitialController.OnResetAutocloseListener;
 import com.joyplus.adkey.video.MediaController.OnPauseListener;
 import com.joyplus.adkey.video.MediaController.OnReplayListener;
@@ -58,6 +61,7 @@ import com.joyplus.adkey.video.SDKVideoView.OnStartListener;
 import com.joyplus.adkey.video.SDKVideoView.OnTimeEventListener;
 import com.joyplus.adkey.video.WebViewClient.OnPageLoadedListener;
 import com.joyplus.adkey.widget.Log;
+import com.joyplus.adkey.widget.SerializeManager;
 import com.miaozhen.mzmonitor.MZMonitor;
 
 public class RichMediaActivity extends Activity
@@ -179,7 +183,7 @@ public class RichMediaActivity extends Activity
 			
 		}
 	}
-	
+	private SerializeManager serializeManager = null;
 	private ResourceManager mResourceManager;
 	private FrameLayout mRootLayout;
 	private FrameLayout mVideoLayout;
@@ -734,13 +738,22 @@ public class RichMediaActivity extends Activity
 	
 	private void initInterstitialView()
 	{
+		Timer timer = new Timer();
+		TimerTask task = new TimerTask() {
+			@Override
+			public void run() {
+				RichMediaActivity.this.finish();
+			}
+		};
+		timer.schedule(task, 5000); // 
+		
 		this.mInterstitialData = this.mAd.getInterstitial();
 		this.mInterstitialAutocloseReset = false;
 		
 		this.setRequestedOrientation(this.mInterstitialData.orientation);
 		final FrameLayout layout = new FrameLayout(this);
 		this.mInterstitialView = new WebFrame(this, true, false, false);
-		this.mInterstitialView.setBackgroundColor(Color.TRANSPARENT);
+		this.mInterstitialView.setBackgroundColor(Color.BLACK);//原来为透明色
 		this.mInterstitialView
 				.setOnPageLoadedListener(this.mOnInterstitialLoadedListener);
 		this.mInterstitialController = new InterstitialController(this,
@@ -750,8 +763,8 @@ public class RichMediaActivity extends Activity
 		this.mInterstitialController
 				.setOnResetAutocloseListener(this.mOnResetAutocloseListener);
 		layout.addView(this.mInterstitialController,
-				new FrameLayout.LayoutParams(LayoutParams.FILL_PARENT,
-						LayoutParams.FILL_PARENT, Gravity.CENTER));
+				new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+						LayoutParams.MATCH_PARENT, Gravity.CENTER));
 		if (this.mInterstitialData.showNavigationBars)
 			this.mInterstitialController.show(0);
 		if (this.mInterstitialData.showSkipButton)
@@ -824,11 +837,47 @@ public class RichMediaActivity extends Activity
 		this.mInterstitialView
 				.setOnClickListener(this.mInterstitialClickListener);
 		this.mRootLayout.addView(layout);
+		
+		new ImpressionThread(RichMediaActivity.this, mAd.getmImpressionUrl(), Util.PublisherId,Util.AD_TYPE.FULL_SCREEN_VIDEO).start();
+
+		if(Util.MIAOZHENFLAG){
+			if(mAd.getmTrackingUrl()!=null)
+				MZMonitor.adTrack(RichMediaActivity.this, mAd.getmTrackingUrl());
+		}
+		
 		switch (this.mInterstitialData.interstitialType)
 		{
 			case InterstitialData.INTERSTITIAL_MARKUP:
-				this.mInterstitialView
-						.setMarkup(this.mInterstitialData.interstitialMarkup);
+				if(Util.isCacheLoaded())
+				{
+					String textData = this.mInterstitialData.interstitialMarkup;
+					if(textData!=null)
+					{
+						int startInd = textData.indexOf(
+								"<img")+10;
+						int endInd = textData.indexOf(
+								">", startInd)-1;
+						String thisImageText = textData.substring(startInd, endInd);
+						URL url = null;
+						try
+						{
+							url = new URL(thisImageText);
+						} catch (MalformedURLException e)
+						{
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						if (url != null)
+						{
+							Util.ExternalName = "." + Util.getExtensionName(url.getPath());
+						} else
+						{
+							Util.ExternalName = ".jpg";
+						}
+					}
+					this.mInterstitialView
+							.setMarkup(this.mInterstitialData.interstitialMarkup);
+				}
 				break;
 			case InterstitialData.INTERSTITIAL_URL:
 				this.mInterstitialView
@@ -1039,29 +1088,29 @@ public class RichMediaActivity extends Activity
 		String path = this.mVideoData.videoUrl;
 		if (Util.CACHE_MODE)
 		{
-			URL url = null;
-			try
-			{
-				url = new URL(this.mVideoData.videoUrl);
-			} catch (MalformedURLException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			if (url != null)
-			{
-				Util.ExternalName = "." + Util.getExtensionName(url.getPath());
-			} else
-			{
-				Util.ExternalName = ".mp4";
-			}
-			
-			Downloader downloader = new Downloader(path, RichMediaActivity.this);
-			if (path.startsWith("http:") || path.startsWith("https:"))
-			{
-				downloader.download();
-				Log.i(Const.TAG, "download starting");
-			}
+//			URL url = null;
+//			try
+//			{
+//				url = new URL(this.mVideoData.videoUrl);
+//			} catch (MalformedURLException e)
+//			{
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			if (url != null)
+//			{
+//				Util.ExternalName = "." + Util.getExtensionName(url.getPath());
+//			} else
+//			{
+//				Util.ExternalName = ".mp4";
+//			}
+//			
+//			Downloader downloader = new Downloader(path, RichMediaActivity.this);
+//			if (path.startsWith("http:") || path.startsWith("https:"))
+//			{
+//				downloader.download();
+//				Log.i(Const.TAG, "download starting");
+//			}
 			File file = new File(Const.DOWNLOAD_PATH + Util.VideoFileDir+Const.DOWNLOAD_PLAY_FILE
 					+ Util.ExternalName);
 			if (!file.exists())

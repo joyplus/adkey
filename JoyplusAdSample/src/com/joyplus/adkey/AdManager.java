@@ -13,23 +13,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Handler;
-import android.view.View;
-import android.widget.FrameLayout;
 
-import com.joyplus.adkey.banner.AdViewScreenSaver;
-import com.joyplus.adkey.download.Downloader;
-import com.joyplus.adkey.download.ImpressionThread;
 import com.joyplus.adkey.video.ResourceManager;
 import com.joyplus.adkey.video.RichMediaActivity;
 import com.joyplus.adkey.video.RichMediaAd;
-import com.joyplus.adkey.video.RichMediaView;
 import com.joyplus.adkey.video.TrackerService;
 import com.joyplus.adkey.video.VideoData;
+import com.joyplus.adkey.widget.DownloadVideoThread;
 import com.joyplus.adkey.widget.Log;
 import com.joyplus.adkey.widget.SerializeManager;
-import com.miaozhen.mzmonitor.MZMonitor;
 
 public class AdManager
 {
@@ -158,7 +151,7 @@ public class AdManager
 							serializeManager.writeSerializableData(path,
 									mResponse);
 						}
-						
+						new DownloadVideoThread(path,mContext).start();
 						if (mResponse.getVideo() != null
 								&& android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.FROYO)
 						{
@@ -439,19 +432,7 @@ public class AdManager
 	
 	public boolean isCacheLoaded()
 	{
-		File file = new File(Const.DOWNLOAD_PATH + Util.VideoFileDir);
-		if (file.exists())
-		{
-			String[] temp = file.list();
-			for (int i = 0; i < temp.length; i++)
-			{
-				if (temp[i].contains(Const.DOWNLOAD_PLAY_FILE))
-				{
-					return true;
-				}
-			}
-		}
-		return false;
+		return Util.isCacheLoaded();
 	}
 	
 	public void showAd()
@@ -468,7 +449,7 @@ public class AdManager
 		try
 		{
 			// if (Util.isNetworkAvailable(getContext())) {
-			download();
+//			download();
 			VideoData video = ad.getVideo();
 			if (Util.CACHE_MODE && video != null)
 			{
@@ -531,50 +512,50 @@ public class AdManager
 		}
 	}
 	
-	private void download()
-	{
-		String path = Const.DOWNLOAD_PATH + Util.VideoFileDir + "ad";
-		RichMediaAd tempAd = (RichMediaAd) serializeManager
-				.readSerializableData(path);
-		if (tempAd != null)
-		{
-			VideoData video = tempAd.getVideo();
-			if (Util.CACHE_MODE && video != null)
-			{
-				String Download_path = video.getVideoUrl();
-				URL url = null;
-				try
-				{
-					url = new URL(Download_path);
-				} catch (MalformedURLException e)
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				if (url != null)
-				{
-					Util.ExternalName = "."
-							+ Util.getExtensionName(url.getPath());
-				} else
-				{
-					Util.ExternalName = ".mp4";
-				}
-				// File file = new File(Const.DOWNLOAD_PATH +
-				// Util.VideoFileDir+Const.DOWNLOAD_PLAY_FILE +
-				// Util.ExternalName);
-				
-				Downloader downloader = new Downloader(Download_path, mContext);
-				if (Download_path.startsWith("http:")
-						|| Download_path.startsWith("https:"))
-				{
-					downloader.download();
-					Log.i(Const.TAG, "download starting");
-					// notifyAdClose(tempAd, true);
-				}
-				
-			}
-		}
-	}
+//	private void download()
+//	{
+//		String path = Const.DOWNLOAD_PATH + Util.VideoFileDir + "ad";
+//		RichMediaAd tempAd = (RichMediaAd) serializeManager
+//				.readSerializableData(path);
+//		if (tempAd != null)
+//		{
+//			VideoData video = tempAd.getVideo();
+//			if (Util.CACHE_MODE && video != null)
+//			{
+//				String Download_path = video.getVideoUrl();
+//				URL url = null;
+//				try
+//				{
+//					url = new URL(Download_path);
+//				} catch (MalformedURLException e)
+//				{
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//				if (url != null)
+//				{
+//					Util.ExternalName = "."
+//							+ Util.getExtensionName(url.getPath());
+//				} else
+//				{
+//					Util.ExternalName = ".mp4";
+//				}
+//				// File file = new File(Const.DOWNLOAD_PATH +
+//				// Util.VideoFileDir+Const.DOWNLOAD_PLAY_FILE +
+//				// Util.ExternalName);
+//				
+//				Downloader downloader = new Downloader(Download_path, mContext);
+//				if (Download_path.startsWith("http:")
+//						|| Download_path.startsWith("https:"))
+//				{
+//					downloader.download();
+//					Log.i(Const.TAG, "download starting");
+//					// notifyAdClose(tempAd, true);
+//				}
+//				
+//			}
+//		}
+//	}
 	
 	private void initialize() throws IllegalArgumentException
 	{

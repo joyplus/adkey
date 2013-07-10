@@ -8,11 +8,11 @@ import java.net.URL;
 
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.Util;
-import com.joyplus.adkey.data.ScreenSaverInfo;
+import com.joyplus.adkey.widget.Log;
 
 import android.content.Context;
 
-public class PicDownloader {
+public class DisplayImgDownloader {
 	private String urlstr;// 下载的地址
 	private String localfile;// 保存路径
 	private int fileSize = 0;//文件大小
@@ -25,7 +25,7 @@ public class PicDownloader {
 	private static final int FAILED = 5;//失败
 	private int state = INIT;
 
-	public PicDownloader(String urlstr, Context context) {
+	public DisplayImgDownloader(String urlstr, Context context) {
 		this.urlstr = urlstr;
 		this.context = context;
 		/*
@@ -41,6 +41,29 @@ public class PicDownloader {
 	 */
 	public boolean isdownloading() {
 		return state == DOWNLOADING;
+	}
+
+	/**
+	 * 初始化
+	 */
+	private void init() {
+		HttpURLConnection connection = null;
+		try {
+			URL url = new URL(urlstr);
+			connection = (HttpURLConnection) url
+					.openConnection();
+			connection.setConnectTimeout(5000);
+			connection.setRequestMethod("GET");
+			fileSize = connection.getContentLength();
+			connection.disconnect();
+		} catch (Exception e) {
+			e.printStackTrace();
+			if(connection!=null)
+				connection.disconnect();
+		} finally{
+			if(connection!=null)
+				connection.disconnect();
+		}
 	}
 
 	/**
@@ -66,17 +89,12 @@ public class PicDownloader {
 		@Override
 		public void run() {
 			// 标记此线程为true
-			ScreenSaverInfo screenSaverInfo = new ScreenSaverInfo();
-			screenSaverInfo.setBaseurl(Const.DOWNLOAD_PATH+Util.VideoFileDir);
-			screenSaverInfo.setUrl(urlstr);
-			screenSaverInfo.setPublishid(Util.PublisherId);
-			
-			localfile = Const.DOWNLOAD_PATH+Util.VideoFileDir+(Util.ScreenSaverAdNum%3)+Util.ExternalName;
+			localfile = Const.DOWNLOAD_PATH+Util.VideoFileDir+Const.DOWNLOAD_DISPLAY_IMG+Util.ExternalName;
 			File file = new File(localfile);
 			if(file.exists())
+			{
 				file.delete();
-			screenSaverInfo.setFilename(Util.ScreenSaverAdNum%3+Util.ExternalName);
-			
+			}
 			HttpURLConnection connection = null;
 			RandomAccessFile randomAccessFile = null;
 			InputStream inputstream = null;
@@ -94,14 +112,16 @@ public class PicDownloader {
 				while ((length = inputstream.read(buffer)) != -1) {
 					randomAccessFile.write(buffer, 0, length);
 					compeleteSize += length;
-					if (compeleteSize == fileSize) {
-						state = STOP;
-					}
+					if (compeleteSize == fileSize) {}
 					if (state == PAUSE||state == STOP) {
 						return;
 					}
 				}
 			} catch (Exception e) {
+				if(file!=null&&file.exists())
+				{
+					file.delete();
+				}
 				state = STOP;
 				e.printStackTrace();
 				if(connection!=null)

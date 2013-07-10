@@ -30,6 +30,7 @@ import com.joyplus.adkey.video.MediaController.OnReplayListener;
 import com.joyplus.adkey.video.MediaController.OnUnpauseListener;
 import com.joyplus.adkey.video.RichMediaActivity.CanSkipTask;
 import com.joyplus.adkey.video.RichMediaActivity.InterstitialAutocloseTask;
+import com.joyplus.adkey.video.RichMediaActivity.InterstitialLoadingTimeoutTask;
 import com.joyplus.adkey.video.SDKVideoView.OnStartListener;
 import com.joyplus.adkey.video.SDKVideoView.OnTimeEventListener;
 import com.joyplus.adkey.video.WebViewClient.OnPageLoadedListener;
@@ -186,6 +187,9 @@ public class RichMediaView extends FrameLayout
 		{
 			case TYPE_VIDEO:
 				this.initVideoView();
+				break;
+			case TYPE_INTERSTITIAL:
+//				this.initInterstitialView();
 				break;
 		}
 	}
@@ -366,6 +370,147 @@ public class RichMediaView extends FrameLayout
 		}
 		
 		this.mVideoView.setVideoPath(path);
+	}
+	
+	private void initInterstitialView()
+	{	
+		this.mInterstitialData = this.mAd.getInterstitial();
+		this.mInterstitialAutocloseReset = false;
+		
+//		setRequestedOrientation(this.mInterstitialData.orientation);
+		final FrameLayout layout = new FrameLayout(mContext);
+//		this.mInterstitialView = new WebFrame(this, true, false, false);
+		this.mInterstitialView.setBackgroundColor(Color.BLACK);//原来为透明色
+		this.mInterstitialView
+				.setOnPageLoadedListener(this.mOnInterstitialLoadedListener);
+		this.mInterstitialController = new InterstitialController(mContext,
+				this.mInterstitialData);
+		this.mInterstitialController.setBrowser(this.mInterstitialView);
+		this.mInterstitialController.setBrowserView(this.mInterstitialView);
+		this.mInterstitialController
+				.setOnResetAutocloseListener(this.mOnResetAutocloseListener);
+		layout.addView(this.mInterstitialController,
+				new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+						LayoutParams.MATCH_PARENT, Gravity.CENTER));
+		if (this.mInterstitialData.showNavigationBars)
+			this.mInterstitialController.show(0);
+		if (this.mInterstitialData.showSkipButton)
+		{
+			
+			this.mSkipButton = new ImageView(mContext);
+			this.mSkipButton.setAdjustViewBounds(false);
+			FrameLayout.LayoutParams params = null;
+			
+			int buttonSize = (int) TypedValue.applyDimension(
+					TypedValue.COMPLEX_UNIT_DIP, this.skipButtonSizeLand, this
+							.getResources().getDisplayMetrics());
+			
+			int size = Math.min(
+					this.getResources().getDisplayMetrics().widthPixels, this
+							.getResources().getDisplayMetrics().heightPixels);
+			buttonSize = (int) (size * 0.1);
+			
+			params = new FrameLayout.LayoutParams(buttonSize, buttonSize,
+					Gravity.TOP | Gravity.RIGHT);
+			
+			if (this.mInterstitialData.orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+			{
+				final int margin = (int) TypedValue.applyDimension(
+						TypedValue.COMPLEX_UNIT_DIP, 8, this.getResources()
+								.getDisplayMetrics());
+				params.topMargin = margin;
+				params.rightMargin = margin;
+			} else
+			{
+				final int margin = (int) TypedValue.applyDimension(
+						TypedValue.COMPLEX_UNIT_DIP, 10, this.getResources()
+								.getDisplayMetrics());
+				params.topMargin = margin;
+				params.rightMargin = margin;
+			}
+			
+			if (this.mInterstitialData.skipButtonImage != null
+					&& this.mInterstitialData.skipButtonImage.length() > 0)
+			{
+				this.mSkipButton.setBackgroundDrawable(null);
+				this.mResourceManager.fetchResource(mContext,
+						this.mInterstitialData.skipButtonImage,
+						ResourceManager.DEFAULT_SKIP_IMAGE_RESOURCE_ID);
+			} else
+				this.mSkipButton.setImageDrawable(mResourceManager.getResource(
+						mContext, ResourceManager.DEFAULT_SKIP_IMAGE_RESOURCE_ID));
+			this.mSkipButton
+					.setOnClickListener(this.mOnInterstitialSkipListener);
+			if (this.mInterstitialData.showSkipButtonAfter > 0)
+			{
+				this.mCanClose = false;
+				this.mSkipButton.setVisibility(View.GONE);
+				if (this.mInterstitialLoadingTimer == null)
+				{
+//					final InterstitialLoadingTimeoutTask loadingTimeoutTask = new InterstitialLoadingTimeoutTask();
+//					this.mInterstitialLoadingTimer = new Timer();
+//					this.mInterstitialLoadingTimer.schedule(loadingTimeoutTask,
+//							Const.CONNECTION_TIMEOUT);
+				}
+				
+			} else
+			{
+				this.mCanClose = true;
+				this.mSkipButton.setVisibility(View.VISIBLE);
+			}
+			layout.addView(this.mSkipButton, params);
+		} else
+			this.mCanClose = false;
+		this.mInterstitialView
+				.setOnClickListener(this.mInterstitialClickListener);
+		this.mRootLayout.addView(layout);
+		
+		new ImpressionThread(mContext, mAd.getmImpressionUrl(), Util.PublisherId,Util.AD_TYPE.FULL_SCREEN_VIDEO).start();
+
+		if(Util.MIAOZHENFLAG){
+			if(mAd.getmTrackingUrl()!=null)
+				MZMonitor.adTrack(mContext, mAd.getmTrackingUrl());
+		}
+		
+		switch (this.mInterstitialData.interstitialType)
+		{
+			case InterstitialData.INTERSTITIAL_MARKUP:
+				if(Util.isCacheLoaded())
+				{
+					String textData = this.mInterstitialData.interstitialMarkup;
+					if(textData!=null)
+					{
+						int startInd = textData.indexOf(
+								"<img")+10;
+						int endInd = textData.indexOf(
+								">", startInd)-1;
+						String thisImageText = textData.substring(startInd, endInd);
+						URL url = null;
+						try
+						{
+							url = new URL(thisImageText);
+						} catch (MalformedURLException e)
+						{
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						if (url != null)
+						{
+							Util.ExternalName = "." + Util.getExtensionName(url.getPath());
+						} else
+						{
+							Util.ExternalName = ".jpg";
+						}
+					}
+					this.mInterstitialView
+							.setMarkup(this.mInterstitialData.interstitialMarkup);
+				}
+				break;
+			case InterstitialData.INTERSTITIAL_URL:
+				this.mInterstitialView
+						.loadUrl(this.mInterstitialData.interstitialUrl);
+				break;
+		}
 	}
 	
 	private final OnTimeEventListener mOverlayShowListener = new OnTimeEventListener()

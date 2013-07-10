@@ -2,6 +2,7 @@ package com.joyplus.adkey;
 
 import static com.joyplus.adkey.Const.PREFS_DEVICE_ID;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -44,6 +45,7 @@ import android.widget.FrameLayout;
 
 import com.joyplus.adkey.data.ScreenSaverInfo;
 import com.joyplus.adkey.video.RichMediaAd;
+import com.joyplus.adkey.widget.SerializeManager;
 
 public class Util {
 	public enum AD_TYPE {
@@ -479,6 +481,29 @@ public class Util {
 	 */
 	public void getClassFromSeriale(){
 		
+	}
+	
+	public static boolean isCacheLoaded()
+	{
+		SerializeManager serializeManager = new SerializeManager();
+		String path = Const.DOWNLOAD_PATH + Util.VideoFileDir;		
+		File file = new File(path);
+		if (!file.exists()){
+			file.mkdir();
+		}
+		RichMediaAd lastResponse = (RichMediaAd) serializeManager
+				.readSerializableData(path+ "ad");
+		if(lastResponse.getType() == Const.NO_AD){
+			return false;
+		}
+		String[] temp = file.list();
+		for (String fileName : temp) {
+			if (fileName.contains(Const.DOWNLOAD_PLAY_FILE)
+					|| fileName.contains(Const.DOWNLOAD_DISPLAY_IMG)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 }

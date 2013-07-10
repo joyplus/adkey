@@ -28,6 +28,8 @@ import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.joyplus.adkey.Const;
+import com.joyplus.adkey.Util;
 import com.joyplus.adkey.video.InterstitialController.BrowserControl;
 import com.joyplus.adkey.video.WebViewClient.OnPageLoadedListener;
 
@@ -154,9 +156,18 @@ public class WebFrame extends FrameLayout implements BrowserControl {
 	}
 
 	public void setMarkup(String htmlMarkup) {
-		String data = Uri.encode(htmlMarkup);
-		this.mWebViewClient.setAllowedUrl(null);
-		this.mWebView.loadData(data, "text/html", ENCODING);
+//		String data = Uri.encode("<meta content=\"width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;\" name=\"viewport\" />"+
+//"<meta name=\"viewport\" content=\"width=device-width\" /><div style=\"position:absolute;top:0;left:0;width:100%;height:100%;background-color:red;\">" +
+//"<a href=\"mfox:external:http://www.taobao.com\"><img width=\"100%\" height=\"100%\" src=\"file:///mnt/sdcard/adsdk/com.joyplus.tv/03f9d5d1ead2ac506a91f2c0f5c21d46/jp_adv_display_image.jpg\"></a></div>");
+////		String data = Uri.encode(htmlMarkup);
+//		this.mWebViewClient.setAllowedUrl(null);
+//		this.mWebView.loadData(data, "text/html", ENCODING);
+		String baseUrl = "file://";
+		baseUrl = baseUrl+Const.DOWNLOAD_PATH+Util.VideoFileDir;
+		String textPath =  Const.HIDE_BORDER + "<img src='"
+				+ (Const.DOWNLOAD_DISPLAY_IMG)+Util.ExternalName + "'/>";
+		this.mWebView.loadDataWithBaseURL(baseUrl, textPath, "text/html",
+				"utf-8", null);
 	}
 
 	@Override

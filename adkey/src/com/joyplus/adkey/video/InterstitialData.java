@@ -16,7 +16,7 @@ public class InterstitialData implements Serializable {
 	int                       orientation;
 	int                       interstitialType;
 	String                    interstitialUrl;
-	String                    interstitialMarkup;
+	public String             interstitialMarkup;
 	boolean                   showSkipButton;
 	int                       showSkipButtonAfter;
 	String                    skipButtonImage;
