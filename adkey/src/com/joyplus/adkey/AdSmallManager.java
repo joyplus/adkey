@@ -15,7 +15,9 @@ import com.joyplus.adkey.video.ResourceManager;
 import com.joyplus.adkey.video.RichMediaAd;
 import com.joyplus.adkey.video.RichMediaView;
 import com.joyplus.adkey.video.TrackerService;
+import com.joyplus.adkey.widget.DownloadSmallVideoThread;
 import com.joyplus.adkey.widget.Log;
+import com.joyplus.adkey.widget.SerializeManager;
 
 public class AdSmallManager{
 	
@@ -35,7 +37,9 @@ public class AdSmallManager{
 	private String requestURL;
 
 	private String mUserAgent;
-
+	private SerializeManager serializeManager = null;
+	
+	
 	public static AdSmallManager getAdManager(RichMediaAd ad) {
 		AdSmallManager adManager = sRunningAds.remove(ad.getTimestamp());
 		return adManager;
@@ -120,57 +124,51 @@ public class AdSmallManager{
 					try {
 						RequestRichMediaAd requestAd = new RequestRichMediaAd();
 						AdRequest request = getRequest();
+						String path = Const.DOWNLOAD_PATH + Util.VideoFileDir
+								+ "ad";
+						File cacheDir = new File(Const.DOWNLOAD_PATH+Util.VideoFileDir);
+						if (!cacheDir.exists())
+							cacheDir.mkdirs();
 						
-						mResponse = requestAd.sendRequest(request);
-						if(mResponse.getVideo()!=null && android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.FROYO){
-							notifyNoAdFound();
+						mResponse = (RichMediaAd) serializeManager
+								.readSerializableData(path);
+						if (mResponse != null)
+						{
+							RichMediaAd nextResponse = requestAd
+									.sendRequest(request);
+							serializeManager.writeSerializableData(path,
+									nextResponse);
+						} else
+						{
+							mResponse = requestAd.sendRequest(request);
+							serializeManager.writeSerializableData(path,
+									mResponse);
 						}
-						else if (mResponse.getType() == Const.VIDEO_TO_INTERSTITIAL || mResponse.getType() == Const.INTERSTITIAL_TO_VIDEO || mResponse.getType() == Const.VIDEO || mResponse.getType() == Const.INTERSTITIAL ) {
-							if (mListener != null) {
-								mHandler.post(new Runnable() {
-
-									@Override
-									public void run() {
-										mListener.adLoadSucceeded(mResponse);
-									}
-								});
-							}
-						} else if (mResponse.getType() == Const.NO_AD){
-							if (mListener != null) {
-								mHandler.post(new Runnable() {
-
-									@Override
-									public void run() {
-										notifyNoAdFound();
-									}
-								});
-							}
-						}
-						else {
-							if (mListener != null) {
-								mHandler.post(new Runnable() {
-
-									@Override
-									public void run() {
-										notifyNoAdFound();
-									}
-								});
-							}
-						}
+						handleRequest();
+						
 					} catch (Throwable t) {
-						mResponse = new RichMediaAd();
-						mResponse.setType(Const.AD_FAILED);
-						if (mListener != null) {
-							t.printStackTrace();
-
-							mHandler.post(new Runnable() {
-
-								@Override
-								public void run() {
-									notifyNoAdFound();
-
-								}
-							});
+						String path = Const.DOWNLOAD_PATH + Util.VideoFileDir
+								+ "ad";
+						mResponse = (RichMediaAd) serializeManager
+								.readSerializableData(path);
+						if (mResponse != null)
+						{
+							handleRequest();
+						} else{
+							mResponse = new RichMediaAd();
+							mResponse.setType(Const.AD_FAILED);
+							if (mListener != null) {
+								t.printStackTrace();
+								
+								mHandler.post(new Runnable() {
+									
+									@Override
+									public void run() {
+										notifyNoAdFound();
+										
+									}
+								});
+							}
 						}
 					}
 					mRequestThread = null;
@@ -190,7 +188,60 @@ public class AdSmallManager{
 			mRequestThread.start();
 		}
 	}
-
+	
+	private void handleRequest(){
+		if (mResponse.getVideo() != null
+				&& android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.FROYO)
+		{
+			notifyNoAdFound();
+		} else if (mResponse.getType() == Const.VIDEO_TO_INTERSTITIAL
+				|| mResponse.getType() == Const.INTERSTITIAL_TO_VIDEO
+				|| mResponse.getType() == Const.VIDEO
+				|| mResponse.getType() == Const.INTERSTITIAL)
+		{
+			if (mListener != null)
+			{
+				mHandler.post(new Runnable()
+				{
+					
+					@Override
+					public void run()
+					{
+						mListener.adLoadSucceeded(mResponse);
+					}
+				});
+			}
+		} else if (mResponse.getType() == Const.NO_AD)
+		{
+			if (mListener != null)
+			{
+				mHandler.post(new Runnable()
+				{
+					
+					@Override
+					public void run()
+					{
+						notifyNoAdFound();
+					}
+				});
+			}
+		} else
+		{
+			if (mListener != null)
+			{
+				mHandler.post(new Runnable()
+				{
+					
+					@Override
+					public void run()
+					{
+						notifyNoAdFound();
+					}
+				});
+			}
+		}
+	}
+	
 	public void setRequestURL(String requestURL){
 		this.requestURL = requestURL;
 	}
@@ -306,17 +357,14 @@ public class AdSmallManager{
 	}
 	
 	public void showAd() {
-		//
-		Activity activity = (Activity) getContext();
 		if ((mResponse == null)
 				|| (mResponse.getType() == Const.NO_AD)
 				|| (mResponse.getType() == Const.AD_FAILED)) {
 			notifyAdShown(mResponse, false);
 			return;
 		}
-		RichMediaAd ad = mResponse;
-		boolean result = false;
-		new RichMediaView(mContext,ad,layout);
+		AdRequest request = getRequest();
+		new RichMediaView(mContext,mResponse,layout,request);
 	}
 	
 	private void initialize() throws IllegalArgumentException {
@@ -324,7 +372,7 @@ public class AdSmallManager{
 		 * init Util.VideoFileDir
 		 */
 		Util.GetPackage(mContext);
-		
+		serializeManager = new SerializeManager();
 		mUserAgent = Util.getDefaultUserAgentString(getContext());
 		this.mUniqueId1 = Util.getTelephonyDeviceId(getContext());
 		this.mUniqueId2 = Util.getDeviceId(getContext());

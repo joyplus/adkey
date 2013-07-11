@@ -37,7 +37,7 @@ public class ImpressionThread extends Thread{
 	public void run()
 	{
 		// TODO Auto-generated method stub
-		//impression参数
+		//impression
 		String url = mImpressionUrl+"&ds="+Util.GetDeviceName();
 		int startInd = url.indexOf("&ad_id");
 		if(startInd > 0){

@@ -13,16 +13,16 @@ import com.joyplus.adkey.widget.Log;
 import android.content.Context;
 
 public class DisplayImgDownloader {
-	private String urlstr;// 下载的地址
-	private String localfile;// 保存路径
-	private int fileSize = 0;//文件大小
-	private int compeleteSize = 0;//文件下载完成大小
+	private String urlstr;// 涓嬭浇鐨勫湴鍧�
+	private String localfile;// 淇濆瓨璺緞
+	private int fileSize = 0;//鏂囦欢澶у皬
+	private int compeleteSize = 0;//鏂囦欢涓嬭浇瀹屾垚澶у皬
 	private Context context;
-	private static final int INIT = 1;// 定义三种下载的状态：初始化状态，正在下载状态，暂停状态
-	private static final int DOWNLOADING = 2;//正在下载中
-	private static final int PAUSE = 3;//暂停
-	private static final int STOP = 4;//停止
-	private static final int FAILED = 5;//失败
+	private static final int INIT = 1;// 瀹氫箟涓夌涓嬭浇鐨勭姸鎬侊細鍒濆鍖栫姸鎬侊紝姝ｅ湪涓嬭浇鐘舵�锛屾殏鍋滅姸鎬�
+	private static final int DOWNLOADING = 2;//姝ｅ湪涓嬭浇涓�
+	private static final int PAUSE = 3;//鏆傚仠
+	private static final int STOP = 4;//鍋滄
+	private static final int FAILED = 5;//澶辫触
 	private int state = INIT;
 
 	public DisplayImgDownloader(String urlstr, Context context) {
@@ -37,14 +37,14 @@ public class DisplayImgDownloader {
 	}
 
 	/**
-	 * 判断是否正在下载
+	 * 鍒ゆ柇鏄惁姝ｅ湪涓嬭浇
 	 */
 	public boolean isdownloading() {
 		return state == DOWNLOADING;
 	}
 
 	/**
-	 * 初始化
+	 * 鍒濆鍖�
 	 */
 	private void init() {
 		HttpURLConnection connection = null;
@@ -67,10 +67,10 @@ public class DisplayImgDownloader {
 	}
 
 	/**
-	 * 利用线程开始下载数据
+	 * 鍒╃敤绾跨▼寮�涓嬭浇鏁版嵁
 	 */
 	public void download() {
-		//前面一个为path
+		//鍓嶉潰涓�釜涓簆ath
 		new MyThread(urlstr, context).start();
 	}
 
@@ -84,11 +84,11 @@ public class DisplayImgDownloader {
 			this.context = context;
 		}
 
-		// localfile的值是什么呢
+		// localfile
 		@SuppressWarnings("resource")
 		@Override
 		public void run() {
-			// 标记此线程为true
+			//true
 			localfile = Const.DOWNLOAD_PATH+Util.VideoFileDir+Const.DOWNLOAD_DISPLAY_IMG+Util.ExternalName;
 			File file = new File(localfile);
 			if(file.exists())
@@ -106,7 +106,7 @@ public class DisplayImgDownloader {
 				fileSize = connection.getContentLength();
 				randomAccessFile = new RandomAccessFile(localfile, "rwd");
 				inputstream = connection.getInputStream();
-				// 将要下载的文件写到保存在保存路径下的文件
+				// 
 				byte[] buffer = new byte[1024 * 50];
 				int length = -1;
 				while ((length = inputstream.read(buffer)) != -1) {
@@ -134,17 +134,17 @@ public class DisplayImgDownloader {
 		}
 	}
 
-	// 删除数据库中urlstr对应的下载器信息
+	// 鍒犻櫎鏁版嵁搴撲腑urlstr瀵瑰簲鐨勪笅杞藉櫒淇℃伅
 	public void delete(String urlstr) {
 		
 	}
 
-	// 设置暂停
+	// 璁剧疆鏆傚仠
 	public void pause() {
 		state = PAUSE;
 	}
 
-	// 重置下载状态
+	// 閲嶇疆涓嬭浇鐘舵�
 	public void reset() {
 		state = INIT;
 	}
