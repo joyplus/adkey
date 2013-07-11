@@ -14,8 +14,8 @@ public class SmallActivity extends Activity implements AdListener
 {
 	private FrameLayout layout;
 	private AdSmallManager mManager = null;
-	private String publisherId = "dabb5c604c9dd34e4ee519c9c2fdcd52";//要显示广告的publisherId
-	private boolean cacheMode = true;//该广告加载时是否用本地缓存
+	private String publisherId = "76e1378177da2ee37f86777b506567d3";//publisherId
+	private boolean cacheMode = true;//
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState){

@@ -77,6 +77,8 @@ public class Util {
 	public static int ScreenSaverAdNum = -1;
 	//miaozhen sdk is supported
 	public static boolean MIAOZHENFLAG = true;
+	
+	public static String PlayingSmallVideoName = null;
 	public static boolean isNetworkAvailable(Context ctx) {
 		int networkStatePermission = ctx
 				.checkCallingOrSelfPermission(Manifest.permission.ACCESS_NETWORK_STATE);

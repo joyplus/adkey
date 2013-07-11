@@ -1,72 +1,49 @@
 package com.joyplus.adkey.video;
 
-import static com.joyplus.adkey.Const.AD_EXTRA;
-
 import java.io.File;
-import java.io.InputStream;
-import java.lang.Thread.UncaughtExceptionHandler;
-import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.PublicKey;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
 
-import com.joyplus.adkey.AdListener;
-import com.joyplus.adkey.AdManager;
 import com.joyplus.adkey.AdRequest;
 import com.joyplus.adkey.Const;
-import com.joyplus.adkey.RequestRichMediaAd;
 import com.joyplus.adkey.Util;
-import com.joyplus.adkey.download.Downloader;
 import com.joyplus.adkey.download.ImpressionThread;
 import com.joyplus.adkey.video.InterstitialController.OnResetAutocloseListener;
 import com.joyplus.adkey.video.MediaController.OnPauseListener;
 import com.joyplus.adkey.video.MediaController.OnReplayListener;
 import com.joyplus.adkey.video.MediaController.OnUnpauseListener;
-import com.joyplus.adkey.video.RichMediaActivity.CanSkipTask;
-import com.joyplus.adkey.video.RichMediaActivity.InterstitialAutocloseTask;
-import com.joyplus.adkey.video.RichMediaActivity.InterstitialLoadingTimeoutTask;
 import com.joyplus.adkey.video.SDKVideoView.OnStartListener;
 import com.joyplus.adkey.video.SDKVideoView.OnTimeEventListener;
 import com.joyplus.adkey.video.WebViewClient.OnPageLoadedListener;
+import com.joyplus.adkey.widget.DownloadSmallVideoThread;
 import com.joyplus.adkey.widget.Log;
+import com.joyplus.adkey.widget.SerializeManager;
 import com.miaozhen.mzmonitor.MZMonitor;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
-import android.location.Location;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
 import android.media.MediaPlayer.OnInfoListener;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebChromeClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.VideoView;
 
 public class RichMediaView extends FrameLayout
@@ -126,12 +103,18 @@ public class RichMediaView extends FrameLayout
 	int skipButtonSizeLand = 50;
 	
 	int skipButtonSizePort = 40;
+	private AdRequest request = null;
+	private FrameLayout layout = null;
+	private SerializeManager serializeManager = null;
 	
-	public RichMediaView(Context context, RichMediaAd ad,FrameLayout layout)
+	public RichMediaView(Context context, RichMediaAd ad,FrameLayout layout,AdRequest request)
 	{
 		super(context);
 		mContext = context;
 		mAd = ad;
+		this.request = request;
+		serializeManager = new SerializeManager();
+		this.layout = layout;
 		initVideo(layout);
 	}
 	
@@ -189,7 +172,158 @@ public class RichMediaView extends FrameLayout
 				this.initVideoView();
 				break;
 			case TYPE_INTERSTITIAL:
-//				this.initInterstitialView();
+				this.initInterstitialView();
+				break;
+		}
+	}
+	
+	private void initInterstitialView()
+	{
+		Timer timer = new Timer();
+		TimerTask task = new TimerTask() {
+			@Override
+			public void run() {
+				/*
+				 * hanlder something
+				 */
+//				initVideo(layout);
+			}
+		};
+		timer.schedule(task, 5000); //
+		this.mInterstitialData = this.mAd.getInterstitial();
+		this.mInterstitialAutocloseReset = false;
+		this.mInterstitialView = new WebFrame((Activity) mContext, true, false, false);
+		this.mInterstitialView.setBackgroundColor(Color.BLACK);//
+		this.mInterstitialView
+				.setOnPageLoadedListener(this.mOnInterstitialLoadedListener);
+		this.mInterstitialController = new InterstitialController(mContext,
+				this.mInterstitialData);
+		this.mInterstitialController.setBrowser(this.mInterstitialView);
+		this.mInterstitialController.setBrowserView(this.mInterstitialView);
+		this.mInterstitialController
+				.setOnResetAutocloseListener(this.mOnResetAutocloseListener);
+		layout.addView(this.mInterstitialController,
+				new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+						LayoutParams.MATCH_PARENT, Gravity.CENTER));
+		if (this.mInterstitialData.showNavigationBars)
+			this.mInterstitialController.show(0);
+		if (this.mInterstitialData.showSkipButton)
+		{
+			
+			this.mSkipButton = new ImageView(mContext);
+			this.mSkipButton.setAdjustViewBounds(false);
+			FrameLayout.LayoutParams params = null;
+			
+			int buttonSize = (int) TypedValue.applyDimension(
+					TypedValue.COMPLEX_UNIT_DIP, this.skipButtonSizeLand, this
+							.getResources().getDisplayMetrics());
+			
+			int size = Math.min(
+					this.getResources().getDisplayMetrics().widthPixels, this
+							.getResources().getDisplayMetrics().heightPixels);
+			buttonSize = (int) (size * 0.1);
+			
+			params = new FrameLayout.LayoutParams(buttonSize, buttonSize,
+					Gravity.TOP | Gravity.RIGHT);
+			
+			if (this.mInterstitialData.orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+			{
+				final int margin = (int) TypedValue.applyDimension(
+						TypedValue.COMPLEX_UNIT_DIP, 8, this.getResources()
+								.getDisplayMetrics());
+				params.topMargin = margin;
+				params.rightMargin = margin;
+			} else
+			{
+				final int margin = (int) TypedValue.applyDimension(
+						TypedValue.COMPLEX_UNIT_DIP, 10, this.getResources()
+								.getDisplayMetrics());
+				params.topMargin = margin;
+				params.rightMargin = margin;
+			}
+			
+			if (this.mInterstitialData.skipButtonImage != null
+					&& this.mInterstitialData.skipButtonImage.length() > 0)
+			{
+				this.mSkipButton.setBackgroundDrawable(null);
+				this.mResourceManager.fetchResource(mContext,
+						this.mInterstitialData.skipButtonImage,
+						ResourceManager.DEFAULT_SKIP_IMAGE_RESOURCE_ID);
+			} 
+//			else
+//				this.mSkipButton.setImageDrawable(mResourceManager.getResource(
+//						mContext, ResourceManager.DEFAULT_SKIP_IMAGE_RESOURCE_ID));
+//			this.mSkipButton
+//					.setOnClickListener(this.mOnInterstitialSkipListener);
+			if (this.mInterstitialData.showSkipButtonAfter > 0)
+			{
+				this.mCanClose = false;
+				this.mSkipButton.setVisibility(View.GONE);
+				if (this.mInterstitialLoadingTimer == null)
+				{
+//					final InterstitialLoadingTimeoutTask loadingTimeoutTask = new InterstitialLoadingTimeoutTask();
+//					this.mInterstitialLoadingTimer = new Timer();
+//					this.mInterstitialLoadingTimer.schedule(loadingTimeoutTask,
+//							Const.CONNECTION_TIMEOUT);
+				}
+				
+			} else
+			{
+				this.mCanClose = true;
+				this.mSkipButton.setVisibility(View.VISIBLE);
+			}
+			layout.addView(this.mSkipButton, params);
+		} else
+			this.mCanClose = false;
+		this.mInterstitialView
+				.setOnClickListener(this.mInterstitialClickListener);
+		
+		new ImpressionThread(mContext, mAd.getmImpressionUrl(), Util.PublisherId,Util.AD_TYPE.FULL_SCREEN_VIDEO).start();
+
+		if(Util.MIAOZHENFLAG){
+			if(mAd.getmTrackingUrl()!=null)
+				MZMonitor.adTrack(mContext, mAd.getmTrackingUrl());
+		}
+		
+		setAdvImgPathAndRequestNext();
+		
+		switch (this.mInterstitialData.interstitialType)
+		{
+			case InterstitialData.INTERSTITIAL_MARKUP:
+				if(Util.isCacheLoaded())
+				{
+					String textData = this.mInterstitialData.interstitialMarkup;
+					if(textData!=null)
+					{
+						int startInd = textData.indexOf(
+								"<img")+10;
+						int endInd = textData.indexOf(
+								">", startInd)-1;
+						String thisImageText = textData.substring(startInd, endInd);
+						URL url = null;
+						try
+						{
+							url = new URL(thisImageText);
+						} catch (MalformedURLException e)
+						{
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						if (url != null)
+						{
+							Util.ExternalName = "." + Util.getExtensionName(url.getPath());
+						} else
+						{
+							Util.ExternalName = ".jpg";
+						}
+					}
+					this.mInterstitialView
+							.setMarkup(this.mInterstitialData.interstitialMarkup);
+				}
+				break;
+			case InterstitialData.INTERSTITIAL_URL:
+				this.mInterstitialView
+						.loadUrl(this.mInterstitialData.interstitialUrl);
 				break;
 		}
 	}
@@ -218,12 +352,20 @@ public class RichMediaView extends FrameLayout
 			this.mVideoWidth = this.mWindowWidth;
 			this.mVideoHeight = this.mWindowHeight;
 		}
-		
+		if(this.mVideoView != null){
+			this.mVideoLayout.removeView(this.mVideoView);
+		}
+		if(this.mMediaController != null){
+			this.mVideoLayout.removeView(this.mMediaController);
+		}
+		if(this.mLoadingView != null){
+			this.mVideoLayout.removeView(this.mLoadingView);
+		}
 		this.mVideoView = new SDKVideoView(mContext, this.mVideoWidth,
 				this.mVideoHeight, this.mVideoData.display);
 		this.mVideoLayout.addView(mVideoView,
-		 new FrameLayout.LayoutParams(this.mVideoWidth,
-				 this.mVideoHeight, Gravity.CENTER));//在这个位置可以进行画面的改动
+					new FrameLayout.LayoutParams(this.mVideoWidth,
+							this.mVideoHeight, Gravity.CENTER));//
 		
 		this.mMediaController = new MediaController(mContext, mVideoData);
 		this.mVideoView.setMediaController(this.mMediaController);
@@ -238,6 +380,7 @@ public class RichMediaView extends FrameLayout
 		if (!this.mVideoData.replayEvents.isEmpty())
 			this.mMediaController
 					.setOnReplayListener(this.mOnVideoReplayListener);
+		
 		this.mVideoLayout.addView(this.mMediaController,
 				new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
 						LayoutParams.MATCH_PARENT, Gravity.FILL_HORIZONTAL));// fill_parent
@@ -303,13 +446,13 @@ public class RichMediaView extends FrameLayout
 		final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,
 				Gravity.CENTER);
-		this.mLoadingView = new FrameLayout(mContext);
-		final TextView loadingText = new TextView(mContext);
-		loadingText.setText(Const.LOADING);
-		this.mLoadingView.addView(loadingText, params);
-		this.mVideoLayout.addView(this.mLoadingView,
-				new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
-						LayoutParams.MATCH_PARENT, Gravity.CENTER));// fill_parent
+//		this.mLoadingView = new FrameLayout(mContext);
+//		final TextView loadingText = new TextView(mContext);
+//		loadingText.setText(Const.LOADING);
+//		this.mLoadingView.addView(loadingText, params);
+//		this.mVideoLayout.addView(this.mLoadingView,
+//				new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+//						LayoutParams.MATCH_PARENT, Gravity.CENTER));// fill_parent
 		
 		this.mVideoView.setOnPreparedListener(this.mOnVideoPreparedListener);
 		this.mVideoView
@@ -330,187 +473,92 @@ public class RichMediaView extends FrameLayout
 			}
 		}
 		this.mVideoLastPosition = 0;
+		mVideoLayout.setBackgroundColor(Color.BLACK);
+		setAdvPathAndRequestNext();
+	}
+	
+	private void setAdvPathAndRequestNext(){
+		String localfile = Const.DOWNLOAD_PATH + Util.VideoFileDir
+				+ Const.DOWNLOADING_SMALLVIDEO;
+		File tempFile = new File(localfile);
+		if (!tempFile.exists()) {
+			RichMediaAd tempad = (RichMediaAd) serializeManager.readSerializableData(Const.DOWNLOAD_PATH + Util.VideoFileDir+"ad");
+			if(tempad != null)
+			{
+				mAd = tempad;
+				this.mVideoData.videoUrl = mAd.getVideo().videoUrl;
+			}	
+		}
 		String path = this.mVideoData.videoUrl;
 		if (Util.CACHE_MODE)
 		{
-			URL url = null;
-			try
-			{
-				url = new URL(this.mVideoData.videoUrl);
-			} catch (MalformedURLException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			if (url != null)
-			{
-				Util.ExternalName = "." + Util.getExtensionName(url.getPath());
-			} else
-			{
-				Util.ExternalName = ".mp4";
-			}
-			
-			Downloader downloader = new Downloader(path, mContext);
-			if (path.startsWith("http:") || path.startsWith("https:"))
-			{
-				downloader.download();
-				Log.i(Const.TAG, "download starting");
-			}
-			File file = new File(Const.DOWNLOAD_PATH + Util.VideoFileDir+Const.DOWNLOAD_PLAY_FILE
-					+ Util.ExternalName);
-			if (!file.exists())
-			{
-				Log.i(Const.TAG, "Play OnLine");
-			} else
-			{
-				Log.i(Const.TAG, "Play LocalCacheFile");
-				path = Const.DOWNLOAD_PATH + Util.VideoFileDir+Const.DOWNLOAD_PLAY_FILE
-						+ Util.ExternalName;
+			if(Util.PlayingSmallVideoName == null){
+				path = getPlayPath(Const.DOWNLOAD_PATH + Util.VideoFileDir+Const.DOWNLOAD_SMALLVIDEO
+						+ Util.ExternalName, path);
+			} else {
+				if(Util.PlayingSmallVideoName.contains("_ts")){// is playing done
+					path = getPlayPath(Const.DOWNLOAD_PATH + Util.VideoFileDir+Const.DOWNLOAD_SMALLVIDEO
+							+ Util.ExternalName, path);
+				}else if(Util.PlayingSmallVideoName.contains("http")){	// is playing online			
+					path = getPlayPath(Const.DOWNLOAD_PATH + Util.VideoFileDir+Const.DOWNLOAD_SMALLVIDEO
+							+ Util.ExternalName, path);				
+				}else{				// is playing ts
+					path = getPlayPath(Const.DOWNLOAD_PATH + Util.VideoFileDir+Const.DOWNLOAD_SMALLVIDEO + "_ts"
+							+ Util.ExternalName, path);
+				}				
 			}
 		}
-		
-		this.mVideoView.setVideoPath(path);
-	}
-	
-	private void initInterstitialView()
-	{	
-		this.mInterstitialData = this.mAd.getInterstitial();
-		this.mInterstitialAutocloseReset = false;
-		
-//		setRequestedOrientation(this.mInterstitialData.orientation);
-		final FrameLayout layout = new FrameLayout(mContext);
-//		this.mInterstitialView = new WebFrame(this, true, false, false);
-		this.mInterstitialView.setBackgroundColor(Color.BLACK);//原来为透明色
-		this.mInterstitialView
-				.setOnPageLoadedListener(this.mOnInterstitialLoadedListener);
-		this.mInterstitialController = new InterstitialController(mContext,
-				this.mInterstitialData);
-		this.mInterstitialController.setBrowser(this.mInterstitialView);
-		this.mInterstitialController.setBrowserView(this.mInterstitialView);
-		this.mInterstitialController
-				.setOnResetAutocloseListener(this.mOnResetAutocloseListener);
-		layout.addView(this.mInterstitialController,
-				new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
-						LayoutParams.MATCH_PARENT, Gravity.CENTER));
-		if (this.mInterstitialData.showNavigationBars)
-			this.mInterstitialController.show(0);
-		if (this.mInterstitialData.showSkipButton)
-		{
-			
-			this.mSkipButton = new ImageView(mContext);
-			this.mSkipButton.setAdjustViewBounds(false);
-			FrameLayout.LayoutParams params = null;
-			
-			int buttonSize = (int) TypedValue.applyDimension(
-					TypedValue.COMPLEX_UNIT_DIP, this.skipButtonSizeLand, this
-							.getResources().getDisplayMetrics());
-			
-			int size = Math.min(
-					this.getResources().getDisplayMetrics().widthPixels, this
-							.getResources().getDisplayMetrics().heightPixels);
-			buttonSize = (int) (size * 0.1);
-			
-			params = new FrameLayout.LayoutParams(buttonSize, buttonSize,
-					Gravity.TOP | Gravity.RIGHT);
-			
-			if (this.mInterstitialData.orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-			{
-				final int margin = (int) TypedValue.applyDimension(
-						TypedValue.COMPLEX_UNIT_DIP, 8, this.getResources()
-								.getDisplayMetrics());
-				params.topMargin = margin;
-				params.rightMargin = margin;
-			} else
-			{
-				final int margin = (int) TypedValue.applyDimension(
-						TypedValue.COMPLEX_UNIT_DIP, 10, this.getResources()
-								.getDisplayMetrics());
-				params.topMargin = margin;
-				params.rightMargin = margin;
-			}
-			
-			if (this.mInterstitialData.skipButtonImage != null
-					&& this.mInterstitialData.skipButtonImage.length() > 0)
-			{
-				this.mSkipButton.setBackgroundDrawable(null);
-				this.mResourceManager.fetchResource(mContext,
-						this.mInterstitialData.skipButtonImage,
-						ResourceManager.DEFAULT_SKIP_IMAGE_RESOURCE_ID);
-			} else
-				this.mSkipButton.setImageDrawable(mResourceManager.getResource(
-						mContext, ResourceManager.DEFAULT_SKIP_IMAGE_RESOURCE_ID));
-			this.mSkipButton
-					.setOnClickListener(this.mOnInterstitialSkipListener);
-			if (this.mInterstitialData.showSkipButtonAfter > 0)
-			{
-				this.mCanClose = false;
-				this.mSkipButton.setVisibility(View.GONE);
-				if (this.mInterstitialLoadingTimer == null)
-				{
-//					final InterstitialLoadingTimeoutTask loadingTimeoutTask = new InterstitialLoadingTimeoutTask();
-//					this.mInterstitialLoadingTimer = new Timer();
-//					this.mInterstitialLoadingTimer.schedule(loadingTimeoutTask,
-//							Const.CONNECTION_TIMEOUT);
-				}
-				
-			} else
-			{
-				this.mCanClose = true;
-				this.mSkipButton.setVisibility(View.VISIBLE);
-			}
-			layout.addView(this.mSkipButton, params);
-		} else
-			this.mCanClose = false;
-		this.mInterstitialView
-				.setOnClickListener(this.mInterstitialClickListener);
-		this.mRootLayout.addView(layout);
-		
 		new ImpressionThread(mContext, mAd.getmImpressionUrl(), Util.PublisherId,Util.AD_TYPE.FULL_SCREEN_VIDEO).start();
-
 		if(Util.MIAOZHENFLAG){
 			if(mAd.getmTrackingUrl()!=null)
 				MZMonitor.adTrack(mContext, mAd.getmTrackingUrl());
 		}
+		Util.PlayingSmallVideoName = path;
+		this.mVideoView.setVideoPath(path);
+		String pathTemp = Const.DOWNLOAD_PATH + Util.VideoFileDir
+				+ "ad";
+		File cacheDir = new File(Const.DOWNLOAD_PATH+Util.VideoFileDir);
+		if (!cacheDir.exists())
+			cacheDir.mkdirs();
 		
-		switch (this.mInterstitialData.interstitialType)
-		{
-			case InterstitialData.INTERSTITIAL_MARKUP:
-				if(Util.isCacheLoaded())
-				{
-					String textData = this.mInterstitialData.interstitialMarkup;
-					if(textData!=null)
-					{
-						int startInd = textData.indexOf(
-								"<img")+10;
-						int endInd = textData.indexOf(
-								">", startInd)-1;
-						String thisImageText = textData.substring(startInd, endInd);
-						URL url = null;
-						try
-						{
-							url = new URL(thisImageText);
-						} catch (MalformedURLException e)
-						{
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						if (url != null)
-						{
-							Util.ExternalName = "." + Util.getExtensionName(url.getPath());
-						} else
-						{
-							Util.ExternalName = ".jpg";
-						}
-					}
-					this.mInterstitialView
-							.setMarkup(this.mInterstitialData.interstitialMarkup);
-				}
-				break;
-			case InterstitialData.INTERSTITIAL_URL:
-				this.mInterstitialView
-						.loadUrl(this.mInterstitialData.interstitialUrl);
-				break;
+		new DownloadSmallVideoThread(pathTemp, mContext,request).start();
+	}
+	
+	private void setAdvImgPathAndRequestNext(){
+		String localfile = Const.DOWNLOAD_PATH + Util.VideoFileDir
+				+ Const.DOWNLOADING_SMALLVIDEO;
+		File tempFile = new File(localfile);
+		if (!tempFile.exists()) {
+			RichMediaAd tempad = (RichMediaAd) serializeManager.readSerializableData(Const.DOWNLOAD_PATH + Util.VideoFileDir+"ad");
+			if(tempad != null)
+			{
+				mAd = tempad;
+			}	
 		}
+		new ImpressionThread(mContext, mAd.getmImpressionUrl(), Util.PublisherId,Util.AD_TYPE.FULL_SCREEN_VIDEO).start();
+		if(Util.MIAOZHENFLAG){
+			if(mAd.getmTrackingUrl()!=null)
+				MZMonitor.adTrack(mContext, mAd.getmTrackingUrl());
+		}
+		String pathTemp = Const.DOWNLOAD_PATH + Util.VideoFileDir
+				+ "ad";
+		File cacheDir = new File(Const.DOWNLOAD_PATH+Util.VideoFileDir);
+		if (!cacheDir.exists())
+			cacheDir.mkdirs();
+		new DownloadSmallVideoThread(pathTemp, mContext,request).start();
+	}
+	
+	private String getPlayPath(String path, String defaultPath){
+		File file = new File(path);
+		if (!file.exists())
+		{
+			Log.i(Const.TAG, "Play OnLine");
+		} else
+		{
+			Log.i(Const.TAG, "Play LocalCacheFile");
+			defaultPath = path;
+		}
+		return defaultPath;
 	}
 	
 	private final OnTimeEventListener mOverlayShowListener = new OnTimeEventListener()
@@ -547,9 +595,6 @@ public class RichMediaView extends FrameLayout
 		public boolean onError(final MediaPlayer mp, final int what,
 				final int extra)
 		{
-			/*
-			 * 进行相关处理
-			 */
 			return false;
 		}
 	};
@@ -638,7 +683,10 @@ public class RichMediaView extends FrameLayout
 			}
 			if(mVideoData!=null&&mVideoData.width>0)
 			{
-				replayVideo();
+				/*
+				 * select current ad‘s videoPath to play	
+				 */
+				initVideo(layout);
 			}else{
 				mResult = true;
 			}

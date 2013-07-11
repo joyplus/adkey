@@ -12,63 +12,59 @@ import com.joyplus.adkey.widget.Log;
 
 import android.content.Context;
 
-public class Downloader {
-	private String urlstr;// 涓嬭浇鐨勫湴鍧�
-	private String localfile;// 淇濆瓨璺緞
-	private int fileSize = 0;//鏂囦欢澶у皬
-	private int compeleteSize = 0;//鏂囦欢涓嬭浇瀹屾垚澶у皬
+public class DownloaderSmallVideo {
+	private String urlstr;//
+	private String localfile;//
+	private int fileSize = 0;//
+	private int compeleteSize = 0;//
 	private Context context;
-	private static final int INIT = 1;// 瀹氫箟涓夌涓嬭浇鐨勭姸鎬侊細鍒濆鍖栫姸鎬侊紝姝ｅ湪涓嬭浇鐘舵�锛屾殏鍋滅姸鎬�
-	private static final int DOWNLOADING = 2;//姝ｅ湪涓嬭浇涓�
-	private static final int PAUSE = 3;//鏆傚仠
-	private static final int STOP = 4;//鍋滄
-	private static final int FAILED = 5;//澶辫触
+	private static final int INIT = 1;//
+	private static final int DOWNLOADING = 2;//
+	private static final int PAUSE = 3;//
+	private static final int STOP = 4;//
+	private static final int FAILED = 5;//
 	private int state = INIT;
 
-	public Downloader(String urlstr, Context context) {
+	public DownloaderSmallVideo(String urlstr, Context context) {
 		this.urlstr = urlstr;
 		this.context = context;
 		/*
 		 * if the Const.DOWNLOAD_PATH doesn't exists,mkdirs this folder
 		 */
-		File cacheDir = new File(Const.DOWNLOAD_PATH+Util.VideoFileDir);
+		File cacheDir = new File(Const.DOWNLOAD_PATH + Util.VideoFileDir);
 		if (!cacheDir.exists())
 			cacheDir.mkdirs();
 	}
 
 	/**
-	 * 鍒ゆ柇鏄惁姝ｅ湪涓嬭浇
+	 * judge is downloading
 	 */
 	public boolean isdownloading() {
 		return state == DOWNLOADING;
 	}
 
 	/**
-	 * 鍒濆鍖�
+	 * init the state
 	 */
 	private void init() {
 		HttpURLConnection connection = null;
 		try {
 			URL url = new URL(urlstr);
-			connection = (HttpURLConnection) url
-					.openConnection();
+			connection = (HttpURLConnection) url.openConnection();
 			connection.setConnectTimeout(5000);
 			connection.setRequestMethod("GET");
 			fileSize = connection.getContentLength();
 			connection.disconnect();
 		} catch (Exception e) {
 			e.printStackTrace();
-			if(connection!=null)
+			if (connection != null)
 				connection.disconnect();
-		} finally{
-			if(connection!=null)
+		} finally {
+			if (connection != null)
 				connection.disconnect();
 		}
 	}
 
-	/**
-	 * 鍒╃敤绾跨▼寮�涓嬭浇鏁版嵁
-	 */
 	public void download() {
 		//
 		new MyThread(urlstr, context).start();
@@ -84,20 +80,24 @@ public class Downloader {
 			this.context = context;
 		}
 
-		// localfile鐨勫�鏄粈涔堝憿
+		// localfile
 		@SuppressWarnings("resource")
 		@Override
 		public void run() {
-			// 鏍囪姝ょ嚎绋嬩负true
-			localfile = Const.DOWNLOAD_PATH+Util.VideoFileDir+Const.DOWNLOADING_FILE;
-			
+			// true
+			localfile = Const.DOWNLOAD_PATH + Util.VideoFileDir
+					+ Const.DOWNLOADING_SMALLVIDEO;
+			File tempFile = new File(localfile);
+			if (tempFile.exists()) {
+				tempFile.delete();
+			}
 			HttpURLConnection connection = null;
 			RandomAccessFile randomAccessFile = null;
 			InputStream inputstream = null;
 			try {
 				URL url = new URL(urlstr);
 				connection = (HttpURLConnection) url.openConnection();
-				connection.setConnectTimeout(60*1000);
+				connection.setConnectTimeout(60 * 1000);
 				connection.setRequestMethod("GET");
 				fileSize = connection.getContentLength();
 				randomAccessFile = new RandomAccessFile(localfile, "rwd");
@@ -110,56 +110,69 @@ public class Downloader {
 					compeleteSize += length;
 					if (compeleteSize == fileSize) {
 						state = STOP;
-						/*
-						 * be sure there hasn't adv_temp.mp4
-						 */
-						File file = new File(Const.DOWNLOAD_PATH+Util.VideoFileDir+Const.DOWNLOAD_READY_FILE);
-						if(file.exists())
-						{
-							file.delete();
-						}
 						randomAccessFile.close();
 						/*
 						 * set adv_temp to adv_temp.mp4
 						 */
-						File filetemp = new File(Const.DOWNLOAD_PATH+Util.VideoFileDir+Const.DOWNLOADING_FILE);
-						if(filetemp.exists())
-						{
-							File filedone = new File(Const.DOWNLOAD_PATH+Util.VideoFileDir+Const.DOWNLOAD_PLAY_FILE+Util.ExternalName);
-							if(filedone.exists()){
-								filedone.delete();
+						if (Util.PlayingSmallVideoName == null
+								|| Util.PlayingSmallVideoName.contains("http")) {
+							renameFile(tempFile, Const.DOWNLOAD_PATH
+									+ Util.VideoFileDir
+									+ Const.DOWNLOAD_SMALLVIDEO
+									+ Util.ExternalName);
+						} else {
+							if (Util.PlayingSmallVideoName.contains("_ts")) {
+								renameFile(tempFile, Const.DOWNLOAD_PATH
+										+ Util.VideoFileDir
+										+ Const.DOWNLOAD_SMALLVIDEO
+										+ Util.ExternalName);
+							} else {
+								renameFile(tempFile, Const.DOWNLOAD_PATH
+										+ Util.VideoFileDir
+										+ Const.DOWNLOAD_SMALLVIDEO + "_ts"
+										+ Util.ExternalName);
 							}
-							filetemp.renameTo(filedone);
 						}
 					}
-					if (state == PAUSE||state == STOP) {
+					if (state == PAUSE || state == STOP) {
 						return;
 					}
 				}
 			} catch (Exception e) {
 				state = STOP;
 				e.printStackTrace();
-				if(connection!=null)
+				if (tempFile.exists()) {
+					tempFile.delete();
+				}
+				if (connection != null)
 					connection.disconnect();
 			} finally {
 				state = STOP;
-				if(connection!=null)
+				if (connection != null)
 					connection.disconnect();
 			}
 		}
 	}
 
-	// 鍒犻櫎鏁版嵁搴撲腑urlstr瀵瑰簲鐨勪笅杞藉櫒淇℃伅
-	public void delete(String urlstr) {
-		
+	private void renameFile(File file, String path) {
+		File filedone_ts = new File(path);
+		if (filedone_ts.exists()) {
+			filedone_ts.delete();
+		}
+		file.renameTo(filedone_ts);
 	}
 
-	// 璁剧疆鏆傚仠
+	// delete
+	public void delete(String urlstr) {
+
+	}
+
+	// setPause，the download will stop
 	public void pause() {
 		state = PAUSE;
 	}
 
-	// 閲嶇疆涓嬭浇鐘舵�
+	// re init
 	public void reset() {
 		state = INIT;
 	}

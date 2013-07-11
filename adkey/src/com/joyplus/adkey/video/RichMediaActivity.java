@@ -753,7 +753,7 @@ public class RichMediaActivity extends Activity
 		this.setRequestedOrientation(this.mInterstitialData.orientation);
 		final FrameLayout layout = new FrameLayout(this);
 		this.mInterstitialView = new WebFrame(this, true, false, false);
-		this.mInterstitialView.setBackgroundColor(Color.BLACK);//原来为透明色
+		this.mInterstitialView.setBackgroundColor(Color.BLACK);//鍘熸潵涓洪�鏄庤壊
 		this.mInterstitialView
 				.setOnPageLoadedListener(this.mOnInterstitialLoadedListener);
 		this.mInterstitialController = new InterstitialController(this,
@@ -937,7 +937,7 @@ public class RichMediaActivity extends Activity
 				this.mVideoHeight, this.mVideoData.display);
 		this.mVideoLayout.addView(this.mVideoView,
 		 new FrameLayout.LayoutParams(this.mVideoWidth,
-		 this.mVideoHeight, Gravity.CENTER));//在这个位置可以进行画面的改动
+		 this.mVideoHeight, Gravity.CENTER));//
 		if (this.mVideoData.showHtmlOverlay)
 		{
 			this.mOverlayView = new WebFrame(this, false, false, false);
@@ -1088,29 +1088,6 @@ public class RichMediaActivity extends Activity
 		String path = this.mVideoData.videoUrl;
 		if (Util.CACHE_MODE)
 		{
-//			URL url = null;
-//			try
-//			{
-//				url = new URL(this.mVideoData.videoUrl);
-//			} catch (MalformedURLException e)
-//			{
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			if (url != null)
-//			{
-//				Util.ExternalName = "." + Util.getExtensionName(url.getPath());
-//			} else
-//			{
-//				Util.ExternalName = ".mp4";
-//			}
-//			
-//			Downloader downloader = new Downloader(path, RichMediaActivity.this);
-//			if (path.startsWith("http:") || path.startsWith("https:"))
-//			{
-//				downloader.download();
-//				Log.i(Const.TAG, "download starting");
-//			}
 			File file = new File(Const.DOWNLOAD_PATH + Util.VideoFileDir+Const.DOWNLOAD_PLAY_FILE
 					+ Util.ExternalName);
 			if (!file.exists())
