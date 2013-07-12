@@ -495,6 +495,10 @@ public class Util {
 		}
 		RichMediaAd lastResponse = (RichMediaAd) serializeManager
 				.readSerializableData(path+ "ad");
+		if(lastResponse == null)
+		{
+			return false;
+		}
 		if(lastResponse.getType() == Const.NO_AD){
 			return false;
 		}
