@@ -179,23 +179,15 @@ public class RichMediaView extends FrameLayout
 	
 	private void initInterstitialView()
 	{
-		Timer timer = new Timer();
-		TimerTask task = new TimerTask() {
-			@Override
-			public void run() {
-				/*
-				 * hanlder something
-				 */
-//				initVideo(layout);
-			}
-		};
-		timer.schedule(task, 5000); //
+		new Handler().postDelayed(RequestNextAdv, 5000);
 		this.mInterstitialData = this.mAd.getInterstitial();
 		this.mInterstitialAutocloseReset = false;
 		this.mInterstitialView = new WebFrame((Activity) mContext, true, false, false);
 		this.mInterstitialView.setBackgroundColor(Color.BLACK);//
-		this.mInterstitialView
-				.setOnPageLoadedListener(this.mOnInterstitialLoadedListener);
+		this.mInterstitialView.setOnPageLoadedListener(this.mOnInterstitialLoadedListener);
+		if(this.mInterstitialController!=null){
+			layout.removeView(this.mInterstitialController);
+		}
 		this.mInterstitialController = new InterstitialController(mContext,
 				this.mInterstitialData);
 		this.mInterstitialController.setBrowser(this.mInterstitialView);
@@ -277,14 +269,6 @@ public class RichMediaView extends FrameLayout
 			this.mCanClose = false;
 		this.mInterstitialView
 				.setOnClickListener(this.mInterstitialClickListener);
-		
-		new ImpressionThread(mContext, mAd.getmImpressionUrl(), Util.PublisherId,Util.AD_TYPE.FULL_SCREEN_VIDEO).start();
-
-		if(Util.MIAOZHENFLAG){
-			if(mAd.getmTrackingUrl()!=null)
-				MZMonitor.adTrack(mContext, mAd.getmTrackingUrl());
-		}
-		
 		setAdvImgPathAndRequestNext();
 		
 		switch (this.mInterstitialData.interstitialType)
@@ -317,6 +301,13 @@ public class RichMediaView extends FrameLayout
 							Util.ExternalName = ".jpg";
 						}
 					}
+					new ImpressionThread(mContext, mAd.getmImpressionUrl(), Util.PublisherId,Util.AD_TYPE.FULL_SCREEN_VIDEO).start();
+
+					if(Util.MIAOZHENFLAG){
+						if(mAd.getmTrackingUrl()!=null)
+							MZMonitor.adTrack(mContext, mAd.getmTrackingUrl());
+					}
+					
 					this.mInterstitialView
 							.setMarkup(this.mInterstitialData.interstitialMarkup);
 				}
@@ -327,6 +318,15 @@ public class RichMediaView extends FrameLayout
 				break;
 		}
 	}
+	
+	private Runnable RequestNextAdv = new Runnable()
+	{
+		
+		public void run()
+		{
+			initVideo(layout);
+		}
+	};
 	
 	private void initVideoView()
 	{
@@ -354,6 +354,12 @@ public class RichMediaView extends FrameLayout
 		}
 		if(this.mVideoView != null){
 			this.mVideoLayout.removeView(this.mVideoView);
+		}
+		if(this.mInterstitialView != null){
+			this.mVideoLayout.removeView(this.mInterstitialView);
+		}
+		if(this.mInterstitialController != null){
+			this.mVideoLayout.removeView(this.mInterstitialController);
 		}
 		if(this.mMediaController != null){
 			this.mVideoLayout.removeView(this.mMediaController);
@@ -486,7 +492,11 @@ public class RichMediaView extends FrameLayout
 			if(tempad != null)
 			{
 				mAd = tempad;
-				this.mVideoData.videoUrl = mAd.getVideo().videoUrl;
+				if(tempad.getVideo()!=null){					
+					this.mVideoData.videoUrl = mAd.getVideo().videoUrl;
+				}else{
+					initInterstitialView();
+				}
 			}	
 		}
 		String path = this.mVideoData.videoUrl;
@@ -535,11 +545,11 @@ public class RichMediaView extends FrameLayout
 				mAd = tempad;
 			}	
 		}
-		new ImpressionThread(mContext, mAd.getmImpressionUrl(), Util.PublisherId,Util.AD_TYPE.FULL_SCREEN_VIDEO).start();
-		if(Util.MIAOZHENFLAG){
-			if(mAd.getmTrackingUrl()!=null)
-				MZMonitor.adTrack(mContext, mAd.getmTrackingUrl());
-		}
+//		new ImpressionThread(mContext, mAd.getmImpressionUrl(), Util.PublisherId,Util.AD_TYPE.FULL_SCREEN_VIDEO).start();
+//		if(Util.MIAOZHENFLAG){
+//			if(mAd.getmTrackingUrl()!=null)
+//				MZMonitor.adTrack(mContext, mAd.getmTrackingUrl());
+//		}
 		String pathTemp = Const.DOWNLOAD_PATH + Util.VideoFileDir
 				+ "ad";
 		File cacheDir = new File(Const.DOWNLOAD_PATH+Util.VideoFileDir);
@@ -636,12 +646,6 @@ public class RichMediaView extends FrameLayout
 		@Override
 		public void onPrepared(final MediaPlayer mp)
 		{
-			new ImpressionThread(mContext,mAd.getmImpressionUrl(),Util.PublisherId,Util.AD_TYPE.SMALL_WINDOW_VIDEO).start();
-			if(Util.MIAOZHENFLAG){
-				if(mAd.getmTrackingUrl()!=null)
-					MZMonitor.adTrack(mContext, mAd.getmTrackingUrl());
-			}
-			
 			if (mVideoTimeoutTimer != null)
 			{
 				mVideoTimeoutTimer.cancel();

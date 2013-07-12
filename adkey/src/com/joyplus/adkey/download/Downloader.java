@@ -155,7 +155,6 @@ public class Downloader {
 	}
 
 	// 璁剧疆鏆傚仠
-	// 鐠佸墽鐤嗛弳鍌氫粻
 	public void pause() {
 		state = PAUSE;
 	}
