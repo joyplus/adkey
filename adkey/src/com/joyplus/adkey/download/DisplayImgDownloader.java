@@ -13,10 +13,10 @@ import com.joyplus.adkey.widget.Log;
 import android.content.Context;
 
 public class DisplayImgDownloader {
-	private String urlstr;// 涓嬭浇鐨勫湴鍧�
-	private String localfile;// 淇濆瓨璺緞
-	private int fileSize = 0;//鏂囦欢澶у皬
-	private int compeleteSize = 0;//鏂囦欢涓嬭浇瀹屾垚澶у皬
+	private String urlstr;// 娑撳娴囬惃鍕勾閸э拷
+	private String localfile;// 娣囨繂鐡ㄧ捄顖氱窞
+	private int fileSize = 0;//閺傚洣娆㈡径褍鐨�
+	private int compeleteSize = 0;//閺傚洣娆㈡稉瀣祰鐎瑰本鍨氭径褍鐨�
 	private Context context;
 	private static final int INIT = 1;// 瀹氫箟涓夌涓嬭浇鐨勭姸鎬侊細鍒濆鍖栫姸鎬侊紝姝ｅ湪涓嬭浇鐘舵�锛屾殏鍋滅姸鎬�
 	private static final int DOWNLOADING = 2;//姝ｅ湪涓嬭浇涓�
