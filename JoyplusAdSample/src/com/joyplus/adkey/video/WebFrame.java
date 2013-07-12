@@ -28,6 +28,8 @@ import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.joyplus.adkey.Const;
+import com.joyplus.adkey.Util;
 import com.joyplus.adkey.video.InterstitialController.BrowserControl;
 import com.joyplus.adkey.video.WebViewClient.OnPageLoadedListener;
 
@@ -154,9 +156,16 @@ public class WebFrame extends FrameLayout implements BrowserControl {
 	}
 
 	public void setMarkup(String htmlMarkup) {
-		String data = Uri.encode(htmlMarkup);
-		this.mWebViewClient.setAllowedUrl(null);
-		this.mWebView.loadData(data, "text/html", ENCODING);
+//		String data = Uri.encode(htmlMarkup);
+//		this.mWebViewClient.setAllowedUrl(null);
+//		this.mWebView.loadData(data, "text/html", ENCODING);
+		
+		String baseUrl = "file://";
+		baseUrl = baseUrl+Const.DOWNLOAD_PATH+Util.VideoFileDir;
+		String textPath =  Const.HIDE_BORDER + "<img src='"
+				+ (Const.DOWNLOAD_DISPLAY_IMG)+Util.ExternalName + "'/>";
+		this.mWebView.loadDataWithBaseURL(baseUrl, textPath, "text/html",
+				"utf-8", null);
 	}
 
 	@Override

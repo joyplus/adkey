@@ -51,7 +51,7 @@ public class PicDownloader {
 		new MyThread(urlstr, context).start();
 	}
 
-	public class MyThread extends Thread {
+	private class MyThread extends Thread {
 		private String urlstr;
 		private Context context;
 		long percent = 0;
