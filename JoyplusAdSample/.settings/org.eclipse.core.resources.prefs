@@ -1,3 +1,8 @@
 eclipse.preferences.version=1
+encoding//src/com/joyplus/adkey/download/DisplayImgDownloader.java=UTF-8
+encoding//src/com/joyplus/adkey/download/Downloader.java=UTF-8
+encoding//src/com/joyplus/adkey/download/DownloaderSmallVideo.java=UTF-8
 encoding//src/com/joyplus/adkey/sample/AdViewActivity.java=UTF-8
 encoding//src/com/joyplus/adkey/sample/Logo.java=UTF-8
+encoding//src/com/joyplus/adkey/video/RichMediaActivity.java=UTF-8
+encoding//src/com/joyplus/adkey/video/RichMediaView.java=UTF-8

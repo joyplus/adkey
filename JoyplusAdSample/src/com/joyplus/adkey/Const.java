@@ -13,7 +13,10 @@ public interface Const {
 	public static final String DOWNLOADING_FILE = "jp_adv_ing";
 	public static final String DOWNLOAD_READY_FILE = "jp_adv_temp";
 	public static final String DOWNLOAD_PLAY_FILE = "jp_adv_done";
-	public static final String REQUESTURL = "http://adv.yue001.com/md.request.php";//requestURL每个广告都有
+	public static final String DOWNLOAD_DISPLAY_IMG = "jp_adv_display_image";
+	public static final String DOWNLOADING_SMALLVIDEO = "adv_temp";
+	public static final String DOWNLOAD_SMALLVIDEO = "adv_done";
+	public static final String REQUESTURL = "http://adv.yue001.com/md.request.php";//requestURL
 //	public static final String REQUESTURL = "http://adkey.joyplus.tv/md.request.php";
 	
 	/*
