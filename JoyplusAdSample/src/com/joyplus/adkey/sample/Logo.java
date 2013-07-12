@@ -27,12 +27,12 @@ public class Logo extends Activity implements AdListener{
 				WindowManager.LayoutParams.FLAG_FULLSCREEN); // 璁剧疆鍏ㄥ睆鏄剧ず
 		
 		
-		final Intent intent = new Intent(Logo.this, MainActivity.class);// AndroidMainScreen涓轰富鐣岄潰
-		startActivity(intent);
-		Logo.this.finish();
-//		mManager = new AdManager(this,publisherId,cacheMode);
-//		mManager.setListener(this);
-//		mManager.requestAd();
+//		final Intent intent = new Intent(Logo.this, MainActivity.class);// AndroidMainScreen涓轰富鐣岄潰
+//		startActivity(intent);
+//		Logo.this.finish();
+		mManager = new AdManager(this,publisherId,cacheMode);
+		mManager.setListener(this);
+		mManager.requestAd();
 	}
 
 	@Override

@@ -13,16 +13,16 @@ import com.joyplus.adkey.widget.Log;
 import android.content.Context;
 
 public class Downloader {
-	private String urlstr;// 娑撳娴囬惃鍕勾閸э拷
-	private String localfile;// 娣囨繂鐡ㄧ捄顖氱窞
-	private int fileSize = 0;//閺傚洣娆㈡径褍鐨�
-	private int compeleteSize = 0;//閺傚洣娆㈡稉瀣祰鐎瑰本鍨氭径褍鐨�
+	private String urlstr;// 涓嬭浇鐨勫湴鍧�
+	private String localfile;// 淇濆瓨璺緞
+	private int fileSize = 0;//鏂囦欢澶у皬
+	private int compeleteSize = 0;//鏂囦欢涓嬭浇瀹屾垚澶у皬
 	private Context context;
-	private static final int INIT = 1;// 鐎规矮绠熸稉澶岊瀸娑撳娴囬惃鍕Ц閹緤绱伴崚婵嗩瀶閸栨牜濮搁幀渚婄礉濮濓絽婀稉瀣祰閻樿埖锟介敍灞炬畯閸嬫粎濮搁幀锟�	private static final int DOWNLOADING = 2;//濮濓絽婀稉瀣祰娑擄拷
-	private static final int DOWNLOADING = 2;//
-	private static final int PAUSE = 3;//閺嗗倸浠�
-	private static final int STOP = 4;//閸嬫粍顒�
-	private static final int FAILED = 5;//婢惰精瑙�
+	private static final int INIT = 1;// 瀹氫箟涓夌涓嬭浇鐨勭姸鎬侊細鍒濆鍖栫姸鎬侊紝姝ｅ湪涓嬭浇鐘舵�锛屾殏鍋滅姸鎬�
+	private static final int DOWNLOADING = 2;//姝ｅ湪涓嬭浇涓�
+	private static final int PAUSE = 3;//鏆傚仠
+	private static final int STOP = 4;//鍋滄
+	private static final int FAILED = 5;//澶辫触
 	private int state = INIT;
 
 	public Downloader(String urlstr, Context context) {
@@ -37,14 +37,15 @@ public class Downloader {
 	}
 
 	/**
-	 * 閸掋倖鏌囬弰顖氭儊濮濓絽婀稉瀣祰
+	 * 鍒ゆ柇鏄惁姝ｅ湪涓嬭浇
 	 */
 	public boolean isdownloading() {
 		return state == DOWNLOADING;
 	}
 
 	/**
-	 * 閸掓繂顬婇崠锟�	 */
+	 * 鍒濆鍖�
+	 */
 	private void init() {
 		HttpURLConnection connection = null;
 		try {
@@ -66,7 +67,7 @@ public class Downloader {
 	}
 
 	/**
-	 * 閸掆晝鏁ょ痪璺ㄢ柤瀵拷顬婃稉瀣祰閺佺増宓�
+	 * 鍒╃敤绾跨▼寮�涓嬭浇鏁版嵁
 	 */
 	public void download() {
 		//
@@ -83,11 +84,11 @@ public class Downloader {
 			this.context = context;
 		}
 
-		// localfile閻ㄥ嫬锟介弰顖欑矆娑斿牆鎲�
+		// localfile鐨勫�鏄粈涔堝憿
 		@SuppressWarnings("resource")
 		@Override
 		public void run() {
-			// 閺嶅洩顔囧銈囧殠缁嬪璐焧rue
+			// 鏍囪姝ょ嚎绋嬩负true
 			localfile = Const.DOWNLOAD_PATH+Util.VideoFileDir+Const.DOWNLOADING_FILE;
 			
 			HttpURLConnection connection = null;
@@ -148,17 +149,17 @@ public class Downloader {
 		}
 	}
 
-	// 閸掔娀娅庨弫鐗堝祦鎼存挷鑵憉rlstr鐎电懓绨查惃鍕瑓鏉炶棄娅掓穱鈩冧紖
+	// 鍒犻櫎鏁版嵁搴撲腑urlstr瀵瑰簲鐨勪笅杞藉櫒淇℃伅
 	public void delete(String urlstr) {
 		
 	}
 
-	// 鐠佸墽鐤嗛弳鍌氫粻
+	// 璁剧疆鏆傚仠
 	public void pause() {
 		state = PAUSE;
 	}
 
-	// 闁插秶鐤嗘稉瀣祰閻樿埖锟�
+	// 閲嶇疆涓嬭浇鐘舵�
 	public void reset() {
 		state = INIT;
 	}
