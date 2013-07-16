@@ -27,7 +27,6 @@ public final class R {
         public static final int p1=0x7f020001;
     }
     public static final class id {
-        public static final int adbootscreentext=0x7f080001;
         public static final int adsdkContent=0x7f080005;
         public static final int close=0x7f080009;
         public static final int image=0x7f080006;
@@ -38,15 +37,15 @@ public final class R {
         public static final int show_banner=0x7f080000;
         public static final int show_video=0x7f080002;
         public static final int small_window=0x7f080003;
+        public static final int textView1=0x7f080001;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
-        public static final int adbootscreen=0x7f030001;
-        public static final int adview=0x7f030002;
-        public static final int adviewscreensaver=0x7f030003;
-        public static final int interstitial=0x7f030004;
-        public static final int logo=0x7f030005;
-        public static final int small=0x7f030006;
+        public static final int adview=0x7f030001;
+        public static final int adviewscreensaver=0x7f030002;
+        public static final int interstitial=0x7f030003;
+        public static final int logo=0x7f030004;
+        public static final int small=0x7f030005;
     }
     public static final class menu {
         public static final int activity_main=0x7f070000;
@@ -58,6 +57,15 @@ public final class R {
     }
     public static final class style {
         /** 
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    
+
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        
+
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     
@@ -80,6 +88,8 @@ public final class R {
          */
         public static final int AppBaseTheme=0x7f060000;
         /**  Application theme. 
+ All customizations that are NOT specific to a particular API-level can go here. 
+ Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f060001;

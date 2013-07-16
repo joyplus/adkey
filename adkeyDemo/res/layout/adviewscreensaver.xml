@@ -17,7 +17,7 @@
         android:layout_centerHorizontal="true" >
     </RelativeLayout>
 	<TextView 
-	    android:id="@+id/adbootscreentext"
+	    android:id="@+id/textView1"
 	    android:layout_height="wrap_content"
 	    android:layout_width="fill_parent"
 	    android:textSize="30dp"

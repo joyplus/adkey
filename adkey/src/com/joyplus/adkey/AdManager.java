@@ -13,23 +13,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Handler;
-import android.view.View;
-import android.widget.FrameLayout;
 
-import com.joyplus.adkey.banner.AdViewScreenSaver;
-import com.joyplus.adkey.download.Downloader;
-import com.joyplus.adkey.download.ImpressionThread;
 import com.joyplus.adkey.video.ResourceManager;
 import com.joyplus.adkey.video.RichMediaActivity;
 import com.joyplus.adkey.video.RichMediaAd;
-import com.joyplus.adkey.video.RichMediaView;
 import com.joyplus.adkey.video.TrackerService;
 import com.joyplus.adkey.video.VideoData;
+import com.joyplus.adkey.widget.DownloadVideoThread;
 import com.joyplus.adkey.widget.Log;
 import com.joyplus.adkey.widget.SerializeManager;
-import com.miaozhen.mzmonitor.MZMonitor;
 
 public class AdManager
 {
@@ -51,7 +44,7 @@ public class AdManager
 	private String mUserAgent;
 	
 	private SerializeManager serializeManager = null;
-
+	
 	public static AdManager getAdManager(RichMediaAd ad)
 	{
 		AdManager adManager = sRunningAds.remove(ad.getTimestamp());
@@ -158,57 +151,8 @@ public class AdManager
 							serializeManager.writeSerializableData(path,
 									mResponse);
 						}
-						
-						if (mResponse.getVideo() != null
-								&& android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.FROYO)
-						{
-							notifyNoAdFound();
-						} else if (mResponse.getType() == Const.VIDEO_TO_INTERSTITIAL
-								|| mResponse.getType() == Const.INTERSTITIAL_TO_VIDEO
-								|| mResponse.getType() == Const.VIDEO
-								|| mResponse.getType() == Const.INTERSTITIAL)
-						{
-							if (mListener != null)
-							{
-								mHandler.post(new Runnable()
-								{
-									
-									@Override
-									public void run()
-									{
-										mListener.adLoadSucceeded(mResponse);
-									}
-								});
-							}
-						} else if (mResponse.getType() == Const.NO_AD)
-						{
-							if (mListener != null)
-							{
-								mHandler.post(new Runnable()
-								{
-									
-									@Override
-									public void run()
-									{
-										notifyNoAdFound();
-									}
-								});
-							}
-						} else
-						{
-							if (mListener != null)
-							{
-								mHandler.post(new Runnable()
-								{
-									
-									@Override
-									public void run()
-									{
-										notifyNoAdFound();
-									}
-								});
-							}
-						}
+						new DownloadVideoThread(path,mContext).start();
+						handleRequest();
 					} catch (Throwable t)
 					{
 						String path = Const.DOWNLOAD_PATH + Util.VideoFileDir
@@ -217,56 +161,7 @@ public class AdManager
 								.readSerializableData(path);
 						if (mResponse != null)
 						{
-							if (mResponse.getVideo() != null
-									&& android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.FROYO)
-							{
-								notifyNoAdFound();
-							} else if (mResponse.getType() == Const.VIDEO_TO_INTERSTITIAL
-									|| mResponse.getType() == Const.INTERSTITIAL_TO_VIDEO
-									|| mResponse.getType() == Const.VIDEO
-									|| mResponse.getType() == Const.INTERSTITIAL)
-							{
-								if (mListener != null)
-								{
-									mHandler.post(new Runnable()
-									{
-										
-										@Override
-										public void run()
-										{
-											mListener.adLoadSucceeded(mResponse);
-										}
-									});
-								}
-							} else if (mResponse.getType() == Const.NO_AD)
-							{
-								if (mListener != null)
-								{
-									mHandler.post(new Runnable()
-									{
-										
-										@Override
-										public void run()
-										{
-											notifyNoAdFound();
-										}
-									});
-								}
-							} else
-							{
-								if (mListener != null)
-								{
-									mHandler.post(new Runnable()
-									{
-										
-										@Override
-										public void run()
-										{
-											notifyNoAdFound();
-										}
-									});
-								}
-							}
+							handleRequest();
 						} else
 						{
 							mResponse = new RichMediaAd();
@@ -305,6 +200,59 @@ public class AdManager
 						}
 					});
 			mRequestThread.start();
+		}
+	}
+	
+	private void handleRequest(){
+		if (mResponse.getVideo() != null
+				&& android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.FROYO)
+		{
+			notifyNoAdFound();
+		} else if (mResponse.getType() == Const.VIDEO_TO_INTERSTITIAL
+				|| mResponse.getType() == Const.INTERSTITIAL_TO_VIDEO
+				|| mResponse.getType() == Const.VIDEO
+				|| mResponse.getType() == Const.INTERSTITIAL)
+		{
+			if (mListener != null)
+			{
+				mHandler.post(new Runnable()
+				{
+					
+					@Override
+					public void run()
+					{
+						mListener.adLoadSucceeded(mResponse);
+					}
+				});
+			}
+		} else if (mResponse.getType() == Const.NO_AD)
+		{
+			if (mListener != null)
+			{
+				mHandler.post(new Runnable()
+				{
+					
+					@Override
+					public void run()
+					{
+						notifyNoAdFound();
+					}
+				});
+			}
+		} else
+		{
+			if (mListener != null)
+			{
+				mHandler.post(new Runnable()
+				{
+					
+					@Override
+					public void run()
+					{
+						notifyNoAdFound();
+					}
+				});
+			}
 		}
 	}
 	
@@ -439,19 +387,7 @@ public class AdManager
 	
 	public boolean isCacheLoaded()
 	{
-		File file = new File(Const.DOWNLOAD_PATH + Util.VideoFileDir);
-		if (file.exists())
-		{
-			String[] temp = file.list();
-			for (int i = 0; i < temp.length; i++)
-			{
-				if (temp[i].contains(Const.DOWNLOAD_PLAY_FILE))
-				{
-					return true;
-				}
-			}
-		}
-		return false;
+		return Util.isCacheLoaded();
 	}
 	
 	public void showAd()
@@ -468,7 +404,7 @@ public class AdManager
 		try
 		{
 			// if (Util.isNetworkAvailable(getContext())) {
-			download();
+//			download();
 			VideoData video = ad.getVideo();
 			if (Util.CACHE_MODE && video != null)
 			{
@@ -495,16 +431,14 @@ public class AdManager
 				if (file.exists())
 				{
 					ad.setTimestamp(System.currentTimeMillis());
-					
-						Intent intent = new Intent(activity,
-								RichMediaActivity.class);
-						intent.putExtra(AD_EXTRA, ad);
-						activity.startActivityForResult(intent, 0);
-						int enterAnim = Util.getEnterAnimation(ad.getAnimation());
-						int exitAnim = Util.getExitAnimation(ad.getAnimation());
-						RichMediaActivity.setActivityAnimation(activity, enterAnim,
-								exitAnim);
-				
+					Intent intent = new Intent(activity,
+							RichMediaActivity.class);
+					intent.putExtra(AD_EXTRA, ad);
+					activity.startActivityForResult(intent, 0);
+					int enterAnim = Util.getEnterAnimation(ad.getAnimation());
+					int exitAnim = Util.getExitAnimation(ad.getAnimation());
+					RichMediaActivity.setActivityAnimation(activity, enterAnim,
+							exitAnim);
 					result = true;
 					sRunningAds.put(ad.getTimestamp(), this);
 				} else
@@ -514,14 +448,13 @@ public class AdManager
 			} else
 			{
 				ad.setTimestamp(System.currentTimeMillis());
-			
-					Intent intent = new Intent(activity, RichMediaActivity.class);
-					intent.putExtra(AD_EXTRA, ad);
-					activity.startActivityForResult(intent, 0);
-					int enterAnim = Util.getEnterAnimation(ad.getAnimation());
-					int exitAnim = Util.getExitAnimation(ad.getAnimation());
-					RichMediaActivity.setActivityAnimation(activity, enterAnim,
-							exitAnim);
+				Intent intent = new Intent(activity, RichMediaActivity.class);
+				intent.putExtra(AD_EXTRA, ad);
+				activity.startActivityForResult(intent, 0);
+				int enterAnim = Util.getEnterAnimation(ad.getAnimation());
+				int exitAnim = Util.getExitAnimation(ad.getAnimation());
+				RichMediaActivity.setActivityAnimation(activity, enterAnim,
+						exitAnim);
 				result = true;
 				sRunningAds.put(ad.getTimestamp(), this);
 			}
@@ -531,51 +464,6 @@ public class AdManager
 		} finally
 		{
 			notifyAdShown(ad, result);
-		}
-	}
-	
-	private void download()
-	{
-		String path = Const.DOWNLOAD_PATH + Util.VideoFileDir + "ad";
-		RichMediaAd tempAd = (RichMediaAd) serializeManager
-				.readSerializableData(path);
-		if (tempAd != null)
-		{
-			VideoData video = tempAd.getVideo();
-			if (Util.CACHE_MODE && video != null)
-			{
-				String Download_path = video.getVideoUrl();
-				URL url = null;
-				try
-				{
-					url = new URL(Download_path);
-				} catch (MalformedURLException e)
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				if (url != null)
-				{
-					Util.ExternalName = "."
-							+ Util.getExtensionName(url.getPath());
-				} else
-				{
-					Util.ExternalName = ".mp4";
-				}
-				// File file = new File(Const.DOWNLOAD_PATH +
-				// Util.VideoFileDir+Const.DOWNLOAD_PLAY_FILE +
-				// Util.ExternalName);
-				
-				Downloader downloader = new Downloader(Download_path, mContext);
-				if (Download_path.startsWith("http:")
-						|| Download_path.startsWith("https:"))
-				{
-					downloader.download();
-					Log.i(Const.TAG, "download starting");
-					// notifyAdClose(tempAd, true);
-				}
-				
-			}
 		}
 	}
 	
