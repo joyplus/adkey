@@ -51,7 +51,7 @@ public class AdManager
 	private String mUserAgent;
 	
 	private SerializeManager serializeManager = null;
-	
+
 	public static AdManager getAdManager(RichMediaAd ad)
 	{
 		AdManager adManager = sRunningAds.remove(ad.getTimestamp());
@@ -495,14 +495,16 @@ public class AdManager
 				if (file.exists())
 				{
 					ad.setTimestamp(System.currentTimeMillis());
-					Intent intent = new Intent(activity,
-							RichMediaActivity.class);
-					intent.putExtra(AD_EXTRA, ad);
-					activity.startActivityForResult(intent, 0);
-					int enterAnim = Util.getEnterAnimation(ad.getAnimation());
-					int exitAnim = Util.getExitAnimation(ad.getAnimation());
-					RichMediaActivity.setActivityAnimation(activity, enterAnim,
-							exitAnim);
+					
+						Intent intent = new Intent(activity,
+								RichMediaActivity.class);
+						intent.putExtra(AD_EXTRA, ad);
+						activity.startActivityForResult(intent, 0);
+						int enterAnim = Util.getEnterAnimation(ad.getAnimation());
+						int exitAnim = Util.getExitAnimation(ad.getAnimation());
+						RichMediaActivity.setActivityAnimation(activity, enterAnim,
+								exitAnim);
+				
 					result = true;
 					sRunningAds.put(ad.getTimestamp(), this);
 				} else
@@ -512,13 +514,14 @@ public class AdManager
 			} else
 			{
 				ad.setTimestamp(System.currentTimeMillis());
-				Intent intent = new Intent(activity, RichMediaActivity.class);
-				intent.putExtra(AD_EXTRA, ad);
-				activity.startActivityForResult(intent, 0);
-				int enterAnim = Util.getEnterAnimation(ad.getAnimation());
-				int exitAnim = Util.getExitAnimation(ad.getAnimation());
-				RichMediaActivity.setActivityAnimation(activity, enterAnim,
-						exitAnim);
+			
+					Intent intent = new Intent(activity, RichMediaActivity.class);
+					intent.putExtra(AD_EXTRA, ad);
+					activity.startActivityForResult(intent, 0);
+					int enterAnim = Util.getEnterAnimation(ad.getAnimation());
+					int exitAnim = Util.getExitAnimation(ad.getAnimation());
+					RichMediaActivity.setActivityAnimation(activity, enterAnim,
+							exitAnim);
 				result = true;
 				sRunningAds.put(ad.getTimestamp(), this);
 			}

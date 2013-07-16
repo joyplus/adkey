@@ -27,6 +27,7 @@ public final class R {
         public static final int p1=0x7f020001;
     }
     public static final class id {
+        public static final int adbootscreentext=0x7f080001;
         public static final int adsdkContent=0x7f080005;
         public static final int close=0x7f080009;
         public static final int image=0x7f080006;
@@ -37,15 +38,15 @@ public final class R {
         public static final int show_banner=0x7f080000;
         public static final int show_video=0x7f080002;
         public static final int small_window=0x7f080003;
-        public static final int textView1=0x7f080001;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
-        public static final int adview=0x7f030001;
-        public static final int adviewscreensaver=0x7f030002;
-        public static final int interstitial=0x7f030003;
-        public static final int logo=0x7f030004;
-        public static final int small=0x7f030005;
+        public static final int adbootscreen=0x7f030001;
+        public static final int adview=0x7f030002;
+        public static final int adviewscreensaver=0x7f030003;
+        public static final int interstitial=0x7f030004;
+        public static final int logo=0x7f030005;
+        public static final int small=0x7f030006;
     }
     public static final class menu {
         public static final int activity_main=0x7f070000;

@@ -5,7 +5,7 @@
     tools:context=".InterstitialActivity" >
 
 	<TextView 
-	    android:id="@+id/textView1"
+	    android:id="@+id/adbootscreentext"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:textSize="30dp"
@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:onClick="onClickShowVideoOnline"
-        android:layout_below="@id/textView1"
+        android:layout_below="@id/adbootscreentext"
         android:layout_marginTop="20dp"
         android:text="Show VideoInsterstitialOnline" />
 

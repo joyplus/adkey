@@ -24,7 +24,7 @@ public class Downloader {
 	private static final int STOP = 4;//停止
 	private static final int FAILED = 5;//失败
 	private int state = INIT;
-
+    //add by Jas@20130711 for 
 	public Downloader(String urlstr, Context context) {
 		this.urlstr = urlstr;
 		this.context = context;
