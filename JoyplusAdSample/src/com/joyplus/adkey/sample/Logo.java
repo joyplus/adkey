@@ -15,7 +15,8 @@ import android.widget.Toast;
 
 public class Logo extends Activity implements AdListener{
 	private AdManager mManager;
-	private String publisherId = "03f9d5d1ead2ac506a91f2c0f5c21d46";//瑕佹樉绀哄箍鍛婄殑publisherId
+//	private String publisherId = "03f9d5d1ead2ac506a91f2c0f5c21d46";//瑕佹樉绀哄箍鍛婄殑publisherId
+	private String publisherId = "4083958c3dc3360dafe7287ae997070c";
 	private boolean cacheMode = true;//璇ュ箍鍛婂姞杞芥椂鏄惁鐢ㄦ湰鍦扮紦瀛�
 	/** Called when the activity is first created. */
 	@Override
