@@ -745,7 +745,7 @@ public class RichMediaActivity extends Activity
 				RichMediaActivity.this.finish();
 			}
 		};
-		timer.schedule(task, 5000); // 
+		timer.schedule(task, 6000); // 
 		
 		this.mInterstitialData = this.mAd.getInterstitial();
 		this.mInterstitialAutocloseReset = false;
