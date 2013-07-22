@@ -59,7 +59,7 @@ public class Logo extends Activity implements AdListener{
 	public void adClicked()
 	{
 		// TODO Auto-generated method stub
-		Toast.makeText(Logo.this, "骞垮憡鐐瑰嚮浜嬩欢", Toast.LENGTH_SHORT).show();
+		Toast.makeText(Logo.this, "adClicked", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class Logo extends Activity implements AdListener{
 	public void adShown(Ad ad, boolean succeeded)
 	{
 		// TODO Auto-generated method stub
-		Toast.makeText(Logo.this, "骞垮憡鏄剧ず浜嬩欢", Toast.LENGTH_SHORT).show();
+		Toast.makeText(Logo.this, "adShown", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
