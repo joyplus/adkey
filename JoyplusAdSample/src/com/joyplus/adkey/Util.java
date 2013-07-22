@@ -512,4 +512,28 @@ public class Util {
 		return false;
 	}
 	
+	public static boolean isCacheLoaded(RichMediaAd ad)
+	{
+		String path = Const.DOWNLOAD_PATH + Util.VideoFileDir;		
+		File file = new File(path);
+		if (!file.exists()){
+			file.mkdir();
+		}
+		if(ad == null)
+		{
+			return false;
+		}
+		if(ad.getType() == Const.NO_AD){
+			return false;
+		}
+		String[] temp = file.list();
+		for (String fileName : temp) {
+			if (fileName.contains(Const.DOWNLOAD_PLAY_FILE)
+					|| fileName.contains(Const.DOWNLOAD_DISPLAY_IMG)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }
