@@ -387,7 +387,7 @@ public class AdManager
 	
 	public boolean isCacheLoaded()
 	{
-		return Util.isCacheLoaded();
+		return Util.isCacheLoaded(mResponse);
 	}
 	
 	public void showAd()
