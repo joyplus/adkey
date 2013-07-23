@@ -44,6 +44,16 @@
         android:onClick="onClickScreenSaver"
         android:text="ScreenSaver"/>
      
+     <Button 
+        android:id="@+id/monitor_ad"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/screen_saver"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:onClick="onClickMonitorAd"
+        android:text="MonitorAd"/>
+     
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
