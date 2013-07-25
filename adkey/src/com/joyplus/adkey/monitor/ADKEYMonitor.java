@@ -21,7 +21,6 @@ import com.miaozhen.mzmonitor.MZMonitor;
 
 public class ADKEYMonitor
 {
-	
 	private static HashMap<Long, ADKEYMonitor> sRunningAds = new HashMap<Long, ADKEYMonitor>();
 	private String mPublisherId;
 	private String mUniqueId1;
@@ -191,6 +190,7 @@ public class ADKEYMonitor
 			}
 			if(mResponse.getmTrackingUrl()!=null)
 			{
+				MZMonitor.retryCachedRequests(mContext);
 				MZMonitor.adTrack(mContext, mResponse.getmTrackingUrl());
 			}
 		} else if (mResponse.getType() == Const.NO_AD)

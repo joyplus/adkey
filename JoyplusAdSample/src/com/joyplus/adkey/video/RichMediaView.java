@@ -305,7 +305,10 @@ public class RichMediaView extends FrameLayout
 
 					if(Util.MIAOZHENFLAG){
 						if(mAd.getmTrackingUrl()!=null)
+						{
+							MZMonitor.retryCachedRequests(mContext);
 							MZMonitor.adTrack(mContext, mAd.getmTrackingUrl());
+						}
 					}
 					
 					this.mInterstitialView
@@ -521,7 +524,10 @@ public class RichMediaView extends FrameLayout
 		new ImpressionThread(mContext, mAd.getmImpressionUrl(), Util.PublisherId,Util.AD_TYPE.FULL_SCREEN_VIDEO).start();
 		if(Util.MIAOZHENFLAG){
 			if(mAd.getmTrackingUrl()!=null)
+			{
+				MZMonitor.retryCachedRequests(mContext);
 				MZMonitor.adTrack(mContext, mAd.getmTrackingUrl());
+			}
 		}
 		Util.PlayingSmallVideoName = path;
 		this.mVideoView.setVideoPath(path);
@@ -545,11 +551,6 @@ public class RichMediaView extends FrameLayout
 				mAd = tempad;
 			}	
 		}
-//		new ImpressionThread(mContext, mAd.getmImpressionUrl(), Util.PublisherId,Util.AD_TYPE.FULL_SCREEN_VIDEO).start();
-//		if(Util.MIAOZHENFLAG){
-//			if(mAd.getmTrackingUrl()!=null)
-//				MZMonitor.adTrack(mContext, mAd.getmTrackingUrl());
-//		}
 		String pathTemp = Const.DOWNLOAD_PATH + Util.VideoFileDir
 				+ "ad";
 		File cacheDir = new File(Const.DOWNLOAD_PATH+Util.VideoFileDir);
