@@ -8,8 +8,6 @@ import java.lang.Thread.UncaughtExceptionHandler;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import android.app.Activity;
 import android.content.Context;
@@ -55,15 +53,22 @@ public class AdManager
 	
 	public static void closeRunningAd(RichMediaAd ad, boolean result)
 	{
-		AdManager adManager = sRunningAds.remove(ad.getTimestamp());
-		adManager.notifyAdClose(ad, result);
+		try{
+			AdManager adManager = sRunningAds.remove(ad.getTimestamp());
+			adManager.notifyAdClose(ad, result);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	public void release()
 	{
-		TrackerService.release();
-		ResourceManager.cancel();
-		
+		try{
+			TrackerService.release();
+			ResourceManager.cancel();			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	/*
@@ -132,7 +137,7 @@ public class AdManager
 						AdRequest request = getRequest();
 						// if hasn't net,the writeSerializableData function
 						// doesn't called
-						final String path = Const.DOWNLOAD_PATH + Util.VideoFileDir
+						String path = Const.DOWNLOAD_PATH + Util.VideoFileDir
 								+ "ad";
 						File cacheDir = new File(Const.DOWNLOAD_PATH+Util.VideoFileDir);
 						if (!cacheDir.exists())
@@ -153,15 +158,7 @@ public class AdManager
 							serializeManager.writeSerializableData(path,
 									mResponse);
 						}
-						
-						Timer timer = new Timer();
-						TimerTask task = new TimerTask() {
-							@Override
-							public void run() {
-								new DownloadVideoThread(path,mContext).start();
-							}
-						};
-						timer.schedule(task, 6000); // 
+						new DownloadVideoThread(path,mContext).start();
 						handleRequest();
 					} catch (Throwable t)
 					{
