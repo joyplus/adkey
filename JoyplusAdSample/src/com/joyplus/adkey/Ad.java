@@ -7,3 +7,5 @@ public interface Ad extends Serializable {
 
 	public void setType(int adType);
 }
+
+
