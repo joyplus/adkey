@@ -445,7 +445,7 @@ public class Util {
 	}
 	
 	/*
-	 * get httpUrl‘s Ex name
+	 * get httpUrl Ex name
 	 */
 	public static String getExtensionName(String filename) {   
         if ((filename != null) && (filename.length() > 0)) {   
@@ -527,10 +527,15 @@ public class Util {
 			return false;
 		}
 		String[] temp = file.list();
-		for (String fileName : temp) {
-			if (fileName.contains(Const.DOWNLOAD_PLAY_FILE)
-					|| fileName.contains(Const.DOWNLOAD_DISPLAY_IMG)) {
-				return true;
+		if(temp == null)
+		{
+			return false;
+		}else{			
+			for (String fileName : temp) {
+				if (fileName.contains(Const.DOWNLOAD_PLAY_FILE)
+						|| fileName.contains(Const.DOWNLOAD_DISPLAY_IMG)) {
+					return true;
+				}
 			}
 		}
 		return false;

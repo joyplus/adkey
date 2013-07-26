@@ -665,7 +665,6 @@ public class RichMediaActivity extends Activity
 	@Override
 	public void finish()
 	{
-		
 		if (this.mAd != null)
 		{
 			switch (this.mType)

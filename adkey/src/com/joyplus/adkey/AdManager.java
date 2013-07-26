@@ -53,15 +53,22 @@ public class AdManager
 	
 	public static void closeRunningAd(RichMediaAd ad, boolean result)
 	{
-		AdManager adManager = sRunningAds.remove(ad.getTimestamp());
-		adManager.notifyAdClose(ad, result);
+		try{
+			AdManager adManager = sRunningAds.remove(ad.getTimestamp());
+			adManager.notifyAdClose(ad, result);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	public void release()
 	{
-		TrackerService.release();
-		ResourceManager.cancel();
-		
+		try{
+			TrackerService.release();
+			ResourceManager.cancel();			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	/*
