@@ -4,7 +4,9 @@ import static com.joyplus.adkey.Const.RESPONSE_ENCODING;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.URLEncoder;
 import java.util.HashMap;
 
 import javax.xml.parsers.SAXParser;
@@ -32,8 +34,14 @@ public class RequestVideoList {
 
 	public HashMap<String, Long> sendRequest(AdRequest request)
 			throws RequestException {
-		String url = request.toString() + "&listads=1"+"&ds="+Util.GetDeviceName();
-//		String url = request.toString() + "&listads=1";
+		String device_name = "V8";
+		try {
+			device_name = URLEncoder.encode(Util.GetDeviceName(), "utf-8");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		String url = request.toString() + "&listads=1"+"&ds="+device_name;
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpConnectionParams.setSoTimeout(client.getParams(),
 				Const.SOCKET_TIMEOUT);
