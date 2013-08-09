@@ -29,6 +29,8 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
@@ -470,6 +472,20 @@ public class Util {
 	@SuppressWarnings("static-access")
 	public static String GetDeviceName(){
 		return new Build().MODEL;
+	}
+	
+	/*
+	 * get wifi mac
+	 */
+	public static String GetMacAddress(Context context){
+		String macAddress = null;
+		WifiManager wifiMgr = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+		WifiInfo info = (null == wifiMgr ? null : wifiMgr
+				.getConnectionInfo());
+		if (info != null) {
+			macAddress = info.getMacAddress();
+		}
+		return macAddress;
 	}
 	
 	/*
