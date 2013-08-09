@@ -37,13 +37,19 @@ public class ImpressionThread extends Thread{
 	{
 		// TODO Auto-generated method stub
 		String device_name = "V8";
+		String i = null;
 		try {
 			device_name = URLEncoder.encode(Util.GetDeviceName(), "utf-8");
 		} catch (UnsupportedEncodingException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		i = Util.GetMacAddress(context);
 		String url = mImpressionUrl+"&ds="+device_name;
+		if(i!=null)
+		{
+			url = mImpressionUrl+"&ds="+device_name+"&i="+i;
+		}
 		int startInd = url.indexOf("&ad_id");
 		if(startInd > 0){
 			int endInd = url.indexOf("&", startInd+1);
