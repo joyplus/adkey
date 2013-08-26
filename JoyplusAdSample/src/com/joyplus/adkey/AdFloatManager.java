@@ -137,17 +137,18 @@ public class AdFloatManager{
 								.readSerializableData(path);
 						if (mResponse != null)
 						{
+							handleRequest();
 							RichMediaAd nextResponse = requestAd
 									.sendRequest(request);
 							serializeManager.writeSerializableData(path,
 									nextResponse);
 						} else
 						{
+							notifyNoAdFound();
 							mResponse = requestAd.sendRequest(request);
 							serializeManager.writeSerializableData(path,
 									mResponse);
 						}
-						handleRequest();
 						
 					} catch (Throwable t) {
 						String path = Const.DOWNLOAD_PATH + Util.VideoFileDir

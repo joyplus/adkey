@@ -10,6 +10,7 @@ import java.util.TimerTask;
 import java.util.Vector;
 
 import com.joyplus.adkey.AdRequest;
+import com.joyplus.adkey.AdSmallManager;
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.Util;
 import com.joyplus.adkey.download.ImpressionThread;

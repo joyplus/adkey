@@ -13,15 +13,17 @@ import android.view.View;
 import android.widget.FrameLayout;
 import com.joyplus.adkey.video.ResourceManager;
 import com.joyplus.adkey.video.RichMediaAd;
+import com.joyplus.adkey.video.RichMediaFloat;
+import com.joyplus.adkey.video.RichMediaScreenView;
 import com.joyplus.adkey.video.RichMediaView;
 import com.joyplus.adkey.video.TrackerService;
 import com.joyplus.adkey.widget.DownloadSmallVideoThread;
 import com.joyplus.adkey.widget.Log;
 import com.joyplus.adkey.widget.SerializeManager;
 
-public class AdSmallManager{
+public class AdFullscreenManager{
 	
-	private static HashMap<Long, AdSmallManager> sRunningAds = new HashMap<Long, AdSmallManager>();
+	private static HashMap<Long, AdFullscreenManager> sRunningAds = new HashMap<Long, AdFullscreenManager>();
 	private FrameLayout layout;
 	private String mPublisherId;
 	private String mUniqueId1;
@@ -40,13 +42,13 @@ public class AdSmallManager{
 	private SerializeManager serializeManager = null;
 	
 	
-	public static AdSmallManager getAdManager(RichMediaAd ad) {
-		AdSmallManager adManager = sRunningAds.remove(ad.getTimestamp());
+	public static AdFullscreenManager getAdManager(RichMediaAd ad) {
+		AdFullscreenManager adManager = sRunningAds.remove(ad.getTimestamp());
 		return adManager;
 	}
 
 	public static void closeRunningAd(RichMediaAd ad, boolean result) {
-		AdSmallManager adManager = sRunningAds.remove(ad.getTimestamp());
+		AdFullscreenManager adManager = sRunningAds.remove(ad.getTimestamp());
 		adManager.notifyAdClose(ad, result);
 	}
 
@@ -57,9 +59,9 @@ public class AdSmallManager{
 	/*
 	 * @author yyc
 	 */
-	public AdSmallManager(Context ctx, final String publisherId,final boolean cacheMode)
+	public AdFullscreenManager(Context ctx, final String publisherId,final boolean cacheMode)
 			throws IllegalArgumentException {
-		AdSmallManager.setmContext(ctx);
+		AdFullscreenManager.setmContext(ctx);
 		Util.PublisherId = publisherId;
 		this.requestURL = Const.REQUESTURL;
 		this.mPublisherId = publisherId;
@@ -73,9 +75,9 @@ public class AdSmallManager{
 	/*
 	 * test
 	 */
-	public AdSmallManager(Context ctx, final String publisherId,final boolean cacheMode,View v)
+	public AdFullscreenManager(Context ctx, final String publisherId,final boolean cacheMode,View v)
 			throws IllegalArgumentException {
-		AdSmallManager.setmContext(ctx);
+		AdFullscreenManager.setmContext(ctx);
 		mContext = ctx;
 		Util.PublisherId = publisherId;
 		this.requestURL = Const.REQUESTURL;
@@ -88,11 +90,11 @@ public class AdSmallManager{
 		initialize();
 	}
 	
-	public AdSmallManager(Context ctx, final String requestURL, final String publisherId,
+	public AdFullscreenManager(Context ctx, final String requestURL, final String publisherId,
 			final boolean includeLocation)
 					throws IllegalArgumentException {
 		Util.PublisherId = publisherId;
-		AdSmallManager.setmContext(ctx);
+		AdFullscreenManager.setmContext(ctx);
 		this.requestURL = requestURL;
 		this.mPublisherId = publisherId;
 		this.mIncludeLocation = includeLocation;
@@ -134,18 +136,17 @@ public class AdSmallManager{
 								.readSerializableData(path);
 						if (mResponse != null)
 						{
-							handleRequest();
 							RichMediaAd nextResponse = requestAd
 									.sendRequest(request);
 							serializeManager.writeSerializableData(path,
 									nextResponse);
 						} else
 						{
-							notifyNoAdFound();
 							mResponse = requestAd.sendRequest(request);
 							serializeManager.writeSerializableData(path,
 									mResponse);
 						}
+						handleRequest();
 						
 					} catch (Throwable t) {
 						String path = Const.DOWNLOAD_PATH + Util.VideoFileDir
@@ -364,8 +365,18 @@ public class AdSmallManager{
 			notifyAdShown(mResponse, false);
 			return;
 		}
-		AdRequest request = getRequest();
-		new RichMediaView(mContext,mResponse,layout,request);
+		
+		boolean result = false;
+		try{			
+			AdRequest request = getRequest();
+			new RichMediaScreenView(mContext,mResponse,layout,request);
+			sRunningAds.put(mResponse.getTimestamp(), this);
+			result = true;
+		}catch(Exception e){
+			notifyAdShown(mResponse, false);
+		}finally{
+			notifyAdShown(mResponse, result);
+		}
 	}
 	
 	private void initialize() throws IllegalArgumentException {
@@ -463,7 +474,7 @@ public class AdSmallManager{
 	}
 
 	private static void setmContext(Context mContext) {
-		AdSmallManager.mContext = mContext;
+		AdFullscreenManager.mContext = mContext;
 	}
 
 }
