@@ -91,7 +91,7 @@ public class Logo extends Activity implements AdListener{
 		Intent intent = new Intent(Logo.this, MainActivity.class);// AndroidMainScreen涓轰富鐣岄潰
 		startActivity(intent);
 		finish();
-	}
+	} 
 	
 	// 杩斿洖閿�
 		@Override

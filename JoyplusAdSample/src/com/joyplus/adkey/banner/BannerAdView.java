@@ -1,23 +1,13 @@
 package com.joyplus.adkey.banner;
 
-import static com.joyplus.adkey.Const.TAG;
-
-import java.io.File;
 import java.io.InputStream;
-import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.MessageFormat;
-import java.util.Random;
-import java.util.Timer;
-
-import android.Manifest;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.PackageManager;
+
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.location.Location;

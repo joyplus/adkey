@@ -6,11 +6,10 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Timer;
-import java.util.TimerTask;
 import java.util.Vector;
 
+import com.joyplus.adkey.AdFloatManager;
 import com.joyplus.adkey.AdRequest;
-import com.joyplus.adkey.AdSmallManager;
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.Util;
 import com.joyplus.adkey.download.ImpressionThread;
@@ -24,10 +23,12 @@ import com.joyplus.adkey.video.WebViewClient.OnPageLoadedListener;
 import com.joyplus.adkey.widget.DownloadSmallVideoThread;
 import com.joyplus.adkey.widget.Log;
 import com.joyplus.adkey.widget.SerializeManager;
+
 import com.miaozhen.mzmonitor.MZMonitor;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.media.MediaPlayer;
@@ -42,12 +43,14 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.VideoView;
 
-public class RichMediaView extends FrameLayout
+public class RichMediaFloat extends FrameLayout
 {
 	
 	private Context mContext = null;
@@ -67,7 +70,7 @@ public class RichMediaView extends FrameLayout
 	private WebChromeClient.CustomViewCallback mCustomViewCallback;
 	private SDKVideoView mVideoView;
 	private WebFrame mOverlayView;
-	private WebFrame mInterstitialView;
+	private WebFrameService mInterstitialView;
 	private WebFrame mWebBrowserView;
 	private MediaController mMediaController;
 	private ImageView mSkipButton;
@@ -108,7 +111,7 @@ public class RichMediaView extends FrameLayout
 	private FrameLayout layout = null;
 	private SerializeManager serializeManager = null;
 	
-	public RichMediaView(Context context, RichMediaAd ad,FrameLayout layout,AdRequest request)
+	public RichMediaFloat(Context context, RichMediaAd ad,FrameLayout layout,AdRequest request)
 	{
 		super(context);
 		mContext = context;
@@ -119,21 +122,21 @@ public class RichMediaView extends FrameLayout
 		initVideo(layout);
 	}
 	
-	public RichMediaView(Context context)
+	public RichMediaFloat(Context context)
 	{
 		super(context);
 		// TODO Auto-generated constructor stub
 		mContext = context;
 	}
 	
-	public RichMediaView(Context context, AttributeSet attrs)
+	public RichMediaFloat(Context context, AttributeSet attrs)
 	{
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 		mContext = context;
 	}
 	
-	public RichMediaView(Context context, AttributeSet attrs, int defStyle)
+	public RichMediaFloat(Context context, AttributeSet attrs, int defStyle)
 	{
 		super(context, attrs, defStyle);
 		// TODO Auto-generated constructor stub
@@ -180,12 +183,12 @@ public class RichMediaView extends FrameLayout
 	
 	private void initInterstitialView()
 	{
-		new Handler().postDelayed(RequestNextAdv, 5000);
+		new Handler().postDelayed(RequestNextAdv, 15000);
 		this.mInterstitialData = this.mAd.getInterstitial();
 		this.mInterstitialAutocloseReset = false;
-		this.mInterstitialView = new WebFrame((Activity) mContext, true, false, false);
-		this.mInterstitialView.setBackgroundColor(Color.BLACK);//
-		this.mInterstitialView.setOnPageLoadedListener(this.mOnInterstitialLoadedListener);
+		this.mInterstitialView = new WebFrameService(mContext, true, false, false);
+		this.mInterstitialView.setBackgroundColor(Color.rgb(51, 51, 51));
+//		this.mInterstitialView.setOnPageLoadedListener(this.mOnInterstitialLoadedListener);
 		if(this.mInterstitialController!=null){
 			layout.removeView(this.mInterstitialController);
 		}
@@ -328,7 +331,7 @@ public class RichMediaView extends FrameLayout
 		
 		public void run()
 		{
-			initVideo(layout);
+			AdFloatManager.closeRunningAd(mAd, true);
 		}
 	};
 	
@@ -358,18 +361,23 @@ public class RichMediaView extends FrameLayout
 		}
 		if(this.mVideoView != null){
 			this.mVideoLayout.removeView(this.mVideoView);
+			this.mVideoLayout.postInvalidate();
 		}
 		if(this.mInterstitialView != null){
 			this.mVideoLayout.removeView(this.mInterstitialView);
+			this.mVideoLayout.invalidate();
 		}
 		if(this.mInterstitialController != null){
 			this.mVideoLayout.removeView(this.mInterstitialController);
+			this.mVideoLayout.invalidate();
 		}
 		if(this.mMediaController != null){
 			this.mVideoLayout.removeView(this.mMediaController);
+			this.mVideoLayout.invalidate();
 		}
 		if(this.mLoadingView != null){
 			this.mVideoLayout.removeView(this.mLoadingView);
+			this.mVideoLayout.invalidate();
 		}
 		this.mVideoView = new SDKVideoView(mContext, this.mVideoWidth,
 				this.mVideoHeight, this.mVideoData.display);
@@ -454,15 +462,15 @@ public class RichMediaView extends FrameLayout
 //					this.mVideoData.showSkipButtonAfter,
 //					this.mOnVideoCanCloseEventListener);
 		final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,
+				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT,
 				Gravity.CENTER);
-//		this.mLoadingView = new FrameLayout(mContext);
-//		final TextView loadingText = new TextView(mContext);
-//		loadingText.setText(Const.LOADING);
-//		this.mLoadingView.addView(loadingText, params);
-//		this.mVideoLayout.addView(this.mLoadingView,
-//				new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
-//						LayoutParams.MATCH_PARENT, Gravity.CENTER));// fill_parent
+		this.mLoadingView = new FrameLayout(mContext);
+		final TextView loadingText = new TextView(mContext);
+		loadingText.setBackgroundColor(Color.rgb(51, 51, 51));
+		this.mLoadingView.addView(loadingText, params);
+		this.mVideoLayout.addView(this.mLoadingView,
+				new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+						LayoutParams.MATCH_PARENT, Gravity.CENTER));// fill_parent
 		
 		this.mVideoView.setOnPreparedListener(this.mOnVideoPreparedListener);
 		this.mVideoView
@@ -483,8 +491,9 @@ public class RichMediaView extends FrameLayout
 			}
 		}
 		this.mVideoLastPosition = 0;
-		mVideoLayout.setBackgroundColor(Color.BLACK);
-		setAdvPathAndRequestNext();
+		mVideoLayout.setBackgroundColor(Color.TRANSPARENT);
+		this.mVideoView.invalidate();
+		setAdvPathAndRequestNext(); 
 	}
 	
 	private void setAdvPathAndRequestNext(){
@@ -690,9 +699,10 @@ public class RichMediaView extends FrameLayout
 			if(mVideoData!=null&&mVideoData.width>0)
 			{
 				/*
-				 * select current ad‘s videoPath to play	
+				 * select current ad videoPath to play	
 				 */
-				initVideo(layout);
+//				initVideo(layout);
+				AdFloatManager.closeRunningAd(mAd, true);
 			}else{
 				mResult = true;
 			}

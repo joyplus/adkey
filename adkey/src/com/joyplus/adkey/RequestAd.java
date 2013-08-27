@@ -2,7 +2,10 @@ package com.joyplus.adkey;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -19,7 +22,14 @@ public abstract class RequestAd<T> {
 			throws RequestException {
 		if (is == null) {
 			String url = request.toString();
-			url = url+"&ds="+Util.GetDeviceName();
+			String device_name = "V8";
+			try {
+				device_name = URLEncoder.encode(Util.GetDeviceName(), "utf-8");
+			} catch (UnsupportedEncodingException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			url = url+"&ds="+device_name;
 			DefaultHttpClient client = new DefaultHttpClient();
 			HttpConnectionParams.setSoTimeout(client.getParams(),
 					Const.SOCKET_TIMEOUT);
