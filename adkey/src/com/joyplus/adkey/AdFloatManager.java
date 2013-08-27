@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.HashMap;
 
-import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 import android.os.Handler;
@@ -13,15 +12,15 @@ import android.view.View;
 import android.widget.FrameLayout;
 import com.joyplus.adkey.video.ResourceManager;
 import com.joyplus.adkey.video.RichMediaAd;
-import com.joyplus.adkey.video.RichMediaView;
+import com.joyplus.adkey.video.RichMediaFloat;
 import com.joyplus.adkey.video.TrackerService;
-import com.joyplus.adkey.widget.DownloadSmallVideoThread;
+
 import com.joyplus.adkey.widget.Log;
 import com.joyplus.adkey.widget.SerializeManager;
 
-public class AdSmallManager{
+public class AdFloatManager{
 	
-	private static HashMap<Long, AdSmallManager> sRunningAds = new HashMap<Long, AdSmallManager>();
+	private static HashMap<Long, AdFloatManager> sRunningAds = new HashMap<Long, AdFloatManager>();
 	private FrameLayout layout;
 	private String mPublisherId;
 	private String mUniqueId1;
@@ -40,14 +39,18 @@ public class AdSmallManager{
 	private SerializeManager serializeManager = null;
 	
 	
-	public static AdSmallManager getAdManager(RichMediaAd ad) {
-		AdSmallManager adManager = sRunningAds.remove(ad.getTimestamp());
+	public static AdFloatManager getAdManager(RichMediaAd ad) {
+		AdFloatManager adManager = sRunningAds.remove(ad.getTimestamp());
 		return adManager;
 	}
 
 	public static void closeRunningAd(RichMediaAd ad, boolean result) {
-		AdSmallManager adManager = sRunningAds.remove(ad.getTimestamp());
-		adManager.notifyAdClose(ad, result);
+			try{				
+				AdFloatManager adManager = sRunningAds.remove(ad.getTimestamp());
+				adManager.notifyAdClose(ad, result);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 	}
 
 	public void release() {
@@ -57,9 +60,9 @@ public class AdSmallManager{
 	/*
 	 * @author yyc
 	 */
-	public AdSmallManager(Context ctx, final String publisherId,final boolean cacheMode)
+	public AdFloatManager(Context ctx, final String publisherId,final boolean cacheMode)
 			throws IllegalArgumentException {
-		AdSmallManager.setmContext(ctx);
+		AdFloatManager.setmContext(ctx);
 		Util.PublisherId = publisherId;
 		this.requestURL = Const.REQUESTURL;
 		this.mPublisherId = publisherId;
@@ -73,9 +76,9 @@ public class AdSmallManager{
 	/*
 	 * test
 	 */
-	public AdSmallManager(Context ctx, final String publisherId,final boolean cacheMode,View v)
+	public AdFloatManager(Context ctx, final String publisherId,final boolean cacheMode,View v)
 			throws IllegalArgumentException {
-		AdSmallManager.setmContext(ctx);
+		AdFloatManager.setmContext(ctx);
 		mContext = ctx;
 		Util.PublisherId = publisherId;
 		this.requestURL = Const.REQUESTURL;
@@ -88,11 +91,11 @@ public class AdSmallManager{
 		initialize();
 	}
 	
-	public AdSmallManager(Context ctx, final String requestURL, final String publisherId,
+	public AdFloatManager(Context ctx, final String requestURL, final String publisherId,
 			final boolean includeLocation)
 					throws IllegalArgumentException {
 		Util.PublisherId = publisherId;
-		AdSmallManager.setmContext(ctx);
+		AdFloatManager.setmContext(ctx);
 		this.requestURL = requestURL;
 		this.mPublisherId = publisherId;
 		this.mIncludeLocation = includeLocation;
@@ -364,8 +367,17 @@ public class AdSmallManager{
 			notifyAdShown(mResponse, false);
 			return;
 		}
-		AdRequest request = getRequest();
-		new RichMediaView(mContext,mResponse,layout,request);
+		boolean result = false;
+		try{			
+			AdRequest request = getRequest();
+			new RichMediaFloat(mContext,mResponse,layout,request);
+			sRunningAds.put(mResponse.getTimestamp(), this);
+			result = true;
+		}catch(Exception e){
+			notifyAdShown(mResponse, false);
+		}finally{
+			notifyAdShown(mResponse, result);
+		}
 	}
 	
 	private void initialize() throws IllegalArgumentException {
@@ -463,7 +475,7 @@ public class AdSmallManager{
 	}
 
 	private static void setmContext(Context mContext) {
-		AdSmallManager.mContext = mContext;
+		AdFloatManager.mContext = mContext;
 	}
 
 }

@@ -6,11 +6,10 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Timer;
-import java.util.TimerTask;
 import java.util.Vector;
 
+import com.joyplus.adkey.AdFullscreenManager;
 import com.joyplus.adkey.AdRequest;
-import com.joyplus.adkey.AdSmallManager;
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.Util;
 import com.joyplus.adkey.download.ImpressionThread;
@@ -47,7 +46,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.VideoView;
 
-public class RichMediaView extends FrameLayout
+public class RichMediaScreenView extends FrameLayout
 {
 	
 	private Context mContext = null;
@@ -108,7 +107,7 @@ public class RichMediaView extends FrameLayout
 	private FrameLayout layout = null;
 	private SerializeManager serializeManager = null;
 	
-	public RichMediaView(Context context, RichMediaAd ad,FrameLayout layout,AdRequest request)
+	public RichMediaScreenView(Context context, RichMediaAd ad,FrameLayout layout,AdRequest request)
 	{
 		super(context);
 		mContext = context;
@@ -119,21 +118,21 @@ public class RichMediaView extends FrameLayout
 		initVideo(layout);
 	}
 	
-	public RichMediaView(Context context)
+	public RichMediaScreenView(Context context)
 	{
 		super(context);
 		// TODO Auto-generated constructor stub
 		mContext = context;
 	}
 	
-	public RichMediaView(Context context, AttributeSet attrs)
+	public RichMediaScreenView(Context context, AttributeSet attrs)
 	{
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 		mContext = context;
 	}
 	
-	public RichMediaView(Context context, AttributeSet attrs, int defStyle)
+	public RichMediaScreenView(Context context, AttributeSet attrs, int defStyle)
 	{
 		super(context, attrs, defStyle);
 		// TODO Auto-generated constructor stub
@@ -180,7 +179,7 @@ public class RichMediaView extends FrameLayout
 	
 	private void initInterstitialView()
 	{
-		new Handler().postDelayed(RequestNextAdv, 5000);
+		new Handler().postDelayed(RequestNextAdv, 15000);
 		this.mInterstitialData = this.mAd.getInterstitial();
 		this.mInterstitialAutocloseReset = false;
 		this.mInterstitialView = new WebFrame((Activity) mContext, true, false, false);
@@ -328,7 +327,8 @@ public class RichMediaView extends FrameLayout
 		
 		public void run()
 		{
-			initVideo(layout);
+//			initVideo(layout);
+			AdFullscreenManager.closeRunningAd(mAd, true);
 		}
 	};
 	
@@ -394,6 +394,7 @@ public class RichMediaView extends FrameLayout
 		this.mVideoLayout.addView(this.mMediaController,
 				new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
 						LayoutParams.MATCH_PARENT, Gravity.FILL_HORIZONTAL));// fill_parent
+		
 		if (this.mVideoData.showSkipButton)
 		{
 			
@@ -453,9 +454,9 @@ public class RichMediaView extends FrameLayout
 //			this.mVideoView.setOnTimeEventListener(
 //					this.mVideoData.showSkipButtonAfter,
 //					this.mOnVideoCanCloseEventListener);
-		final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,
-				Gravity.CENTER);
+//		final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+//				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,
+//				Gravity.CENTER);
 //		this.mLoadingView = new FrameLayout(mContext);
 //		final TextView loadingText = new TextView(mContext);
 //		loadingText.setText(Const.LOADING);
@@ -483,7 +484,8 @@ public class RichMediaView extends FrameLayout
 			}
 		}
 		this.mVideoLastPosition = 0;
-		mVideoLayout.setBackgroundColor(Color.BLACK);
+		mVideoLayout.setBackgroundColor(Color.TRANSPARENT);
+		mVideoView.invalidate();
 		setAdvPathAndRequestNext();
 	}
 	
@@ -663,6 +665,8 @@ public class RichMediaView extends FrameLayout
 			 */
 			if(mMediaController!=null)
 				mMediaController.replay();
+			
+			mVideoView.invalidate();
 		}
 	};
 	
@@ -692,7 +696,7 @@ public class RichMediaView extends FrameLayout
 				/*
 				 * select current ad‘s videoPath to play	
 				 */
-				initVideo(layout);
+				AdFullscreenManager.closeRunningAd(mAd, true);
 			}else{
 				mResult = true;
 			}

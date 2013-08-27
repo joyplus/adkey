@@ -147,30 +147,30 @@ public class AdManager
 								.readSerializableData(path);
 						if (mResponse != null)
 						{
+							handleRequest();							
 							RichMediaAd nextResponse = requestAd
 									.sendRequest(request);
 							serializeManager.writeSerializableData(path,
 									nextResponse);
 						} else
 						{
-							
+							notifyNoAdFound();
 							mResponse = requestAd.sendRequest(request);
 							serializeManager.writeSerializableData(path,
 									mResponse);
 						}
 						new DownloadVideoThread(path,mContext).start();
-						handleRequest();
 					} catch (Throwable t)
 					{
-						String path = Const.DOWNLOAD_PATH + Util.VideoFileDir
-								+ "ad";
-						mResponse = (RichMediaAd) serializeManager
-								.readSerializableData(path);
-						if (mResponse != null)
-						{
-							handleRequest();
-						} else
-						{
+//						String path = Const.DOWNLOAD_PATH + Util.VideoFileDir
+//								+ "ad";
+//						mResponse = (RichMediaAd) serializeManager
+//								.readSerializableData(path);
+//						if (mResponse != null)
+//						{
+//							handleRequest();
+//						} else
+//						{
 							mResponse = new RichMediaAd();
 							mResponse.setType(Const.AD_FAILED);
 							if (mListener != null)
@@ -188,7 +188,7 @@ public class AdManager
 									}
 								});
 							}
-						}
+//						}
 					}
 					mRequestThread = null;
 				}
