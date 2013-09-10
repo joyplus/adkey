@@ -16,7 +16,9 @@ public interface Const {
 	public static final String DOWNLOAD_DISPLAY_IMG = "jp_adv_display_image";
 	public static final String DOWNLOADING_SMALLVIDEO = "adv_temp";
 	public static final String DOWNLOAD_SMALLVIDEO = "adv_done";
-	public static final String REQUESTURL = "http://adv.yue001.com/md.request.php";//requestURL
+	public static final String REQUESTURL = AdKeyConfig.getInstance().getREQUESTURL();
+//	public static final String REQUESTURL = "http://adkey.joyplus.tv/md.request.php";
+	
 //	public static final String REQUESTURL = "http://adkey.joyplus.tv/md.request.php";
 	
 	/*
