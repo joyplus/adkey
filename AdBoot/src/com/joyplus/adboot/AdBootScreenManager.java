@@ -68,7 +68,7 @@ public class AdBootScreenManager {
 		Util.CACHE_MODE = cacheMode;
 		InitResource();
 	}
-
+    
 	// Interface for user to Manager the resource.
 	public void UpdateAdvert() {
 		// resave advert file first.
@@ -79,8 +79,10 @@ public class AdBootScreenManager {
 			return;
 		}
 		// now we can download mp4 file and report count.
-		ReportCount();
-		DownloadFile();
+		if(CheckAd(mRichMediaAd)){
+			ReportCount();
+			DownloadFile();
+		}
 	}
 
 	// Interface Report count
@@ -290,7 +292,26 @@ public class AdBootScreenManager {
 		mAdRequest.setRequestURL(this.mRequestURL);
 		return mAdRequest;
 	}
-
+    /*Remove file when ad close
+     * */
+	private boolean CheckAd(RichMediaAd ad){
+		if(ad == null)return false;
+		if(ad.getType() == Const.NO_AD){
+			File adfile = new File(DefaultFILEPATH);
+			if(adfile.exists())adfile.delete();
+			File file = new File(PATH);
+			if (file.exists()) {
+				String[] temp = file.list();
+				if (temp != null) {
+					for (int i = 0; i < temp.length; i++) {
+						new File(PATH + temp[i]).delete();
+					}
+				}
+			}
+			return true;
+		}
+		return false;
+	}
 	/*
 	 * Resave advert file to default dir,make sure its same as BootAnimation.cpp
 	 * support.
@@ -305,8 +326,8 @@ public class AdBootScreenManager {
 			if (temp != null) {
 				for (int i = 0; i < temp.length; i++) {
 					if (temp[i].contains(Const.DOWNLOAD_PLAY_FILE)) {
-						copyFile(new File(PATH + temp[i]), new File(
-								DefaultFILEPATH));
+						if(copyFile(new File(PATH + temp[i]), new File(
+								DefaultFILEPATH)))Chmod();
 						return true;
 					}
 				}
@@ -314,7 +335,24 @@ public class AdBootScreenManager {
 		}
 		return false;
 	}
-
+   
+    private boolean Chmod() {
+        boolean resault = true;
+        try {
+           Process p = Runtime.getRuntime().exec("chmod 777 /data/joyplus/bootanimation.mp4");
+           int status = p.waitFor();
+           if (status == 0) {
+              resault = true;
+           } else {
+              resault = false;
+           }
+        } catch (IOException e) {
+          e.printStackTrace();
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+        return resault;
+    }
 	private boolean copyFile(File srcFile, File dstFile) {
 		if (Debug)
 			Log.d(TAG, "copyFile()");
