@@ -7,7 +7,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.util.Log;
 
-/*Add by Jas@20130712
+/*Add by Jas@20130712 
  * It's a demo for use using SDK */
 public class AdBoot extends Application {
 
