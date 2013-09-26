@@ -665,7 +665,6 @@ public class RichMediaActivity extends Activity
 	@Override
 	public void finish()
 	{
-		
 		if (this.mAd != null)
 		{
 			switch (this.mType)
@@ -842,7 +841,10 @@ public class RichMediaActivity extends Activity
 
 		if(Util.MIAOZHENFLAG){
 			if(mAd.getmTrackingUrl()!=null)
+			{				
+				MZMonitor.retryCachedRequests(RichMediaActivity.this);
 				MZMonitor.adTrack(RichMediaActivity.this, mAd.getmTrackingUrl());
+			}
 		}
 		
 		switch (this.mInterstitialData.interstitialType)
@@ -1105,7 +1107,10 @@ public class RichMediaActivity extends Activity
 
 		if(Util.MIAOZHENFLAG){
 			if(mAd.getmTrackingUrl()!=null)
+			{
+				MZMonitor.retryCachedRequests(RichMediaActivity.this);
 				MZMonitor.adTrack(RichMediaActivity.this, mAd.getmTrackingUrl());
+			}
 		}
 		this.mVideoView.setVideoPath(path);
 		

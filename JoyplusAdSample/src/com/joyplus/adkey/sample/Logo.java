@@ -4,6 +4,7 @@ import com.joyplus.adkey.Ad;
 import com.joyplus.adkey.AdListener;
 import com.joyplus.adkey.AdManager;
 import com.joyplus.adkey.example.R;
+import com.joyplus.adkey.monitor.ADKEYMonitor;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,21 +16,16 @@ import android.widget.Toast;
 
 public class Logo extends Activity implements AdListener{
 	private AdManager mManager;
-	private String publisherId = "03f9d5d1ead2ac506a91f2c0f5c21d46";//瑕佹樉绀哄箍鍛婄殑publisherId
-	private boolean cacheMode = true;//璇ュ箍鍛婂姞杞芥椂鏄惁鐢ㄦ湰鍦扮紦瀛�
+	private String publisherId = "4083958c3dc3360dafe7287ae997070c";
+	private boolean cacheMode = true;//
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);// 涓嶆樉绀烘爣棰�
-		setContentView(R.layout.logo);// 鏄剧ずwelcom.xml
+		requestWindowFeature(Window.FEATURE_NO_TITLE);//
+		setContentView(R.layout.logo);// welcom.xml
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN); // 璁剧疆鍏ㄥ睆鏄剧ず
-		
-		
-//		final Intent intent = new Intent(Logo.this, MainActivity.class);// AndroidMainScreen涓轰富鐣岄潰
-//		startActivity(intent);
-//		Logo.this.finish();
+				WindowManager.LayoutParams.FLAG_FULLSCREEN); // 
 		mManager = new AdManager(this,publisherId,cacheMode);
 		mManager.setListener(this);
 		mManager.requestAd();
@@ -58,7 +54,7 @@ public class Logo extends Activity implements AdListener{
 	public void adClicked()
 	{
 		// TODO Auto-generated method stub
-		Toast.makeText(Logo.this, "骞垮憡鐐瑰嚮浜嬩欢", Toast.LENGTH_SHORT).show();
+		Toast.makeText(Logo.this, "adClicked", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -83,7 +79,7 @@ public class Logo extends Activity implements AdListener{
 	public void adShown(Ad ad, boolean succeeded)
 	{
 		// TODO Auto-generated method stub
-		Toast.makeText(Logo.this, "骞垮憡鏄剧ず浜嬩欢", Toast.LENGTH_SHORT).show();
+		Toast.makeText(Logo.this, "adShown", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -95,7 +91,7 @@ public class Logo extends Activity implements AdListener{
 		Intent intent = new Intent(Logo.this, MainActivity.class);// AndroidMainScreen涓轰富鐣岄潰
 		startActivity(intent);
 		finish();
-	}
+	} 
 	
 	// 杩斿洖閿�
 		@Override

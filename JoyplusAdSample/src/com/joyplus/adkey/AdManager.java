@@ -53,15 +53,22 @@ public class AdManager
 	
 	public static void closeRunningAd(RichMediaAd ad, boolean result)
 	{
-		AdManager adManager = sRunningAds.remove(ad.getTimestamp());
-		adManager.notifyAdClose(ad, result);
+		try{
+			AdManager adManager = sRunningAds.remove(ad.getTimestamp());
+			adManager.notifyAdClose(ad, result);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	public void release()
 	{
-		TrackerService.release();
-		ResourceManager.cancel();
-		
+		try{
+			TrackerService.release();
+			ResourceManager.cancel();			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	/*
@@ -140,30 +147,30 @@ public class AdManager
 								.readSerializableData(path);
 						if (mResponse != null)
 						{
+							handleRequest();							
 							RichMediaAd nextResponse = requestAd
 									.sendRequest(request);
 							serializeManager.writeSerializableData(path,
 									nextResponse);
 						} else
 						{
-							
+							notifyNoAdFound();
 							mResponse = requestAd.sendRequest(request);
 							serializeManager.writeSerializableData(path,
 									mResponse);
 						}
 						new DownloadVideoThread(path,mContext).start();
-						handleRequest();
 					} catch (Throwable t)
 					{
-						String path = Const.DOWNLOAD_PATH + Util.VideoFileDir
-								+ "ad";
-						mResponse = (RichMediaAd) serializeManager
-								.readSerializableData(path);
-						if (mResponse != null)
-						{
-							handleRequest();
-						} else
-						{
+//						String path = Const.DOWNLOAD_PATH + Util.VideoFileDir
+//								+ "ad";
+//						mResponse = (RichMediaAd) serializeManager
+//								.readSerializableData(path);
+//						if (mResponse != null)
+//						{
+//							handleRequest();
+//						} else
+//						{
 							mResponse = new RichMediaAd();
 							mResponse.setType(Const.AD_FAILED);
 							if (mListener != null)
@@ -181,7 +188,7 @@ public class AdManager
 									}
 								});
 							}
-						}
+//						}
 					}
 					mRequestThread = null;
 				}
@@ -387,7 +394,7 @@ public class AdManager
 	
 	public boolean isCacheLoaded()
 	{
-		return Util.isCacheLoaded();
+		return Util.isCacheLoaded(mResponse);
 	}
 	
 	public void showAd()

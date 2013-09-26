@@ -29,6 +29,8 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
@@ -445,7 +447,7 @@ public class Util {
 	}
 	
 	/*
-	 * get httpUrl‘s Ex name
+	 * get httpUrl Ex name
 	 */
 	public static String getExtensionName(String filename) {   
         if ((filename != null) && (filename.length() > 0)) {   
@@ -473,6 +475,20 @@ public class Util {
 	}
 	
 	/*
+	 * get wifi mac
+	 */
+	public static String GetMacAddress(Context context){
+		String macAddress = null;
+		WifiManager wifiMgr = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+		WifiInfo info = (null == wifiMgr ? null : wifiMgr
+				.getConnectionInfo());
+		if (info != null) {
+			macAddress = info.getMacAddress();
+		}
+		return macAddress;
+	}
+	
+	/*
 	 * save a class by Serialie
 	 */
 	public void saveClassToSeriale(java.io.ObjectOutputStream out)throws IOException {
@@ -495,6 +511,10 @@ public class Util {
 		}
 		RichMediaAd lastResponse = (RichMediaAd) serializeManager
 				.readSerializableData(path+ "ad");
+		if(lastResponse == null)
+		{
+			return false;
+		}
 		if(lastResponse.getType() == Const.NO_AD){
 			return false;
 		}
@@ -503,6 +523,35 @@ public class Util {
 			if (fileName.contains(Const.DOWNLOAD_PLAY_FILE)
 					|| fileName.contains(Const.DOWNLOAD_DISPLAY_IMG)) {
 				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static boolean isCacheLoaded(RichMediaAd ad)
+	{
+		String path = Const.DOWNLOAD_PATH + Util.VideoFileDir;		
+		File file = new File(path);
+		if (!file.exists()){
+			file.mkdir();
+		}
+		if(ad == null)
+		{
+			return false;
+		}
+		if(ad.getType() == Const.NO_AD){
+			return false;
+		}
+		String[] temp = file.list();
+		if(temp == null)
+		{
+			return false;
+		}else{			
+			for (String fileName : temp) {
+				if (fileName.contains(Const.DOWNLOAD_PLAY_FILE)
+						|| fileName.contains(Const.DOWNLOAD_DISPLAY_IMG)) {
+					return true;
+				}
 			}
 		}
 		return false;

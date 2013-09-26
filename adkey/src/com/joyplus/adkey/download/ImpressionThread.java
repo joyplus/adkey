@@ -1,6 +1,8 @@
 package com.joyplus.adkey.download;
 
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.URLEncoder;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -34,8 +36,20 @@ public class ImpressionThread extends Thread{
 	public void run()
 	{
 		// TODO Auto-generated method stub
-		//impression
-		String url = mImpressionUrl+"&ds="+Util.GetDeviceName();
+		String device_name = "V8";
+		String i = null;
+		try {
+			device_name = URLEncoder.encode(Util.GetDeviceName(), "utf-8");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		i = Util.GetMacAddress(context);
+		String url = mImpressionUrl+"&ds="+device_name;
+		if(i!=null)
+		{
+			url = mImpressionUrl+"&ds="+device_name+"&i="+i;
+		}
 		int startInd = url.indexOf("&ad_id");
 		if(startInd > 0){
 			int endInd = url.indexOf("&", startInd+1);

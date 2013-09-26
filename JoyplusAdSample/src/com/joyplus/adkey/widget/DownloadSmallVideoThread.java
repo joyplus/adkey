@@ -31,48 +31,56 @@ public class DownloadSmallVideoThread extends Thread {
 
 	@Override
 	public void run() {
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		serializeManager = new SerializeManager();
 		RequestNextAd(path);
 		RichMediaAd nextResponse = (RichMediaAd) serializeManager
 				.readSerializableData(path);
-		if (nextResponse.getType() == Const.INTERSTITIAL
-				|| nextResponse.getType() == Const.INTERSTITIAL_TO_VIDEO) {
-			// img
-			RichMediaAd mResponse = nextResponse;
-			if (mResponse != null && mResponse.getInterstitial() != null) {
-				String textData = mResponse.getInterstitial().interstitialMarkup;
-				if (textData != null) {
-					int startInd = textData.indexOf("<img") + 10;
-					int endInd = textData.indexOf(">", startInd) - 1;
-					String displayImagePath = textData.substring(startInd,
-							endInd);
-					generateExtensionName(displayImagePath, ".jpg");
-					DisplayImgDownloader downloader = new DisplayImgDownloader(
-							displayImagePath, context);
-					if (displayImagePath.startsWith("http:")
-							|| displayImagePath.startsWith("https:")) {
-						downloader.download();
-						Log.i(Const.TAG, "download starting");
-					}
-				}
-			}
-		} else if (nextResponse.getType() == Const.VIDEO
-				|| nextResponse.getType() == Const.VIDEO_TO_INTERSTITIAL) {
-			// video
-			if (nextResponse != null && nextResponse.getVideo() != null) {
-				String pathVideo = nextResponse.getVideo().getVideoUrl();
-				if (Util.CACHE_MODE) {
-					generateExtensionName(pathVideo, ".mp4");
-					DownloaderSmallVideo downloader = new DownloaderSmallVideo(
-							pathVideo, context);
-					String localfile = Const.DOWNLOAD_PATH + Util.VideoFileDir
-							+ Const.DOWNLOADING_SMALLVIDEO;
-					File tempFile = new File(localfile);
-					if (!tempFile.exists()) {
-						if (pathVideo.startsWith("http:")
-								|| pathVideo.startsWith("https:")) {
+		if(nextResponse!=null){
+			if (nextResponse.getType() == Const.INTERSTITIAL
+					|| nextResponse.getType() == Const.INTERSTITIAL_TO_VIDEO) {
+				// img
+				RichMediaAd mResponse = nextResponse;
+				if (mResponse != null && mResponse.getInterstitial() != null) {
+					String textData = mResponse.getInterstitial().interstitialMarkup;
+					if (textData != null) {
+						int startInd = textData.indexOf("<img") + 10;
+						int endInd = textData.indexOf(">", startInd) - 1;
+						String displayImagePath = textData.substring(startInd,
+								endInd);
+						generateExtensionName(displayImagePath, ".jpg");
+						DisplayImgDownloader downloader = new DisplayImgDownloader(
+								displayImagePath, context);
+						if (displayImagePath.startsWith("http:")
+								|| displayImagePath.startsWith("https:")) {
 							downloader.download();
 							Log.i(Const.TAG, "download starting");
+						}
+					}
+				}
+			} else if (nextResponse.getType() == Const.VIDEO
+					|| nextResponse.getType() == Const.VIDEO_TO_INTERSTITIAL) {
+				// video
+				if (nextResponse != null && nextResponse.getVideo() != null) {
+					String pathVideo = nextResponse.getVideo().getVideoUrl();
+					if (Util.CACHE_MODE) {
+						generateExtensionName(pathVideo, ".mp4");
+						DownloaderSmallVideo downloader = new DownloaderSmallVideo(
+								pathVideo, context);
+						String localfile = Const.DOWNLOAD_PATH + Util.VideoFileDir
+								+ Const.DOWNLOADING_SMALLVIDEO;
+						File tempFile = new File(localfile);
+						if (!tempFile.exists()) {
+							if (pathVideo.startsWith("http:")
+									|| pathVideo.startsWith("https:")) {
+								downloader.download();
+								Log.i(Const.TAG, "download starting");
+							}
 						}
 					}
 				}
