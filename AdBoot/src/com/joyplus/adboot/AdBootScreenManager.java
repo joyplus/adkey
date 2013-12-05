@@ -13,6 +13,9 @@ import com.joyplus.adkey.AdRequest;
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.RequestRichMediaAd;
 import com.joyplus.adkey.Util;
+import com.joyplus.adkey.download.AdBootDownloader;
+import com.joyplus.adkey.download.AdBootDownloader.AdBootDownloaderState;
+import com.joyplus.adkey.download.AdBootDownloaderListener;
 import com.joyplus.adkey.download.Downloader;
 import com.joyplus.adkey.download.ImpressionThread;
 import com.joyplus.adkey.video.ResourceManager;
@@ -27,9 +30,9 @@ import android.location.Location;
 /*Add by Jas@20130714 for Advert during boot up machine
  * This file was relase to SDK 
  * So don't change this file by youself*/
-public class AdBootScreenManager {
+public class AdBootScreenManager implements AdBootDownloaderListener{
 
-	private boolean Debug = true;
+	private boolean Debug = false;
 	// private String TAG = "AdBootScreenManager";
 	private String TAG = "Jas";
 	private boolean mIncludeLocation = false;
@@ -54,9 +57,8 @@ public class AdBootScreenManager {
 	}
 
 	// this should be the same as it in BootAnimation.cpp
-	private static final String DefaultFILEPATH = "/data/joyplus/bootanimation.mp4";
-	
-	private  String DefaultAD = null;
+	private static final String DefaultFILEPATH = "/data/joyplus/bootanimation.mp4";	
+	private  String DefaultAD = "AdBootScreen";
 	private  String PATH = null;
 
 
@@ -64,22 +66,21 @@ public class AdBootScreenManager {
 			final boolean cacheMode) {
 		this.PUBLISHERID = publisherId;
 		this.PATH = Const.DOWNLOAD_PATH+ctx.getPackageName()+"/"+PUBLISHERID+"/";
-		mContext = ctx;
+		DefaultAD = PATH+DefaultAD;
+		mContext  = ctx;
 		Util.CACHE_MODE = cacheMode;
 		InitResource();
 	}
     
 	// Interface for user to Manager the resource.
 	public void UpdateAdvert() {
-		// resave advert file first.
-		ResaveCacheLoaded();
 		requestAd();
 		if (!WaitAd(20000)) {
 			notifyAdClose();
 			return;
 		}
 		// now we can download mp4 file and report count.
-		if(CheckAd(mRichMediaAd)){
+		if(!CheckAd(mRichMediaAd)){
 			ReportCount();
 			DownloadFile();
 		}
@@ -105,7 +106,7 @@ public class AdBootScreenManager {
 				VideoData video = tempAd.getVideo();
 				if (Util.CACHE_MODE && video != null) {
 					String Download_path = video.getVideoUrl();
-					Log.d("Jas", "Download_path=" + Download_path);
+					Log.d(TAG, "Download_path=" + Download_path);
 					URL url = null;
 					try {
 						url = new URL(Download_path);
@@ -120,22 +121,19 @@ public class AdBootScreenManager {
 					} else {
 						Util.ExternalName = ".mp4";
 					}
-					Downloader downloader = new Downloader(Download_path,
-							mContext);
 					if (Download_path.startsWith("http:")
 							|| Download_path.startsWith("https:")) {
+						AdBootDownloader downloader = new AdBootDownloader(Download_path,mContext);
+						downloader.SetAdBootDownloaderListener(AdBootScreenManager.this);
 						downloader.download();
-						if (Debug)
-							Log.i(TAG, "download starting");
+						if (Debug)Log.i(TAG, "download starting");
 					}
 				} else {
-					if (Debug)
-						Log.i(TAG, "download fail video url fail");
+					if (Debug)Log.i(TAG, "download fail video url fail");
 					notifyAdNofound();
 				}
 			} else {
-				if (Debug)
-					Log.i(TAG, "download fail ad null");
+				if (Debug)Log.i(TAG, "download fail ad null");
 				notifyAdNofound();
 			}
 		}
@@ -145,8 +143,7 @@ public class AdBootScreenManager {
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
-			if (Debug)
-				Log.d(TAG, "ReportCountRunnable run()");
+			if (Debug)Log.d(TAG, "ReportCountRunnable run()");
 			new ImpressionThread(mContext, mRichMediaAd.getmImpressionUrl(),
 					PUBLISHERID, Util.AD_TYPE.FULL_SCREEN_VIDEO).start();
 		}
@@ -177,10 +174,8 @@ public class AdBootScreenManager {
 	}
 
 	private void requestAd(final InputStream xml) {
-		if (Debug)
-			Log.i(TAG, "AdBootScreenManager requestAd mEnabled=" + mEnabled);
-		if (!mEnabled)
-			return;
+		if (Debug)Log.i(TAG, "AdBootScreenManager requestAd mEnabled=" + mEnabled);
+		if (!mEnabled)return;
 		if (mRequestThread == null) {
 			mRichMediaAd = null;
 			mRequestThread = new Thread(new Request(xml));
@@ -318,8 +313,7 @@ public class AdBootScreenManager {
 	 */
 	private boolean ResaveCacheLoaded() {
 		// TODO Auto-generated method stub
-		if (Debug)
-			Log.d(TAG, "ResaveCacheLoaded()");
+		if (Debug)Log.d(TAG, "ResaveCacheLoaded()");
 		File file = new File(PATH);
 		if (file.exists()) {
 			String[] temp = file.list();
@@ -354,12 +348,10 @@ public class AdBootScreenManager {
         return resault;
     }
 	private boolean copyFile(File srcFile, File dstFile) {
-		if (Debug)
-			Log.d(TAG, "copyFile()");
+		if (Debug)Log.d(TAG, "copyFile()");
 		try {
 			InputStream in = new FileInputStream(srcFile);
-			if (dstFile.exists())
-				dstFile.delete();
+			if (dstFile.exists())dstFile.delete();
 			OutputStream out = new FileOutputStream(dstFile);
 			try {
 				int cnt;
@@ -371,23 +363,19 @@ public class AdBootScreenManager {
 				out.close();
 				in.close();
 			}
-			if (Debug)
-				Log.d(TAG, "copyFile() success");
+			if (Debug)Log.d(TAG, "copyFile() success");
 			return true;
 		} catch (IOException e) {
-			if (Debug)
-				Log.d(TAG, "copyFile() fail");
+			if (Debug)Log.d(TAG, "copyFile() fail");
 			return false;
 		}
 	}
 
 	private void InitResource() {
 		// TODO Auto-generated method stub
-		if (Debug)
-			Log.d(TAG, "InitResource()");
+		if (Debug)Log.d(TAG, "InitResource()");
 		this.mIncludeLocation = true;
 		this.mRequestURL = Const.REQUESTURL;
-		Util.GetPackage(mContext);
 		serializeManager = new SerializeManager();
 		mUserAgent = Util.getDefaultUserAgentString(mContext);
 		this.mUniqueId1 = Util.getTelephonyDeviceId(mContext);
@@ -401,7 +389,9 @@ public class AdBootScreenManager {
 					"System Device Id cannot be null or empty");
 		}
 		mEnabled = (Util.getMemoryClass(mContext) > 16);
-		Util.initializeAnimations(mContext);
+		Util.initializeAnimations(mContext);		
+		Util.PublisherId = PUBLISHERID;
+		Util.GetPackage(mContext);
 	}
 
 	private synchronized void notifyAdLoadSuccessed() {
@@ -438,6 +428,21 @@ public class AdBootScreenManager {
 				mListener.Closed();
 			}
 		}.run();
+	}
+
+	@Override
+	public void AdBootDownloaderProgress(int arg0, int arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void AdBootDownloaderStateChange(AdBootDownloaderState arg0) {
+		// TODO Auto-generated method stub
+		if(arg0 == AdBootDownloaderState.SUCCESS){
+			// resave advert file first.
+			ResaveCacheLoaded();
+		}
 	}
 
 }

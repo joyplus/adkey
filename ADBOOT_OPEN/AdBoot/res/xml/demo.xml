@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ad type="open" animation="none">
+    <video orientation="" expiration="">
+        <creative display="" delivery="" type="" bitrate="" width="" height="">
+            <![CDATA[http://advresource.joyplus.tv/res/ce62ff331151135426555fbe3c52bd77.png]]>
+        </creative>
+        <creative2 display="" delivery="" type="" bitrate="" width="" height="">
+        	<![CDATA[http://advresource.joyplus.tv/res/ce62ff331151135426555fbe3c52bd77_2.]]>
+        </creative2>
+        <creative3 display="" delivery="" type="" bitrate="" width="" height="">
+            <![CDATA[http://advresource.joyplus.tv/res/ce62ff331151135426555fbe3c52bd77_3.]]>
+        </creative3>
+        <impressionurl>
+            <![CDATA[http://localhost/advapi/v1/mdtrack?rh=931c9361069684df2540d3a0216b09]]>
+        </impressionurl>
+        <trackingurl>
+            <![CDATA[]]></trackingurl><duration></duration><skipbutton show="" showafter="">
+            </skipbutton>
+            <navigation show="" allowtap="">
+                <topbar custombackgroundurl="" show=""></topbar>
+                <bottombar custombackgroundurl="" show="" pausebutton="" replaybutton="" timer=""></bottombar>
+            </navigation>
+        <trackingevents></trackingevents>
+    </video>
+</ad>
