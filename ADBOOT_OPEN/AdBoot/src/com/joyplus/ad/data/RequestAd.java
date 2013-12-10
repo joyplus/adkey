@@ -23,11 +23,11 @@ public abstract class RequestAd<T> {
 
 	protected InputStream is        = null;
 	protected String      mFileName = AdConfig.GetCompany();//default name
-    private   boolean     Debug     = true;
+    private   boolean     Debug     = false;
     
 	public T sendRequest(AdRequest request)
 			throws RequestException {
-		if (is == null) {
+		if (is == null) { 
 			String url = request.toString();
 //			String device_name = "V8";
 //			try {

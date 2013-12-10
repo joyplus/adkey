@@ -125,9 +125,10 @@ public class DownLoadManager {
 				// TODO Auto-generated method stub
 				Log.d("DownloadManager DownloaderFinish ");
 				if(!Check()){Downloadfinish();return;}
+				Log.d("DownloadManager DownloaderFinish "+mCrrentDownload.toString());
 				File file = new File(AdFileManager.getInstance().GetBasePath(),Downloader.DOWNLOAD_FINISH);
 			    if(file.exists()){
-			    	if(!(mCrrentDownload.LocalFile != null || "".equals(mCrrentDownload.LocalFile))){
+			    	if(!(mCrrentDownload.LocalFile == null || "".equals(mCrrentDownload.LocalFile))){
 			    		FileUtils.copyFile(file, new File(mCrrentDownload.LocalFile));
 			    	}
 			    	if(mCrrentDownload.WriteToTargetFile){

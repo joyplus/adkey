@@ -34,10 +34,11 @@ public class AdFileServer {
 		 if(AdSDKFeature.EXTERNAL_CONFIG){
 			 if(!(AdConfig.GetBasePath() == null || "".equals(AdConfig.GetBasePath()))){
 				 BASEPATH = new File(AdConfig.GetBasePath());
-				 if(Mkdir(BASEPATH)){
+				 Log.d("Jas","BASEPATH++++++++++"+BASEPATH);
+				 //if(Mkdir(BASEPATH)){
 					 USEABLE = true;
 					 return;
-				 }
+				// }
 			 }
 		 }
 		 if(FileUtils.SDExist()){
@@ -68,7 +69,8 @@ public class AdFileServer {
 	 }
 	 
 	 private File MKDatadir(Context context){
-		 File  datapath = new File(context.getFilesDir(),AdConfig.GetBasePathName()+File.separator);
+		// File  datapath = new File(context.getFilesDir(),AdConfig.GetBasePathName()+File.separator);
+		 File  datapath = context.getFilesDir();
 		 if( Mkdir(datapath))return datapath;
 		 return null;
 	 }
