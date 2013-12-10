@@ -108,9 +108,10 @@ public class AdBootDownloadManager {
 	   private void InitResource() {
 		   // TODO Auto-generated method stub
 		   mLocalAdBootInfo = new AdBootInfo();
-		   mLocalAdBootInfo.SetBootAnimationZip(AdFileManager.getInstance().GetBasePath().toString()+"AdBootManager_bootanimation");
-		   mLocalAdBootInfo.SetFirstImage(AdFileManager.getInstance().GetBasePath().toString()+"AdBootManager_first");
-		   mLocalAdBootInfo.SetSecondImage(AdFileManager.getInstance().GetBasePath().toString()+"AdBootManager_seconde");
+		   (new File(AdFileManager.getInstance().GetBasePath().toString()+File.separator+mPublisherId.GetPublisherId().toString()+File.separator)).mkdirs();
+		   mLocalAdBootInfo.SetBootAnimationZip(AdFileManager.getInstance().GetBasePath().toString()+File.separator+mPublisherId.GetPublisherId().toString()+File.separator+"AdBootManager_bootanimation");
+		   mLocalAdBootInfo.SetFirstImage(AdFileManager.getInstance().GetBasePath().toString()+File.separator+mPublisherId.GetPublisherId().toString()+File.separator+"AdBootManager_first");
+		   mLocalAdBootInfo.SetSecondImage(AdFileManager.getInstance().GetBasePath().toString()+File.separator+mPublisherId.GetPublisherId().toString()+File.separator+"AdBootManager_second");
 	   }
 	   
 	   private boolean IsBootAnimationSame(){
@@ -119,7 +120,7 @@ public class AdBootDownloadManager {
 		   if(!(mLastADBOOT.video!=null && mCurrentADBOOT.video!=null))
 			   return false;
 		   if(!(mLastADBOOT.video.creative3!=null && mCurrentADBOOT.video.creative3!=null))
-			   return false;
+			   return false; 
 		   String mLastbootanimation = mLastADBOOT.video.creative3.URL;
 		   if(mLastbootanimation!=null)
 			   mLastbootanimation = mLastbootanimation.substring(mLastbootanimation.lastIndexOf('/') + 1);
