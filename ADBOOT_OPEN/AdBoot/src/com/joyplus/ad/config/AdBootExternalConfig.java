@@ -13,8 +13,8 @@ public class AdBootExternalConfig {
 	private final static String ConfigFile = "/com/joyplus/ad/config/adconfig.properties"; 
 	/*key for ConfigFile*/
 	private final static String AdBootDebugEnable  = "AdBootDebugEnable";
-	private final static String AdBootBasePathName = "AdBootBasePathName";
 	private final static String BaseURL            = "BaseURL";
+	private final static String mAdBootBasePath    = "AdBootBasePath";
 	
 	private static AdBootExternalConfig mAdBootExternalConfig;
 	public  static AdBootExternalConfig getInstance(){
@@ -30,9 +30,10 @@ public class AdBootExternalConfig {
 	public boolean GetDebugEnable(boolean defineValue){
 		return GetBooleanConfig(AdBootDebugEnable,defineValue);
 	}
-	public String GetBasePathName(String defineValue){
-		return GetStringConfig(AdBootBasePathName,defineValue);
+	public String GetBasePath(String defineValue){
+		return GetStringConfig(mAdBootBasePath,defineValue);
 	}
+	
 	public String GetBaseURL(String defineValue){
 		return GetStringConfig(BaseURL,defineValue);
 	}

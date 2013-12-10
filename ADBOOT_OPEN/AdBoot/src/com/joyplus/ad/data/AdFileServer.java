@@ -31,6 +31,15 @@ public class AdFileServer {
 	 
 	 private void InitResource(Context context) { 
 		 // TODO Auto-generated method stub
+		 if(AdSDKFeature.EXTERNAL_CONFIG){
+			 if(!(AdConfig.GetBasePath() == null || "".equals(AdConfig.GetBasePath()))){
+				 BASEPATH = new File(AdConfig.GetBasePath());
+				 if(Mkdir(BASEPATH)){
+					 USEABLE = true;
+					 return;
+				 }
+			 }
+		 }
 		 if(FileUtils.SDExist()){
 			 BASEPATH = MkSDCarddir(context);
 			 if(BASEPATH == null && AdSDKFeature.USE_EXTERNAL_SDCARD){
@@ -42,16 +51,8 @@ public class AdFileServer {
 		 if(BASEPATH == null) 
 		       USEABLE  = false;
 		 else USEABLE = true;
-		 BASEPATH.mkdirs();
-		 Log.d("USEABLE="+USEABLE+" BASEPATH="+BASEPATH.toString());
-		 Log.d(" BASEPATH="+BASEPATH.toString()+" exist="+BASEPATH.exists()+" dir="+BASEPATH.isDirectory()
-				 +" W="+BASEPATH.canWrite()+" R="+BASEPATH.canRead());
-		 File sdkpath = context.getExternalFilesDir(null);
-		 Log.d(" sdkpath="+sdkpath.toString()+" exist="+sdkpath.exists()+" dir="+sdkpath.isDirectory()
-				 +" W="+sdkpath.canWrite()+" R="+sdkpath.canRead());
-		 File sdkpaths = context.getFilesDir();
-		 Log.d(" sdkpaths="+sdkpath.toString()+" exist="+sdkpath.exists()+" dir="+sdkpath.isDirectory()
-				 +" W="+sdkpath.canWrite()+" R="+sdkpath.canRead());
+		 if(USEABLE)BASEPATH.mkdirs();
+		 
 	 }
 
 	 private File MkSDCarddir(Context context){

@@ -21,8 +21,9 @@ import com.joyplus.ad.config.Log;
 
 public abstract class RequestAd<T> {
 
-	protected InputStream is       = null;
+	protected InputStream is        = null;
 	protected String      mFileName = AdConfig.GetCompany();//default name
+    private   boolean     Debug     = true;
     
 	public T sendRequest(AdRequest request)
 			throws RequestException {
@@ -36,7 +37,7 @@ public abstract class RequestAd<T> {
 //				e1.printStackTrace();
 //			}
 //			url = url+"&ds="+device_name;
-			Log.d("RequestAd url="+url);
+			if(Debug)Log.d("RequestAd url="+url);
 			DefaultHttpClient client = new DefaultHttpClient();
 			HttpConnectionParams.setSoTimeout(client.getParams(),
 					HttpManager.SOCKET_TIMEOUT);
