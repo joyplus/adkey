@@ -1,6 +1,8 @@
 package com.joyplus.adkeydemo;
 
 
+import com.joyplus.adkey.mraid.MraidActivity;
+
 import android.os.Bundle;
 import android.view.View;
 import android.app.Activity;
@@ -19,20 +21,26 @@ public class MainActivity extends Activity
 		startActivity(intent);
 	}
 	
-	public void onClickSmallWindow(View v){
-		Intent intent = new Intent(MainActivity.this,SmallActivity.class);
+	public void onClickShowPatchVideo(View v){
+		Intent intent = new Intent(MainActivity.this,PatchActivity.class);
 		startActivity(intent);
 	}
 	
-	public void onClickScreenSaver(View v){
-		Intent intent = new Intent(MainActivity.this,ScreenSaverActivity.class);
+	public void onClickShowAfterPatchVideo(View v){
+		Intent intent = new Intent(MainActivity.this,AfterPatchActivity.class);
 		startActivity(intent);
 	}
 	
+	public void onClickShowMiddlePatchVideo(View v){
+		Intent intent = new Intent(MainActivity.this,PatchMiddleActivity.class);
+		startActivity(intent);
+	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+//		Intent intent = new Intent(MainActivity.this,MraidActivity.class);
+//		startActivity(intent);
 	}
 }

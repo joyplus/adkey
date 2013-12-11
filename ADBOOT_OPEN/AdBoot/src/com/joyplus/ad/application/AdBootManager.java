@@ -68,7 +68,7 @@ public class AdBootManager extends AdMode{
 							new ImpressionThread(mContext,mADBOOT.video.impressionurl.URL,
 									mPublisherId.GetPublisherId(),AD.ADBOOT).start();
 						}
-						mDownloadManager.UpdateADBOOT(mADBOOT, mAdBootRequest.GetFileName());
+						mDownloadManager.UpdateADBOOT(mADBOOT, mAdBootRequest.GetFileName(), mPublisherId);
 					}
 					mAdBootRequest = null;
 			}}.start();			

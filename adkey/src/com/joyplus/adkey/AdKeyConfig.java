@@ -6,8 +6,7 @@ import java.util.Properties;
 
 public class AdKeyConfig {
     
-	//private String     REQUESTURL = "http://adv.yue001.com/md.request.php";
-	private String     REQUESTURL = "http://advapitest.yue001.com/advapi/v1/mdrequest";
+	private String     REQUESTURL = "http://adv.yue001.com/md.request.php";
 	//private String     REQUESTURL = "http://adkey.joyplus.tv/md.request.php";
 	
 	private boolean    LoadOK = false;
@@ -35,8 +34,6 @@ public class AdKeyConfig {
 	}
 	public String getREQUESTURL(){
 		if(LoadOK){
-			String url = props.getProperty("REQUESTURL");
-			if(url == null || "".equals(url))return REQUESTURL;
 			return props.getProperty("REQUESTURL");
 		}
 		return REQUESTURL;

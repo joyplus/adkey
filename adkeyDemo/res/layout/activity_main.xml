@@ -23,26 +23,34 @@
         android:layout_marginTop="20dp"
         android:onClick="onClickShowVideoInterstitial"
         android:text="Show Video/Interstitial" />
-    
-    <Button 
-        android:id="@+id/small_window"
+    <Button
+        android:id="@+id/show_patch_before"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/show_video"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:onClick="onClickSmallWindow"
-        android:text="ShowSmallWindow"/>
-	
-     <Button 
-        android:id="@+id/screen_saver"
+        android:onClick="onClickShowPatchVideo"
+        android:text="Show Pre Patch" />
+    <Button
+        android:id="@+id/show_patch_after"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/small_window"
+        android:layout_below="@+id/show_patch_before"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:onClick="onClickScreenSaver"
-        android:text="ScreenSaver"/>
+        android:onClick="onClickShowAfterPatchVideo"
+        android:text="Show After Patch" />
+    
+    <Button
+        android:id="@+id/show_patch_middle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/show_patch_after"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:onClick="onClickShowMiddlePatchVideo"
+        android:text="Show Middle Patch" />
      
     <TextView
         android:id="@+id/textView1"

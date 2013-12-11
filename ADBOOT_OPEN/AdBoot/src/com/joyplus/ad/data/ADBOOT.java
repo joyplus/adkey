@@ -11,7 +11,8 @@ public class ADBOOT implements Serializable{
 	 public final  static String type        = "open";
 	 public               String animation   = "";
 	 public               ABDOOTVIDEO  video = null;
-	 
+	 //define for respone S 
+	 public               CODE   code        = null;
 	 public String toString() {
 		 StringBuffer ap = new StringBuffer();
 		 ap.append("ADBOOT { ")

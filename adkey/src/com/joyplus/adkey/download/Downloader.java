@@ -13,16 +13,16 @@ import com.joyplus.adkey.widget.Log;
 import android.content.Context;
 
 public class Downloader {
-	private String urlstr;// 娑撳娴囬惃鍕勾閸э拷
-	private String localfile;// 娣囨繂鐡ㄧ捄顖氱窞
-	private int fileSize = 0;//閺傚洣娆㈡径褍鐨�
-	private int compeleteSize = 0;//閺傚洣娆㈡稉瀣祰鐎瑰本鍨氭径褍鐨�
+	private String urlstr;// 濞戞挸顑堝ù鍥儍閸曨偅鍕鹃柛褝鎷�	
+	private String localfile;// 濞ｅ洦绻傞悺銊ф崉椤栨氨绐�
+	private int fileSize = 0;//闁哄倸娲ｅ▎銏″緞瑜嶉惃锟�	
+	private int compeleteSize = 0;//闁哄倸娲ｅ▎銏＄▔鐎ｎ厽绁伴悗鐟版湰閸ㄦ碍寰勮閻拷
 	private Context context;
-	private static final int INIT = 1;// 鐎规矮绠熸稉澶岊瀸娑撳娴囬惃鍕Ц閹緤绱伴崚婵嗩瀶閸栨牜濮搁幀渚婄礉濮濓絽婀稉瀣祰閻樿埖锟介敍灞炬畯閸嬫粎濮搁幀锟�	private static final int DOWNLOADING = 2;//濮濓絽婀稉瀣祰娑擄拷
+	private static final int INIT = 1;// 閻庤鐭粻鐔哥▔婢跺矈鐎稿☉鎾愁儓濞村洭鎯冮崟顓炐﹂柟顑跨筏缁变即宕氬┑鍡╃�闁告牗鐗滄慨鎼佸箑娓氬﹦绀夋慨婵撶到濠�亝绋夌�顓熺グ闁绘鍩栭敓浠嬫晬鐏炵偓鐣柛瀣矌婵悂骞�敓锟�private static final int DOWNLOADING = 2;//婵繐绲藉﹢顏呯▔鐎ｎ厽绁板☉鎿勬嫹
 	private static final int DOWNLOADING = 2;
-	private static final int PAUSE = 3;//閺嗗倸浠�
-	private static final int STOP = 4;//閸嬫粍顒�
-	private static final int FAILED = 5;//婢惰精瑙�
+	private static final int PAUSE = 3;//闁哄棗鍊告禒锟�	
+	private static final int STOP = 4;//闁稿绮嶉锟�	
+	private static final int FAILED = 5;//濠㈡儼绮剧憴锟�	
 	private int state = INIT;
 
 	public Downloader(String urlstr, Context context) {
@@ -37,14 +37,14 @@ public class Downloader {
 	}
 
 	/**
-	 * 閸掋倖鏌囬弰顖氭儊濮濓絽婀稉瀣祰
+	 * 闁告帇鍊栭弻鍥及椤栨碍鍎婃慨婵撶到濠�亝绋夌�顓熺グ
 	 */
 	public boolean isdownloading() {
 		return state == DOWNLOADING;
 	}
 
 	/**
-	 * 閸掓繂顬婇崠锟�	 */
+	 * 闁告帗绻傞‖濠囧礌閿燂拷	 */
 	private void init() {
 		HttpURLConnection connection = null;
 		try {
@@ -66,8 +66,7 @@ public class Downloader {
 	}
 
 	/**
-	 * 閸掆晝鏁ょ痪璺ㄢ柤瀵拷顬婃稉瀣祰閺佺増宓�
-	 */
+	 * 闁告巻鏅濋弫銈囩棯鐠恒劉鏌ょ�顕嗘嫹椤﹥绋夌�顓熺グ闁轰胶澧楀畵锟�	 */
 	public void download() {
 		//
 		new MyThread(urlstr, context).start();
@@ -83,11 +82,11 @@ public class Downloader {
 			this.context = context;
 		}
 
-		// localfile閻ㄥ嫬锟介弰顖欑矆娑斿牆鎲�
+		// localfile闁汇劌瀚敓浠嬪及椤栨瑧鐭嗗☉鏂跨墕閹诧拷
 		@SuppressWarnings("resource")
 		@Override
 		public void run() {
-			// 閺嶅洩顔囧銈囧殠缁嬪璐焧rue
+			// 闁哄秴娲╅鍥ь灉閵堝洤娈犵紒瀣儎鐠愮劎rue
 			localfile = Const.DOWNLOAD_PATH+Util.VideoFileDir+Const.DOWNLOADING_FILE;
 			
 			HttpURLConnection connection = null;
@@ -148,17 +147,17 @@ public class Downloader {
 		}
 	}
 
-	// 閸掔娀娅庨弫鐗堝祦鎼存挷鑵憉rlstr鐎电懓绨查惃鍕瑓鏉炶棄娅掓穱鈩冧紖
+	// 闁告帞濞�▍搴ㄥ极閻楀牆绁﹂幖瀛樻尫閼垫唹rlstr閻庣數鎳撶花鏌ユ儍閸曨亞鐟撻弶鐐舵濞呮帗绌遍埄鍐х礀
 	public void delete(String urlstr) {
 		
 	}
 
-	// 鐠佸墽鐤嗛弳鍌氫粻
+	// 閻犱礁澧介悿鍡涘汲閸屾矮绮�
 	public void pause() {
 		state = PAUSE;
 	}
 
-	// 闁插秶鐤嗘稉瀣祰閻樿埖锟�
+	// 闂佹彃绉堕悿鍡樼▔鐎ｎ厽绁伴柣妯垮煐閿燂拷
 	public void reset() {
 		state = INIT;
 	}
