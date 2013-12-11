@@ -139,7 +139,6 @@ public class Downloader {
 		}
 	}
 
-	// 闁告帞濞�▍搴ㄥ极閻楀牆绁﹂幖瀛樻尫閼垫唹rlstr閻庣數鎳撶花鏌ユ儍閸曨亞鐟撻弶鐐舵濞呮帗绌遍埄鍐х礀
 	public void delete(String urlstr) {
 		
 	}
