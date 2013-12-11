@@ -36,15 +36,11 @@ public class Downloader {
 			cacheDir.mkdirs();
 	}
 
-	/**
-	 * 闁告帇鍊栭弻鍥及椤栨碍鍎婃慨婵撶到濠�亝绋夌�顓熺グ
-	 */
+
 	public boolean isdownloading() {
 		return state == DOWNLOADING;
 	}
 
-	/**
-	 * 闁告帗绻傞‖濠囧礌閿燂拷	 */
 	private void init() {
 		HttpURLConnection connection = null;
 		try {
@@ -65,8 +61,6 @@ public class Downloader {
 		}
 	}
 
-	/**
-	 * 闁告巻鏅濋弫銈囩棯鐠恒劉鏌ょ�顕嗘嫹椤﹥绋夌�顓熺グ闁轰胶澧楀畵锟�	 */
 	public void download() {
 		//
 		new MyThread(urlstr, context).start();
@@ -82,11 +76,9 @@ public class Downloader {
 			this.context = context;
 		}
 
-		// localfile闁汇劌瀚敓浠嬪及椤栨瑧鐭嗗☉鏂跨墕閹诧拷
 		@SuppressWarnings("resource")
 		@Override
 		public void run() {
-			// 闁哄秴娲╅鍥ь灉閵堝洤娈犵紒瀣儎鐠愮劎rue
 			localfile = Const.DOWNLOAD_PATH+Util.VideoFileDir+Const.DOWNLOADING_FILE;
 			
 			HttpURLConnection connection = null;
@@ -152,12 +144,11 @@ public class Downloader {
 		
 	}
 
-	// 閻犱礁澧介悿鍡涘汲閸屾矮绮�
+	
 	public void pause() {
 		state = PAUSE;
 	}
 
-	// 闂佹彃绉堕悿鍡樼▔鐎ｎ厽绁伴柣妯垮煐閿燂拷
 	public void reset() {
 		state = INIT;
 	}
