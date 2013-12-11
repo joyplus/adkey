@@ -2,14 +2,17 @@ package com.joyplus.adkey;
 
 import android.os.Environment;
 
-public interface Const {
+public class Const {
 	
 	/*
 	 * download video fileDir
 	 * @author
 	 */
-	public static final String DOWNLOAD_PATH = Environment.getExternalStorageDirectory()+"/Android/data/.adsdk/";
-	
+	public static String DOWNLOAD_PATH = Environment.getExternalStorageDirectory()+"/Android/data/.adsdk/";
+	public void SetPath(String path){
+		if(path == null || "".equals(path))return;
+		DOWNLOAD_PATH = path;
+	}
 	public static final String DOWNLOADING_FILE = "jp_adv_ing";
 	public static final String DOWNLOAD_READY_FILE = "jp_adv_temp";
 	public static final String DOWNLOAD_PLAY_FILE = "jp_adv_done";
