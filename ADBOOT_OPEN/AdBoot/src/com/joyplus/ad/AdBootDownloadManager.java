@@ -10,6 +10,7 @@ import com.joyplus.ad.application.AdBootInfo;
 import com.joyplus.ad.application.AdBootManager;
 import com.joyplus.ad.config.Log;
 import com.joyplus.ad.data.ADBOOT;
+import com.joyplus.ad.data.CODE;
 import com.joyplus.ad.data.FileUtils;
 import com.joyplus.ad.download.DownLoadManager;
 import com.joyplus.ad.download.Download;
@@ -37,17 +38,28 @@ public class AdBootDownloadManager {
 		   InitResource();
 	   }
        
-	   public void UpdateADBOOT(ADBOOT adboot,String name){
+	   public void UpdateADBOOT(ADBOOT adboot,String name,PublisherId id){
 		   Log.d("AdBootDownloadManager UpdateADBOOT("+(adboot!=null)+" ,"+name+")" +" "+(mAdBootInfo!=null));
 		   if(name == null || "".equals(name))return;
 		   if(mAdBootInfo == null  
 			   || (!(mAdBootInfo.CheckFirstImageUsable() || mAdBootInfo.CheckSecondImageUsable() || mAdBootInfo.CheckBootAnimationZipUsable())))
 			   return;
-		   mLastADBOOT    = (ADBOOT) AdFileManager.getInstance().readSerializableData(name);
+		   mLastADBOOT    = (ADBOOT) AdFileManager.getInstance().readSerializableData(name,id);
 		   mCurrentADBOOT = adboot;
-		   AdFileManager.getInstance().writeSerializableData(name, mCurrentADBOOT);
-		   if(mCurrentADBOOT == null || mCurrentADBOOT.video == null)return;
+		   AdFileManager.getInstance().writeSerializableData(name, mCurrentADBOOT,id);
+		   if(mCurrentADBOOT == null)return;
+		   if(mCurrentADBOOT.code != null && CODE.AD_NO.equals(mCurrentADBOOT.code)){
+			   if(mAdBootInfo.CheckFirstImageUsable())
+				   FileUtils.deleteFiles(mAdBootInfo.GetFirstImage());
+			   if(mAdBootInfo.CheckSecondImageUsable())
+			       FileUtils.deleteFiles(mAdBootInfo.GetSecondImage());
+			   if(mAdBootInfo.CheckBootAnimationZipUsable())
+			       FileUtils.deleteFiles(mAdBootInfo.GetBootAnimationZip());
+			   return;
+		   }
 		   
+		   if(mCurrentADBOOT == null || mCurrentADBOOT.video == null)return;
+	
 		   if(mCurrentADBOOT != null)Log.d("mCurrentADBOOT="+mCurrentADBOOT.toString());
 			else Log.d("mCurrentADBOOT == null");
 		   if(mLastADBOOT != null)Log.d("mLastADBOOT="+mLastADBOOT.toString());

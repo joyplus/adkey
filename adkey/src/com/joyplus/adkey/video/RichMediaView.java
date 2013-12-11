@@ -504,24 +504,30 @@ public class RichMediaView extends FrameLayout
 			}	
 		}
 		String path = this.mVideoData.videoUrl;
+		Log.d("Jas","path1="+path);
 		if (Util.CACHE_MODE)
 		{
 			if(Util.PlayingSmallVideoName == null){
 				path = getPlayPath(Const.DOWNLOAD_PATH + Util.VideoFileDir+Const.DOWNLOAD_SMALLVIDEO
 						+ Util.ExternalName, path);
+				Log.d("Jas","path2="+path);
 			} else {
 				if(Util.PlayingSmallVideoName.contains("_ts")){// is playing done
 					path = getPlayPath(Const.DOWNLOAD_PATH + Util.VideoFileDir+Const.DOWNLOAD_SMALLVIDEO
 							+ Util.ExternalName, path);
+					Log.d("Jas","path3="+path);
 				}else if(Util.PlayingSmallVideoName.contains("http")){	// is playing online			
 					path = getPlayPath(Const.DOWNLOAD_PATH + Util.VideoFileDir+Const.DOWNLOAD_SMALLVIDEO
-							+ Util.ExternalName, path);				
+							+ Util.ExternalName, path);	
+					Log.d("Jas","path4="+path);
 				}else{				// is playing ts
 					path = getPlayPath(Const.DOWNLOAD_PATH + Util.VideoFileDir+Const.DOWNLOAD_SMALLVIDEO + "_ts"
 							+ Util.ExternalName, path);
+					Log.d("Jas","path5="+path);
 				}				
 			}
 		}
+		Log.d("Jas","path6="+path);
 		new ImpressionThread(mContext, mAd.getmImpressionUrl(), Util.PublisherId,Util.AD_TYPE.FULL_SCREEN_VIDEO).start();
 		if(Util.MIAOZHENFLAG){
 			if(mAd.getmTrackingUrl()!=null)

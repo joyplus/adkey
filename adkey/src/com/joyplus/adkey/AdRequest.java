@@ -20,7 +20,7 @@ public class AdRequest {
 
 	public static final int BANNER = 0;
 	public static final int VAD = 1;
-
+    
 	private String ipAddress;
 
 	private String deviceId2;
@@ -28,7 +28,18 @@ public class AdRequest {
 	private String connectionType;
 
 	private long timestamp;
+    //add by Jas
+	public static final int PATCH = 2;
+	private String PATCHVC  = "";
+	private String PATCHVID = "";
+	public String getPatchVC() {
+		return PATCHVC;
+	}
 
+	public void setPatchVC(String vc) {
+		PATCHVC = vc;
+	}
+	//end add by Jas
 	public String getAndroidVersion() {
 		return Build.VERSION.RELEASE;
 	}
@@ -162,7 +173,10 @@ public class AdRequest {
 	public void setUserAgent2(final String userAgent) {
 		this.userAgent2 = userAgent;
 	}
-
+    
+	public void setPatchVC(){
+		
+	}
 	@Override
 	public String toString() {
 
@@ -190,6 +204,10 @@ public class AdRequest {
 		case VAD:
 			b.appendQueryParameter("c.mraid", "0");
 			b.appendQueryParameter("sdk","vad");
+			break;
+		case PATCH:
+			b.appendQueryParameter("vc", PATCHVC);
+			//b.appendQueryParameter("vid", VID);
 			break;
 		}
 		b.appendQueryParameter("u_wv", this.getUserAgent());

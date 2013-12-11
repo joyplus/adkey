@@ -1,0 +1,50 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AdViewActivity" >
+
+    <FrameLayout
+        android:id="@+id/adsdkContent"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" >
+
+    </FrameLayout>
+	<TextView 
+	    android:id="@+id/textView1"
+	    android:layout_height="wrap_content"
+	    android:layout_width="fill_parent"
+	    android:textSize="30dp"
+	    android:text="Patch ad!"/>
+    <Button
+        android:id="@+id/show_banner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/textView1"
+        android:layout_marginTop="20dp"
+        android:onClick="onClickShowPatch"
+        android:text="Show Patch" />
+
+    <LinearLayout
+        android:layout_below="@id/show_banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Spinner
+            android:id="@+id/spinner1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Spinner
+            android:id="@+id/spinner2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+    
+</RelativeLayout>

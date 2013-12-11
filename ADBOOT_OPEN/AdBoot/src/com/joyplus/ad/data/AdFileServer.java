@@ -11,6 +11,7 @@ import java.io.StreamCorruptedException;
 
 import com.joyplus.ad.AdConfig;
 import com.joyplus.ad.AdSDKFeature;
+import com.joyplus.ad.PublisherId;
 import com.joyplus.ad.config.Log;
 
 import android.content.Context;
@@ -94,12 +95,14 @@ public class AdFileServer {
 	    	return USEABLE;
 	 }
 	 
-	 public boolean writeSerializableData(String filename, Object o){	
-		    if(!USEABLE)return false;
-		    Log.d("Server writeSerializableData() name="+filename);
+	 public boolean writeSerializableData(String filename, Object o,PublisherId id){	
+		    if(!USEABLE || id == null || !id.CheckId())return false;
+		    //Log.d("Server writeSerializableData() name="+filename);
 		    synchronized(mObject){
 				try{
-					File data = new File(GetBasePath(),filename);					
+					File dir  = new File(GetBasePath(),id.GetPublisherId());
+					dir.mkdirs();
+					File data = new File(dir,filename);					
 					FileOutputStream fop   = new FileOutputStream(data);
 					ObjectOutputStream oos = new ObjectOutputStream(fop);
 					oos.writeObject(o);
@@ -116,12 +119,12 @@ public class AdFileServer {
 			}
 		}
 		
-		public Object readSerializableData(String filename){
-			   if(!USEABLE)return null;
-			   Log.d("Server readSerializableData() name="+filename);
+		public Object readSerializableData(String filename,PublisherId id){
+			   if(!USEABLE || id == null || !id.CheckId())return null;
+			   //Log.d("Server readSerializableData() name="+filename);
 			   synchronized(mObject){
 					try{
-						File              data = new File(GetBasePath(),filename);
+						File              data = new File(GetBasePath(),id.GetPublisherId()+filename);
 						FileInputStream   fis  = new FileInputStream(data);
 						ObjectInputStream ois  = new ObjectInputStream(fis);
 						Object            file = (Object)ois.readObject();

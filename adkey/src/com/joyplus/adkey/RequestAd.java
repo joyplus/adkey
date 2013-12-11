@@ -14,6 +14,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpProtocolParams;
 
+import com.joyplus.adkey.widget.Log;
+
 public abstract class RequestAd<T> {
 
 	InputStream is;
@@ -30,6 +32,7 @@ public abstract class RequestAd<T> {
 				e1.printStackTrace();
 			}
 			url = url+"&ds="+device_name;
+			Log.d("Jas",""+url);
 			DefaultHttpClient client = new DefaultHttpClient();
 			HttpConnectionParams.setSoTimeout(client.getParams(),
 					Const.SOCKET_TIMEOUT);
