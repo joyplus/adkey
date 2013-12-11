@@ -54,6 +54,10 @@ public class AdBootResponseHandler extends DefaultHandler{
 			  if(mADBOOT.video != null && mADBOOT.video.trackingevents != null)
 				  throw new SAXException("trackingevents");
 			  mADBOOT.video.trackingevents = new TRACKINGEVENTS();
+		  } else if(CODE.tag.equals(localName)){
+			  if(mADBOOT.code != null)throw new SAXException("code");
+			  mADBOOT.code       = new CODE();
+			  mADBOOT.code.VALUE = contents.toString().trim();
 		  }
 	}
 

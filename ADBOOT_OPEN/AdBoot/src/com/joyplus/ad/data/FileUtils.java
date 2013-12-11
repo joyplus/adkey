@@ -6,9 +6,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import com.joyplus.ad.config.Log;
+
+import android.annotation.SuppressLint;
 import android.os.Environment;
 
 /** File copy/delete/move */
+@SuppressLint("NewApi")
 public class FileUtils {
 
     /** Delete files or folders */
@@ -32,7 +37,34 @@ public class FileUtils {
         }
         return ret;
     }
-
+    /*add 777 for file*/
+    public static boolean Chmod(File srcFile){
+    	if(srcFile==null || !srcFile.exists())return false;
+    	return Chmod(srcFile,"777");
+    }
+    
+    @SuppressLint("NewApi")
+	public static boolean Chmod(File srcFile,String mode){
+    	 boolean resault = true;
+    	 if(srcFile == null || !srcFile.exists())return false;
+         try {
+        	srcFile.setWritable(true);
+        	srcFile.setReadable(true);
+            Process p = Runtime.getRuntime().exec("chmod "+mode+" "+srcFile.toString());
+            Log.d(" "+("chmod "+mode+" "+srcFile.toString()));
+            int status = p.waitFor();
+            if (status == 0) {
+               resault = true;
+            } else {
+               resault = false;
+            }
+         } catch (IOException e) {
+           e.printStackTrace();
+         } catch (InterruptedException e) {
+           e.printStackTrace();
+         }
+         return resault;
+    }
     /** Copy folders */
     private static boolean copyDir(File srcDir, File dstDir) {
         if (dstDir.exists()) {

@@ -28,7 +28,7 @@ public abstract class BaseActivity extends Activity {
         
         mLayout = new RelativeLayout(this);
         final RelativeLayout.LayoutParams adViewLayout = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT);
         adViewLayout.addRule(RelativeLayout.CENTER_IN_PARENT);
         mLayout.addView(getAdView(), adViewLayout);
         setContentView(mLayout);

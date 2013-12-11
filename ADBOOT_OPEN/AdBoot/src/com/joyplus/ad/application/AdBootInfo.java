@@ -65,27 +65,27 @@ public class AdBootInfo implements Parcelable{
 	public boolean CheckFirstImageUsable(){
 		if(FirstImage == null || "".equals(FirstImage))return false;
 		File first = new File(FirstImage);
-		if(first.exists())
+		if(first.exists()){
 			if(first.canRead() && first.canWrite())return true;
-		    else return false;
+		    else return false;}
 		return true;
 	}
 	
 	public boolean CheckSecondImageUsable(){
 		if(SecondImage == null || "".equals(SecondImage))return false;
 		File first = new File(SecondImage);
-		if(first.exists())
+		if(first.exists()){
 			if(first.canRead() && first.canWrite())return true;
-		    else return false;
+		    else return false;}
 		return true;
 	}
 	
 	public boolean CheckBootAnimationZipUsable(){
 		if(BootAnimationZip == null || "".equals(BootAnimationZip))return false;
 		File first = new File(BootAnimationZip);
-		if(first.exists())
+		if(first.exists()){
 			if(first.canRead() && first.canWrite())return true;
-		    else return false;
+		    else return false;}
 		return true;
 	}
 }

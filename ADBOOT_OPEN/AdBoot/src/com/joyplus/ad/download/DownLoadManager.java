@@ -129,10 +129,16 @@ public class DownLoadManager {
 				File file = new File(AdFileManager.getInstance().GetBasePath(),Downloader.DOWNLOAD_FINISH);
 			    if(file.exists()){
 			    	if(!(mCrrentDownload.LocalFile == null || "".equals(mCrrentDownload.LocalFile))){
-			    		FileUtils.copyFile(file, new File(mCrrentDownload.LocalFile));
+			    		File local = new File(mCrrentDownload.LocalFile);
+			    		if(FileUtils.copyFile(file, local)){
+			    			FileUtils.Chmod(local);
+			    		}
 			    	}
 			    	if(mCrrentDownload.WriteToTargetFile){
-			    		FileUtils.copyFile(file, new File(mCrrentDownload.TargetFile));
+			    		File Target = new File(mCrrentDownload.TargetFile);
+			    		if(FileUtils.copyFile(file, Target)){
+			    			FileUtils.Chmod(Target);
+			    		}
 			    	}
 			    }
 			    mCrrentDownload.DownloaderFinish();

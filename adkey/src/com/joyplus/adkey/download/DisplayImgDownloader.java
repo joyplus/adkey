@@ -13,16 +13,16 @@ import com.joyplus.adkey.widget.Log;
 import android.content.Context;
 
 public class DisplayImgDownloader {
-	private String urlstr;// 娑撳娴囬惃鍕勾閸э拷
-	private String localfile;// 娣囨繂鐡ㄧ捄顖氱窞
-	private int fileSize = 0;//閺傚洣娆㈡径褍鐨�
-	private int compeleteSize = 0;//閺傚洣娆㈡稉瀣祰鐎瑰本鍨氭径褍鐨�
+	private String urlstr;	
+	private String localfile;
+	private int fileSize = 0;
+	private int compeleteSize = 0;
 	private Context context;
-	private static final int INIT = 1;// 鐎规矮绠熸稉澶岊瀸娑撳娴囬惃鍕Ц閹緤绱伴崚婵嗩瀶閸栨牜濮搁幀渚婄礉濮濓絽婀稉瀣祰閻樿埖锟介敍灞炬畯閸嬫粎濮搁幀锟�	private static final int DOWNLOADING = 2;//濮濓絽婀稉瀣祰娑擄拷
+	private static final int INIT = 1;
 	private static final int DOWNLOADING = 2;
-	private static final int PAUSE = 3;//閺嗗倸浠�
-	private static final int STOP = 4;//閸嬫粍顒�
-	private static final int FAILED = 5;//婢惰精瑙�
+	private static final int PAUSE = 3;
+	private static final int STOP = 4;	
+	private static final int FAILED = 5;
 	private int state = INIT;
 
 	public DisplayImgDownloader(String urlstr, Context context) {
@@ -36,15 +36,12 @@ public class DisplayImgDownloader {
 			cacheDir.mkdirs();
 	}
 
-	/**
-	 * 閸掋倖鏌囬弰顖氭儊濮濓絽婀稉瀣祰
-	 */
+	
 	public boolean isdownloading() {
 		return state == DOWNLOADING;
 	}
 
-	/**
-	 * 閸掓繂顬婇崠锟�	 */
+	
 	private void init() {
 		HttpURLConnection connection = null;
 		try {
@@ -65,11 +62,8 @@ public class DisplayImgDownloader {
 		}
 	}
 
-	/**
-	 * 閸掆晝鏁ょ痪璺ㄢ柤瀵拷顬婃稉瀣祰閺佺増宓�
-	 */
+	
 	public void download() {
-		//閸撳秹娼版稉锟介嚋娑撶皢ath
 		new MyThread(urlstr, context).start();
 	}
 
@@ -133,17 +127,14 @@ public class DisplayImgDownloader {
 		}
 	}
 
-	// 閸掔娀娅庨弫鐗堝祦鎼存挷鑵憉rlstr鐎电懓绨查惃鍕瑓鏉炶棄娅掓穱鈩冧紖
 	public void delete(String urlstr) {
 		
 	}
 
-	// 鐠佸墽鐤嗛弳鍌氫粻
 	public void pause() {
 		state = PAUSE;
 	}
 
-	// 闁插秶鐤嗘稉瀣祰閻樿埖锟�
 	public void reset() {
 		state = INIT;
 	}
