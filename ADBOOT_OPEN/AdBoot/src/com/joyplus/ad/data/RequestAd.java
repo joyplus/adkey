@@ -23,7 +23,7 @@ public abstract class RequestAd<T> {
 
 	protected InputStream is        = null;
 	protected String      mFileName = AdConfig.GetCompany();//default name
-    private   boolean     Debug     = false;
+    private   boolean     Debug     = true;
     
 	public T sendRequest(AdRequest request)
 			throws RequestException {

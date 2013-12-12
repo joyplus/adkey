@@ -119,14 +119,14 @@ public class PhoneManager {
       public String GetIp(){
     	  String mIp = mPhoneService.getLocalIpAddress();
     	  if(mIp != null)
-    	      return MD5Util.MD5(mIp);
+    	      return MD5Util.GetMD5Code(mIp);
     	  return "";
       }
       
       public String GetMac(){
     	  String mMac = mPhoneService.getMacAddress(mContext);
     	  if(!(mMac == null || "".equals(mMac))){
-    		  return MD5Util.MD5(mMac);
+    		  return MD5Util.GetMD5Code(mMac);
     	  }
     	  return "";
       }
