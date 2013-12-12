@@ -15,7 +15,7 @@ public class AdRequest {
 	  private AdMode mAdMode = null; 
 	  private AdBoot mAdBoot;
 	  private String listAds;//don't know it mean.
-	  private final static boolean Debug = true;
+	  private final static boolean Debug = false;
 	  public AdRequest(AdMode ad){
 		  mAdMode = ad;
 	  }
