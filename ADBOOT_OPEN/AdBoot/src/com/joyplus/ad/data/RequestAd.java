@@ -2,17 +2,13 @@ package com.joyplus.ad.data;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.URLEncoder;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpProtocolParams;
-
 import com.joyplus.ad.AdConfig;
 import com.joyplus.ad.HttpManager;
 import com.joyplus.ad.PhoneManager;
@@ -23,7 +19,7 @@ public abstract class RequestAd<T> {
 
 	protected InputStream is        = null;
 	protected String      mFileName = AdConfig.GetCompany();//default name
-    private   boolean     Debug     = false;
+    private   boolean     Debug     = true;
     
 	public T sendRequest(AdRequest request)
 			throws RequestException {

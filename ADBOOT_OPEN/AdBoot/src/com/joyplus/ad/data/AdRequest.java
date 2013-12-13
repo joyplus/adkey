@@ -50,7 +50,8 @@ public class AdRequest {
 			//b.appendQueryParameter("i",  PhoneManager.getInstance().GetMac());
 			//if(Debug)Log.d("i="+PhoneManager.getInstance().GetIp());
 			//if(Debug)Log.d("mac="+PhoneManager.getInstance().GetMac());
-			if(mAdBoot == null || mAdBoot.GetCUSTOMINFO() == null || mAdBoot.GetCUSTOMINFO().GetMAC() == null){
+			if(mAdBoot == null || mAdBoot.GetCUSTOMINFO() == null || mAdBoot.GetCUSTOMINFO().GetMAC() == null
+					|| "".equals(mAdBoot.GetCUSTOMINFO().GetMAC())){
 				b.appendQueryParameter("i", "");
 			}else{
 				b.appendQueryParameter("i", MD5Util.GetMD5Code(mAdBoot.GetCUSTOMINFO().GetMAC()));

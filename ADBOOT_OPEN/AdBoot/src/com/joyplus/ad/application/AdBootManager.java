@@ -39,8 +39,8 @@ public class AdBootManager extends AdMode{
 		mContext       = context;
 		mAdBoot        = new AdBoot(info.GetCUSTOMINFO(),info.GetAdBootInfo(),info.GetPublisherId());
 		mPublisherId   = new PublisherId(mAdBoot.GetPublisherId().GetPublisherId());
-		if(mAdBoot.GetCUSTOMINFO().GetDEVICEMUMBER() == null || "".equals(mAdBoot.GetCUSTOMINFO().GetDEVICEMUMBER()))
-			throw new IllegalArgumentException("ds cannot be null or empty");
+		if(mAdBoot.GetCUSTOMINFO()==null||mAdBoot.GetCUSTOMINFO().GetDEVICEMOVEMENT() == null || "".equals(mAdBoot.GetCUSTOMINFO().GetDEVICEMOVEMENT()))
+			throw new IllegalArgumentException("dm cannot be null or empty");
 		mDownloadManager = new AdBootDownloadManager(mContext,this,mAdBoot);
 	}
 	
