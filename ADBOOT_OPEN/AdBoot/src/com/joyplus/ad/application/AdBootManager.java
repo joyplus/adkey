@@ -14,6 +14,7 @@ import com.joyplus.ad.data.ADBOOT;
 import com.joyplus.ad.data.AdBootRequest;
 import com.joyplus.ad.data.RequestException;
 import com.joyplus.ad.download.ImpressionThread;
+import com.miaozhen.mzmonitor.MZMonitor;
 
 import android.content.Context;
 
@@ -68,6 +69,11 @@ public class AdBootManager extends AdMode{
 							new ImpressionThread(mContext,mADBOOT.video.impressionurl.URL,
 									mPublisherId.GetPublisherId(),AD.ADBOOT).start();
 						}
+			            if(mADBOOT.video != null && mADBOOT.video.trackingurl != null 
+			            		&& mADBOOT.video.trackingurl.URL != null && !"".equals(mADBOOT.video.trackingurl.URL)){
+			            	MZMonitor.retryCachedRequests(mContext);
+							MZMonitor.adTrack(mContext, mADBOOT.video.trackingurl.URL);
+			            }
 						mDownloadManager.UpdateADBOOT(mADBOOT, mAdBootRequest.GetFileName(), mPublisherId);
 					}
 					mAdBootRequest = null;
