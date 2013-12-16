@@ -63,8 +63,8 @@ public class AdBootManager extends AdMode{
 						// TODO Auto-generated catch block
 						mADBOOT = null;
 						e.printStackTrace();
-					}
-					if(mDownloadManager != null && mADBOOT != null){
+					} 
+					if(mDownloadManager != null && mADBOOT != null){ 
 						if(mADBOOT.video != null && mADBOOT.video.impressionurl!=null){
 							new ImpressionThread(mContext,mADBOOT.video.impressionurl.URL,
 									mPublisherId.GetPublisherId(),AD.ADBOOT).start();
