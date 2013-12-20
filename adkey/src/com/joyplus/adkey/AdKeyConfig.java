@@ -6,9 +6,9 @@ import java.util.Properties;
 
 public class AdKeyConfig {
     
-	//private String     REQUESTURL = "http://adv.yue001.com/md.request.php";
-	//private String     REQUESTURL = "http://adkey.joyplus.tv/md.request.php";
-	private String       REQUESTURL = "http://advapitest.yue001.com/advapi/v1/mdrequest";
+	private String     Joyplus_REQUESTURL = "http://advapitest.yue001.com/advapi/v1/mdrequest";//joyplus
+	private String     Konka_REQUESTURL   = "http://advapikj.joyplus.tv/advapi/v1/mdrequest";//康佳
+	private String     Runhe_REQUESTURL   = "http://advapi.joyplus.tv/advapi/v1/mdrequest";//润和
 	
 	private boolean    LoadOK = false;
 	private Properties props;
@@ -22,9 +22,10 @@ public class AdKeyConfig {
 	public AdKeyConfig(){
 		Load();
 	}
+	
 	private void Load(){   
         try {
-        	InputStream is = this.getClass().getResourceAsStream("/com/joyplus/adkey/adkeyconfig.properties");
+        	InputStream is = this.getClass().getResourceAsStream("/com/joyplus/adkeyConfig/adkeyconfig.properties");
             props = new Properties();
 			props.load(is);
 			LoadOK = true;
@@ -33,12 +34,27 @@ public class AdKeyConfig {
 			e.printStackTrace();
 		}
 	}
+	
 	public String getREQUESTURL(){
 		if(LoadOK){
 			String url = props.getProperty("REQUESTURL");
 			if(url != null)return url;
 		}
-		return REQUESTURL;
+		int custom = getCUSTOM();
+		if(custom == CUSTOM.KONKA){
+			return Konka_REQUESTURL;
+		}else if(custom == CUSTOM.RUNHE){
+			return Runhe_REQUESTURL;
+		}else{
+			return Joyplus_REQUESTURL;
+		}
 	}
-    
+	
+    public int getCUSTOM(){
+    	if(LoadOK){
+			String custom = props.getProperty("CUSTOM");
+			if(custom != null)return Integer.valueOf(custom);
+		}
+		return CUSTOM.JOYPLUS;
+    }
 }

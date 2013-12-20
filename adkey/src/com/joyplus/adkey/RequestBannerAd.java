@@ -15,7 +15,10 @@ import org.xml.sax.SAXException;
 
 import android.webkit.URLUtil;
 
+import com.joyplus.adkey.Monitorer.TRACKINGURL;
+import com.joyplus.adkey.Monitorer.TRACKINGURL.TYPE;
 import com.joyplus.adkey.data.ClickType;
+import com.joyplus.adkey.widget.Log;
 
 public class RequestBannerAd extends RequestAd<BannerAd> {
 
@@ -127,12 +130,40 @@ public class RequestBannerAd extends RequestAd<BannerAd> {
 				{
 					response.setmImpressionUrl(mImpressionUrl);
 				}
-				String mTrackingUrl = this.getValue(doc, "trackingurl");
+				//change be Jas
+				String mTrackingUrl = this.getValue(doc, "trackingurl_miaozhen");
 				if(URLUtil.isHttpsUrl(mTrackingUrl)||URLUtil.isHttpUrl(mTrackingUrl))
 				{
-					response.setmTrackingUrl(mTrackingUrl);
+					TRACKINGURL url = new TRACKINGURL();
+					url.Type        = TYPE.MIAOZHEN;
+					url.URL         = mTrackingUrl;
+					response.setmTrackingUrl(url);
 				}
-					
+				mTrackingUrl = this.getValue(doc, "trackingurl_iresearch");
+				if(URLUtil.isHttpsUrl(mTrackingUrl)||URLUtil.isHttpUrl(mTrackingUrl))
+				{
+					TRACKINGURL url = new TRACKINGURL();
+					url.Type        = TYPE.IRESEARCH;
+					url.URL         = mTrackingUrl;
+					response.setmTrackingUrl(url);
+				}
+				mTrackingUrl = this.getValue(doc, "trackingurl_admaster");
+				if(URLUtil.isHttpsUrl(mTrackingUrl)||URLUtil.isHttpUrl(mTrackingUrl))
+				{
+					TRACKINGURL url = new TRACKINGURL();
+					url.Type        = TYPE.ADMASTER;
+					url.URL         = mTrackingUrl;
+					response.setmTrackingUrl(url);
+				}
+				mTrackingUrl = this.getValue(doc, "trackingurl_nielsen");
+				if(URLUtil.isHttpsUrl(mTrackingUrl)||URLUtil.isHttpUrl(mTrackingUrl))
+				{
+					TRACKINGURL url = new TRACKINGURL();
+					url.Type        = TYPE.NIELSEN;
+					url.URL         = mTrackingUrl;
+					response.setmTrackingUrl(url);
+				}
+				//end change by Jas
 				String skipOverlay = this.getAttribute(doc, "htmlString", "skipoverlaybutton");
 				if (skipOverlay != null){
 					response.setSkipOverlay(Integer.parseInt(skipOverlay));

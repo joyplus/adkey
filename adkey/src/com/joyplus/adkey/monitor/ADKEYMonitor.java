@@ -11,6 +11,7 @@ import com.joyplus.adkey.AdRequest;
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.RequestRichMediaAd;
 import com.joyplus.adkey.Util;
+import com.joyplus.adkey.Monitorer.AdMonitorManager;
 import com.joyplus.adkey.download.ImpressionThread;
 import com.joyplus.adkey.video.ResourceManager;
 import com.joyplus.adkey.video.RichMediaAd;
@@ -188,11 +189,11 @@ public class ADKEYMonitor
 			{
 				new ImpressionThread(mContext,mResponse.getmImpressionUrl(),Util.PublisherId,Util.AD_TYPE.BANNER_IMAGE).start();
 			}
-			if(mResponse.getmTrackingUrl()!=null)
-			{
-				MZMonitor.retryCachedRequests(mContext);
-				MZMonitor.adTrack(mContext, mResponse.getmTrackingUrl());
+			//change by Jas
+			if(mResponse.getmTrackingUrl().size()>0){
+				AdMonitorManager.getInstance(mContext).AddTRACKINGURL(mResponse.getmTrackingUrl());
 			}
+		    //end change by Jas
 		} else if (mResponse.getType() == Const.NO_AD)
 		{
 			mResponse = null;

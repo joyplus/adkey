@@ -6,6 +6,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.joyplus.ad.config.Log;
+import com.joyplus.ad.data.TRACKINGURL.TYPE;
 
 import android.webkit.URLUtil;
 
@@ -14,6 +15,7 @@ public class AdBootResponseHandler extends DefaultHandler{
 	private ADBOOT  mADBOOT  = null;
 	private final static boolean Debug = false;
 	private CharArrayWriter contents = new CharArrayWriter();
+	private TRACKINGURL mTRACKINGURL = null;
 	@Override
 	public void characters(char[] ch, int start, int length)
 			throws SAXException {
@@ -41,12 +43,35 @@ public class AdBootResponseHandler extends DefaultHandler{
 				  mADBOOT.video.impressionurl     = new IMPRESSIONURL();
 				  mADBOOT.video.impressionurl.URL = impressionurl;
 			  }
-		  } else if(TRACKINGURL.tag.equals(localName)){
-			  if(mADBOOT.video != null && mADBOOT.video.trackingurl != null)
-				  throw new SAXException("trackingevents");
-			  		mADBOOT.video.trackingurl = new TRACKINGURL();
-			  		mADBOOT.video.trackingurl.URL = contents.toString().trim();
-		  } else if(DURATION.tag.equals(localName)){
+		  } else if("trackingurl_miaozhen".equals(localName)){
+			  if(mADBOOT.video == null )
+				  throw new SAXException("trackingurl_miaozhen");
+			  if(mTRACKINGURL == null || mTRACKINGURL.Type != TYPE.MIAOZHEN)throw new SAXException("trackingurl_miaozhen url");    
+			  mTRACKINGURL.URL = contents.toString().trim();
+			  mADBOOT.video.trackingurl.add(mTRACKINGURL);
+			  mTRACKINGURL     = null;//wanting for next add.
+		  } else if("trackingurl_iresearch".equals(localName)){
+			  if(mADBOOT.video == null )
+				  throw new SAXException("trackingurl_iresearch");
+			  if(mTRACKINGURL == null || mTRACKINGURL.Type != TYPE.IRESEARCH)throw new SAXException("trackingurl_iresearch url");    
+			  mTRACKINGURL.URL = contents.toString().trim();
+			  mADBOOT.video.trackingurl.add(mTRACKINGURL);
+			  mTRACKINGURL     = null;//wanting for next add.
+		  }  else if("trackingurl_admaster".equals(localName)){
+			  if(mADBOOT.video == null )
+				  throw new SAXException("trackingurl_admaster");
+			  if(mTRACKINGURL == null || mTRACKINGURL.Type != TYPE.ADMASTER)throw new SAXException("trackingurl_admaster url");    
+			  mTRACKINGURL.URL = contents.toString().trim();
+			  mADBOOT.video.trackingurl.add(mTRACKINGURL);
+			  mTRACKINGURL     = null;//wanting for next add.
+		  }  else if("trackingurl_nielsen".equals(localName)){
+			  if(mADBOOT.video == null )
+				  throw new SAXException("trackingurl_nielsen");
+			  if(mTRACKINGURL == null || mTRACKINGURL.Type != TYPE.NIELSEN)throw new SAXException("trackingurl_nielsen url");    
+			  mTRACKINGURL.URL = contents.toString().trim();
+			  mADBOOT.video.trackingurl.add(mTRACKINGURL);
+			  mTRACKINGURL     = null;//wanting for next add.
+		  }else if(DURATION.tag.equals(localName)){
 			  if(mADBOOT.video != null && mADBOOT.video.duration != null)
 				  throw new SAXException("duration");
 			  mADBOOT.video.duration = new DURATION();
@@ -139,6 +164,18 @@ public class AdBootResponseHandler extends DefaultHandler{
 			  mADBOOT.video.navigation.bottombar.pausebutton         = attributes.getValue("pausebutton");
 			  mADBOOT.video.navigation.bottombar.replaybutton        = attributes.getValue("replaybutton");
 			  mADBOOT.video.navigation.bottombar.timer               = attributes.getValue("timer");
+		  } else if("trackingurl_miaozhen".equals(localName)){
+			  mTRACKINGURL      = new TRACKINGURL();
+			  mTRACKINGURL.Type = TYPE.MIAOZHEN;
+		  } else if("trackingurl_iresearch".equals(localName)){
+			  mTRACKINGURL      = new TRACKINGURL();
+			  mTRACKINGURL.Type = TYPE.IRESEARCH;
+		  }  else if("trackingurl_admaster".equals(localName)){
+			  mTRACKINGURL      = new TRACKINGURL();
+			  mTRACKINGURL.Type = TYPE.ADMASTER;
+		  }  else if("trackingurl_nielsen".equals(localName)){
+			  mTRACKINGURL      = new TRACKINGURL();
+			  mTRACKINGURL.Type = TYPE.NIELSEN;
 		  }
 	}
 

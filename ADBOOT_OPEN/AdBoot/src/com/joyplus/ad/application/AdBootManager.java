@@ -8,12 +8,15 @@ import com.joyplus.ad.AdFileManager;
 import com.joyplus.ad.AdListener;
 import com.joyplus.ad.AdMode;
 import com.joyplus.ad.AdManager.AD;
+import com.joyplus.ad.Monitor.AdMonitorManager;
+import com.joyplus.ad.Monitor.Monitor;
 import com.joyplus.ad.PublisherId;
 import com.joyplus.ad.config.Log;
 import com.joyplus.ad.data.ADBOOT;
 import com.joyplus.ad.data.AdBootRequest;
 import com.joyplus.ad.data.RequestException;
 import com.joyplus.ad.download.ImpressionThread;
+import com.miaozhen.mzmonitor.MZMonitor;
 
 import android.content.Context;
 
@@ -39,8 +42,8 @@ public class AdBootManager extends AdMode{
 		mContext       = context;
 		mAdBoot        = new AdBoot(info.GetCUSTOMINFO(),info.GetAdBootInfo(),info.GetPublisherId());
 		mPublisherId   = new PublisherId(mAdBoot.GetPublisherId().GetPublisherId());
-		if(mAdBoot.GetCUSTOMINFO().GetDEVICEMUMBER() == null || "".equals(mAdBoot.GetCUSTOMINFO().GetDEVICEMUMBER()))
-			throw new IllegalArgumentException("ds cannot be null or empty");
+		if(mAdBoot.GetCUSTOMINFO()==null||mAdBoot.GetCUSTOMINFO().GetDEVICEMOVEMENT() == null || "".equals(mAdBoot.GetCUSTOMINFO().GetDEVICEMOVEMENT()))
+			throw new IllegalArgumentException("dm cannot be null or empty");
 		mDownloadManager = new AdBootDownloadManager(mContext,this,mAdBoot);
 	}
 	
@@ -62,12 +65,27 @@ public class AdBootManager extends AdMode{
 						// TODO Auto-generated catch block
 						mADBOOT = null;
 						e.printStackTrace();
-					}
-					if(mDownloadManager != null && mADBOOT != null){
+					} 
+					if(mDownloadManager != null && mADBOOT != null){ 
 						if(mADBOOT.video != null && mADBOOT.video.impressionurl!=null){
 							new ImpressionThread(mContext,mADBOOT.video.impressionurl.URL,
 									mPublisherId.GetPublisherId(),AD.ADBOOT).start();
 						}
+			            if(mADBOOT.video != null && mADBOOT.video.trackingurl != null){
+			            	Monitor m = new Monitor();
+			            	if(mAdBoot != null && mAdBoot.GetCUSTOMINFO() != null){
+			            		if(!("".equals(mAdBoot.GetCUSTOMINFO().GetDEVICEMUMBER()))){//ds
+			            			m.SetPM(mAdBoot.GetCUSTOMINFO().GetDEVICEMUMBER());
+			            		}else if(!("".equals(mAdBoot.GetCUSTOMINFO().GetDEVICEMOVEMENT()))){//dm
+			            			m.SetPM(mAdBoot.GetCUSTOMINFO().GetDEVICEMOVEMENT());
+			            		}
+			            		if(!("".equals(mAdBoot.GetCUSTOMINFO().GetMAC()))){//mac
+			            			m.SetMAC(mAdBoot.GetCUSTOMINFO().GetMAC());
+			            		}
+			            	}
+			            	m.SetTRACKINGURL(mADBOOT.video.trackingurl);
+			            	AdMonitorManager.getInstance().AddMonitor(m);//start monitor
+			            }
 						mDownloadManager.UpdateADBOOT(mADBOOT, mAdBootRequest.GetFileName(), mPublisherId);
 					}
 					mAdBootRequest = null;

@@ -102,7 +102,7 @@ public class AdFileServer {
 				try{
 					File dir  = new File(GetBasePath(),id.GetPublisherId());
 					dir.mkdirs();
-					File data = new File(dir,filename);					
+					File data = new File(dir,filename);	
 					FileOutputStream fop   = new FileOutputStream(data);
 					ObjectOutputStream oos = new ObjectOutputStream(fop);
 					oos.writeObject(o);
@@ -124,7 +124,7 @@ public class AdFileServer {
 			   //Log.d("Server readSerializableData() name="+filename);
 			   synchronized(mObject){
 					try{
-						File              data = new File(GetBasePath(),id.GetPublisherId()+filename);
+						File              data = new File(GetBasePath(),id.GetPublisherId()+File.separator+filename);
 						FileInputStream   fis  = new FileInputStream(data);
 						ObjectInputStream ois  = new ObjectInputStream(fis);
 						Object            file = (Object)ois.readObject();

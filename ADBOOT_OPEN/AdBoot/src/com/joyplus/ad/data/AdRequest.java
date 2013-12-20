@@ -47,9 +47,16 @@ public class AdRequest {
 			if(Debug)Log.d("rt="+AdRequestManager.REQUEST_TYPE_ANDROID);
 			b.appendQueryParameter("v",  PhoneManager.getInstance().GetAndroidVersion());
 			if(Debug)Log.d("v="+PhoneManager.getInstance().GetAndroidVersion());
-			b.appendQueryParameter("i",  PhoneManager.getInstance().GetMac());
-			if(Debug)Log.d("i="+PhoneManager.getInstance().GetIp());
-			if(Debug)Log.d("mac="+PhoneManager.getInstance().GetMac());
+			//b.appendQueryParameter("i",  PhoneManager.getInstance().GetMac());
+			//if(Debug)Log.d("i="+PhoneManager.getInstance().GetIp());
+			//if(Debug)Log.d("mac="+PhoneManager.getInstance().GetMac());
+			if(mAdBoot == null || mAdBoot.GetCUSTOMINFO() == null || mAdBoot.GetCUSTOMINFO().GetMAC() == null
+					|| "".equals(mAdBoot.GetCUSTOMINFO().GetMAC())){
+				b.appendQueryParameter("i", "");
+			}else{
+				b.appendQueryParameter("i", MD5Util.GetMD5Code(mAdBoot.GetCUSTOMINFO().GetMAC()));
+				if(Debug)Log.d("i="+MD5Util.GetMD5Code(mAdBoot.GetCUSTOMINFO().GetMAC()));
+			}
 			b.appendQueryParameter("u",  PhoneManager.getInstance().GetUA1());
 			if(Debug)Log.d("u="+PhoneManager.getInstance().GetUA1());
 			b.appendQueryParameter("u2", PhoneManager.getInstance().GetUA2());

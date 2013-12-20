@@ -9,44 +9,44 @@ import android.os.Parcelable;
 
 public class AdBootInfo implements Parcelable{
   
-	private String FirstImage       = "";
-	private String SecondImage      = "";
-	private String BootAnimationZip = "";
+	private String FirstSource       = "";
+	private String SecondSource      = "";
+	private String ThirdSource       = "";
 	
 	public AdBootInfo(){
-		FirstImage       = "";//default path is unknow.
-		SecondImage      = "";
-		BootAnimationZip = "";
+		FirstSource       = "";//default path is unknow.
+		SecondSource      = "";
+		ThirdSource = "";
 	}
 	public AdBootInfo(AdBootInfo info){
 		if(info != null){
-			FirstImage       = info.FirstImage;
-			SecondImage      = info.SecondImage;
-			BootAnimationZip = info.BootAnimationZip;
+			FirstSource       = info.FirstSource;
+			SecondSource      = info.SecondSource;
+			ThirdSource = info.ThirdSource;
 		}
 	}
 	public AdBootInfo CreateNew(){
 		return new AdBootInfo(this);
 	}
-	public void SetFirstImage(String firstimage){
-		FirstImage = firstimage;
+	public void SetFirstSource(String firstsource){
+		FirstSource = firstsource;
 	}
-	public String GetFirstImage(){
-		return FirstImage;
-	}
-	
-	public void SetSecondImage(String secondimage){
-		SecondImage = secondimage;
-	}
-	public String GetSecondImage(){
-		return SecondImage;
+	public String GetFirstSource(){
+		return FirstSource;
 	}
 	
-	public void SetBootAnimationZip(String bootanimationzip){
-		BootAnimationZip = bootanimationzip;
+	public void SetSecondSource(String secondsource){
+		SecondSource = secondsource;
 	}
-	public String GetBootAnimationZip(){
-		return BootAnimationZip;
+	public String GetSecondSource(){
+		return SecondSource;
+	}
+	
+	public void SetThirdSource(String thirdsource){
+		ThirdSource = thirdsource;
+	}
+	public String GetThirdSource(){
+		return ThirdSource;
 	}
 	@Override
 	public int describeContents() {
@@ -57,14 +57,14 @@ public class AdBootInfo implements Parcelable{
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		// TODO Auto-generated method stub
-		dest.writeString(FirstImage);
-		dest.writeString(SecondImage);
-		dest.writeString(BootAnimationZip);
+		dest.writeString(FirstSource);
+		dest.writeString(SecondSource);
+		dest.writeString(ThirdSource);
 	}
    
 	public boolean CheckFirstImageUsable(){
-		if(FirstImage == null || "".equals(FirstImage))return false;
-		File first = new File(FirstImage);
+		if(FirstSource == null || "".equals(FirstSource))return false;
+		File first = new File(FirstSource);
 		if(first.exists()){
 			if(first.canRead() && first.canWrite())return true;
 		    else return false;}
@@ -72,8 +72,8 @@ public class AdBootInfo implements Parcelable{
 	}
 	
 	public boolean CheckSecondImageUsable(){
-		if(SecondImage == null || "".equals(SecondImage))return false;
-		File first = new File(SecondImage);
+		if(SecondSource == null || "".equals(SecondSource))return false;
+		File first = new File(SecondSource);
 		if(first.exists()){
 			if(first.canRead() && first.canWrite())return true;
 		    else return false;}
@@ -81,8 +81,8 @@ public class AdBootInfo implements Parcelable{
 	}
 	
 	public boolean CheckBootAnimationZipUsable(){
-		if(BootAnimationZip == null || "".equals(BootAnimationZip))return false;
-		File first = new File(BootAnimationZip);
+		if(ThirdSource == null || "".equals(ThirdSource))return false;
+		File first = new File(ThirdSource);
 		if(first.exists()){
 			if(first.canRead() && first.canWrite())return true;
 		    else return false;}

@@ -40,10 +40,6 @@
         <activity android:name="com.joyplus.adkeydemo.AdViewActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
-        <activity android:name="com.joyplus.adkey.mraid.MraidActivity"
-           	android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar" /> 
-            
         <activity android:name="com.joyplus.adkeydemo.PatchActivity"
            	android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" /> 

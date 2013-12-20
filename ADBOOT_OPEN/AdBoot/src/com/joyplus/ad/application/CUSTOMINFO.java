@@ -1,6 +1,7 @@
 package com.joyplus.ad.application;
 
 import com.joyplus.ad.AdSDKManager;
+import com.joyplus.ad.config.Log;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -53,6 +54,7 @@ public class CUSTOMINFO implements Parcelable{
 	 private String      mDEVICEMOVEMENT      = "";//dm
 	 private String      mBRAND               = "";//d
 	 private int         mLastBootUpCount     = 0;//ot
+	 private String      mMAC                 = "";
 	 
 	 public  CUSTOMINFO(){
 		 if(!AdSDKManager.IsInited())
@@ -69,6 +71,7 @@ public class CUSTOMINFO implements Parcelable{
 			 mDEVICEMOVEMENT   = info.mDEVICEMOVEMENT;
 			 mBRAND            = info.mBRAND;
 			 mLastBootUpCount  = info.mLastBootUpCount;
+			 mMAC              = info.mMAC;
 		 }
 	 }
 	 public CUSTOMINFO CreateNew(){
@@ -127,7 +130,12 @@ public class CUSTOMINFO implements Parcelable{
 	public int GetLastBootUpCount(){
 		return mLastBootUpCount; 
 	}
-	
+	public void SetMAC(String mac){
+		mMAC  = mac; 
+	}
+	public String GetMAC(){
+		return mMAC;
+	}
 	@Override
 	public int describeContents() {
 		// TODO Auto-generated method stub
@@ -144,6 +152,24 @@ public class CUSTOMINFO implements Parcelable{
 		dest.writeString(mDEVICEMOVEMENT);
 		dest.writeString(mBRAND);
 		dest.writeInt(mLastBootUpCount);
+		dest.writeString(mMAC);
+	}
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		StringBuffer ap = new StringBuffer();
+		ap.append(" CUSTOMINFO={")
+		  .append(" mDEVICEMUMBER="+mDEVICEMUMBER)
+		  .append(" ,mSN="+mSN)
+		  .append(" ,mDEVICETYPE="+mDEVICETYPE.toInt())
+		  .append(" ,mUSEMODE="+mUSEMODE.toInt())
+		  .append(" ,mLICENSEPROVIDER="+mLICENSEPROVIDER.toInt())
+		  .append(" ,mDEVICEMOVEMENT="+mDEVICEMOVEMENT)
+		  .append(" ,mBRAND="+mBRAND)
+		  .append(" ,mLastBootUpCount="+mLastBootUpCount)
+		  .append(" ,mMAC="+mMAC)
+		  .append(" }");
+		return ap.toString();
 	}
 	 
 	 

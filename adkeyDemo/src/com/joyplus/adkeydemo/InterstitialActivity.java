@@ -7,13 +7,12 @@ import com.joyplus.adkey.AdManager;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class InterstitialActivity extends Activity implements AdListener
 {
 	private AdManager mManager = null;
-	private String publisherId = "ec9d24aee9b37b1340d10c9782fc18bc";//
+	private String publisherId = "ec9d24aee9b37b1340d10c9782fc18bc";
 	private boolean cacheMode = false;//
 	 
 	@Override

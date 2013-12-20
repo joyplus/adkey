@@ -50,11 +50,11 @@ public class AdBootDownloadManager {
 		   if(mCurrentADBOOT == null)return;
 		   if(mCurrentADBOOT.code != null && CODE.AD_NO.equals(mCurrentADBOOT.code)){
 			   if(mAdBootInfo.CheckFirstImageUsable())
-				   FileUtils.deleteFiles(mAdBootInfo.GetFirstImage());
+				   FileUtils.deleteFile(mAdBootInfo.GetFirstSource());
 			   if(mAdBootInfo.CheckSecondImageUsable())
-			       FileUtils.deleteFiles(mAdBootInfo.GetSecondImage());
+			       FileUtils.deleteFile(mAdBootInfo.GetSecondSource());
 			   if(mAdBootInfo.CheckBootAnimationZipUsable())
-			       FileUtils.deleteFiles(mAdBootInfo.GetBootAnimationZip());
+			       FileUtils.deleteFile(mAdBootInfo.GetThirdSource());
 			   return;
 		   }
 		   
@@ -72,15 +72,15 @@ public class AdBootDownloadManager {
 	   private void CheckDownLoadFirst(){
 		   if(mAdBootInfo == null)return;
 		   if(mAdBootInfo.CheckFirstImageUsable() ){
-			   File first = new File(AdFileManager.getInstance().GetBasePath(),mLocalAdBootInfo.GetFirstImage());
+			   File first = new File(AdFileManager.getInstance().GetBasePath(),mLocalAdBootInfo.GetFirstSource());
 			   if(IsFirstSame() && first.exists()){
-				   FileUtils.copyFile(first, new File(mAdBootInfo.GetFirstImage()));
+				   FileUtils.copyFile(first, new File(mAdBootInfo.GetFirstSource()));
 			   }else if((mCurrentADBOOT.video.creative != null)
 						  && (URLUtil.isHttpsUrl(mCurrentADBOOT.video.creative.URL)||URLUtil.isHttpUrl(mCurrentADBOOT.video.creative.URL))){
 				   Download firstdownload   = new Download();
 				   firstdownload.URL        = mCurrentADBOOT.video.creative.URL;
-				   firstdownload.LocalFile  = mLocalAdBootInfo.GetFirstImage();
-				   firstdownload.TargetFile = mAdBootInfo.GetFirstImage();
+				   firstdownload.LocalFile  = mLocalAdBootInfo.GetFirstSource();
+				   firstdownload.TargetFile = mAdBootInfo.GetFirstSource();
 				   DownLoadManager.getInstance().AddDownload(firstdownload);
 			   }
 		   }
@@ -88,15 +88,15 @@ public class AdBootDownloadManager {
 	   private void CheckDownLoadSecond(){
            if(mAdBootInfo == null)return;
 		   if(mAdBootInfo.CheckSecondImageUsable()){
-			   File second = new File(AdFileManager.getInstance().GetBasePath(),mLocalAdBootInfo.GetSecondImage());
+			   File second = new File(AdFileManager.getInstance().GetBasePath(),mLocalAdBootInfo.GetSecondSource());
 			   if(IsSecondSame() && second.exists()){
-				   FileUtils.copyFile(second, new File(mAdBootInfo.GetSecondImage()));
+				   FileUtils.copyFile(second, new File(mAdBootInfo.GetSecondSource()));
 			   }else if((mCurrentADBOOT.video.creative2 != null)
 						  && (URLUtil.isHttpsUrl(mCurrentADBOOT.video.creative2.URL)||URLUtil.isHttpUrl(mCurrentADBOOT.video.creative2.URL))){
 				   Download seconddownload   = new Download();
 			       seconddownload.URL        = mCurrentADBOOT.video.creative2.URL;
-			       seconddownload.LocalFile  = mLocalAdBootInfo.GetSecondImage();
-			       seconddownload.TargetFile = mAdBootInfo.GetSecondImage();
+			       seconddownload.LocalFile  = mLocalAdBootInfo.GetSecondSource();
+			       seconddownload.TargetFile = mAdBootInfo.GetSecondSource();
 				   DownLoadManager.getInstance().AddDownload(seconddownload);
 			   }
 		   }
@@ -104,15 +104,15 @@ public class AdBootDownloadManager {
 	   private void CheckDownLoadZIP(){
 		   if(mAdBootInfo == null)return;
 		   if(mAdBootInfo.CheckBootAnimationZipUsable()){
-			   File zip = new File(AdFileManager.getInstance().GetBasePath(),mLocalAdBootInfo.GetBootAnimationZip());
+			   File zip = new File(AdFileManager.getInstance().GetBasePath(),mLocalAdBootInfo.GetThirdSource());
 			   if(IsBootAnimationSame() && zip.exists()){
-				   FileUtils.copyFile(zip, new File(mAdBootInfo.GetBootAnimationZip()));
+				   FileUtils.copyFile(zip, new File(mAdBootInfo.GetThirdSource()));
 			   }else if((mCurrentADBOOT.video.creative3 != null)
 						  && (URLUtil.isHttpsUrl(mCurrentADBOOT.video.creative3.URL)||URLUtil.isHttpUrl(mCurrentADBOOT.video.creative3.URL))){
 				   Download zipdownload   = new Download();
 				   zipdownload.URL        = mCurrentADBOOT.video.creative3.URL;
-				   zipdownload.LocalFile  = mLocalAdBootInfo.GetBootAnimationZip();
-				   zipdownload.TargetFile = mAdBootInfo.GetBootAnimationZip();
+				   zipdownload.LocalFile  = mLocalAdBootInfo.GetThirdSource();
+				   zipdownload.TargetFile = mAdBootInfo.GetThirdSource();
 				   DownLoadManager.getInstance().AddDownload(zipdownload);
 			   }
 		   }
@@ -121,9 +121,9 @@ public class AdBootDownloadManager {
 		   // TODO Auto-generated method stub
 		   mLocalAdBootInfo = new AdBootInfo();
 		   (new File(AdFileManager.getInstance().GetBasePath().toString()+File.separator+mPublisherId.GetPublisherId().toString()+File.separator)).mkdirs();
-		   mLocalAdBootInfo.SetBootAnimationZip(AdFileManager.getInstance().GetBasePath().toString()+File.separator+mPublisherId.GetPublisherId().toString()+File.separator+"AdBootManager_bootanimation");
-		   mLocalAdBootInfo.SetFirstImage(AdFileManager.getInstance().GetBasePath().toString()+File.separator+mPublisherId.GetPublisherId().toString()+File.separator+"AdBootManager_first");
-		   mLocalAdBootInfo.SetSecondImage(AdFileManager.getInstance().GetBasePath().toString()+File.separator+mPublisherId.GetPublisherId().toString()+File.separator+"AdBootManager_second");
+		   mLocalAdBootInfo.SetThirdSource(AdFileManager.getInstance().GetBasePath().toString()+File.separator+mPublisherId.GetPublisherId().toString()+File.separator+"AdBootManager_bootanimation");
+		   mLocalAdBootInfo.SetFirstSource(AdFileManager.getInstance().GetBasePath().toString()+File.separator+mPublisherId.GetPublisherId().toString()+File.separator+"AdBootManager_first");
+		   mLocalAdBootInfo.SetSecondSource(AdFileManager.getInstance().GetBasePath().toString()+File.separator+mPublisherId.GetPublisherId().toString()+File.separator+"AdBootManager_second");
 	   }
 	   
 	   private boolean IsBootAnimationSame(){
