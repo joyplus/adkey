@@ -1,6 +1,12 @@
 package com.joyplus.adkey.video;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.joyplus.adkey.Ad;
+import com.joyplus.adkey.Monitorer.AdSDKFeature;
+import com.joyplus.adkey.Monitorer.TRACKINGURL;
+import com.joyplus.adkey.Monitorer.TRACKINGURL.TYPE;
 
 
 public class RichMediaAd implements Ad {
@@ -22,16 +28,28 @@ public class RichMediaAd implements Ad {
 	private long              timestamp;
 	
 	private String mImpressionUrl;
-	private String mTrackingUrl;
+	private List<TRACKINGURL> mTrackingUrl;
 	
-	public String getmTrackingUrl()
+	public List<TRACKINGURL> getmTrackingUrl()
 	{
+		if(mTrackingUrl == null){
+			mTrackingUrl = new ArrayList<TRACKINGURL>(); 
+		}
 		return mTrackingUrl;
 	}
 
-	public void setmTrackingUrl(String mTrackingUrl)
+	public void setmTrackingUrl(TRACKINGURL TrackingUrl)
 	{
-		this.mTrackingUrl = mTrackingUrl;
+		if(TrackingUrl == null)return;
+		if((AdSDKFeature.MONITOR_IRESEARCH && TYPE.IRESEARCH==TrackingUrl.Type)
+				  ||(AdSDKFeature.MONITOR_ADMASTER && TYPE.ADMASTER==TrackingUrl.Type)
+				  ||((AdSDKFeature.MONITOR_NIELSEN && TYPE.NIELSEN==TrackingUrl.Type))){
+			if(TrackingUrl.URL==null || "".equals(TrackingUrl.URL))return;
+			if(mTrackingUrl == null){
+				mTrackingUrl = new ArrayList<TRACKINGURL>();
+			}
+			mTrackingUrl.add(TrackingUrl);
+		}
 	}
 
 	public String getmImpressionUrl()

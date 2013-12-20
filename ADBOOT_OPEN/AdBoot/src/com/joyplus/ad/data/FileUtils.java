@@ -15,7 +15,15 @@ import android.os.Environment;
 /** File copy/delete/move */
 @SuppressLint("NewApi")
 public class FileUtils {
-
+    /*Delete file*/
+	public static boolean deleteFile(final String filepath){
+		boolean ret = true;
+		File f = new File(filepath);
+		if(!f.exists())return true;
+		if(f.isFile())
+			ret = f.delete() == false || ret == false ? false : true;
+		return ret;
+	}
     /** Delete files or folders */
     public static boolean deleteFiles(final String path) {
         boolean ret = true;

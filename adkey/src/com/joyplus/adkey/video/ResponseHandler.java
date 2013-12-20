@@ -13,6 +13,8 @@ import android.webkit.URLUtil;
 
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.Util;
+import com.joyplus.adkey.Monitorer.TRACKINGURL;
+import com.joyplus.adkey.Monitorer.TRACKINGURL.TYPE;
 
 public class ResponseHandler extends DefaultHandler {
 
@@ -56,17 +58,47 @@ public class ResponseHandler extends DefaultHandler {
 					richMediaAd.setmImpressionUrl(mImpressionUrl);
 				}
 			}
-		} else if(localName.equals("trackingurl"))
+		} else if(localName.equals("trackingurl_miaozhen"))
 		{
 			mTrackingUrl = contents.toString().trim();
 			if(URLUtil.isHttpsUrl(mTrackingUrl)||URLUtil.isHttpUrl(mTrackingUrl))
 			{
-				if(richMediaAd!=null)
-				{
-					richMediaAd.setmTrackingUrl(mTrackingUrl);
-				}
+				TRACKINGURL url = new TRACKINGURL();
+				url.Type        = TYPE.MIAOZHEN;
+				url.URL         = mTrackingUrl;
+				richMediaAd.setmTrackingUrl(url);
 			}
-		} else if (localName.equals("duration")) {
+		} else if(localName.equals("trackingurl_iresearch"))
+		{
+			mTrackingUrl = contents.toString().trim();
+			if(URLUtil.isHttpsUrl(mTrackingUrl)||URLUtil.isHttpUrl(mTrackingUrl))
+			{
+				TRACKINGURL url = new TRACKINGURL();
+				url.Type        = TYPE.IRESEARCH;
+				url.URL         = mTrackingUrl;
+				richMediaAd.setmTrackingUrl(url);
+			}
+		}  else if(localName.equals("trackingurl_admaster"))
+		{
+			mTrackingUrl = contents.toString().trim();
+			if(URLUtil.isHttpsUrl(mTrackingUrl)||URLUtil.isHttpUrl(mTrackingUrl))
+			{
+				TRACKINGURL url = new TRACKINGURL();
+				url.Type        = TYPE.ADMASTER;
+				url.URL         = mTrackingUrl;
+				richMediaAd.setmTrackingUrl(url);
+			}
+		}  else if(localName.equals("trackingurl_nielsen"))
+		{
+			mTrackingUrl = contents.toString().trim();
+			if(URLUtil.isHttpsUrl(mTrackingUrl)||URLUtil.isHttpUrl(mTrackingUrl))
+			{
+				TRACKINGURL url = new TRACKINGURL();
+				url.Type        = TYPE.NIELSEN;
+				url.URL         = mTrackingUrl;
+				richMediaAd.setmTrackingUrl(url);
+			}
+		}else if (localName.equals("duration")) {
 			if ((getRichMediaAd() == null) || (getRichMediaAd().getVideo() == null)) {
 				throw new SAXException("Duration tag found outside video node");
 			}

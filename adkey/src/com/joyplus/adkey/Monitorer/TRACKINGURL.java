@@ -1,4 +1,4 @@
-package com.joyplus.ad.data;
+package com.joyplus.adkey.Monitorer;
 
 import java.io.Serializable;
 
@@ -11,10 +11,10 @@ public class TRACKINGURL implements Serializable{
 	 public boolean Monitored = false;
 	 public enum TYPE{
 		 UNKNOW    ("unknow"),
-		 MIAOZHEN  ("miaozhen"), //ÃëÕë
-		 IRESEARCH ("iresearch"),//°¬Èð
+		 MIAOZHEN  ("miaozhen"), //ç§’é’ˆ
+		 IRESEARCH ("iresearch"),//è‰¾ç‘ž
 		 ADMASTER  ("admaster"), //ADMsater
-		 NIELSEN   ("nielsen");  //Äá¶ûÉ­
+		 NIELSEN   ("nielsen");  //å°¼å°”æ£®
 		 private String Type;
 		 TYPE(String type){
 			 Type = type;
@@ -41,7 +41,6 @@ public class TRACKINGURL implements Serializable{
 		StringBuffer ap = new StringBuffer();
 		ap.append(" TRACKINGURL={")
 		  .append(" ,tag="+tag)
-		  .append(" ,Monitored="+Monitored)
 		  .append(" ,TYPE="+Type.toString())
 		  .append(" ,URL="+URL)
 		  .append(" }");

@@ -8,6 +8,8 @@ import com.joyplus.ad.AdFileManager;
 import com.joyplus.ad.AdListener;
 import com.joyplus.ad.AdMode;
 import com.joyplus.ad.AdManager.AD;
+import com.joyplus.ad.Monitor.AdMonitorManager;
+import com.joyplus.ad.Monitor.Monitor;
 import com.joyplus.ad.PublisherId;
 import com.joyplus.ad.config.Log;
 import com.joyplus.ad.data.ADBOOT;
@@ -69,10 +71,20 @@ public class AdBootManager extends AdMode{
 							new ImpressionThread(mContext,mADBOOT.video.impressionurl.URL,
 									mPublisherId.GetPublisherId(),AD.ADBOOT).start();
 						}
-			            if(mADBOOT.video != null && mADBOOT.video.trackingurl != null 
-			            		&& mADBOOT.video.trackingurl.URL != null && !"".equals(mADBOOT.video.trackingurl.URL)){
-			            	MZMonitor.retryCachedRequests(mContext);
-							MZMonitor.adTrack(mContext, mADBOOT.video.trackingurl.URL);
+			            if(mADBOOT.video != null && mADBOOT.video.trackingurl != null){
+			            	Monitor m = new Monitor();
+			            	if(mAdBoot != null && mAdBoot.GetCUSTOMINFO() != null){
+			            		if(!("".equals(mAdBoot.GetCUSTOMINFO().GetDEVICEMUMBER()))){//ds
+			            			m.SetPM(mAdBoot.GetCUSTOMINFO().GetDEVICEMUMBER());
+			            		}else if(!("".equals(mAdBoot.GetCUSTOMINFO().GetDEVICEMOVEMENT()))){//dm
+			            			m.SetPM(mAdBoot.GetCUSTOMINFO().GetDEVICEMOVEMENT());
+			            		}
+			            		if(!("".equals(mAdBoot.GetCUSTOMINFO().GetMAC()))){//mac
+			            			m.SetMAC(mAdBoot.GetCUSTOMINFO().GetMAC());
+			            		}
+			            	}
+			            	m.SetTRACKINGURL(mADBOOT.video.trackingurl);
+			            	AdMonitorManager.getInstance().AddMonitor(m);//start monitor
 			            }
 						mDownloadManager.UpdateADBOOT(mADBOOT, mAdBootRequest.GetFileName(), mPublisherId);
 					}

@@ -50,11 +50,11 @@ public class AdBootDownloadManager {
 		   if(mCurrentADBOOT == null)return;
 		   if(mCurrentADBOOT.code != null && CODE.AD_NO.equals(mCurrentADBOOT.code)){
 			   if(mAdBootInfo.CheckFirstImageUsable())
-				   FileUtils.deleteFiles(mAdBootInfo.GetFirstSource());
+				   FileUtils.deleteFile(mAdBootInfo.GetFirstSource());
 			   if(mAdBootInfo.CheckSecondImageUsable())
-			       FileUtils.deleteFiles(mAdBootInfo.GetSecondSource());
+			       FileUtils.deleteFile(mAdBootInfo.GetSecondSource());
 			   if(mAdBootInfo.CheckBootAnimationZipUsable())
-			       FileUtils.deleteFiles(mAdBootInfo.GetThirdSource());
+			       FileUtils.deleteFile(mAdBootInfo.GetThirdSource());
 			   return;
 		   }
 		   

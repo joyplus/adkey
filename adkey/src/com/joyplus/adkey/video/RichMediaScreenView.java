@@ -12,6 +12,7 @@ import com.joyplus.adkey.AdFullscreenManager;
 import com.joyplus.adkey.AdRequest;
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.Util;
+import com.joyplus.adkey.Monitorer.AdMonitorManager;
 import com.joyplus.adkey.download.ImpressionThread;
 import com.joyplus.adkey.video.InterstitialController.OnResetAutocloseListener;
 import com.joyplus.adkey.video.MediaController.OnPauseListener;
@@ -303,13 +304,11 @@ public class RichMediaScreenView extends FrameLayout
 					}
 					new ImpressionThread(mContext, mAd.getmImpressionUrl(), Util.PublisherId,Util.AD_TYPE.FULL_SCREEN_VIDEO).start();
 
-					if(Util.MIAOZHENFLAG){
-						if(mAd.getmTrackingUrl()!=null)
-						{
-							MZMonitor.retryCachedRequests(mContext);
-							MZMonitor.adTrack(mContext, mAd.getmTrackingUrl());
-						}
+					//change by Jas
+					if(mAd.getmTrackingUrl().size()>0){
+						AdMonitorManager.getInstance(mContext).AddTRACKINGURL(mAd.getmTrackingUrl());
 					}
+				    //end change by Jas
 					
 					this.mInterstitialView
 							.setMarkup(this.mInterstitialData.interstitialMarkup);
@@ -525,13 +524,11 @@ public class RichMediaScreenView extends FrameLayout
 			}
 		}
 		new ImpressionThread(mContext, mAd.getmImpressionUrl(), Util.PublisherId,Util.AD_TYPE.FULL_SCREEN_VIDEO).start();
-		if(Util.MIAOZHENFLAG){
-			if(mAd.getmTrackingUrl()!=null)
-			{
-				MZMonitor.retryCachedRequests(mContext);
-				MZMonitor.adTrack(mContext, mAd.getmTrackingUrl());
-			}
+		//change by Jas
+		if(mAd.getmTrackingUrl().size()>0){
+			AdMonitorManager.getInstance(mContext).AddTRACKINGURL(mAd.getmTrackingUrl());
 		}
+	    //end change by Jas
 		Util.PlayingSmallVideoName = path;
 		this.mVideoView.setVideoPath(path);
 		String pathTemp = Const.DOWNLOAD_PATH + Util.VideoFileDir

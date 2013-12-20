@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.joyplus.adkey.data.ImpressionInfo;
+import com.joyplus.adkey.widget.Log;
 
 /**
  * 
@@ -58,6 +59,8 @@ public class ImpressionDao {
 		SQLiteDatabase database = getConnection();
 		Cursor cursor = null;
 		try {
+			publisher_id = ((publisher_id==null)?"":publisher_id);
+			ad_id = ((ad_id==null)?"":ad_id);
 			String sql = "select publisher_id,ad_id, ad_type,display_num,column1,column2,column3,create_date from impression_info where publisher_id=? and ad_id=?";
 			cursor = database.rawQuery(sql, new String[] { publisher_id, ad_id });
 			while (cursor.moveToNext()) {

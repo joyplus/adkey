@@ -48,6 +48,7 @@ import android.widget.VideoView;
 import com.joyplus.adkey.AdManager;
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.Util;
+import com.joyplus.adkey.Monitorer.AdMonitorManager;
 import com.joyplus.adkey.banner.AdViewScreenSaver;
 import com.joyplus.adkey.download.DisplayImgDownloader;
 import com.joyplus.adkey.download.Downloader;
@@ -839,13 +840,11 @@ public class RichMediaActivity extends Activity
 		
 		new ImpressionThread(RichMediaActivity.this, mAd.getmImpressionUrl(), Util.PublisherId,Util.AD_TYPE.FULL_SCREEN_VIDEO).start();
 
-		if(Util.MIAOZHENFLAG){
-			if(mAd.getmTrackingUrl()!=null)
-			{				
-				MZMonitor.retryCachedRequests(RichMediaActivity.this);
-				MZMonitor.adTrack(RichMediaActivity.this, mAd.getmTrackingUrl());
-			}
+		//change by Jas
+		if(mAd.getmTrackingUrl().size()>0){
+			AdMonitorManager.getInstance(RichMediaActivity.this).AddTRACKINGURL(mAd.getmTrackingUrl());
 		}
+	    //end change by Jas
 		
 		switch (this.mInterstitialData.interstitialType)
 		{
@@ -1105,13 +1104,11 @@ public class RichMediaActivity extends Activity
 		
 		new ImpressionThread(RichMediaActivity.this, mAd.getmImpressionUrl(), Util.PublisherId,Util.AD_TYPE.FULL_SCREEN_VIDEO).start();
 
-		if(Util.MIAOZHENFLAG){
-			if(mAd.getmTrackingUrl()!=null)
-			{
-				MZMonitor.retryCachedRequests(RichMediaActivity.this);
-				MZMonitor.adTrack(RichMediaActivity.this, mAd.getmTrackingUrl());
-			}
+		//change by Jas
+		if(mAd.getmTrackingUrl().size()>0){
+			AdMonitorManager.getInstance(RichMediaActivity.this).AddTRACKINGURL(mAd.getmTrackingUrl());
 		}
+	    //end change by Jas
 		this.mVideoView.setVideoPath(path);
 		
 	}

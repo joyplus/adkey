@@ -1,6 +1,8 @@
 package com.joyplus.ad.data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ABDOOTVIDEO implements Serializable{
@@ -12,7 +14,7 @@ public class ABDOOTVIDEO implements Serializable{
 	public        CREATIVE2      creative2      = null;
 	public        CREATIVE3      creative3      = null;
 	public        IMPRESSIONURL  impressionurl  = null;
-	public        TRACKINGURL    trackingurl    = null;
+	public        List<TRACKINGURL> trackingurl = new ArrayList<TRACKINGURL>();
 	public        DURATION       duration       = null;
 	public        SKIPBUTTON     skipbutton     = null;
 	public        NAVIGATION     navigation     = null;
@@ -40,9 +42,13 @@ public class ABDOOTVIDEO implements Serializable{
 		  ap.append(" ,impressionurl="+impressionurl.toString());
 		else
 		  ap.append(" ,impressionurl=null");
-		if(trackingurl != null)
-		  ap.append(" ,trackingurl="+trackingurl.toString());
-		else
+		if(trackingurl != null){
+		  ap.append(" ,trackingurl={");
+		  for(TRACKINGURL url :trackingurl){
+			  ap.append(" ,"+url.toString());
+		  }
+		  ap.append("}");
+		}else
 		  ap.append(" ,trackingurl=null");
 		if(duration != null)
 		  ap.append(" ,duration="+duration.toString());

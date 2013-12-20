@@ -1,5 +1,11 @@
 package com.joyplus.adkey;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.joyplus.adkey.Monitorer.AdSDKFeature;
+import com.joyplus.adkey.Monitorer.TRACKINGURL;
+import com.joyplus.adkey.Monitorer.TRACKINGURL.TYPE;
 import com.joyplus.adkey.data.ClickType;
 
 public class BannerAd implements Ad {
@@ -22,16 +28,29 @@ public class BannerAd implements Ad {
 	private boolean skipPreflight;
 	
 	private String mImpressionUrl;
-	private String mTrackingUrl;
+	private List<TRACKINGURL> mTrackingUrl;
 
-	public String getmTrackingUrl()
+	public List<TRACKINGURL> getmTrackingUrl()
 	{
+		if(mTrackingUrl == null){
+			mTrackingUrl = new ArrayList<TRACKINGURL>(); 
+		}
 		return mTrackingUrl;
 	}
 
-	public void setmTrackingUrl(String mTrackingUrl)
+	public void setmTrackingUrl(TRACKINGURL TrackingUrl)
 	{
-		this.mTrackingUrl = mTrackingUrl;
+		if(TrackingUrl == null)return;
+		if((AdSDKFeature.MONITOR_IRESEARCH && TYPE.IRESEARCH==TrackingUrl.Type)
+				  ||(AdSDKFeature.MONITOR_MIAOZHEN && TYPE.MIAOZHEN==TrackingUrl.Type)
+				  ||(AdSDKFeature.MONITOR_ADMASTER && TYPE.ADMASTER==TrackingUrl.Type)
+				  ||((AdSDKFeature.MONITOR_NIELSEN && TYPE.NIELSEN==TrackingUrl.Type))){
+			if(TrackingUrl.URL==null || "".equals(TrackingUrl.URL))return;
+			if(mTrackingUrl == null){
+				mTrackingUrl = new ArrayList<TRACKINGURL>();
+			}
+			mTrackingUrl.add(TrackingUrl);
+		}
 	}
 
 	public String getmImpressionUrl()
@@ -136,13 +155,18 @@ public class BannerAd implements Ad {
 
 	@Override
 	public String toString() {
+		StringBuffer ap = new StringBuffer();
+		for(TRACKINGURL url:this.getmTrackingUrl()){
+			ap.append(" ,TRACKINGURL{"+url.toString()+"}");
+		}
 		return "Response [refresh=" + this.refresh + ", type=" + this.type
 				+ ", bannerWidth=" + this.bannerWidth + ", bannerHeight="
 				+ this.bannerHeight + ", text=" + this.text + ", imageUrl="
 				+ this.imageUrl + ", clickType=" + this.clickType
 				+ ", clickUrl=" + this.clickUrl + ", urlType=" + this.urlType
 				+ ", scale=" + this.scale + ", skipPreflight="
-				+ this.skipPreflight + "]";
+				+ this.skipPreflight 
+				+ ap.toString()+ " ]";
 	}
 
 	public int getSkipOverlay() {
