@@ -101,7 +101,7 @@ public class Monitorer {
 				case MSG_START_MONITOR:
 					SetMonitorerState(MonitorerState.START);
 					mMonitorThread = new MonitorThread(mTRACKINGURL);
-					mMonitorThread.start();
+					mMonitorThread.report();
 					break;
 				case MSG_FINISH_MONITOR:
 					SetMonitorerState(MonitorerState.OVER);
@@ -117,7 +117,7 @@ public class Monitorer {
 	  
 	  
 	  //monitor start
-	  private class MonitorThread extends Thread{
+	  private class MonitorThread{
 		  private TRACKINGURL MonitorURL = null;
 		  private MonitorThread(TRACKINGURL url){
 			  MonitorURL = url;
@@ -126,10 +126,8 @@ public class Monitorer {
 			  Log.d("Monitorer finish = "+MonitorURL.toString());
 			  mHandler.sendEmptyMessage(MSG_FINISH_MONITOR);
 		  }
-		  @Override
-		  public void run() {
+		  public void report() {
 			  // TODO Auto-generated method stub
-			  super.run();
 			  if(MonitorURL == null 
 					  || MonitorURL.URL == null
 					  || "".equals(MonitorURL.URL)){
