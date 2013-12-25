@@ -1,6 +1,7 @@
 package com.joyplus.adkey.Monitorer;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.joyplus.adkey.Monitorer.Monitorer.MonitorerState;
@@ -58,7 +59,15 @@ public class AdMonitorServer implements MonitorListener{
 					break;
 				}
 				Log.d("Jas","mMonitorList size = "+mMonitorList.size());
-				mMonitor = mMonitorList.get(0);
+				Iterator<Monitor> k = mMonitorList.iterator();
+				while(k.hasNext()){
+					mMonitor = k.next();
+					if(mMonitor.GetFirstTRACKINGURL() != null){
+						k.remove();
+						mMonitor = null;
+						continue;
+					}
+				}
 				if(mMonitor != null)
 					mHandler.sendEmptyMessage(MSG_START_MONITOR);
 				Checking = false;
