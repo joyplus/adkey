@@ -8,6 +8,9 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpProtocolParams;
 
+import com.common.internet.AjaxCallBack;
+import com.common.internet.FastHttp;
+import com.common.internet.ResponseEntity;
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.Util;
 import com.joyplus.adkey.Monitorer.TRACKINGURL.TYPE;
@@ -38,15 +41,15 @@ public class Monitorer {
       }
       private void NotifyStateChange(){
     	  if(mMonitorListener == null)return;
-    	  new Runnable(){
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-					synchronized (mObject) {
+//    	  new Runnable(){
+//				@Override
+//				public void run() {
+//					// TODO Auto-generated method stub
+//					synchronized (mObject) {
 						mMonitorListener.MonitorerStateChange(mMonitorerState, mMonitor);
-					}
-				}
-  		 }.run();
+//					}
+//				}
+//  		 }.run();
       }
       public  enum MonitorerState{
     	  IDLE , START , NEW , MONITOR , OVER , FINISH
@@ -83,6 +86,7 @@ public class Monitorer {
 					if(mMonitorThread != null)break;
 					mTRACKINGURL = mMonitor.GetFirstTRACKINGURL();
 					if(mTRACKINGURL == null){
+						mMonitor = null;
 						SetMonitorerState(MonitorerState.FINISH);
 						break;
 					}
@@ -92,7 +96,7 @@ public class Monitorer {
 				case MSG_START_MONITOR:
 					SetMonitorerState(MonitorerState.START);
 					mMonitorThread = new MonitorThread(mTRACKINGURL);
-					mMonitorThread.start();
+					mMonitorThread.report();
 					break;
 				case MSG_FINISH_MONITOR:
 					SetMonitorerState(MonitorerState.OVER);
@@ -108,21 +112,18 @@ public class Monitorer {
 	  
 	  
 	  //monitor start
-	  private class MonitorThread extends Thread{
+	  private class MonitorThread {
 		  private TRACKINGURL MonitorURL = null;
 		  private MonitorThread(TRACKINGURL url){
 			  MonitorURL = url;
-			  
 		  }
 		  private void Finish(){
 			  Message msg = Message.obtain(mHandler, MSG_FINISH_MONITOR);
 	          msg.sendToTarget();
 			  //mHandler.sendEmptyMessage(MSG_FINISH_MONITOR);
 		  }
-		  @Override
-		  public void run() {
+		  public void report() {
 			  // TODO Auto-generated method stub
-			  super.run();
 			  if(MonitorURL == null 
 					  || MonitorURL.URL == null
 					  || "".equals(MonitorURL.URL)){
@@ -138,12 +139,24 @@ public class Monitorer {
 			  }else if((AdSDKFeature.MONITOR_IRESEARCH && TYPE.IRESEARCH==MonitorURL.Type)
 					  ||(AdSDKFeature.MONITOR_ADMASTER && TYPE.ADMASTER==MonitorURL.Type)
 					  ||((AdSDKFeature.MONITOR_NIELSEN && TYPE.NIELSEN==MonitorURL.Type))){
-				  report(MonitorURL.URL);
+				  report_third(MonitorURL.URL);
 			  }else{
 				  Finish();
 			  }
 		  }
-		  
+		  private void report_third(String url){
+				FastHttp.ajaxGet(url, new AjaxCallBack() {
+					@Override
+					public void callBack(ResponseEntity arg0) {
+						Finish();
+					}
+					@Override
+					public boolean stop() {
+						// TODO Auto-generated method stub
+						return false;
+					}}
+				);
+			} 
 		  private void report(String url){
 			    DefaultHttpClient client = new DefaultHttpClient();
 				HttpConnectionParams.setSoTimeout(client.getParams(),

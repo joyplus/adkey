@@ -11,6 +11,10 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpProtocolParams;
+
+import com.common.internet.AjaxCallBack;
+import com.common.internet.FastHttp;
+import com.common.internet.ResponseEntity;
 import com.joyplus.ad.AdSDKFeature;
 import com.joyplus.ad.HttpManager;
 import com.joyplus.ad.PhoneManager;
@@ -141,7 +145,7 @@ public class Monitorer {
 			  }else if((AdSDKFeature.MONITOR_IRESEARCH && TYPE.IRESEARCH==MonitorURL.Type)
 					  ||(AdSDKFeature.MONITOR_ADMASTER && TYPE.ADMASTER==MonitorURL.Type)
 					  ||((AdSDKFeature.MONITOR_NIELSEN && TYPE.NIELSEN==MonitorURL.Type))){
-				  report_get(MonitorURL.URL);
+				  report_third(MonitorURL.URL);
 			  }else{
 				  Finish();
 			  }
@@ -170,7 +174,19 @@ public class Monitorer {
 					Finish();
 				}
 		  }
-		 
+		private void report_third(String url){
+			FastHttp.ajaxGet(url, new AjaxCallBack() {
+				@Override
+				public void callBack(ResponseEntity arg0) {
+					Finish();
+				}
+				@Override
+				public boolean stop() {
+					// TODO Auto-generated method stub
+					return false;
+				}}
+			);
+		} 
 		private void report_get(String url){
 			    Log.d("report=="+url);
 			    url=URLEncoder.encode(url);
