@@ -62,7 +62,7 @@ public class AdMonitorServer implements MonitorListener{
 				Iterator<Monitor> k = mMonitorList.iterator();
 				while(k.hasNext()){
 					mMonitor = k.next();
-					if(mMonitor.GetFirstTRACKINGURL() != null){
+					if(mMonitor.GetFirstTRACKINGURL() == null){
 						k.remove();
 						mMonitor = null;
 						continue;
