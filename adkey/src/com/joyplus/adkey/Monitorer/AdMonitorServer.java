@@ -21,7 +21,7 @@ public class AdMonitorServer implements MonitorListener{
 	 public AdMonitorServer(Context context){
 		 mContext = context;
 		 mMonitorList = new ArrayList<Monitor>();
-		 
+		 mMonitorer   = new Monitorer(mContext);
 	 }
 	 public void AddMonitor(List<Monitor> urls) {
 		// TODO Auto-generated method stub
@@ -40,7 +40,7 @@ public class AdMonitorServer implements MonitorListener{
 	 private final static int MSG_CHECK_MONITOR   = 1;
 	 private final static int MSG_START_MONITOR   = 2;
 	 private final static int MSG_FINISH_MONITOR  = 3;
-	 private Monitorer        mMonitorer = new Monitorer(mContext);;
+	 private Monitorer        mMonitorer ;
 	 private Monitor          mMonitor   = null;
 	 private boolean          Checking   = false;
 	 private Handler mHandler = new Handler(){
