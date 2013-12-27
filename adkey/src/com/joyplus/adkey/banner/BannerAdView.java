@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.telephony.TelephonyManager;
 import android.view.MotionEvent;
@@ -33,6 +34,7 @@ import com.joyplus.adkey.Const;
 import com.joyplus.adkey.RequestBannerAd;
 import com.joyplus.adkey.Util;
 import com.joyplus.adkey.data.ClickType;
+import com.joyplus.adkey.widget.Log;
 
 public class BannerAdView extends RelativeLayout {
 

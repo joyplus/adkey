@@ -8,14 +8,9 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpProtocolParams;
-
 import android.content.Context;
-
 import com.joyplus.adkey.Const;
-import com.joyplus.adkey.RequestException;
 import com.joyplus.adkey.Util;
-import com.joyplus.adkey.Util.AD_TYPE;
 import com.joyplus.adkey.data.ImpressionInfo;
 import com.joyplus.adkey.db.ImpressionDao;
 
