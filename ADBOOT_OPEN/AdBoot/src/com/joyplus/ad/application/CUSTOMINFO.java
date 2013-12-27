@@ -55,10 +55,11 @@ public class CUSTOMINFO implements Parcelable{
 	 }
 	 //zip or video back from server.
 	 public enum SOURCETYPE{
-		 IMAGE ("001"),
-		 ZIP   ("002"),
-		 VIDEO ("003"),
-		 MRAID ("004");
+		 IMAGE ("1"),
+		 ZIP   ("4"),
+		 VIDEO ("2"),
+		 MRAID ("3"),
+		 ZIPANDVIDEO ("5");
 		 private String SourceType;
 		 SOURCETYPE(String s) {
 			// TODO Auto-generated constructor stub
