@@ -1,8 +1,6 @@
 package com.joyplus.ad.application;
 
 import com.joyplus.ad.AdSDKManager;
-import com.joyplus.ad.config.Log;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -42,9 +40,34 @@ public class CUSTOMINFO implements Parcelable{
 			 return MODE;
 		 }
 	 }
-	 
-	 
-	 
+	 //srceen type
+	 public enum SCREEN{
+		 S_SD    ("000"),//标清   1028*720
+		 S_HD    ("001"),//高清   1920*1080
+		 S_4K    ("002");//4K2K 3840*2160
+		 private String Screen;
+		 SCREEN(String screen){
+			 Screen = screen;
+		 }
+		 public String toString(){
+			 return Screen;
+		 }
+	 }
+	 //zip or video back from server.
+	 public enum SOURCETYPE{
+		 IMAGE ("001"),
+		 ZIP   ("002"),
+		 VIDEO ("003"),
+		 MRAID ("004");
+		 private String SourceType;
+		 SOURCETYPE(String s) {
+			// TODO Auto-generated constructor stub
+			 SourceType = s;
+		 }
+		 public String toString(){
+			 return SourceType;
+		 }
+	 }
 	 
 	 private String      mDEVICEMUMBER        = ""; //ds
 	 private String      mSN                  = ""; //sn
@@ -54,8 +77,9 @@ public class CUSTOMINFO implements Parcelable{
 	 private String      mDEVICEMOVEMENT      = "";//dm
 	 private String      mBRAND               = "";//d
 	 private int         mLastBootUpCount     = 0;//ot
-	 private String      mMAC                 = "";
-	 
+	 private String      mMAC                 = "";//i
+	 private SCREEN      mSCREEN              = SCREEN.S_HD;//screen
+	 private SOURCETYPE  mSOURCETYPE          = null;//mt    don't know what to use.
 	 public  CUSTOMINFO(){
 		 if(!AdSDKManager.IsInited())
 			  throw new IllegalArgumentException("AdSDKManager don't Init first !!!!");			 
@@ -72,6 +96,8 @@ public class CUSTOMINFO implements Parcelable{
 			 mBRAND            = info.mBRAND;
 			 mLastBootUpCount  = info.mLastBootUpCount;
 			 mMAC              = info.mMAC;
+			 mSCREEN           = info.mSCREEN;
+			 mSOURCETYPE       = info.mSOURCETYPE;
 		 }
 	 }
 	 public CUSTOMINFO CreateNew(){
@@ -136,6 +162,18 @@ public class CUSTOMINFO implements Parcelable{
 	public String GetMAC(){
 		return mMAC;
 	}
+	public void SetSCREEN(SCREEN s){
+		mSCREEN = s;
+	}
+	public SCREEN GetSCREEN(){
+		return mSCREEN;
+	}
+	public void SetSOURCETYPE(SOURCETYPE s){
+		mSOURCETYPE = s;
+	}
+	public SOURCETYPE GetSOURCETYPE(){
+		return mSOURCETYPE;
+	}
 	@Override
 	public int describeContents() {
 		// TODO Auto-generated method stub
@@ -153,6 +191,10 @@ public class CUSTOMINFO implements Parcelable{
 		dest.writeString(mBRAND);
 		dest.writeInt(mLastBootUpCount);
 		dest.writeString(mMAC);
+		if(mSCREEN != null)
+		dest.writeString(mSCREEN.toString());
+		if(mSOURCETYPE != null)
+		dest.writeString(mSOURCETYPE.toString());
 	}
 	@Override
 	public String toString() {
@@ -168,6 +210,8 @@ public class CUSTOMINFO implements Parcelable{
 		  .append(" ,mBRAND="+mBRAND)
 		  .append(" ,mLastBootUpCount="+mLastBootUpCount)
 		  .append(" ,mMAC="+mMAC)
+		  .append(" ,mSCREEN="+((mSCREEN==null)?"null":mSCREEN.toString()))
+		  .append(" ,mSOURCETYPE="+((mSOURCETYPE==null)?"null":mSOURCETYPE.toString()))
 		  .append(" }");
 		return ap.toString();
 	}

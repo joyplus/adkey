@@ -133,6 +133,18 @@ public class AdRequest {
 					b.appendQueryParameter("ot", Integer.toString(mAdBoot.GetCUSTOMINFO().GetLastBootUpCount()));
 					if(Debug)Log.d("ot="+Integer.toString(mAdBoot.GetCUSTOMINFO().GetLastBootUpCount()));
 				}
+				if(mAdBoot == null || mAdBoot.GetCUSTOMINFO() == null || mAdBoot.GetCUSTOMINFO().GetSCREEN() == null){
+					b.appendQueryParameter("screen", "");
+				}else{
+					b.appendQueryParameter("screen", mAdBoot.GetCUSTOMINFO().GetSCREEN().toString());
+					if(Debug)Log.d("screen="+mAdBoot.GetCUSTOMINFO().GetSCREEN().toString());
+				}
+				if(mAdBoot == null || mAdBoot.GetCUSTOMINFO() == null || mAdBoot.GetCUSTOMINFO().GetSOURCETYPE() == null){
+					b.appendQueryParameter("mt", "");
+				}else{
+					b.appendQueryParameter("mt", mAdBoot.GetCUSTOMINFO().GetSOURCETYPE().toString());
+					if(Debug)Log.d("screen="+mAdBoot.GetCUSTOMINFO().GetSOURCETYPE().toString());
+				}
 				break;
 			case ADPLACE:
 				break;
