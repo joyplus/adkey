@@ -42,9 +42,9 @@ public class CUSTOMINFO implements Parcelable{
 	 }
 	 //srceen type
 	 public enum SCREEN{
-		 S_SD    ("000"),//标清   1028*720
-		 S_HD    ("001"),//高清   1920*1080
-		 S_4K    ("002");//4K2K 3840*2160
+		 S_SD    ("001"),//标清   1028*720
+		 S_HD    ("002"),//高清   1920*1080
+		 S_4K    ("003");//4K2K 3840*2160
 		 private String Screen;
 		 SCREEN(String screen){
 			 Screen = screen;
