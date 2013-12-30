@@ -112,9 +112,9 @@ public class ImpressionThread extends Thread{
 				if(Report(info.getImpressionUrl()))ReportCount++;
 			}
 			if(ReportCount<NUMBER){
-				ImpressionInfo existingInfo = ImpressionDao.getInstance(context).getOneInfo(publisherId, ad_id);
+				ImpressionInfo existingInfo = ImpressionDao.getInstance(context).getOneInfo(info.getPublisher_id() , info.getAd_id());
 				if(existingInfo != null){
-					ImpressionDao.getInstance(context).updataInfos(publisherId, ad_id, Integer.valueOf(existingInfo.getDisplay_num())+1);
+					ImpressionDao.getInstance(context).updataInfos(info.getPublisher_id(), info.getAd_id(), Integer.valueOf((NUMBER-ReportCount)));
 				} else {
 					ImpressionInfo ninfo = new ImpressionInfo();
 					ninfo.setPublisher_id(info.getPublisher_id());
@@ -124,6 +124,8 @@ public class ImpressionThread extends Thread{
 					ninfo.setImpressionUrl(info.getImpressionUrl());
 					ImpressionDao.getInstance(context).InsertOneInfo(ninfo);
 				}
+			}else{
+				ImpressionDao.getInstance(context).delete(info.getPublisher_id(), info.getImpressionUrl());
 			}
 		}
 	}

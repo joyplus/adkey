@@ -6,7 +6,7 @@ import java.util.Properties;
 
 public class AdKeyConfig {
     
-	private String     Joyplus_REQUESTURL = "http://advapitest.yue001.com/advapi/v1/mdrequest";//joyplus
+	private String     Joyplus_REQUESTURL = "http://advapi.yue001.com/advapi/v1/mdrequest";//joyplus
 	private String     Konka_REQUESTURL   = "http://advapikj.joyplus.tv/advapi/v1/mdrequest";//康佳
 	private String     Runhe_REQUESTURL   = "http://advapi.joyplus.tv/advapi/v1/mdrequest";//润和
 	
