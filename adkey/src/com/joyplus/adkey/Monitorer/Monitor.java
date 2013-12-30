@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.joyplus.adkey.Monitorer.TRACKINGURL.TYPE;
+import com.joyplus.adkey.widget.Log;
 
 public class Monitor {
       public final static String REPLACE_MAC  = "%mac%";
@@ -82,14 +83,14 @@ public class Monitor {
 						  ||(TYPE.ADMASTER == url.Type)
 						  ||(TYPE.NIELSEN == url.Type)){//we shoule replace url first.
 					  if(MAC == null || "".equals(MAC)){
-						  url.URL.replace(REPLACE_MAC, "");
+						  url.URL=url.URL.replaceAll(REPLACE_MAC, "");
 					  }else{ 
-						  url.URL.replace(REPLACE_MAC, MD5Util.GetMD5Code(MAC));
+						  url.URL=url.URL.replaceAll(REPLACE_MAC, MD5Util.GetMD5Code(MAC));
 					  }
 					  if(PM == null || "".equals(PM)){
-						  url.URL.replace(REPLACE_DM, "");
+						  url.URL=url.URL.replaceAll(REPLACE_DM, "");
 					  }else{ 
-						  url.URL.replace(REPLACE_DM, PM);
+						  url.URL=url.URL.replaceAll(REPLACE_DM, PM);
 					  }
 				  }
 				  return url;

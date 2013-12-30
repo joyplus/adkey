@@ -68,7 +68,7 @@ public class AdFileServer {
 		 }
 		 return null;
 	 }
-	 
+	  
 	 private File MKDatadir(Context context){
 		// File  datapath = new File(context.getFilesDir(),AdConfig.GetBasePathName()+File.separator);
 		 File  datapath = context.getFilesDir();

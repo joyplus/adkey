@@ -183,6 +183,13 @@ public class RequestBannerAd extends RequestAd<BannerAd> {
 				if (skipOverlay != null){
 					response.setSkipOverlay(Integer.parseInt(skipOverlay));
 				}
+				//add by Jas
+				String mImpressionUrl = this.getValue(doc, "impressionurl");
+				if(URLUtil.isHttpsUrl(mImpressionUrl)||URLUtil.isHttpUrl(mImpressionUrl))
+				{
+					response.setmImpressionUrl(mImpressionUrl);
+				}
+				//end add by Jas
 				final ClickType clickType = ClickType.getValue(this.getValue(
 						doc, "clicktype"));
 				response.setClickType(clickType);
