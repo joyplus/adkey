@@ -10,7 +10,7 @@ public class AdBootExternalConfig {
 	
 	private boolean      LoadOK = false;
 	private Properties   props;
-	private final static String ConfigFile = "/com/joyplus/adbootConfig/adconfig.properties"; 
+	private final static String ConfigFile = "/com/joyplus/ad/config/adconfig.properties"; 
 	/*key for ConfigFile*/
 	private final static String AdBootDebugEnable  = "AdBootDebugEnable";
 	private final static String BaseURL            = "BaseURL";
