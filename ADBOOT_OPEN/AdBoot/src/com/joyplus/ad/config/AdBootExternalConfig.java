@@ -10,7 +10,7 @@ public class AdBootExternalConfig {
 	
 	private boolean      LoadOK = false;
 	private Properties   props;
-	private final static String ConfigFile = "/com/joyplus/ad/config/adconfig.properties"; 
+	private final static String ConfigFile = "/com/joyplus/adbootConfig/adconfig.properties"; 
 	/*key for ConfigFile*/
 	private final static String AdBootDebugEnable  = "AdBootDebugEnable";
 	private final static String BaseURL            = "BaseURL";
@@ -47,6 +47,9 @@ public class AdBootExternalConfig {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (NullPointerException e){
+			// TODO Auto-generated catch block
+			android.util.Log.i("Adboot","External Config no find !!!!");
 		}
 	}
 	
