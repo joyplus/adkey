@@ -1,10 +1,12 @@
 package com.joyplus.adkey.download;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URLEncoder;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
@@ -15,6 +17,7 @@ import com.joyplus.adkey.data.ImpressionInfo;
 import com.joyplus.adkey.db.ImpressionDao;
 
 public class ImpressionThread extends Thread{
+	private final static int MAXNUM = 5;
 	private Context context;
 	private String publisherId;
 	private String ad_id;
@@ -31,61 +34,67 @@ public class ImpressionThread extends Thread{
 	public void run()
 	{
 		// TODO Auto-generated method stub
-		String device_name = "V8";
-		String i = null;
-		try {
-			device_name = URLEncoder.encode(Util.GetDeviceName(), "utf-8");
-		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		i = Util.GetMacAddress(context);
-		String url = mImpressionUrl+"&ds="+device_name;
-		if(i!=null)
-		{
-			url = mImpressionUrl+"&ds="+device_name+"&i="+i;
-		}
-		int startInd = url.indexOf("&ad_id");
-		if(startInd > 0){
-			int endInd = url.indexOf("&", startInd+1);
-			ad_id = url.substring(startInd + 7, endInd);
-		}
+		String url = mImpressionUrl;
+		if(url==null || "".equals(url))return;
+		int NUMBER = 1,ReportCount = 0;
 		ImpressionInfo existingInfo = ImpressionDao.getInstance(context).getOneInfo(publisherId, ad_id);
 		if(existingInfo != null){
-			url = url + "&impression=" + (Integer.valueOf(existingInfo.getDisplay_num())+1);
+			NUMBER += Integer.valueOf(existingInfo.getDisplay_num());
 		}
-		DefaultHttpClient client = new DefaultHttpClient();
-		HttpConnectionParams.setSoTimeout(client.getParams(),
-				Const.SOCKET_TIMEOUT);
-		HttpConnectionParams.setConnectionTimeout(client.getParams(),
-				Const.CONNECTION_TIMEOUT);
-		HttpGet get = new HttpGet(url);
-		HttpResponse response;
+		NUMBER = (NUMBER>MAXNUM)?MAXNUM:NUMBER;
+	    while((NUMBER--)>0){
+			if(REPORT(url))ReportCount++;
+		}
+		if((NUMBER-ReportCount)<=0){
+			if(ad_id != null){
+				ImpressionDao.getInstance(context).delete(publisherId, ad_id);
+			}
+		}else {
+			if(existingInfo != null){
+				ImpressionDao.getInstance(context).updataInfos(publisherId, ad_id, NUMBER-ReportCount);
+			} else {
+				ImpressionInfo info = new ImpressionInfo();
+				info.setPublisher_id(publisherId);
+				info.setAd_id(ad_id);
+				info.setAd_type(ad_type+"");
+				info.setDisplay_num(1+"");
+				ImpressionDao.getInstance(context).InsertOneInfo(info);
+			}
+		}
+	}
+	
+	
+	private boolean REPORT(String url){
+		if(url == null || "".equals(url))return true;
 		int responseCode = 0;
 		try {
+			DefaultHttpClient client = new DefaultHttpClient();
+			HttpConnectionParams.setSoTimeout(client.getParams(),
+					Const.SOCKET_TIMEOUT);
+			HttpConnectionParams.setConnectionTimeout(client.getParams(),
+					Const.CONNECTION_TIMEOUT);
+			HttpGet get = new HttpGet(url);
+			HttpResponse response;
 			response = client.execute(get);
 			responseCode = response.getStatusLine().getStatusCode();
-		} catch (Exception e)
-		{
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			responseCode = 0;
 			e.printStackTrace();
-		} finally{
-			if (responseCode == HttpURLConnection.HTTP_OK) {
-				if(ad_id != null){
-					ImpressionDao.getInstance(context).delete(publisherId, ad_id);
-				}
-			} else {
-				if(existingInfo != null){
-					ImpressionDao.getInstance(context).updataInfos(publisherId, ad_id, Integer.valueOf(existingInfo.getDisplay_num())+1);
-				} else {
-					ImpressionInfo info = new ImpressionInfo();
-					info.setPublisher_id(publisherId);
-					info.setAd_id(ad_id);
-					info.setAd_type(ad_type+"");
-					info.setDisplay_num(1+"");
-					ImpressionDao.getInstance(context).InsertOneInfo(info);
-				}
-			}
-			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			responseCode = 0;
+			e.printStackTrace();
+		} catch (IllegalArgumentException e){
+			responseCode = 0;
+			e.printStackTrace();
+		} catch (IllegalStateException e){
+			responseCode =0;
+			e.printStackTrace();
 		}
+		if(responseCode == HttpURLConnection.HTTP_OK){
+			return true;
+		}
+		return false;
 	}
 }

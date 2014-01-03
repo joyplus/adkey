@@ -1,5 +1,6 @@
 package com.joyplus.ad.download;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URLEncoder;
@@ -8,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
@@ -132,21 +134,29 @@ public class ImpressionThread extends Thread{
 	
 	private boolean Report(String url){
 		if(url == null || "".equals(url))return true;
-		DefaultHttpClient client = new DefaultHttpClient();
-		HttpConnectionParams.setSoTimeout(client.getParams(),
-				HttpManager.SOCKET_TIMEOUT);
-		HttpConnectionParams.setConnectionTimeout(client.getParams(),
-				HttpManager.CONNECTION_TIMEOUT);
-		HttpGet get = new HttpGet(url);
-		HttpResponse response;
 		int responseCode = 0;
 		try {
+			DefaultHttpClient client = new DefaultHttpClient();
+			HttpConnectionParams.setSoTimeout(client.getParams(),
+					HttpManager.SOCKET_TIMEOUT);
+			HttpConnectionParams.setConnectionTimeout(client.getParams(),
+					HttpManager.CONNECTION_TIMEOUT);
+			HttpGet get = new HttpGet(url);
+			HttpResponse response;
 			response        =  client.execute(get);
 			responseCode    =  response.getStatusLine().getStatusCode();
 			if(responseCode == HttpURLConnection.HTTP_OK)return true;
-		} catch (Exception e){
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e){
+			e.printStackTrace();
+		} catch (IllegalStateException e){
+			e.printStackTrace();
+		}
 		return false;
 	}
 	

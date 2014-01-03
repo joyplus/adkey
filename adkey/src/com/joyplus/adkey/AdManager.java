@@ -40,7 +40,9 @@ public class AdManager
 	private boolean mEnabled = true;
 	private RichMediaAd mResponse;
 	private String requestURL;
-	
+	//add by Jas
+	private String MAC ;
+	//end add by Jas
 	private String mUserAgent;
 	
 	private SerializeManager serializeManager = null;
@@ -484,6 +486,9 @@ public class AdManager
 		mUserAgent = Util.getDefaultUserAgentString(getContext());
 		this.mUniqueId1 = Util.getTelephonyDeviceId(getContext());
 		this.mUniqueId2 = Util.getDeviceId(getContext());
+		//add by Jas
+		this.MAC        = Util.GetMacAddress(getContext());
+		//end add by Jas
 		if ((mPublisherId == null) || (mPublisherId.length() == 0))
 		{
 			throw new IllegalArgumentException(
@@ -555,6 +560,9 @@ public class AdManager
 			mRequest.setDeviceId2(mUniqueId2);
 			mRequest.setPublisherId(mPublisherId);
 			mRequest.setUserAgent(mUserAgent);
+			//end add by Jas
+			mRequest.setMACAddress(MAC);
+			//end add by Jas
 			mRequest.setUserAgent2(Util.buildUserAgent());
 		}
 		Location location = null;
