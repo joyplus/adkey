@@ -20,7 +20,7 @@ public class ADBOOT implements Serializable{
 		   .append(" ,type="+type)
 		   .append(" ,animation="+animation);
 		 if(code != null){
-			 ap.append(" ,code="+video.toString());
+			 ap.append(" ,code="+code.toString());
 		 }else{
 			 ap.append(" ,code == null");
 		 } 

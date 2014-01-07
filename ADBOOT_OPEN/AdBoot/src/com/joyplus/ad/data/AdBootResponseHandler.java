@@ -176,7 +176,7 @@ public class AdBootResponseHandler extends DefaultHandler{
 		  }  else if("trackingurl_nielsen".equals(localName)){
 			  mTRACKINGURL      = new TRACKINGURL();
 			  mTRACKINGURL.Type = TYPE.NIELSEN;
-		  }
+		  }  
 	}
 
 //	private int getInteger(String text) {

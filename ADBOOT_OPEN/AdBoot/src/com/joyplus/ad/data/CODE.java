@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class CODE implements Serializable{
     
-	 public final  static String tag = "";
+	 public final  static String tag = "code";
 	
 	 public String VALUE  = "";
 	 
