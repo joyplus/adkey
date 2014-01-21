@@ -94,7 +94,7 @@ public class VideoType {
 		  VIDEOTYPE.put(VIDEOTYPE_DONGMAN.LIZHI.toInt(), VIDEOTYPE_DONGMAN.LIZHI.toString());
 		  VIDEOTYPE.put(VIDEOTYPE_DONGMAN.BAIHE.toInt(), VIDEOTYPE_DONGMAN.BAIHE.toString());
 		  VIDEOTYPE.put(VIDEOTYPE_DONGMAN.QITA.toInt(), VIDEOTYPE_DONGMAN.QITA.toString());
-	  }
+	  };
 	  
 	  public static String GetType(int index){
 		  return VIDEOTYPE.get(index);

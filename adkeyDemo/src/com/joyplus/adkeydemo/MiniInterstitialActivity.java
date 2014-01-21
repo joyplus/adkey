@@ -3,16 +3,15 @@ package com.joyplus.adkeydemo;
 import com.joyplus.adkey.Ad;
 import com.joyplus.adkey.AdListener;
 import com.joyplus.adkey.AdManager;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-public class InterstitialActivity extends Activity implements AdListener
-{
+public class MiniInterstitialActivity extends Activity implements AdListener{
+
 	private AdManager mManager = null;
-	private String publisherId = "18537719e0b367f717978ac82417f5c7";
+	private String publisherId = "61b8708929908cceeb6e78434c5e4a78";
 	private boolean cacheMode = false;//
 	 
 	@Override
@@ -75,7 +74,7 @@ public class InterstitialActivity extends Activity implements AdListener
 	public void noAdFound()
 	{
 		// TODO Auto-generated method stub
-		Toast.makeText(InterstitialActivity.this, "No ad found!", Toast.LENGTH_LONG)
+		Toast.makeText(MiniInterstitialActivity.this, "No ad found!", Toast.LENGTH_LONG)
 			.show();
 	}
 	

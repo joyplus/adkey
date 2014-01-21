@@ -1,0 +1,33 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".InterstitialActivity" >
+
+	<TextView 
+	    android:id="@+id/textView1"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:textSize="30dp"
+	    android:text="Insterstitial ad!"/>
+    <Button
+        android:id="@+id/showVideoInsterstitialOnline"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:onClick="onClickShowVideoOnline"
+        android:layout_below="@id/textView1"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"
+        android:text="Show MINI VideoInsterstitialOnline" />
+
+    <Button
+        android:id="@+id/showVideoInsterstitialCache"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/showVideoInsterstitialOnline"
+        android:onClick="onClickShowVideoCache"
+        android:layout_marginTop="20dp"
+        android:text="Show MINI VideoInsterstitialCache" />
+
+</RelativeLayout>

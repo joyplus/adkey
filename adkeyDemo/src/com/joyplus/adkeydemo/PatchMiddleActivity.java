@@ -15,7 +15,7 @@ public class PatchMiddleActivity extends Activity implements AdListener
 {
 	private RelativeLayout layout;
 	private AdView mAdView;
-	private String publisherId = "af24620a7bf84a87923ec3491f11f004";//瑕佹樉绀哄箍鍛婄殑publisherId
+	private String publisherId = "e1546c920770d93cc95b4aeb2a34fdd6";//瑕佹樉绀哄箍鍛婄殑publisherId
 	private boolean animation = true;//璇ュ箍鍛婂姞杞芥椂鏄惁鐢ㄥ姩鐢绘晥鏋�
 
 	@Override

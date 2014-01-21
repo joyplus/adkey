@@ -23,11 +23,22 @@
         android:layout_marginTop="20dp"
         android:onClick="onClickShowVideoInterstitial"
         android:text="Show Video/Interstitial" />
+    
+    <Button
+        android:id="@+id/show_mini"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/show_video"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:onClick="onClickShowMini"
+        android:text="Show Mini Interstitial" />
+    
     <Button
         android:id="@+id/show_patch_before"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/show_video"
+        android:layout_below="@+id/show_mini"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:onClick="onClickShowPatchVideo"
@@ -51,6 +62,7 @@
         android:layout_marginTop="20dp"
         android:onClick="onClickShowMiddlePatchVideo"
         android:text="Show Middle Patch" />
+    
      
     <TextView
         android:id="@+id/textView1"

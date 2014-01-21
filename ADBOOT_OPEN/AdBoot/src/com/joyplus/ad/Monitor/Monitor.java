@@ -10,6 +10,7 @@ import com.joyplus.ad.data.TRACKINGURL;
 import com.joyplus.ad.data.TRACKINGURL.TYPE;
 
 public class Monitor {
+	  private int   NUM  = 1;
       public final static String REPLACE_MAC  = "%mac%";
       public final static String REPLACE_DM   = "%dm%";
 	   
@@ -30,7 +31,14 @@ public class Monitor {
 		  }
 		  return false;
 	  }
-	  
+	  public void SetNUM(int u){
+		  NUM = u;
+	  }
+	  public int GetNUM(){
+		  if(NUM<=1)return 1;
+		  else if(NUM>5)return 5;
+		  else return NUM;
+	  }
 	  public void SetPM(String pm){
 		  PM = pm;
 	  }

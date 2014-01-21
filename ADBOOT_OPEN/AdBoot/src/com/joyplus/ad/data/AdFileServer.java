@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.StreamCorruptedException;
+import java.util.List;
 
 import com.joyplus.ad.AdConfig;
 import com.joyplus.ad.AdSDKFeature;
@@ -15,6 +16,8 @@ import com.joyplus.ad.PublisherId;
 import com.joyplus.ad.config.Log;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 
 /*Define by Jas@20131125
  * this use to implementation Interface for AdBootFileManager*/
@@ -147,4 +150,33 @@ public class AdFileServer {
 			   }
 		}
 		
+		//add for report
+	    private static final String  ADKEY_PUBLISHERID_CONFIG_XML = "adboot_config_xml";
+	    public void ReSetNum(PublisherId id){
+	    	synchronized(mObject){
+	    		if(id == null || !id.CheckId())return;
+		    	SharedPreferences sp = mContext.getSharedPreferences(ADKEY_PUBLISHERID_CONFIG_XML,Context.MODE_PRIVATE);
+	    		Editor editor = sp.edit();
+	    		editor.putInt(id.GetPublisherId(), 0);//mast be 1
+	    		editor.commit();
+	    	}
+	    }
+	    public void AddReportNum(PublisherId id){
+	    	synchronized(mObject){
+	    		Log.d("))))))))))))))))))AddReportNum "+id.GetPublisherId());
+	    		if(id == null || !id.CheckId())return;
+		    	SharedPreferences sp = mContext.getSharedPreferences(ADKEY_PUBLISHERID_CONFIG_XML,Context.MODE_PRIVATE);
+	    		int num = sp.getInt(id.GetPublisherId(), 0);//min is 0
+	    		Editor editor = sp.edit();
+	    		editor.putInt(id.GetPublisherId(), ++num);//make is 1 first
+	    		editor.commit();
+	    	}
+	    }
+	    public int GetNum(PublisherId id){
+	    	synchronized(mObject){
+	    		if(id == null || !id.CheckId())return 0;
+		    	SharedPreferences sp = mContext.getSharedPreferences(ADKEY_PUBLISHERID_CONFIG_XML,Context.MODE_PRIVATE);
+	    		return sp.getInt(id.GetPublisherId(), 0);
+	    	}
+	    }
 }
