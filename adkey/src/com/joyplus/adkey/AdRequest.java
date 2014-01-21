@@ -1,5 +1,7 @@
 package com.joyplus.adkey;
 
+import com.joyplus.adkey.Monitorer.MD5Util;
+
 import android.net.Uri;
 import android.os.Build;
 
@@ -38,6 +40,15 @@ public class AdRequest {
 
 	public void setPatchVC(String vc) {
 		PATCHVC = vc;
+	}
+	private String MacAddress;
+	public String getMACAddress() {
+		if (this.ipAddress == null)
+			return "";
+		return this.ipAddress;
+	}
+	public void setMACAddress(final String macAddress) {
+		this.MacAddress = macAddress;
 	}
 	//end add by Jas
 	public String getAndroidVersion() {
@@ -187,7 +198,11 @@ public class AdRequest {
 		final Uri.Builder b = Uri.parse(this.getRequestURL()).buildUpon();
 		b.appendQueryParameter("rt", this.getRequestType());
 		b.appendQueryParameter("v", this.getProtocolVersion());
-		b.appendQueryParameter("i", this.getIpAddress());
+		if(MacAddress == null || "".equals(MacAddress)){
+			b.appendQueryParameter("i", "");
+		}else{
+			b.appendQueryParameter("i", MD5Util.GetMD5Code(MacAddress));
+		}
 		b.appendQueryParameter("u", this.getUserAgent());
 		b.appendQueryParameter("u2", this.getUserAgent2());
 		b.appendQueryParameter("s", this.getPublisherId());

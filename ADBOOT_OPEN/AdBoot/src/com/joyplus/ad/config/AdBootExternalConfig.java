@@ -47,6 +47,9 @@ public class AdBootExternalConfig {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (NullPointerException e){
+			// TODO Auto-generated catch block
+			android.util.Log.i("Adboot","External Config no find !!!!");
 		}
 	}
 	

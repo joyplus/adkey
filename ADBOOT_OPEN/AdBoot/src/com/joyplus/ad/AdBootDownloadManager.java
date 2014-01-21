@@ -48,7 +48,7 @@ public class AdBootDownloadManager {
 		   mCurrentADBOOT = adboot;
 		   AdFileManager.getInstance().writeSerializableData(name, mCurrentADBOOT,id);
 		   if(mCurrentADBOOT == null)return;
-		   if(mCurrentADBOOT.code != null && CODE.AD_NO.equals(mCurrentADBOOT.code)){
+		   if(mCurrentADBOOT.code != null && CODE.AD_NO.equals(mCurrentADBOOT.code.VALUE)){
 			   if(mAdBootInfo.CheckFirstImageUsable())
 				   FileUtils.deleteFile(mAdBootInfo.GetFirstSource());
 			   if(mAdBootInfo.CheckSecondImageUsable())
@@ -59,7 +59,6 @@ public class AdBootDownloadManager {
 		   }
 		   
 		   if(mCurrentADBOOT == null || mCurrentADBOOT.video == null)return;
-	
 		   if(mCurrentADBOOT != null)Log.d("mCurrentADBOOT="+mCurrentADBOOT.toString());
 			else Log.d("mCurrentADBOOT == null");
 		   if(mLastADBOOT != null)Log.d("mLastADBOOT="+mLastADBOOT.toString());

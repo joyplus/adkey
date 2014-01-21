@@ -34,7 +34,9 @@ public class AdFloatManager{
 	private boolean mEnabled = true;
 	private RichMediaAd mResponse;
 	private String requestURL;
-
+    //add by Jas
+	private String Mac;
+	//end add by Jas
 	private String mUserAgent;
 	private SerializeManager serializeManager = null;
 	
@@ -389,6 +391,9 @@ public class AdFloatManager{
 		mUserAgent = Util.getDefaultUserAgentString(getContext());
 		this.mUniqueId1 = Util.getTelephonyDeviceId(getContext());
 		this.mUniqueId2 = Util.getDeviceId(getContext());
+		//add by Jas
+		this.Mac  = Util.GetMacAddress(getContext());
+		//end add by Jas
 		if ((mPublisherId == null) || (mPublisherId.length() == 0)) {
 			throw new IllegalArgumentException(
 					"User Id cannot be null or empty");
@@ -444,6 +449,9 @@ public class AdFloatManager{
 			mRequest.setDeviceId2(mUniqueId2);
 			mRequest.setPublisherId(mPublisherId);
 			mRequest.setUserAgent(mUserAgent);
+			//add by Jas
+			mRequest.setMACAddress(Mac);
+			//end add by Jas
 			mRequest.setUserAgent2(Util.buildUserAgent());
 		}
 		Location location = null;

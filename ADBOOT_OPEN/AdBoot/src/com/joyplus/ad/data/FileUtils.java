@@ -17,6 +17,7 @@ import android.os.Environment;
 public class FileUtils {
     /*Delete file*/
 	public static boolean deleteFile(final String filepath){
+		Log.d("deleteFile "+((filepath==null)?"null":filepath));
 		boolean ret = true;
 		File f = new File(filepath);
 		if(!f.exists())return true;
