@@ -48,6 +48,7 @@ public class AdMonitorServer implements MonitorListener{
 			super.handleMessage(msg);
 			switch(msg.what){
 			case MSG_CHECK_MONITOR:
+				Log.d("MSG_CHECK_MONITOR"+Checking+" "+mMonitorList.size()+" "+(mMonitorer == null));
 				if(Checking)break;
 				Checking = true;
 				if(mMonitorer != null || mMonitorList.isEmpty()){
@@ -58,11 +59,12 @@ public class AdMonitorServer implements MonitorListener{
 				Iterator<Monitor> k = mMonitorList.iterator();
 				while(k.hasNext()){
 					mMonitor = k.next();
+					k.remove();
 					if(mMonitor.GetFirstTRACKINGURL() == null){
-						k.remove();
 						mMonitor = null;
 						continue;
 					}
+					if(mMonitor != null)break;
 				}
 				if(mMonitor != null)
 					mHandler.sendEmptyMessage(MSG_START_MONITOR);
@@ -74,6 +76,7 @@ public class AdMonitorServer implements MonitorListener{
 					break;
 				}
 				mMonitorer = new Monitorer(mContext,mMonitor);
+				mMonitorer.SetMonitorListener(AdMonitorServer.this);
 				mMonitorer.StartMonitor();
 				break;
 			case MSG_FINISH_MONITOR:

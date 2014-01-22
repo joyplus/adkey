@@ -58,11 +58,12 @@ public class AdReportServer {
 				Iterator<Report> k = mReportList.iterator();
 				while(k.hasNext()){
 					mReport = k.next();
+					k.remove();
 					if(mReport.IsReported() || !mReport.Check()){
-						k.remove();
 						mReport = null;
 						continue;
 					}
+					break;
 				}
 				if(mReport != null)
 					mHandler.sendEmptyMessage(MSG_START_REPORT);

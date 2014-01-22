@@ -163,7 +163,6 @@ public class AdFileServer {
 	    }
 	    public void AddReportNum(PublisherId id){
 	    	synchronized(mObject){
-	    		Log.d("))))))))))))))))))AddReportNum "+id.GetPublisherId());
 	    		if(id == null || !id.CheckId())return;
 		    	SharedPreferences sp = mContext.getSharedPreferences(ADKEY_PUBLISHERID_CONFIG_XML,Context.MODE_PRIVATE);
 	    		int num = sp.getInt(id.GetPublisherId(), 0);//min is 0

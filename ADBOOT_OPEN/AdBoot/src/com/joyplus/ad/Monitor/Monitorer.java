@@ -59,7 +59,6 @@ public class Monitorer {
 		  mContext        = context;
 		  mMonitor        = m;
 		  mMonitorerState = MonitorerState.IDLE;
-		  Log.d("Monitorer = "+mMonitor.GetTRACKINGURL().size());
 	  }
 	  public void StartMonitor() {
 		  // TODO Auto-generated method stub
@@ -134,14 +133,14 @@ public class Monitorer {
 					  || "".equals(MonitorURL.URL)
 					  || NUM<=0){
 				  Finish();
+				  return;
 			  }
 			  NUM=(NUM>5)?5:NUM;
 			  Report_OneTime();
 		  }
 		  private void Report_OneTime(){
-			  Log.d("Report_OneTime NUM="+NUM);
 			  if((NUM--)<=0){Finish_OneTime();return;}
-			  Log.d("NUM="+NUM+" Monitorer = "+MonitorURL.toString());
+			  Log.d(" Monitorer = "+MonitorURL.toString());
 			  if(AdSDKFeature.MONITOR_MIAOZHEN && TYPE.MIAOZHEN==MonitorURL.Type){
 				  if(mContext != null){
 					  MZMonitor.retryCachedRequests(mContext);
