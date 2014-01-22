@@ -93,7 +93,6 @@ public class AdBootManager extends AdMode{
 	}
 	private void ThirdReport(ADBOOT last){
 		if(last != null && last.video != null && last.video.trackingurl != null){
-			Log.d("ThirdReport_____________________________");
 			Monitor m = new Monitor();
         	if(mAdBoot != null && mAdBoot.GetCUSTOMINFO() != null){
         		if(!("".equals(mAdBoot.GetCUSTOMINFO().GetDEVICEMOVEMENT()))){//dm
