@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.StreamCorruptedException;
-import java.util.List;
-
 import com.joyplus.ad.AdConfig;
 import com.joyplus.ad.AdSDKFeature;
 import com.joyplus.ad.PublisherId;

@@ -1,9 +1,6 @@
 package com.joyplus.ad.application;
 
 import java.io.File;
-
-import com.joyplus.ad.config.Log;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 

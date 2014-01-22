@@ -1,23 +1,17 @@
 package com.joyplus.ad.data;
 
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
-
 import com.joyplus.ad.AdManager.AD;
 import com.joyplus.ad.AdMode;
 import com.joyplus.ad.HttpManager;
 import com.joyplus.ad.application.AdBoot;
-import com.joyplus.ad.config.Log;
 
 
 public class AdBootRequest extends RequestAd<ADBOOT>{
