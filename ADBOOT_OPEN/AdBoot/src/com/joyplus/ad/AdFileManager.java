@@ -51,4 +51,14 @@ public class AdFileManager {
     	if(fileName==null || "".equals(fileName))return null;//nothing to be return
     	return mAdBootFileServer.readSerializableData(fileName,id);
     }
+    //for report count.
+    public synchronized void ReSetNum(PublisherId id){
+    	mAdBootFileServer.ReSetNum(id);
+    }
+    public synchronized void AddReportNum(PublisherId id){
+    	mAdBootFileServer.AddReportNum(id);
+    }
+    public synchronized int GetNum(PublisherId id){
+    	return mAdBootFileServer.GetNum(id);
+    }
 }

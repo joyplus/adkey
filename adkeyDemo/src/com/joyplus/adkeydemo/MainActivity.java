@@ -35,6 +35,11 @@ public class MainActivity extends Activity
 		Intent intent = new Intent(MainActivity.this,PatchMiddleActivity.class);
 		startActivity(intent);
 	}
+	
+	public void onClickShowMini(View v){
+		Intent intent = new Intent(MainActivity.this,MiniInterstitialActivity.class);
+		startActivity(intent);
+	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{

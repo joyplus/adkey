@@ -37,6 +37,9 @@
         <activity android:name="com.joyplus.adkeydemo.InterstitialActivity"
            	android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
+        <activity android:name="com.joyplus.adkeydemo.MiniInterstitialActivity"
+           	android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity android:name="com.joyplus.adkeydemo.AdViewActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />

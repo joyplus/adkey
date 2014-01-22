@@ -7,11 +7,9 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpProtocolParams;
-
 import com.common.internet.AjaxCallBack;
 import com.common.internet.FastHttp;
 import com.common.internet.ResponseEntity;
@@ -61,7 +59,6 @@ public class Monitorer {
 		  mContext        = context;
 		  mMonitor        = m;
 		  mMonitorerState = MonitorerState.IDLE;
-		  Log.d("Monitorer = "+mMonitor.GetTRACKINGURL().size());
 	  }
 	  public void StartMonitor() {
 		  // TODO Auto-generated method stub
@@ -86,9 +83,6 @@ public class Monitorer {
 				super.handleMessage(msg);
 				switch(msg.what){
 				case MSG_CHECK_MONITOR:
-					for(TRACKINGURL url:mMonitor.GetTRACKINGURL()){
-						  Log.d("Monitorer sss= "+url.toString());
-					}
 					if(mMonitorThread != null)break;
 					mTRACKINGURL = mMonitor.GetFirstTRACKINGURL();
 					if(mTRACKINGURL == null){
@@ -100,7 +94,7 @@ public class Monitorer {
 					break;
 				case MSG_START_MONITOR:
 					SetMonitorerState(MonitorerState.START);
-					mMonitorThread = new MonitorThread(mTRACKINGURL);
+					mMonitorThread = new MonitorThread(mTRACKINGURL,mMonitor.GetNUM());
 					mMonitorThread.report();
 					break;
 				case MSG_FINISH_MONITOR:
@@ -119,33 +113,46 @@ public class Monitorer {
 	  //monitor start
 	  private class MonitorThread{
 		  private TRACKINGURL MonitorURL = null;
-		  private MonitorThread(TRACKINGURL url){
+		  private int NUM  = 1;
+		  private MonitorThread(TRACKINGURL url,int num){
 			  MonitorURL = url;
+			  NUM = num;
 		  }
 		  private void Finish(){
 			  Log.d("Monitorer finish = "+MonitorURL.toString());
 			  mHandler.sendEmptyMessage(MSG_FINISH_MONITOR);
 		  }
+		  private void Finish_OneTime(){
+			  if(NUM<=0)Finish();
+			    else Report_OneTime();
+		  }
 		  public void report() {
 			  // TODO Auto-generated method stub
 			  if(MonitorURL == null 
 					  || MonitorURL.URL == null
-					  || "".equals(MonitorURL.URL)){
+					  || "".equals(MonitorURL.URL)
+					  || NUM<=0){
 				  Finish();
+				  return;
 			  }
-			  Log.d("Monitorer = "+MonitorURL.toString());
+			  NUM=(NUM>5)?5:NUM;
+			  Report_OneTime();
+		  }
+		  private void Report_OneTime(){
+			  if((NUM--)<=0){Finish_OneTime();return;}
+			  Log.d(" Monitorer = "+MonitorURL.toString());
 			  if(AdSDKFeature.MONITOR_MIAOZHEN && TYPE.MIAOZHEN==MonitorURL.Type){
 				  if(mContext != null){
 					  MZMonitor.retryCachedRequests(mContext);
 					  MZMonitor.adTrack(mContext, MonitorURL.URL);
 				  }
-				  Finish();
+				  Finish_OneTime();
 			  }else if((AdSDKFeature.MONITOR_IRESEARCH && TYPE.IRESEARCH==MonitorURL.Type)
 					  ||(AdSDKFeature.MONITOR_ADMASTER && TYPE.ADMASTER==MonitorURL.Type)
 					  ||((AdSDKFeature.MONITOR_NIELSEN && TYPE.NIELSEN==MonitorURL.Type))){
 				  report_third(MonitorURL.URL);
 			  }else{
-				  Finish();
+				  Finish_OneTime();
 			  }
 		  }
 		  private void report_post(String url){
@@ -176,7 +183,7 @@ public class Monitorer {
 			FastHttp.ajaxGet(url, new AjaxCallBack() {
 				@Override
 				public void callBack(ResponseEntity arg0) {
-					Finish();
+					Finish_OneTime();
 				}
 				@Override
 				public boolean stop() {

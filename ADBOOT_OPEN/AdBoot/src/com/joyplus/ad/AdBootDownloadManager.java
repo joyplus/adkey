@@ -47,6 +47,7 @@ public class AdBootDownloadManager {
 		   mLastADBOOT    = (ADBOOT) AdFileManager.getInstance().readSerializableData(name,id);
 		   mCurrentADBOOT = adboot;
 		   AdFileManager.getInstance().writeSerializableData(name, mCurrentADBOOT,id);
+		   AdFileManager.getInstance().ReSetNum(id);
 		   if(mCurrentADBOOT == null)return;
 		   if(mCurrentADBOOT.code != null && CODE.AD_NO.equals(mCurrentADBOOT.code.VALUE)){
 			   if(mAdBootInfo.CheckFirstImageUsable())

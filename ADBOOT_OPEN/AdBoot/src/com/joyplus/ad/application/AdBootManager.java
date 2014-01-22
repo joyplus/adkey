@@ -1,8 +1,5 @@
 package com.joyplus.ad.application;
 
-
-import java.io.File;
-
 import com.joyplus.ad.AdBootDownloadManager;
 import com.joyplus.ad.AdFileManager;
 import com.joyplus.ad.AdListener;
@@ -15,8 +12,8 @@ import com.joyplus.ad.config.Log;
 import com.joyplus.ad.data.ADBOOT;
 import com.joyplus.ad.data.AdBootRequest;
 import com.joyplus.ad.data.RequestException;
-import com.joyplus.ad.download.ImpressionThread;
-import com.miaozhen.mzmonitor.MZMonitor;
+import com.joyplus.ad.report.AdReportManager;
+import com.joyplus.ad.report.Report;
 
 import android.content.Context;
 
@@ -34,7 +31,8 @@ public class AdBootManager extends AdMode{
 	
 	private AdBootManager(){
 		super(AD.ADBOOT);
-	}//can't instance this by no param.
+	}
+	//can't instance this by no param.
 	public AdBootManager(Context context,AdBoot info){	
 		super(AD.ADBOOT);
 		if(info == null)   throw new IllegalArgumentException("AdBoot cannot be null or empty");
@@ -57,6 +55,7 @@ public class AdBootManager extends AdMode{
 				public void run() {
 					// TODO Auto-generated method stub
 					super.run();
+					AdFileManager.getInstance().AddReportNum(mPublisherId);
 					mAdBootRequest = new AdBootRequest(AdBootManager.this,mAdBoot);
 					ADBOOT mADBOOT = null;
 					try {
@@ -67,25 +66,7 @@ public class AdBootManager extends AdMode{
 						e.printStackTrace();
 					} 
 					if(mDownloadManager != null && mADBOOT != null){ 
-						if(mADBOOT.video != null && mADBOOT.video.impressionurl!=null){
-							new ImpressionThread(mContext,mADBOOT.video.impressionurl.URL,
-									mPublisherId.GetPublisherId(),AD.ADBOOT).start();
-						}
-			            if(mADBOOT.video != null && mADBOOT.video.trackingurl != null){
-			            	Monitor m = new Monitor();
-			            	if(mAdBoot != null && mAdBoot.GetCUSTOMINFO() != null){
-			            		if(!("".equals(mAdBoot.GetCUSTOMINFO().GetDEVICEMUMBER()))){//ds
-			            			m.SetPM(mAdBoot.GetCUSTOMINFO().GetDEVICEMUMBER());
-			            		}else if(!("".equals(mAdBoot.GetCUSTOMINFO().GetDEVICEMOVEMENT()))){//dm
-			            			m.SetPM(mAdBoot.GetCUSTOMINFO().GetDEVICEMOVEMENT());
-			            		}
-			            		if(!("".equals(mAdBoot.GetCUSTOMINFO().GetMAC()))){//mac
-			            			m.SetMAC(mAdBoot.GetCUSTOMINFO().GetMAC());
-			            		}
-			            	}
-			            	m.SetTRACKINGURL(mADBOOT.video.trackingurl);
-			            	AdMonitorManager.getInstance().AddMonitor(m);//start monitor
-			            }
+						Report();//new we can sure network is OK ,so report first.
 						mDownloadManager.UpdateADBOOT(mADBOOT, mAdBootRequest.GetFileName(), mPublisherId);
 					}
 					mAdBootRequest = null;
@@ -97,4 +78,36 @@ public class AdBootManager extends AdMode{
 		return mAdBoot;
 	}
 	
+	private void Report(){
+		ADBOOT last = (ADBOOT) AdFileManager.getInstance()
+				.readSerializableData(mAdBootRequest.GetFileName(),mPublisherId);
+		ThirdReport(last);//third listener
+		if(last != null && last.video != null && last.video.impressionurl != null){
+			//report to joyplus
+			Report r = new Report();
+		    r.SetPublisherId(mPublisherId);
+		    r.SetIMPRESSIONURL(last.video.impressionurl);
+			AdReportManager.getInstance().AddReport(r);
+		}
+		AdFileManager.getInstance().ReSetNum(mPublisherId);//it reported.
+	}
+	private void ThirdReport(ADBOOT last){
+		if(last != null && last.video != null && last.video.trackingurl != null){
+			Log.d("ThirdReport_____________________________");
+			Monitor m = new Monitor();
+        	if(mAdBoot != null && mAdBoot.GetCUSTOMINFO() != null){
+        		if(!("".equals(mAdBoot.GetCUSTOMINFO().GetDEVICEMOVEMENT()))){//dm
+        			m.SetPM(mAdBoot.GetCUSTOMINFO().GetDEVICEMOVEMENT());
+        		}else if(!("".equals(mAdBoot.GetCUSTOMINFO().GetDEVICEMUMBER()))){//ds
+        			m.SetPM(mAdBoot.GetCUSTOMINFO().GetDEVICEMUMBER());
+        		}
+        		if(!("".equals(mAdBoot.GetCUSTOMINFO().GetMAC()))){//mac
+        			m.SetMAC(mAdBoot.GetCUSTOMINFO().GetMAC());
+        		}
+        	}
+        	m.SetTRACKINGURL(last.video.trackingurl);
+        	m.SetNUM(AdFileManager.getInstance().GetNum(mPublisherId));
+        	AdMonitorManager.getInstance().AddMonitor(m);
+        }
+	}
 }

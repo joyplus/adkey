@@ -3,6 +3,7 @@ package com.joyplus.ad;
 
 import com.joyplus.ad.Monitor.AdMonitorManager;
 import com.joyplus.ad.download.DownLoadManager;
+import com.joyplus.ad.report.AdReportManager;
 
 import android.content.Context;
 
@@ -27,7 +28,7 @@ public class AdSDKManager {
     	  if(IsInited())return;
 		  if(context == null)throw new AdSDKManagerException("AdBootSDKManager context is null !!!!!");
 		  mCustom        = CUSTOMTYPE.CHANGHONG;
-		  mAdBootSDKManager = new AdSDKManager(context);
+		  mAdBootSDKManager = new AdSDKManager(context.getApplicationContext());
       }
 	  public  static void Init(Context context,CUSTOMTYPE custom) throws AdSDKManagerException{
 		  if(IsInited())return;
@@ -57,6 +58,7 @@ public class AdSDKManager {
 			  AdManager.Init(mContext);
 			  DownLoadManager.Init();
 			  AdMonitorManager.Init(mContext);
+			  AdReportManager.Init(mContext);
 			  SetSDKInited();
 		  } catch (AdSDKManagerException e) {
 			  // TODO Auto-generated catch block
