@@ -80,6 +80,7 @@ public class AdBootDownloadManager {
 				   }
 			   }else if((mCurrentADBOOT.video.creative != null)
 						  && (URLUtil.isHttpsUrl(mCurrentADBOOT.video.creative.URL)||URLUtil.isHttpUrl(mCurrentADBOOT.video.creative.URL))){
+				   if(first.exists())first.delete();//remove it first
 				   Download firstdownload   = new Download();
 				   firstdownload.URL        = mCurrentADBOOT.video.creative.URL;
 				   firstdownload.LocalFile  = mLocalAdBootInfo.GetFirstSource();
@@ -99,6 +100,7 @@ public class AdBootDownloadManager {
 				   }
 			   }else if((mCurrentADBOOT.video.creative2 != null)
 						  && (URLUtil.isHttpsUrl(mCurrentADBOOT.video.creative2.URL)||URLUtil.isHttpUrl(mCurrentADBOOT.video.creative2.URL))){
+				   if(second.exists())second.delete();//remove it first
 				   Download seconddownload   = new Download();
 			       seconddownload.URL        = mCurrentADBOOT.video.creative2.URL;
 			       seconddownload.LocalFile  = mLocalAdBootInfo.GetSecondSource();
@@ -118,6 +120,7 @@ public class AdBootDownloadManager {
 				   }
 			   }else if((mCurrentADBOOT.video.creative3 != null)
 						  && (URLUtil.isHttpsUrl(mCurrentADBOOT.video.creative3.URL)||URLUtil.isHttpUrl(mCurrentADBOOT.video.creative3.URL))){
+				   if(zip.exists())zip.delete();//remove it first
 				   Download zipdownload   = new Download();
 				   zipdownload.URL        = mCurrentADBOOT.video.creative3.URL;
 				   zipdownload.LocalFile  = mLocalAdBootInfo.GetThirdSource();
