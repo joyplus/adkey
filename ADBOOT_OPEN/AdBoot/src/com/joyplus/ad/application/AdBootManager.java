@@ -8,6 +8,7 @@ import com.joyplus.ad.AdManager.AD;
 import com.joyplus.ad.Monitor.AdMonitorManager;
 import com.joyplus.ad.Monitor.Monitor;
 import com.joyplus.ad.PublisherId;
+import com.joyplus.ad.config.Log;
 import com.joyplus.ad.data.ADBOOT;
 import com.joyplus.ad.data.AdBootRequest;
 import com.joyplus.ad.data.RequestException;
@@ -23,7 +24,7 @@ public class AdBootManager extends AdMode{
 	private AdBootRequest mAdBootRequest;
 	private AdBootDownloadManager mDownloadManager;
 	private AdListener    mAdListener;
-	
+	private final static  int TIME = 10;
 	public void SetAdListener(AdListener adlistener){
 		mAdListener = adlistener;
 	}
@@ -57,13 +58,23 @@ public class AdBootManager extends AdMode{
 					AdFileManager.getInstance().AddReportNum(mPublisherId);
 					mAdBootRequest = new AdBootRequest(AdBootManager.this,mAdBoot);
 					ADBOOT mADBOOT = null;
-					try {
-						mADBOOT = mAdBootRequest.sendRequest();
-					} catch (RequestException e) {
-						// TODO Auto-generated catch block
-						mADBOOT = null;
-						e.printStackTrace();
-					} 
+					int Count = TIME;
+					while((Count--)>0){
+						try {
+							Thread.sleep(500);
+							mADBOOT = null;
+							mADBOOT = mAdBootRequest.sendRequest();
+							break;
+						} catch (RequestException e) {
+							// TODO Auto-generated catch block
+							mADBOOT = null;
+							e.printStackTrace();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							mADBOOT = null;
+							e.printStackTrace();
+						}
+					}
 					if(mDownloadManager != null && mADBOOT != null){ 
 						Report();//new we can sure network is OK ,so report first.
 						mDownloadManager.UpdateADBOOT(mADBOOT, mAdBootRequest.GetFileName(), mPublisherId);

@@ -156,7 +156,6 @@ public class Monitorer {
 			  }
 		  }
 		  private void report_post(String url){
-			    Log.d("report=="+url);
 			    DefaultHttpClient client = new DefaultHttpClient();
 				HttpConnectionParams.setSoTimeout(client.getParams(),
 						HttpManager.SOCKET_TIMEOUT);

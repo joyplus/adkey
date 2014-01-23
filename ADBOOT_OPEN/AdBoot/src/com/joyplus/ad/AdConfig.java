@@ -27,7 +27,7 @@ public class AdConfig {
 		}else{
 			if(AdSDKManager.GetCustomType() == CUSTOMTYPE.KONKA){
 			   mBaseURL = (new Des()).strDec(mURL_KONKA, GetCompany(), "", "");
-			}else if(AdSDKManager.GetCustomType() == CUSTOMTYPE.HISENSE){
+			}else if(AdSDKManager.GetCustomType() == CUSTOMTYPE.HAIER){
 			   mBaseURL = (new Des()).strDec(mURL_JOYPLUS, GetCompany(), "", "");
 			}else{//default is AdManager
 			   mBaseURL = (new Des()).strDec(mURL_JOYPLUS, GetCompany(), "", "");

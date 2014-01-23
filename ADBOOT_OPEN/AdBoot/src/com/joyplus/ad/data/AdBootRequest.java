@@ -12,6 +12,7 @@ import com.joyplus.ad.AdManager.AD;
 import com.joyplus.ad.AdMode;
 import com.joyplus.ad.HttpManager;
 import com.joyplus.ad.application.AdBoot;
+import com.joyplus.ad.config.Log;
 
 
 public class AdBootRequest extends RequestAd<ADBOOT>{
@@ -37,6 +38,7 @@ public class AdBootRequest extends RequestAd<ADBOOT>{
 	@Override
 	ADBOOT parseTestString() throws RequestException {
 		// TODO Auto-generated method stub
+		Log.d("parseTestString()");
 		return null;
 	}
 

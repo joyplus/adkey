@@ -48,7 +48,6 @@ public class AdMonitorServer implements MonitorListener{
 			super.handleMessage(msg);
 			switch(msg.what){
 			case MSG_CHECK_MONITOR:
-				Log.d("MSG_CHECK_MONITOR"+Checking+" "+mMonitorList.size()+" "+(mMonitorer == null));
 				if(Checking)break;
 				Checking = true;
 				if(mMonitorer != null || mMonitorList.isEmpty()){
