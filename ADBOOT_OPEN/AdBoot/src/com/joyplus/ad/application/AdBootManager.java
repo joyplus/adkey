@@ -8,13 +8,11 @@ import com.joyplus.ad.AdManager.AD;
 import com.joyplus.ad.Monitor.AdMonitorManager;
 import com.joyplus.ad.Monitor.Monitor;
 import com.joyplus.ad.PublisherId;
-import com.joyplus.ad.config.Log;
 import com.joyplus.ad.data.ADBOOT;
 import com.joyplus.ad.data.AdBootRequest;
 import com.joyplus.ad.data.RequestException;
 import com.joyplus.ad.report.AdReportManager;
 import com.joyplus.ad.report.Report;
-
 import android.content.Context;
 
 public class AdBootManager extends AdMode{

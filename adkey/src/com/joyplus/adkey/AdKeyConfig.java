@@ -9,6 +9,7 @@ public class AdKeyConfig {
 	private String     Joyplus_REQUESTURL = "http://advapi.yue001.com/advapi/v1/mdrequest";//joyplus
 	private String     Konka_REQUESTURL   = "http://advapikj.joyplus.tv/advapi/v1/mdrequest";//康佳
 	private String     Runhe_REQUESTURL   = "http://advapi.joyplus.tv/advapi/v1/mdrequest";//润和
+	private String     Haier_REQUESTURL   = "http://advapi.joyplus.tv/advapi/v1/mdrequest";//海尔
 	
 	private boolean    LoadOK = false;
 	private Properties props;
@@ -48,6 +49,8 @@ public class AdKeyConfig {
 			return Konka_REQUESTURL;
 		}else if(custom == CUSTOM.RUNHE){
 			return Runhe_REQUESTURL;
+		}else if(custom == CUSTOM.HAIER){
+			return Haier_REQUESTURL;
 		}else{
 			return Joyplus_REQUESTURL;
 		}
