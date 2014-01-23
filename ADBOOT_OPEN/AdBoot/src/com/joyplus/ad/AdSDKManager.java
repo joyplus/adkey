@@ -25,7 +25,7 @@ public class AdSDKManager {
     	  return mAdBootSDKManager;
       }
       public  static void Init(Context context) throws AdSDKManagerException{
-    	  if(IsInited())return;
+    	  if(IsInited()||!AdSDKFeature.CUSTOM_CONFIG)return;//inited or can't be init by custom.
 		  if(context == null)throw new AdSDKManagerException("AdBootSDKManager context is null !!!!!");
 		  mCustom        = CUSTOMTYPE.JOYPLUS;
 		  mAdBootSDKManager = new AdSDKManager(context.getApplicationContext());
@@ -34,7 +34,7 @@ public class AdSDKManager {
 		  if(IsInited())return;
 		  if(context == null)throw new AdSDKManagerException("AdBootSDKManager context is null !!!!!");
 		  mCustom           = custom;
-		  mAdBootSDKManager = new AdSDKManager(context);
+		  mAdBootSDKManager = new AdSDKManager(context.getApplicationContext());
 	  }	  
 	  
 	  private AdSDKManager(Context context){
