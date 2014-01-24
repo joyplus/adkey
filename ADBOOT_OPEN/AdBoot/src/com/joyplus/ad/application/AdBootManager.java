@@ -1,5 +1,6 @@
 package com.joyplus.ad.application;
 
+import java.io.File;
 import com.joyplus.ad.AdBootDownloadManager;
 import com.joyplus.ad.AdFileManager;
 import com.joyplus.ad.AdListener;
@@ -53,7 +54,7 @@ public class AdBootManager extends AdMode{
 				public void run() {
 					// TODO Auto-generated method stub
 					super.run();
-					AdFileManager.getInstance().AddReportNum(mPublisherId);
+					AddReportNUM();//add report count.
 					mAdBootRequest = new AdBootRequest(AdBootManager.this,mAdBoot);
 					ADBOOT mADBOOT = null;
 					int Count = TIME;
@@ -82,6 +83,26 @@ public class AdBootManager extends AdMode{
 		}
 	}
 	
+	//judge custom local file. we can add report num,when it exist.
+	private void AddReportNUM() {
+		// TODO Auto-generated method stub
+		if(CustomAdFileExist()){
+			AdFileManager.getInstance().AddReportNum(mPublisherId);
+		}
+	}
+    private boolean CustomAdFileExist(){
+    	if(mAdBoot == null || mAdBoot.GetAdBootInfo() == null)return false;
+    	if(CustomAdFileExist(mAdBoot.GetAdBootInfo().GetFirstSource())
+    			|| CustomAdFileExist(mAdBoot.GetAdBootInfo().GetSecondSource())
+    			|| CustomAdFileExist(mAdBoot.GetAdBootInfo().GetThirdSource())){
+    		return true;
+    	}
+    	return false;
+    }
+    private boolean CustomAdFileExist(String file){
+    	if(file ==null || "".equals(file))return false;
+    	return (new File(file)).exists();
+    }
 	public AdBoot GetAdBoot(){
 		return mAdBoot;
 	}
