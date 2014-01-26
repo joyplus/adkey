@@ -456,7 +456,8 @@ public class AdPatchManager {
 		mRequest.setIpAddress(Util.getLocalIpAddress());
 		mRequest.setTimestamp(System.currentTimeMillis());
 
-		mRequest.setType(AdRequest.VAD);
+		mRequest.setType(AdRequest.PATCH);
+		mRequest.setPatchVC(VC);
 		mRequest.setRequestURL(this.requestURL);
 		return mRequest;
 	}
