@@ -72,11 +72,15 @@ public class AdBootDownloadManager {
 	   private void CheckDownLoadFirst(){
 		   if(mAdBootInfo == null)return;
 		   if(mAdBootInfo.CheckFirstImageUsable() ){
-			   File first = new File(AdFileManager.getInstance().GetBasePath(),mLocalAdBootInfo.GetFirstSource());
+			   File first = new File(mLocalAdBootInfo.GetFirstSource());
 			   if(IsFirstSame() && first.exists()){
-				   FileUtils.copyFile(first, new File(mAdBootInfo.GetFirstSource()));
+				   File TargetFirst = new File(mAdBootInfo.GetFirstSource());
+				   if(FileUtils.copyFile(first, TargetFirst)){
+					   FileUtils.Chmod(TargetFirst);
+				   }
 			   }else if((mCurrentADBOOT.video.creative != null)
 						  && (URLUtil.isHttpsUrl(mCurrentADBOOT.video.creative.URL)||URLUtil.isHttpUrl(mCurrentADBOOT.video.creative.URL))){
+				   if(first.exists())first.delete();//remove it first
 				   Download firstdownload   = new Download();
 				   firstdownload.URL        = mCurrentADBOOT.video.creative.URL;
 				   firstdownload.LocalFile  = mLocalAdBootInfo.GetFirstSource();
@@ -88,11 +92,15 @@ public class AdBootDownloadManager {
 	   private void CheckDownLoadSecond(){
            if(mAdBootInfo == null)return;
 		   if(mAdBootInfo.CheckSecondImageUsable()){
-			   File second = new File(AdFileManager.getInstance().GetBasePath(),mLocalAdBootInfo.GetSecondSource());
+			   File second = new File(mLocalAdBootInfo.GetSecondSource());
 			   if(IsSecondSame() && second.exists()){
-				   FileUtils.copyFile(second, new File(mAdBootInfo.GetSecondSource()));
+				   File TagetSecond = new File(mAdBootInfo.GetSecondSource());
+				   if(FileUtils.copyFile(second,TagetSecond)){
+					   FileUtils.Chmod(TagetSecond);
+				   }
 			   }else if((mCurrentADBOOT.video.creative2 != null)
 						  && (URLUtil.isHttpsUrl(mCurrentADBOOT.video.creative2.URL)||URLUtil.isHttpUrl(mCurrentADBOOT.video.creative2.URL))){
+				   if(second.exists())second.delete();//remove it first
 				   Download seconddownload   = new Download();
 			       seconddownload.URL        = mCurrentADBOOT.video.creative2.URL;
 			       seconddownload.LocalFile  = mLocalAdBootInfo.GetSecondSource();
@@ -104,11 +112,15 @@ public class AdBootDownloadManager {
 	   private void CheckDownLoadZIP(){
 		   if(mAdBootInfo == null)return;
 		   if(mAdBootInfo.CheckBootAnimationZipUsable()){
-			   File zip = new File(AdFileManager.getInstance().GetBasePath(),mLocalAdBootInfo.GetThirdSource());
+			   File zip = new File(mLocalAdBootInfo.GetThirdSource());
 			   if(IsBootAnimationSame() && zip.exists()){
-				   FileUtils.copyFile(zip, new File(mAdBootInfo.GetThirdSource()));
+				   File TargetThird = new File(mAdBootInfo.GetThirdSource());
+				   if(FileUtils.copyFile(zip, TargetThird)){
+					   FileUtils.Chmod(TargetThird);
+				   }
 			   }else if((mCurrentADBOOT.video.creative3 != null)
 						  && (URLUtil.isHttpsUrl(mCurrentADBOOT.video.creative3.URL)||URLUtil.isHttpUrl(mCurrentADBOOT.video.creative3.URL))){
+				   if(zip.exists())zip.delete();//remove it first
 				   Download zipdownload   = new Download();
 				   zipdownload.URL        = mCurrentADBOOT.video.creative3.URL;
 				   zipdownload.LocalFile  = mLocalAdBootInfo.GetThirdSource();
@@ -134,13 +146,9 @@ public class AdBootDownloadManager {
 		   if(!(mLastADBOOT.video.creative3!=null && mCurrentADBOOT.video.creative3!=null))
 			   return false; 
 		   String mLastbootanimation = mLastADBOOT.video.creative3.URL;
-		   if(mLastbootanimation!=null)
-			   mLastbootanimation = mLastbootanimation.substring(mLastbootanimation.lastIndexOf('/') + 1);
-		   else mLastbootanimation = "";
 		   String mbootanimation = mCurrentADBOOT.video.creative3.URL;
-		   if(mbootanimation!=null)
-			   mbootanimation = mbootanimation.substring(mbootanimation.lastIndexOf('/') + 1);
-		   else mbootanimation = "";
+		   if(mLastbootanimation ==null || mbootanimation == null)return false;
+		   if("".equals(mbootanimation)&&"".equals(mLastbootanimation))return false;
 		   return (mLastbootanimation.equals(mbootanimation));
 	   }
 	   
@@ -152,13 +160,9 @@ public class AdBootDownloadManager {
 		   if(!(mLastADBOOT.video.creative!=null && mCurrentADBOOT.video.creative!=null))
 			   return false;
 		   String mLastbootanimation = mLastADBOOT.video.creative.URL;
-		   if(mLastbootanimation!=null)
-			   mLastbootanimation = mLastbootanimation.substring(mLastbootanimation.lastIndexOf('/') + 1);
-		   else mLastbootanimation = "";
 		   String mbootanimation = mCurrentADBOOT.video.creative.URL;
-		   if(mbootanimation!=null)
-			   mbootanimation = mbootanimation.substring(mbootanimation.lastIndexOf('/') + 1);
-		   else mbootanimation = "";
+		   if(mLastbootanimation ==null || mbootanimation == null)return false;
+		   if("".equals(mbootanimation)&&"".equals(mLastbootanimation))return false;
 		   return (mLastbootanimation.equals(mbootanimation));
 	   }
 	   
@@ -170,13 +174,9 @@ public class AdBootDownloadManager {
 		   if(!(mLastADBOOT.video.creative2!=null && mCurrentADBOOT.video.creative2!=null))
 			   return false;
 		   String mLastbootanimation = mLastADBOOT.video.creative2.URL;
-		   if(mLastbootanimation!=null)
-			   mLastbootanimation = mLastbootanimation.substring(mLastbootanimation.lastIndexOf('/') + 1);
-		   else mLastbootanimation = "";
 		   String mbootanimation = mCurrentADBOOT.video.creative2.URL;
-		   if(mbootanimation!=null)
-			   mbootanimation = mbootanimation.substring(mbootanimation.lastIndexOf('/') + 1);
-		   else mbootanimation = "";
+		   if(mLastbootanimation ==null || mbootanimation == null)return false;
+		   if("".equals(mbootanimation)&&"".equals(mLastbootanimation))return false;
 		   return (mLastbootanimation.equals(mbootanimation));
 	   }
 	    // Interface Report count

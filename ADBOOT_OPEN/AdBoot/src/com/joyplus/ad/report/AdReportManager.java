@@ -2,11 +2,8 @@ package com.joyplus.ad.report;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.joyplus.ad.AdSDKManager;
 import com.joyplus.ad.AdSDKManagerException;
-import com.joyplus.ad.Monitor.Monitor;
-
 import android.content.Context;
 
 public class AdReportManager {

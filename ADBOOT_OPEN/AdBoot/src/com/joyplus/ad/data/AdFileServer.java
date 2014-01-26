@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.StreamCorruptedException;
-import java.util.List;
-
 import com.joyplus.ad.AdConfig;
 import com.joyplus.ad.AdSDKFeature;
 import com.joyplus.ad.PublisherId;
@@ -157,7 +155,7 @@ public class AdFileServer {
 	    		if(id == null || !id.CheckId())return;
 		    	SharedPreferences sp = mContext.getSharedPreferences(ADKEY_PUBLISHERID_CONFIG_XML,Context.MODE_PRIVATE);
 	    		Editor editor = sp.edit();
-	    		editor.putInt(id.GetPublisherId(), 0);//mast be 1
+	    		editor.putInt(id.GetPublisherId(), 0);//must be 1
 	    		editor.commit();
 	    	}
 	    }

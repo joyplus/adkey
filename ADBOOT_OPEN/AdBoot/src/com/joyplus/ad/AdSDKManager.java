@@ -16,7 +16,7 @@ public class AdSDKManager {
 	  
 	  private Context mContext;
 	  private static  boolean     mInited       = false;         //flog of this SDK init finish,and can use.
-	  private static  CUSTOMTYPE  mCustom       = CUSTOMTYPE.CHANGHONG; //flog for this SDK who use.
+	  private static  CUSTOMTYPE  mCustom       = CUSTOMTYPE.JOYPLUS; //flog for this SDK who use.
 	  
 	  
 	  
@@ -27,14 +27,14 @@ public class AdSDKManager {
       public  static void Init(Context context) throws AdSDKManagerException{
     	  if(IsInited())return;
 		  if(context == null)throw new AdSDKManagerException("AdBootSDKManager context is null !!!!!");
-		  mCustom        = CUSTOMTYPE.CHANGHONG;
+		  mCustom        = CUSTOMTYPE.JOYPLUS;
 		  mAdBootSDKManager = new AdSDKManager(context.getApplicationContext());
       }
 	  public  static void Init(Context context,CUSTOMTYPE custom) throws AdSDKManagerException{
-		  if(IsInited())return;
+		  if(IsInited()||!AdSDKFeature.CUSTOM_CONFIG)return;//inited or can't be init by custom.
 		  if(context == null)throw new AdSDKManagerException("AdBootSDKManager context is null !!!!!");
 		  mCustom           = custom;
-		  mAdBootSDKManager = new AdSDKManager(context);
+		  mAdBootSDKManager = new AdSDKManager(context.getApplicationContext());
 	  }	  
 	  
 	  private AdSDKManager(Context context){
@@ -98,7 +98,7 @@ public class AdSDKManager {
 			  return BRAND;
 		  }
 	  }
-	  public CUSTOMTYPE GetCustomType(){
+	  public static CUSTOMTYPE GetCustomType(){
 		  return mCustom;
 	  }
 }

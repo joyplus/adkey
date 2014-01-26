@@ -1,8 +1,6 @@
 package com.joyplus.ad;
 
 import java.io.File;
-
-import com.joyplus.ad.config.Log;
 import com.joyplus.ad.data.AdFileServer;
 
 import android.content.Context;

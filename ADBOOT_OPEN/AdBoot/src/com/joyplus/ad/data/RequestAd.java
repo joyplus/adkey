@@ -55,11 +55,11 @@ public abstract class RequestAd<T> {
 			} catch (RequestException e) {
 				throw e;
 			} catch (ClientProtocolException e) {
-				throw new RequestException("Error in HTTP request", e);
+				throw new RequestException("Error in HTTP request ClientProtocolException", e);
 			} catch (IOException e) {
-				throw new RequestException("Error in HTTP request", e);
+				throw new RequestException("Error in HTTP request IOException", e);
 			} catch (Throwable t) {
-				throw new RequestException("Error in HTTP request", t);
+				throw new RequestException("Error in HTTP request Throwable", t);
 			}
 		} else {
 			return parseTestString();
