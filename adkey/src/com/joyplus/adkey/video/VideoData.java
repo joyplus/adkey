@@ -19,13 +19,13 @@ public class VideoData implements Serializable {
 
 	int delivery;
 
-	int display;
+	public int display;
 
 	String type;
 	int bitrate;
-	int width;
-	int height;
-	String videoUrl;
+	public int width;
+	public int height;
+	public String videoUrl;
 
 	int duration;
 
@@ -50,9 +50,9 @@ public class VideoData implements Serializable {
 
 	Vector<NavIconData> icons = new Vector<NavIconData>();
 
-	HashMap<Integer, Vector<String>> timeTrackingEvents = new HashMap<Integer, Vector<String>>();
-	Vector<String> startEvents = new Vector<String>();
-	Vector<String> completeEvents = new Vector<String>();
+	public HashMap<Integer, Vector<String>> timeTrackingEvents = new HashMap<Integer, Vector<String>>();
+	public Vector<String> startEvents = new Vector<String>();
+	public Vector<String> completeEvents = new Vector<String>();
 	Vector<String> muteEvents = new Vector<String>();
 	Vector<String> unmuteEvents = new Vector<String>();
 	Vector<String> pauseEvents = new Vector<String>();
@@ -60,7 +60,7 @@ public class VideoData implements Serializable {
 	Vector<String> skipEvents = new Vector<String>();
 	Vector<String> replayEvents = new Vector<String>();
 
-	boolean showHtmlOverlay = false;
+	public boolean showHtmlOverlay = false;
 
 	int showHtmlOverlayAfter;
 

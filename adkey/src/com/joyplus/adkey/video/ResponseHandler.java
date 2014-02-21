@@ -179,7 +179,7 @@ public class ResponseHandler extends DefaultHandler {
 			inter.interstitialMarkup = contents.toString().trim();
 		} else if (localName.equals("error")) {
 			getRichMediaAd().setType(Const.NO_AD);
-		}
+		} 
 	}
 
 	@Override
@@ -591,6 +591,15 @@ public class ResponseHandler extends DefaultHandler {
 							.getValue("showafter"));
 					video.showHtmlOverlay = getBoolean(attributes
 							.getValue("show"));
+				}
+			}
+			//add by Jas
+			else if ("creative_res_url".equals(localName)){
+				String url = attributes.getValue("src");
+				if(URLUtil.isHttpsUrl(url)||URLUtil.isHttpUrl(url)){
+					if(richMediaAd != null){
+						richMediaAd.SetCreative_res_url(url);
+					}
 				}
 			}
 		}

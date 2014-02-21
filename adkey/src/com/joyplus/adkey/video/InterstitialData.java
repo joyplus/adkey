@@ -12,10 +12,10 @@ public class InterstitialData implements Serializable {
 	public static final int   INTERSTITIAL_TITLE_FIXED = 0;
 	public static final int   INTERSTITIAL_TITLE_HTML  = 1;
 	public static final int   INTERSTITIAL_TITLE_HIDDEN  = 2;
-	int                       autoclose;
+	public int                       autoclose;
 	int                       orientation;
-	int                       interstitialType;
-	String                    interstitialUrl;
+	public int                       interstitialType;
+	public String                    interstitialUrl;
 	public String             interstitialMarkup;
 	boolean                   showSkipButton;
 	int                       showSkipButtonAfter;
