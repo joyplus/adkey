@@ -50,7 +50,7 @@ public class DownloadVideoThread extends Thread {
 						if (displayImagePath.startsWith("http:")
 								|| displayImagePath.startsWith("https:")) {
 							downloader.download();
-							Log.i(Const.TAG, "download starting");
+							Log.i(Const.TAG, "jas download starting");
 						}
 					}
 				}
@@ -65,7 +65,7 @@ public class DownloadVideoThread extends Thread {
 						if (pathVideo.startsWith("http:")
 								|| pathVideo.startsWith("https:")) {
 							downloader.download();
-							Log.i(Const.TAG, "download starting");
+							Log.i(Const.TAG, "jas video download starting");
 						}
 					}
 				}
