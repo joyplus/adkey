@@ -74,6 +74,7 @@ public class AdMiniView extends RelativeLayout{
 	private Timer mInterstitialLoadingTimer;
 	private Timer mVideoTimeoutTimer;
 	
+	private boolean Completed = false;
 	
 	public AdMiniView(final Context context ,final RichMediaAd response, final AdListener adListener) {
 		this(context, response, true, adListener);
@@ -102,25 +103,28 @@ public class AdMiniView extends RelativeLayout{
 		}
 	}
 	
-	private void notifyfinish(final boolean completed){
-		if(mVideoView != null){
-			try{
-				mVideoView.stopPlayback();
-			}catch(Exception e){
-			}
-			mVideoView = null;
-		}
-		AdMiniView.this.removeAllViews();
-		if(adListener != null){
-			mHandler.post(new Runnable(){
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-					adListener.adClosed(mAd, completed);
-				}
-			});
-		}
+	private void notifyfinish(boolean completed){
+		Completed = completed;
+		mHandler.removeCallbacks(Close);
+		mHandler.post(Close);
 	}
+	private Runnable Close = new Runnable(){
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			if(mVideoView != null){
+				try{
+					mVideoView.stopPlayback();
+				}catch(Exception e){
+				}
+				mVideoView = null;
+			}
+			AdMiniView.this.removeAllViews();
+			if(adListener != null){
+				adListener.adClosed(mAd, Completed);
+			}
+		}
+	};
 	//////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////
 	// VideoView Demo for simple. remove most function. 
