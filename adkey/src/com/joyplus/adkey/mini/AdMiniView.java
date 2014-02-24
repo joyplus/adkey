@@ -124,15 +124,21 @@ public class AdMiniView extends RelativeLayout{
 	//////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////
 	// VideoView Demo for simple. remove most function. 
-    private boolean InitVideoView() {
+    private void InitVideoView() {
 		// TODO Auto-generated method stub
+    	if(mAd.getVideo() == null 
+    			|| mAd.getVideo().videoUrl == null
+    			|| "".equals(mAd.getVideo().videoUrl)){
+            notifyfinish(false);
+    		return;
+    	}
     	initVideoView();
-    	return true;
 	}
 	private void initVideoView(){
 		mVideoData   = this.mAd.getVideo();
 		mVideoLayout = new FrameLayout(mContext);//add to this RelativeLayout
 		mVideoLayout.setBackgroundColor(Color.TRANSPARENT);
+		mVideoLayout.setFocusable(false);
 		AdMiniView.this.addView(mVideoLayout, new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
 						   LayoutParams.MATCH_PARENT, Gravity.CENTER));
 		
@@ -169,21 +175,22 @@ public class AdMiniView extends RelativeLayout{
 		mVideoView.setOnPreparedListener(this.mOnVideoPreparedListener);
 		mVideoView.setOnCompletionListener(this.mOnVideoCompletionListener);
 		mVideoView.setOnErrorListener(this.mOnVideoErrorListener);
+		mVideoView.setFocusable(false);
 		//mVideoView.setOnInfoListener(this.mOnVideoInfoListener);
 		mVideoLayout.addView(mVideoView,
 				   new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
 						   LayoutParams.WRAP_CONTENT, Gravity.CENTER));//
 	}
 	private void InitLoadingUI(){
-		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,
-				Gravity.CENTER);
 		mLoadingView = new FrameLayout(mContext);
+		mLoadingView.setFocusable(false);
 		mLoadingView.setBackgroundColor(Color.TRANSPARENT);
 		TextView loadingText = new TextView(mContext);
 		loadingText.setText(Const.LOADING);
 		loadingText.setBackgroundColor(Color.TRANSPARENT);
-		mLoadingView.addView(loadingText, params);
+		loadingText.setFocusable(false);
+		mLoadingView.addView(loadingText, new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
+				LayoutParams.WRAP_CONTENT, Gravity.CENTER));
 		mVideoLayout.addView(this.mLoadingView,
 				new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
 						LayoutParams.WRAP_CONTENT, Gravity.CENTER));// fill_parent
@@ -240,7 +247,7 @@ public class AdMiniView extends RelativeLayout{
 			}
 			if (mLoadingView != null)
 				mLoadingView.setVisibility(View.GONE);
-			//mVideoView.requestFocus();
+			mVideoView.requestFocus();
 		}
 	};
 	
