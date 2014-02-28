@@ -1228,7 +1228,6 @@ public class RichMediaActivity extends Activity
 					break;
 			}
 		}
-		
 		this.setContentView(this.mRootLayout);
 	}
 	

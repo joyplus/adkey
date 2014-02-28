@@ -7,6 +7,7 @@ import java.util.List;
 import com.common.internet.AjaxCallBack;
 import com.common.internet.FastHttp;
 import com.common.internet.ResponseEntity;
+import com.joyplus.adkey.AdDeviceManager;
 import com.joyplus.adkey.AdKeyConfig;
 import android.content.Context;
 import android.net.Uri;
@@ -20,11 +21,12 @@ public class AppMonitorServer{
 	 private List<monitor> mMonitorList;
 	 private final static int  MAXSIZE = 100;
 	 private Report mReport = null;
-	
+	 private AdDeviceManager mAdDeviceManager;
 	 public  AppMonitorServer(Context context){
 		 mContext     = context;
 		 mMonitorList = new ArrayList<monitor>();
 		 Checking     = false;
+		 mAdDeviceManager = AdDeviceManager.getInstance(mContext);
 	 }
 	 
 	 public void AddMonitor(List<monitor> urls){
@@ -110,7 +112,7 @@ public class AppMonitorServer{
 		 }
 		 
 		 private void report_third(String url){
-			 Log.d("Jas","report_third-->"+url);
+			 //Log.d("Jas","report_third-->"+url);
 				FastHttp.ajaxGet(url, new AjaxCallBack() {
 					@Override
 					public void callBack(ResponseEntity arg0) {
@@ -139,6 +141,28 @@ public class AppMonitorServer{
 			 }
 			 b.appendQueryParameter("asti", ""+m.GetStartTime());
 			 b.appendQueryParameter("acti", ""+m.GetContinueTime());
+			 if(mAdDeviceManager != null){
+				 if(mAdDeviceManager.GetOS()==null){
+						b.appendQueryParameter("os", "");
+				 }else{
+						b.appendQueryParameter("os", mAdDeviceManager.GetOS());
+				 }
+				if(mAdDeviceManager.GetOSVersion()==null){
+					b.appendQueryParameter("osv", "");
+				}else{
+					b.appendQueryParameter("osv", mAdDeviceManager.GetOSVersion());
+				}
+				if(mAdDeviceManager == null){
+					b.appendQueryParameter("dss", "");
+				}else{
+					b.appendQueryParameter("dss", Integer.toString(mAdDeviceManager.GetDeviceScreenSize()));
+				}
+				if(mAdDeviceManager.GetDeviceScreenResolution()==null){
+					b.appendQueryParameter("dsr", "");
+				}else{
+					b.appendQueryParameter("dsr", mAdDeviceManager.GetDeviceScreenResolution());
+				}
+			 }
 			 return b.build();
 		 }
 		 private Uri GetVcURL(){
@@ -156,7 +180,30 @@ public class AppMonitorServer{
 			 }
 			 bc.appendQueryParameter("csti", ""+m.GetStartTime());
 			 bc.appendQueryParameter("ccti", ""+m.GetContinueTime());
+			 if(mAdDeviceManager != null){
+				 if(mAdDeviceManager.GetOS()==null){
+						bc.appendQueryParameter("os", "");
+				 }else{
+						bc.appendQueryParameter("os", mAdDeviceManager.GetOS());
+				 }
+				if(mAdDeviceManager.GetOSVersion()==null){
+					bc.appendQueryParameter("osv", "");
+				}else{
+					bc.appendQueryParameter("osv", mAdDeviceManager.GetOSVersion());
+				}
+				if(mAdDeviceManager == null){
+					bc.appendQueryParameter("dss", "");
+				}else{
+					bc.appendQueryParameter("dss", Integer.toString(mAdDeviceManager.GetDeviceScreenSize()));
+				}
+				if(mAdDeviceManager.GetDeviceScreenResolution()==null){
+					bc.appendQueryParameter("dsr", "");
+				}else{
+					bc.appendQueryParameter("dsr", mAdDeviceManager.GetDeviceScreenResolution());
+				}
+			 }
 			 return bc.build();
 		 }
 	 }
+	 
 }
