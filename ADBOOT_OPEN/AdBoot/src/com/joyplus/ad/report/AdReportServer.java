@@ -6,6 +6,7 @@ import java.util.List;
 import com.common.internet.AjaxCallBack;
 import com.common.internet.FastHttp;
 import com.common.internet.ResponseEntity;
+import com.joyplus.ad.FASTTEST;
 import com.joyplus.ad.config.Log;
 import android.content.Context;
 import android.os.Handler;
@@ -93,6 +94,7 @@ public class AdReportServer {
 	
 	private void report_third(String url){
 		Log.d("AdReport = "+url);
+		FASTTEST.REPORT++;//for test
 		FastHttp.ajaxGet(url, new AjaxCallBack() {
 			@Override
 			public void callBack(ResponseEntity arg0) {

@@ -143,8 +143,34 @@ public class AdRequest {
 					b.appendQueryParameter("mt", "");
 				}else{
 					b.appendQueryParameter("mt", mAdBoot.GetCUSTOMINFO().GetSOURCETYPE().toString());
-					if(Debug)Log.d("screen="+mAdBoot.GetCUSTOMINFO().GetSOURCETYPE().toString());
+					if(Debug)Log.d("mt="+mAdBoot.GetCUSTOMINFO().GetSOURCETYPE().toString());
 				}
+				//add by Jas@20140227
+				if(mAdBoot == null || mAdBoot.GetCUSTOMINFO() == null || mAdBoot.GetCUSTOMINFO().GetOS()==null){
+					b.appendQueryParameter("os", "");
+				}else{
+					b.appendQueryParameter("os", mAdBoot.GetCUSTOMINFO().GetOS());
+					if(Debug)Log.d("os="+mAdBoot.GetCUSTOMINFO().GetOS());
+				}
+				if(mAdBoot == null || mAdBoot.GetCUSTOMINFO() == null || mAdBoot.GetCUSTOMINFO().GetOSVersion()==null){
+					b.appendQueryParameter("osv", "");
+				}else{
+					b.appendQueryParameter("osv", mAdBoot.GetCUSTOMINFO().GetOSVersion());
+					if(Debug)Log.d("osv="+mAdBoot.GetCUSTOMINFO().GetOSVersion());
+				}
+				if(mAdBoot == null || mAdBoot.GetCUSTOMINFO() == null){
+					b.appendQueryParameter("dss", "");
+				}else{
+					b.appendQueryParameter("dss", Integer.toString(mAdBoot.GetCUSTOMINFO().GetDeviceScreenSize()));
+					if(Debug)Log.d("dss="+mAdBoot.GetCUSTOMINFO().GetOS());
+				}
+				if(mAdBoot == null || mAdBoot.GetCUSTOMINFO() == null || mAdBoot.GetCUSTOMINFO().GetDeviceScreenResolution()==null){
+					b.appendQueryParameter("dsr", "");
+				}else{
+					b.appendQueryParameter("dsr", mAdBoot.GetCUSTOMINFO().GetDeviceScreenResolution());
+					if(Debug)Log.d("dsr="+mAdBoot.GetCUSTOMINFO().GetDeviceScreenResolution());
+				}
+				//end add by Jas
 				break;
 			case ADPLACE:
 				break;

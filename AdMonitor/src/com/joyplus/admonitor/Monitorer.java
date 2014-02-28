@@ -16,7 +16,7 @@ public class Monitorer {
       private Monitor         mMonitor;
       private MonitorListener mMonitorListener = null;
       private MonitorerState  mMonitorerState;
-      private Object mObject = new Object();
+      private Object mObject  = new Object();
       public  void SetMonitorListener(MonitorListener l){
     	  synchronized(mObject){
     		  mMonitorListener = l;

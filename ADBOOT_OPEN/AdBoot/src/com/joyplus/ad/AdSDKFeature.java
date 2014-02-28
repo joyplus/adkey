@@ -5,7 +5,7 @@ package com.joyplus.ad;
 public class AdSDKFeature {
      
 	   /*Define for overload config for adkey running*/
-	   public static final boolean DEBUG                = false;
+	   public static final boolean DEBUG                = true;
 	
 	   /*Define for overload config for external
 	    * #{see@AbBootExternalConfig}*/

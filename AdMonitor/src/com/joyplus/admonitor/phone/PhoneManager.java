@@ -8,6 +8,7 @@ import com.joyplus.admonitor.Application.MD5Util;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.DisplayMetrics;
 
 /*Define by Jas@20140102
  * this manager was use to manager phone base manager*/
@@ -74,6 +75,9 @@ public class PhoneManager {
     	  mUniqueId2   = mPhoneService.getDeviceId(mContext);
     	  if ((mUniqueId2 == null) || (mUniqueId2.length() == 0))
   			    throw new AdMonitorSDKException("System Device Id cannot be null or empty");
+    	  //mContext.getSystemService(name)
+    	  DisplayMetrics ss = mContext.getResources().getDisplayMetrics();
+    	  ss.toString();
 	  }
       
       public String toString(){

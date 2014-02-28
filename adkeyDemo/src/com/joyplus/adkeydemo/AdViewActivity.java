@@ -13,10 +13,10 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 public class AdViewActivity extends Activity implements AdListener
-{
-	private RelativeLayout layout;
+{ 
+	private RelativeLayout layout; 
 	private AdView mAdView;
-	private String publisherId = "c82425512aa2ee9e55c3e3860c9794d9";
+	private String publisherId = "1e744dbf3280760def03181c5d522ef7";
 	private boolean animation = true;
     
 	@Override 

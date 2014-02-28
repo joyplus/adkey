@@ -24,7 +24,7 @@ public class AdMonitorSDKManager {
 	  public  static void Init(Context context) throws AdMonitorSDKException{
 		  if(IsInited())return;
 		  if(context == null)throw new AdMonitorSDKException("AdMonitorSDKManager context is null !!!!!");
-		  mAdMonitorSDKManager = new AdMonitorSDKManager(context);
+		  mAdMonitorSDKManager = new AdMonitorSDKManager(context.getApplicationContext());
 	  }	  
 	  
 	  private AdMonitorSDKManager(Context context){
