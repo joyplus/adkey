@@ -285,9 +285,9 @@ public class BannerAdView extends RelativeLayout {
 
 	private void showContent() {
 		try {
-			if(response != null){
-				Log.d("Jas","showContent response="+response.toString());
-			}
+//			if(response != null){
+//				Log.d("Jas","showContent response="+response.toString());
+//			}
 			WebView webView;
 			if (this.viewFlipper.getCurrentView() == this.firstWebView)
 				webView = this.secondWebView;

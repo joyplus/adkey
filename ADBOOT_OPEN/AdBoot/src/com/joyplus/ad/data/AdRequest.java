@@ -162,7 +162,7 @@ public class AdRequest {
 					b.appendQueryParameter("dss", "");
 				}else{
 					b.appendQueryParameter("dss", Integer.toString(mAdBoot.GetCUSTOMINFO().GetDeviceScreenSize()));
-					if(Debug)Log.d("dss="+mAdBoot.GetCUSTOMINFO().GetOS());
+					if(Debug)Log.d("dss="+mAdBoot.GetCUSTOMINFO().GetDeviceScreenSize());
 				}
 				if(mAdBoot == null || mAdBoot.GetCUSTOMINFO() == null || mAdBoot.GetCUSTOMINFO().GetDeviceScreenResolution()==null){
 					b.appendQueryParameter("dsr", "");

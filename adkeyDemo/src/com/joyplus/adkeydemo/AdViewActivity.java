@@ -5,6 +5,9 @@ import com.joyplus.adkey.AdListener;
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.banner.AdView;
 import com.joyplus.adkey.mini.AdMini;
+import com.joyplus.adkey.mon.AppMonitior;
+import com.joyplus.adkey.mon.AppReportManager;
+import com.joyplus.adkey.mon.VideoMonitior;
 import com.joyplus.adkey.widget.Log;
 
 import android.app.Activity;
@@ -36,7 +39,7 @@ public class AdViewActivity extends Activity implements AdListener
 		mAdView.setAdListener(this);
 		layout.addView(mAdView);
 	}
-
+	
 	private void removeBanner(){
 		if(mAdView!=null){
 			layout.removeView(mAdView);

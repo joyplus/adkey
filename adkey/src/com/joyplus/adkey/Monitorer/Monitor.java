@@ -3,9 +3,7 @@ package com.joyplus.adkey.Monitorer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import com.joyplus.adkey.Monitorer.TRACKINGURL.TYPE;
-import com.joyplus.adkey.widget.Log;
 
 public class Monitor {
       public final static String REPLACE_MAC  = "%mac%";
