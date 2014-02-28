@@ -29,7 +29,15 @@ public class RichMediaAd implements Ad {
 	
 	private String mImpressionUrl;
 	private List<TRACKINGURL> mTrackingUrl;
-	
+	//add by Jas
+	private String mCreative_res_url;
+	public  void SetCreative_res_url(String url){
+		mCreative_res_url = url;
+	}
+	public  String GetCreative_res_url(){
+		return mCreative_res_url;
+	}
+	//end add by Jas
 	public List<TRACKINGURL> getmTrackingUrl()
 	{
 		if(mTrackingUrl == null){
@@ -107,7 +115,7 @@ public class RichMediaAd implements Ad {
 	@Override
 	public String toString() {
 		return "RichMediaAD [timestamp=" + timestamp + ", type=" + type
-				+ ", animation=" + animation + ", video=" + video
+				+ ", animation=" + animation + ", mCreative_res_url="+mCreative_res_url+", video=" + video
 				+ ", interstitial=" + interstitial + "]";
 	}
 

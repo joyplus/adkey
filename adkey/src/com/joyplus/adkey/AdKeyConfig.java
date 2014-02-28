@@ -10,7 +10,10 @@ public class AdKeyConfig {
 	private String     Konka_REQUESTURL   = "http://advapikj.joyplus.tv/advapi/v1/mdrequest";//康佳
 	private String     Runhe_REQUESTURL   = "http://advapi.joyplus.tv/advapi/v1/mdrequest";//润和
 	private String     Haier_REQUESTURL   = "http://advapi.joyplus.tv/advapi/v1/mdrequest";//海尔
-	
+	//add by Jas@20140227
+	private String     Joyplus_app_REQUESTURL = "http://advapi.joyplus.tv/advapi/v1/mdapplog";//for app 
+	private String     Joyplus_vc_REQUESTURL  = "http://advapi.joyplus.tv/advapi/v1/mdvclog";//for video
+	//end add by Jas
 	private boolean    LoadOK = false;
 	private Properties props;
 	private static AdKeyConfig mAdKeyConfig;
@@ -55,7 +58,12 @@ public class AdKeyConfig {
 			return Joyplus_REQUESTURL;
 		}
 	}
-	
+	public String getAppREQUESTURL(){
+		return Joyplus_app_REQUESTURL;
+	}
+	public String getVcREQUESTURL(){
+		return Joyplus_vc_REQUESTURL;
+	}
     public int getCUSTOM(){
     	if(LoadOK){
 			String custom = props.getProperty("CUSTOM");

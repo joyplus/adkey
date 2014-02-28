@@ -18,7 +18,7 @@ public class AdMonitorManager {
 	public  static void Init(Context context) throws AdMonitorSDKException  {
 		  if(AdMonitorSDKManager.IsInited())return;
 		  if(context == null)throw new AdMonitorSDKException("AdMonitorManager context is null !!!!!");
-		  mAdMonitorManager = new AdMonitorManager(context);
+		  mAdMonitorManager = new AdMonitorManager(context.getApplicationContext());
 	}
 	public static AdMonitorManager getInstance(){
 	      return mAdMonitorManager;

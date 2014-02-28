@@ -14,7 +14,7 @@ public class AdMonitorManager {
 	public  static AdMonitorManager getInstance(Context context){
 		  if(mAdMonitorManager == null){
 			  if(context == null)throw new IllegalArgumentException("context can't be null");
-			  mAdMonitorManager = new AdMonitorManager(context);
+			  mAdMonitorManager = new AdMonitorManager(context.getApplicationContext());
 		  }
 	      return mAdMonitorManager;
 	}

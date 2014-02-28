@@ -81,6 +81,38 @@ public class CUSTOMINFO implements Parcelable{
 	 private String      mMAC                 = "";//i
 	 private SCREEN      mSCREEN              = SCREEN.S_HD;//screen
 	 private SOURCETYPE  mSOURCETYPE          = null;//mt    don't know what to use.
+	 //add by Jas@20140227
+	 private String      mOS                   = "";//os
+	 private String      mOSV                  = "";//osv
+	 private int         mDSS                  = 0;//dss
+	 private String      mDSR                  = "";//dsr
+	 public  void SetOS(String os){
+		 mOS = os;
+	 }
+	 public String GetOS(){
+		 return mOS;
+	 }
+	 public void SetOSVersion(String osv){
+		 mOSV = osv;
+	 }
+	 public String GetOSVersion(){
+		 return mOSV;
+	 }
+	 public void SetDeviceScreenSize(int size){
+		 mDSS = size;
+	 }
+	 public int GetDeviceScreenSize(){
+		 return mDSS>0?mDSS:0;
+	 }
+	 public void SetDeviceScreenResolution(int Width,int Height){
+		 if(Width<0 || Height<0)return;
+		 mDSR = Width+"X"+Height;
+	 }
+     public String GetDeviceScreenResolution(){
+    	 if(mDSR == null || "".equals(mDSR))return null;
+    	 return mDSR;
+     } 
+     //end add by Jas
 	 public  CUSTOMINFO(){
 		 if(!AdSDKManager.IsInited())
 			  throw new IllegalArgumentException("AdSDKManager don't Init first !!!!");			 
@@ -99,6 +131,12 @@ public class CUSTOMINFO implements Parcelable{
 			 mMAC              = info.mMAC;
 			 mSCREEN           = info.mSCREEN;
 			 mSOURCETYPE       = info.mSOURCETYPE;
+			 //add by Jas@20140227
+			 mOS               = info.mOS;
+			 mOSV              = info.mOSV;
+			 mDSS              = info.mDSS;
+			 mDSR              = info.mDSR;
+			 //end add by Jas
 		 }
 	 }
 	 public CUSTOMINFO CreateNew(){
@@ -196,6 +234,12 @@ public class CUSTOMINFO implements Parcelable{
 		dest.writeString(mSCREEN.toString());
 		if(mSOURCETYPE != null)
 		dest.writeString(mSOURCETYPE.toString());
+		//add by Jas@20140227
+		dest.writeString(mOS);
+		dest.writeString(mOSV);
+		dest.writeInt(mDSS);
+		dest.writeString(mDSR);
+		//end add by Jas
 	}
 	@Override
 	public String toString() {
@@ -213,6 +257,12 @@ public class CUSTOMINFO implements Parcelable{
 		  .append(" ,mMAC="+mMAC)
 		  .append(" ,mSCREEN="+((mSCREEN==null)?"null":mSCREEN.toString()))
 		  .append(" ,mSOURCETYPE="+((mSOURCETYPE==null)?"null":mSOURCETYPE.toString()))
+		  //add by Jas@20140227
+		  .append(" ,mOS="+mOS)
+		  .append(" ,mOSV="+mOSV)
+		  .append(" ,mDSS="+mDSS)
+		  .append(" ,mDSR="+mDSR)
+		  //end add by Jas
 		  .append(" }");
 		return ap.toString();
 	}

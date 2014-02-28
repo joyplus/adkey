@@ -16,7 +16,7 @@ public class VideoType {
 		  mVIDEO.put(VIDEO.ZONGYI.toInt(), VIDEO.ZONGYI.toString());
 		  mVIDEO.put(VIDEO.DONGMAN.toInt(), VIDEO.DONGMAN.toString());
 		  
-		  VIDEOTYPE = new HashMap<Integer, String>();
+		  VIDEOTYPE = new HashMap<Integer, String>(); 
 		  //电影
 		  VIDEOTYPE.put(VIDEOTYPE_MOVIE.KONGBU.toInt(), VIDEOTYPE_MOVIE.KONGBU.toString());
 		  VIDEOTYPE.put(VIDEOTYPE_MOVIE.JINGSONG.toInt(), VIDEOTYPE_MOVIE.JINGSONG.toString());

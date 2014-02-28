@@ -1,7 +1,6 @@
 package com.joyplus.adkey;
 
 import com.joyplus.adkey.Monitorer.MD5Util;
-
 import android.net.Uri;
 import android.os.Build;
 
@@ -226,7 +225,29 @@ public class AdRequest {
 			break;
 		}
 		b.appendQueryParameter("u_wv", this.getUserAgent());
-
+		//add by Jas@20140227
+		AdDeviceManager mDevice = AdDeviceManager.getInstance(null);
+		if(mDevice == null  || mDevice.GetOS()==null){
+			b.appendQueryParameter("os", "");
+		}else{
+			b.appendQueryParameter("os", mDevice.GetOS());
+		}
+		if(mDevice == null || mDevice.GetOSVersion()==null){
+			b.appendQueryParameter("osv", "");
+		}else{
+			b.appendQueryParameter("osv", mDevice.GetOSVersion());
+		}
+		if(mDevice == null){
+			b.appendQueryParameter("dss", "");
+		}else{
+			b.appendQueryParameter("dss", Integer.toString(mDevice.GetDeviceScreenSize()));
+		}
+		if(mDevice == null || mDevice.GetDeviceScreenResolution()==null){
+			b.appendQueryParameter("dsr", "");
+		}else{
+			b.appendQueryParameter("dsr", mDevice.GetDeviceScreenResolution());
+		}
+		//end add by Jas
 		return b.build();
 	}
 

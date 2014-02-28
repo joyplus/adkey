@@ -3,14 +3,10 @@ package com.joyplus.adkey.Monitorer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import com.joyplus.adkey.Monitorer.Monitorer.MonitorerState;
 import com.joyplus.adkey.widget.Log;
-
-
 import android.content.Context;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 
 public class AdMonitorServer implements MonitorListener{

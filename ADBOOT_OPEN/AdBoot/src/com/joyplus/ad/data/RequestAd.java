@@ -10,6 +10,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpProtocolParams;
 import com.joyplus.ad.AdConfig;
+import com.joyplus.ad.FASTTEST;
 import com.joyplus.ad.HttpManager;
 import com.joyplus.ad.PhoneManager;
 import com.joyplus.ad.config.Log;
@@ -44,9 +45,11 @@ public abstract class RequestAd<T> {
 			HttpGet get = new HttpGet(url);
 			HttpResponse response;
 			try {
+				FASTTEST.REQUEST++;//for test
 				response = client.execute(get);
 				int responseCode = response.getStatusLine().getStatusCode();
 				if (responseCode == HttpURLConnection.HTTP_OK) {
+					FASTTEST.REQUEST_SUCCESS++;//for test
 					return parse(response.getEntity().getContent());
 				} else {
 					throw new RequestException("Server Error. Response code:"

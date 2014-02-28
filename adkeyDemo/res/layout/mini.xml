@@ -2,32 +2,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".InterstitialActivity" >
-
+    android:gravity="center"
+    tools:context=".MiniInterstitialActivity" >
+    
+    <RelativeLayout
+        android:gravity="center"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <RelativeLayout
+	        android:id="@+id/adsdkContent"
+	        android:gravity="center"
+	        android:layout_width="800dp"
+	        android:layout_height="600dp">
+        </RelativeLayout>
+    </RelativeLayout>
 	<TextView 
 	    android:id="@+id/textView1"
-	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
+	    android:layout_width="fill_parent"
 	    android:textSize="30dp"
-	    android:text="Insterstitial ad!"/>
+	    android:text="Mini ad!"/>
     <Button
-        android:id="@+id/showVideoInsterstitialOnline"
+        android:id="@+id/show_mini"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:onClick="onClickShowVideoOnline"
         android:layout_below="@id/textView1"
         android:layout_marginTop="20dp"
-        android:visibility="gone"
-        android:text="Show MINI VideoInsterstitialOnline" />
-
-    <Button
-        android:id="@+id/showVideoInsterstitialCache"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/showVideoInsterstitialOnline"
-        android:onClick="onClickShowVideoCache"
-        android:layout_marginTop="20dp"
-        android:text="Show MINI VideoInsterstitialCache" />
+        android:onClick="onClickShowMini"
+        android:text="Show AdView" />
 
 </RelativeLayout>
