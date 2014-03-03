@@ -38,19 +38,31 @@ public class DownloadVideoThread extends Thread {
 				// img
 				RichMediaAd mResponse = nextResponse;
 				if (mResponse != null && mResponse.getInterstitial() != null) {
-					String textData = mResponse.getInterstitial().interstitialMarkup;
-					if (textData != null) {
-						int startInd = textData.indexOf("<img") + 10;
-						int endInd = textData.indexOf(">", startInd) - 1;
-						String displayImagePath = textData.substring(startInd,
-								endInd);
-						generateExtensionName(displayImagePath, ".jpg");
+					if(!(mResponse.GetCreative_res_url()==null||"".equals(mResponse.GetCreative_res_url()))){
+						String displayImagePath = mResponse.GetCreative_res_url();
+						generateExtensionName(displayImagePath,".jpg");
 						DisplayImgDownloader downloader = new DisplayImgDownloader(
 								displayImagePath, context);
 						if (displayImagePath.startsWith("http:")
 								|| displayImagePath.startsWith("https:")) {
 							downloader.download();
-							Log.i(Const.TAG, "jas download starting");
+							Log.i(Const.TAG, "download starting");
+						}
+					}else{
+						String textData = mResponse.getInterstitial().interstitialMarkup;
+						if (textData != null) {
+							int startInd = textData.indexOf("<img") + 10;
+							int endInd = textData.indexOf(">", startInd) - 1;
+							String displayImagePath = textData.substring(startInd,
+									endInd);
+							generateExtensionName(displayImagePath, ".jpg");
+							DisplayImgDownloader downloader = new DisplayImgDownloader(
+									displayImagePath, context);
+							if (displayImagePath.startsWith("http:")
+									|| displayImagePath.startsWith("https:")) {
+								downloader.download();
+								Log.i(Const.TAG, "jas download starting");
+							}
 						}
 					}
 				}
