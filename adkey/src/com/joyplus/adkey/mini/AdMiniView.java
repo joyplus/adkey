@@ -365,7 +365,7 @@ public class AdMiniView extends RelativeLayout{
 		mInterstitialImageView.getSettings().setJavaScriptEnabled(true);
 		mInterstitialImageView.setVerticalScrollBarEnabled(false);
 		mInterstitialImageView.setHapticFeedbackEnabled(false);
-		
+		 
 		mRootLayout.addView(mInterstitialImageView, new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
 				   LayoutParams.MATCH_PARENT, Gravity.CENTER));
 		String text = MessageFormat.format(Const.IMAGE_BODY,getCreative_res_url,null,null);
@@ -405,7 +405,10 @@ public class AdMiniView extends RelativeLayout{
 				notifyfinish(false);
 			}
 		};
-		mInterstitialLoadingTimer.schedule(autocloseTask,Const.CONNECTION_TIMEOUT);
+		if(mAd.GetRefresh()<=0)
+		    mInterstitialLoadingTimer.schedule(autocloseTask,Const.CONNECTION_TIMEOUT);
+		else
+			mInterstitialLoadingTimer.schedule(autocloseTask,mAd.GetRefresh()*1000);
 	}
 	private final OnClickListener mInterstitialClickListener = new OnClickListener(){
 		@Override

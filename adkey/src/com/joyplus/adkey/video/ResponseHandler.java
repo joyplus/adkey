@@ -33,7 +33,7 @@ public class ResponseHandler extends DefaultHandler {
 	
 	private String mImpressionUrl;
 	private String mTrackingUrl;
-
+	
 	@Override
 	public void characters(char[] ch, int start, int length)
 			throws SAXException {
@@ -180,6 +180,11 @@ public class ResponseHandler extends DefaultHandler {
 		} else if (localName.equals("error")) {
 			getRichMediaAd().setType(Const.NO_AD);
 		} 
+		//add by Jas
+		else if("refresh".equals(localName)){
+			richMediaAd.SetRefresh(getInteger(contents.toString().trim()));
+		}
+		//end add by Jas
 	}
 
 	@Override
@@ -601,7 +606,8 @@ public class ResponseHandler extends DefaultHandler {
 						richMediaAd.SetCreative_res_url(url);
 					}
 				}
-			}
+			} 
+			//end add by Jas
 		}
 	}
 
