@@ -296,8 +296,12 @@ public class AdRequest {
 			}else{
 				b.appendQueryParameter("dsr", info.GetDeviceScreenResolution());
 			}
-			if(info.GetMAC()==null){
-				b.appendQueryParameter("i", "");
+			if(info.GetMAC()==null || "".equals(info.GetMAC())){
+				if(MacAddress == null || "".equals(MacAddress)){
+					b.appendQueryParameter("i", "");
+				}else{
+					b.appendQueryParameter("i", MD5Util.GetMD5Code(MacAddress.toUpperCase()));
+				}
 			}else{
 				b.appendQueryParameter("i", MD5Util.GetMD5Code(info.GetMAC().toUpperCase()));
 			}

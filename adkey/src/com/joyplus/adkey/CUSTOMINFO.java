@@ -41,6 +41,7 @@ public class CUSTOMINFO implements Parcelable{
 	 }
 	 //srceen type
 	 public enum SCREEN{
+		 S_UNKNOW(""),
 		 S_SD    ("001"),//����   1028*720
 		 S_HD    ("002"),//����   1920*1080
 		 S_4K    ("003");//4K2K 3840*2160
@@ -101,7 +102,7 @@ public class CUSTOMINFO implements Parcelable{
 	 private String      mBRAND               = "";//b
 	 private int         mLastBootUpCount     = 0;//ot
 	 private String      mMAC                 = "";//i
-	 private SCREEN      mSCREEN              = SCREEN.S_HD;//screen
+	 private SCREEN      mSCREEN              = SCREEN.S_UNKNOW;//screen
 	 private SOURCETYPE  mSOURCETYPE          = null;//mt    don't know what to use.
 	 //add by Jas@20140227
 	 private String      mOS                  = "";//os
