@@ -24,14 +24,14 @@ public abstract class RequestAd<T> {
 			throws RequestException {
 		if (is == null) {
 			String url = request.toString();
-			String device_name = "V8";
-			try {
-				device_name = URLEncoder.encode(Util.GetDeviceName(), "utf-8");
-			} catch (UnsupportedEncodingException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			url = url+"&ds="+device_name;
+//			String device_name = "V8";
+//			try {
+//				device_name = URLEncoder.encode(Util.GetDeviceName(), "utf-8");
+//			} catch (UnsupportedEncodingException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+//			url = url+"&ds="+device_name;
 			Log.d("Jas",""+url);
 			DefaultHttpClient client = new DefaultHttpClient();
 			HttpConnectionParams.setSoTimeout(client.getParams(),

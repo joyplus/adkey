@@ -54,8 +54,8 @@ public class AdRequest {
 					|| "".equals(mAdBoot.GetCUSTOMINFO().GetMAC())){
 				b.appendQueryParameter("i", "");
 			}else{
-				b.appendQueryParameter("i", MD5Util.GetMD5Code(mAdBoot.GetCUSTOMINFO().GetMAC()));
-				if(Debug)Log.d("i="+MD5Util.GetMD5Code(mAdBoot.GetCUSTOMINFO().GetMAC()));
+				b.appendQueryParameter("i", MD5Util.GetMD5Code(mAdBoot.GetCUSTOMINFO().GetMAC().toUpperCase()));
+				if(Debug)Log.d("i="+MD5Util.GetMD5Code(mAdBoot.GetCUSTOMINFO().GetMAC().toUpperCase()));
 			}
 			b.appendQueryParameter("u",  PhoneManager.getInstance().GetUA1());
 			if(Debug)Log.d("u="+PhoneManager.getInstance().GetUA1());

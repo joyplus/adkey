@@ -882,6 +882,9 @@ public class RichMediaActivity extends Activity
 					}
 					this.mInterstitialView
 							.setMarkup(this.mInterstitialData.interstitialMarkup);
+				}else{
+					timer.cancel();
+					finish();//for image no load.
 				}
 				break;
 			case InterstitialData.INTERSTITIAL_URL:
@@ -1207,7 +1210,6 @@ public class RichMediaActivity extends Activity
 			this.mAd = (RichMediaAd) extras.getSerializable(Const.AD_EXTRA);
 			this.mEnterAnim = Util.getEnterAnimation(this.mAd.getAnimation());
 			this.mExitAnim = Util.getExitAnimation(this.mAd.getAnimation());
-			
 			this.mCanClose = false;
 			this.mType = extras.getInt(Const.AD_TYPE_EXTRA, -1);
 			if (this.mType == -1)

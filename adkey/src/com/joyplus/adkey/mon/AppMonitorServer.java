@@ -9,6 +9,9 @@ import com.common.internet.FastHttp;
 import com.common.internet.ResponseEntity;
 import com.joyplus.adkey.AdDeviceManager;
 import com.joyplus.adkey.AdKeyConfig;
+import com.joyplus.adkey.CUSTOMINFO;
+import com.joyplus.adkey.Monitorer.MD5Util;
+
 import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
@@ -141,27 +144,75 @@ public class AppMonitorServer{
 			 }
 			 b.appendQueryParameter("asti", ""+m.GetStartTime());
 			 b.appendQueryParameter("acti", ""+m.GetContinueTime());
-			 if(mAdDeviceManager != null){
-				 if(mAdDeviceManager.GetOS()==null){
+			 if(mAdDeviceManager != null && mAdDeviceManager.GetCUSTOMINFO()!=null){
+				 CUSTOMINFO info = mAdDeviceManager.GetCUSTOMINFO();
+					if(info.GetDEVICEMUMBER() == null){
+						b.appendQueryParameter("ds", "");
+					}else{
+						b.appendQueryParameter("ds", info.GetDEVICEMUMBER());
+					}
+					if(info.GetSN() == null){
+						b.appendQueryParameter("sn", "");
+					}else{
+						b.appendQueryParameter("sn", info.GetSN());
+					}
+					if(info.GetDEVICETYPE() == null){
+						b.appendQueryParameter("dt", "");
+					}else{
+						b.appendQueryParameter("dt", Integer.toString(info.GetDEVICETYPE().toInt()));
+					}
+					if(info.GetUSEMODE() == null){
+						b.appendQueryParameter("up", "");
+					}else{
+						b.appendQueryParameter("up", Integer.toString(info.GetUSEMODE().toInt()));
+					}
+					if(info.GetLICENSEPROVIDER() == null){
+						b.appendQueryParameter("lp", "");
+					}else{
+						b.appendQueryParameter("lp", Integer.toString(info.GetLICENSEPROVIDER().toInt()));
+					}
+					if(info.GetDEVICEMOVEMENT() == null){
+						b.appendQueryParameter("dm", "");
+					}else{
+						b.appendQueryParameter("dm", info.GetDEVICEMOVEMENT());
+					}
+					if(info.GetBRAND() == null){
+						b.appendQueryParameter("b", "");
+					}else{
+						b.appendQueryParameter("b", info.GetBRAND().toString());
+					}
+					b.appendQueryParameter("ot", Integer.toString(info.GetLastBootUpCount()));
+					if(info.GetSCREEN() == null){
+						b.appendQueryParameter("screen", "");
+					}else{
+						b.appendQueryParameter("screen", info.GetSCREEN().toString());
+					}
+					if(info.GetSOURCETYPE() == null){
+						b.appendQueryParameter("mt", "");
+					}else{
+						b.appendQueryParameter("mt", info.GetSOURCETYPE().toString());
+					}
+					if(info.GetOS()==null){
 						b.appendQueryParameter("os", "");
-				 }else{
-						b.appendQueryParameter("os", mAdDeviceManager.GetOS());
-				 }
-				if(mAdDeviceManager.GetOSVersion()==null){
-					b.appendQueryParameter("osv", "");
-				}else{
-					b.appendQueryParameter("osv", mAdDeviceManager.GetOSVersion());
-				}
-				if(mAdDeviceManager == null){
-					b.appendQueryParameter("dss", "");
-				}else{
-					b.appendQueryParameter("dss", Integer.toString(mAdDeviceManager.GetDeviceScreenSize()));
-				}
-				if(mAdDeviceManager.GetDeviceScreenResolution()==null){
-					b.appendQueryParameter("dsr", "");
-				}else{
-					b.appendQueryParameter("dsr", mAdDeviceManager.GetDeviceScreenResolution());
-				}
+					}else{
+						b.appendQueryParameter("os", info.GetOS());
+					}
+					if(info.GetOSVersion()==null){
+						b.appendQueryParameter("osv", "");
+					}else{
+						b.appendQueryParameter("osv", info.GetOSVersion());
+					}
+					b.appendQueryParameter("dss", Integer.toString(info.GetDeviceScreenSize()));
+					if(info.GetDeviceScreenResolution()==null){
+						b.appendQueryParameter("dsr", "");
+					}else{
+						b.appendQueryParameter("dsr", info.GetDeviceScreenResolution());
+					}
+					if(info.GetMAC()==null){
+						b.appendQueryParameter("i", "");
+					}else{
+						b.appendQueryParameter("i", MD5Util.GetMD5Code(info.GetMAC().toUpperCase()));
+					}
 			 }
 			 return b.build();
 		 }
@@ -180,27 +231,75 @@ public class AppMonitorServer{
 			 }
 			 bc.appendQueryParameter("csti", ""+m.GetStartTime());
 			 bc.appendQueryParameter("ccti", ""+m.GetContinueTime());
-			 if(mAdDeviceManager != null){
-				 if(mAdDeviceManager.GetOS()==null){
+			 if(mAdDeviceManager != null && mAdDeviceManager.GetCUSTOMINFO()!=null){
+				 CUSTOMINFO info = mAdDeviceManager.GetCUSTOMINFO();
+					if(info.GetDEVICEMUMBER() == null){
+						bc.appendQueryParameter("ds", "");
+					}else{
+						bc.appendQueryParameter("ds", info.GetDEVICEMUMBER());
+					}
+					if(info.GetSN() == null){
+						bc.appendQueryParameter("sn", "");
+					}else{
+						bc.appendQueryParameter("sn", info.GetSN());
+					}
+					if(info.GetDEVICETYPE() == null){
+						bc.appendQueryParameter("dt", "");
+					}else{
+						bc.appendQueryParameter("dt", Integer.toString(info.GetDEVICETYPE().toInt()));
+					}
+					if(info.GetUSEMODE() == null){
+						bc.appendQueryParameter("up", "");
+					}else{
+						bc.appendQueryParameter("up", Integer.toString(info.GetUSEMODE().toInt()));
+					}
+					if(info.GetLICENSEPROVIDER() == null){
+						bc.appendQueryParameter("lp", "");
+					}else{
+						bc.appendQueryParameter("lp", Integer.toString(info.GetLICENSEPROVIDER().toInt()));
+					}
+					if(info.GetDEVICEMOVEMENT() == null){
+						bc.appendQueryParameter("dm", "");
+					}else{
+						bc.appendQueryParameter("dm", info.GetDEVICEMOVEMENT());
+					}
+					if(info.GetBRAND() == null){
+						bc.appendQueryParameter("b", "");
+					}else{
+						bc.appendQueryParameter("b", info.GetBRAND().toString());
+					}
+					bc.appendQueryParameter("ot", Integer.toString(info.GetLastBootUpCount()));
+					if(info.GetSCREEN() == null){
+						bc.appendQueryParameter("screen", "");
+					}else{
+						bc.appendQueryParameter("screen", info.GetSCREEN().toString());
+					}
+					if(info.GetSOURCETYPE() == null){
+						bc.appendQueryParameter("mt", "");
+					}else{
+						bc.appendQueryParameter("mt", info.GetSOURCETYPE().toString());
+					}
+					if(info.GetOS()==null){
 						bc.appendQueryParameter("os", "");
-				 }else{
-						bc.appendQueryParameter("os", mAdDeviceManager.GetOS());
-				 }
-				if(mAdDeviceManager.GetOSVersion()==null){
-					bc.appendQueryParameter("osv", "");
-				}else{
-					bc.appendQueryParameter("osv", mAdDeviceManager.GetOSVersion());
-				}
-				if(mAdDeviceManager == null){
-					bc.appendQueryParameter("dss", "");
-				}else{
-					bc.appendQueryParameter("dss", Integer.toString(mAdDeviceManager.GetDeviceScreenSize()));
-				}
-				if(mAdDeviceManager.GetDeviceScreenResolution()==null){
-					bc.appendQueryParameter("dsr", "");
-				}else{
-					bc.appendQueryParameter("dsr", mAdDeviceManager.GetDeviceScreenResolution());
-				}
+					}else{
+						bc.appendQueryParameter("os", info.GetOS());
+					}
+					if(info.GetOSVersion()==null){
+						bc.appendQueryParameter("osv", "");
+					}else{
+						bc.appendQueryParameter("osv", info.GetOSVersion());
+					}
+					bc.appendQueryParameter("dss", Integer.toString(info.GetDeviceScreenSize()));
+					if(info.GetDeviceScreenResolution()==null){
+						bc.appendQueryParameter("dsr", "");
+					}else{
+						bc.appendQueryParameter("dsr", info.GetDeviceScreenResolution());
+					}
+					if(info.GetMAC()==null){
+						bc.appendQueryParameter("i", "");
+					}else{
+						bc.appendQueryParameter("i", MD5Util.GetMD5Code(info.GetMAC().toUpperCase()));
+					}
 			 }
 			 return bc.build();
 		 }
