@@ -4,8 +4,8 @@ public class VideoMonitior implements monitor{
 
 	private String mProd_id      = "";//cpi
 	private String mProd_name    = "";//cpn
-	private double mStartTime    = 0 ;//csti
-	private double mContinueTime = 0;//ccti
+	private long   mStartTime    = 0 ;//csti
+	private long   mContinueTime = 0;//ccti
 	
 	public  void SetProdId(String id){
 		mProd_id = id;
@@ -23,17 +23,17 @@ public class VideoMonitior implements monitor{
 		return mProd_name;
 	}
 	
-	public  void SetStartTime(double time){
+	public  void SetStartTime(long time){
 		mStartTime = time;
 	}
-	public  double GetStartTime(){
+	public  long GetStartTime(){
 		return mStartTime;
 	}
 	
-	public  void SetContinueTime(double time){
+	public  void SetContinueTime(long time){
 		mContinueTime = time;
 	}
-	public  double GetContinueTime(){
+	public  long GetContinueTime(){
 		return mContinueTime;
 	}
 	@Override

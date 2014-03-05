@@ -249,7 +249,7 @@ public class AdRequest {
 			}else{
 				b.appendQueryParameter("dt", Integer.toString(info.GetDEVICETYPE().toInt()));
 			}
-			if(info.GetUSEMODE() == null){
+			if(info.GetUSEMODE() == null){ 
 				b.appendQueryParameter("up", "");
 			}else{
 				b.appendQueryParameter("up", Integer.toString(info.GetUSEMODE().toInt()));

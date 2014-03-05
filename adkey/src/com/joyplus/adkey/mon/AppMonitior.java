@@ -5,8 +5,8 @@ public class AppMonitior implements monitor{
 	
 	private  String mAppName = "";//an
 	private  String mAppPackageName = "";//apn
-	private  double mAppStartTime   = 0 ;//asti
-	private  double mAppContinueTime= 0 ;//acti
+	private  long   mAppStartTime   = 0 ;//asti
+	private  long   mAppContinueTime= 0 ;//acti
 	
 	public  void  SetAppName(String name){
 		mAppName = name;
@@ -24,17 +24,17 @@ public class AppMonitior implements monitor{
 		return mAppPackageName;
 	}
 	
-	public  void SetStartTime(double time){
+	public  void SetStartTime(long time){
 		mAppStartTime = time;
 	}
-	public  double GetStartTime(){
+	public  long GetStartTime(){
 		return mAppStartTime;
 	}
 	
-	public  void SetContinueTime(double time){
+	public  void SetContinueTime(long time){
 		mAppContinueTime = time;
 	}
-	public  double GetContinueTime(){
+	public  long GetContinueTime(){
 		return mAppContinueTime;
 	}
 	
