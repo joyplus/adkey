@@ -4,6 +4,7 @@ import com.joyplus.admonitor.AdMonitorManager;
 import com.joyplus.admonitor.phone.PhoneManager;
 
 import android.content.Context;
+import android.util.Log;
 
 
 /* Define by Jas@20131125
@@ -13,7 +14,7 @@ import android.content.Context;
 public class AdMonitorSDKManager {
 	  
 	  private Context mContext;
-	  private CustomInfo mCustomInfo;
+	  private CUSTOMINFO mCustomInfo;
 	  private static  boolean     mInited       = false;         //flog of this SDK init finish,and can use.
 	  
       private static AdMonitorSDKManager mAdMonitorSDKManager;
@@ -55,15 +56,16 @@ public class AdMonitorSDKManager {
 	  }
 	  /*Interface for this SDK use*/
 	  public static boolean IsInited(){
+		  if(! mInited)Log.i("AdMonitor","Pls Init AdMonitorSDKManager first!!!!!");
 		  return mInited;
 	  }
 	  
 	  
-	  public void SetCustomInfo(CustomInfo info){
+	  public void SetCUSTOMINFO(CUSTOMINFO info){
 		  mCustomInfo = info;
 	  }
-	  public CustomInfo GetCustomInfo(){
-		  if(mCustomInfo == null)return new CustomInfo();
+	  public CUSTOMINFO GetCUSTOMINFO(){
+		  //if(mCustomInfo == null)return new CUSTOMINFO();
 		  return mCustomInfo;
 	  }
 }

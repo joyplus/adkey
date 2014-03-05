@@ -63,7 +63,7 @@ public class PhoneManager {
 		  return mPhoneManager;
 	  }
       private PhoneManager(Context context) throws AdMonitorSDKException{
-    	  mContext = context;
+    	  mContext = context.getApplicationContext();
     	  mPhoneService = new PhoneService();
     	  InitResource();
       }
@@ -132,7 +132,7 @@ public class PhoneManager {
       public String GetMac(){
     	  String mMac = mPhoneService.getMacAddress(mContext);
     	  if(!(mMac == null || "".equals(mMac))){
-    		  return MD5Util.GetMD5Code(mMac);
+    		  return mMac;
     	  }
     	  return "";
       }
@@ -144,4 +144,7 @@ public class PhoneManager {
       public String GetDeviceName(){
   		return new Build().MODEL;
       }
+      
+      
+      ///////
 }

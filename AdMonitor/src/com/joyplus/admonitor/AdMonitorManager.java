@@ -24,7 +24,7 @@ public class AdMonitorManager {
 	      return mAdMonitorManager;
 	}
 	private AdMonitorManager(Context context){
-		  mContext = context;
+		  mContext = context.getApplicationContext();
 		  mAdMonitorServer = new AdMonitorServer(mContext);
 	}
 	private AdMonitorServer mAdMonitorServer;

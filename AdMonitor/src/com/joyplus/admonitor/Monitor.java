@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import com.joyplus.admonitor.Application.AdMonitorSDKFeature;
+import com.joyplus.admonitor.Application.AdMonitorSDKManager;
+import com.joyplus.admonitor.Application.CUSTOMINFO;
 import com.joyplus.admonitor.Application.MD5Util;
 import com.joyplus.admonitor.data.ImpressionType;
 import com.joyplus.admonitor.phone.PhoneManager;
@@ -96,10 +98,16 @@ public class Monitor {
 			  if(ImpressionType.miaozhen == s.mImpressionType){
 				  return s;
 			  }else if(ImpressionType.Joyplus == s.mImpressionType){
-				  String mac = GetMAC();
-				  if("".equals(mac))mac = PhoneManager.getInstance().GetMac();
-				  if(!"".equals(mac)){
-					  s.mImpressionURL = Replace(s.mImpressionURL,REPLACE_MAC,MD5Util.GetMD5Code(mac));
+				  String mac = GetMAC();//get user set first
+				  if("".equals(mac)){
+					  if(AdMonitorSDKManager.IsInited()){//get user base mac 
+						  CUSTOMINFO info = AdMonitorSDKManager.getInstance().GetCUSTOMINFO();
+						  if(info != null)mac = info.GetMAC();
+					  }
+					  if(mac == null || "".equals(mac))mac = PhoneManager.getInstance().GetMac();//the last to get mac by Our-self
+				  }
+				  if(!(mac == null || "".equals(mac))){
+					  s.mImpressionURL = Replace(s.mImpressionURL,REPLACE_MAC,MD5Util.GetMD5Code(mac.toUpperCase()));
 				  }else{
 					  s.mImpressionURL = Replace(s.mImpressionURL,REPLACE_MAC,"");
 				  }

@@ -14,7 +14,8 @@ public class AdMonitorExternalConfig {
 	/*key for ConfigFile*/
 	private final static String AdMonitorDebugEnable  = "AdMonitorDebugEnable";
 	private final static String BaseURL               = "BaseURL";
-	
+	private final static String AppURL                = "AppURL";
+	private final static String VcURL                 = "VcURL";
 	private static AdMonitorExternalConfig mAdBootExternalConfig;
 	public  static AdMonitorExternalConfig getInstance(){
 		if(mAdBootExternalConfig == null){
@@ -34,7 +35,14 @@ public class AdMonitorExternalConfig {
 	public String GetBaseURL(String defineValue){
 		return GetStringConfig(BaseURL,defineValue);
 	}
-	
+	public String GetAppURL(String defineValue) {
+		// TODO Auto-generated method stub
+		return GetStringConfig(AppURL,defineValue);
+	}
+	public String GetVcURL(String defineValue) {
+		// TODO Auto-generated method stub
+		return GetStringConfig(VcURL,defineValue);
+	}
 	private void Load(){   
         try {
         	InputStream is = this.getClass().getResourceAsStream(ConfigFile);
@@ -73,4 +81,5 @@ public class AdMonitorExternalConfig {
 		if(value == null)return defineValue;
 		return value;
 	}
+	
 }
