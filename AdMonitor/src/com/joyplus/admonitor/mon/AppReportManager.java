@@ -15,7 +15,7 @@ public class AppReportManager {
 	   public  static AppReportManager getInstance(){
 		   return mAppReportManager;
 	   }
-	   public  void Init(Context context){
+	   public  static void Init(Context context){
 		   if(AdMonitorSDKManager.IsInited())return;
 		   if(context == null)throw new IllegalArgumentException("context can't be null");
 		   mAppReportManager = new AppReportManager(context);

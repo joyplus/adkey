@@ -5,6 +5,8 @@ import java.util.List;
 import com.joyplus.admonitor.AdMonitorManager;
 import com.joyplus.admonitor.IMPRESSION;
 import com.joyplus.admonitor.Monitor;
+import com.joyplus.admonitor.mon.AppReportManager;
+import com.joyplus.admonitor.mon.monitor;
 
 //define by Jas@20140303
 public class AdMonitor {
@@ -35,7 +37,14 @@ public class AdMonitor {
 	
 	
 	//for even listener
-	
+	public static void AddCollertInfo(monitor info){
+		if(!AdMonitorSDKManager.IsInited()) return;
+		AppReportManager.getInstance().AddMonitor(info);
+	}
+	public static void AddCollertInfo(List<monitor> infos){
+		if(!AdMonitorSDKManager.IsInited()) return;
+		AppReportManager.getInstance().AddMonitor(infos);
+	}
 	
 	
 }

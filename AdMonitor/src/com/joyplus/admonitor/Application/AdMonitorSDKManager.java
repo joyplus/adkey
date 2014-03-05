@@ -1,6 +1,7 @@
 package com.joyplus.admonitor.Application;
 
 import com.joyplus.admonitor.AdMonitorManager;
+import com.joyplus.admonitor.mon.AppReportManager;
 import com.joyplus.admonitor.phone.PhoneManager;
 
 import android.content.Context;
@@ -45,6 +46,7 @@ public class AdMonitorSDKManager {
 		    AdMonitorConfig.Init(mContext);
 			AdMonitorManager.Init(mContext);
 			PhoneManager.Init(mContext);
+			AppReportManager.Init(mContext);
 			SetSDKInited();
     	  } catch (AdMonitorSDKException e) {
 			// TODO Auto-generated catch block
