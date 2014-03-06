@@ -86,6 +86,9 @@ public class AdBootDownloadManager {
 				   firstdownload.LocalFile  = mLocalAdBootInfo.GetFirstSource();
 				   firstdownload.TargetFile = mAdBootInfo.GetFirstSource();
 				   DownLoadManager.getInstance().AddDownload(firstdownload);
+			   }else{//now server not get
+				   if(first.exists())first.delete();//remove it first
+				   FileUtils.deleteFile(mAdBootInfo.GetFirstSource());
 			   }
 		   }
 	   }
@@ -106,6 +109,9 @@ public class AdBootDownloadManager {
 			       seconddownload.LocalFile  = mLocalAdBootInfo.GetSecondSource();
 			       seconddownload.TargetFile = mAdBootInfo.GetSecondSource();
 				   DownLoadManager.getInstance().AddDownload(seconddownload);
+			   }else{//now server not get
+				   if(second.exists())second.delete();//remove it first
+				   FileUtils.deleteFile(mAdBootInfo.GetSecondSource());
 			   }
 		   }
 	   }
@@ -126,6 +132,9 @@ public class AdBootDownloadManager {
 				   zipdownload.LocalFile  = mLocalAdBootInfo.GetThirdSource();
 				   zipdownload.TargetFile = mAdBootInfo.GetThirdSource();
 				   DownLoadManager.getInstance().AddDownload(zipdownload);
+			   }else{//now server not get
+				   if(zip.exists())zip.delete();//remove it first
+				   FileUtils.deleteFile(mAdBootInfo.GetThirdSource());
 			   }
 		   }
 	   }
