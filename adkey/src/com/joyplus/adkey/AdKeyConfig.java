@@ -29,7 +29,7 @@ public class AdKeyConfig {
 	
 	private void Load(){   
         try {
-        	InputStream is = this.getClass().getResourceAsStream("/com/joyplus/adkeyConfig/adkeyconfig.properties");
+        	InputStream is = this.getClass().getResourceAsStream("/com/joyplus/Config/adkeyconfig.properties");
             props = new Properties();
 			props.load(is);
 			LoadOK = true;
