@@ -10,7 +10,7 @@ public class AdMonitorExternalConfig {
 	
 	private boolean      LoadOK = false;
 	private Properties   props;
-	private final static String ConfigFile = "/com/joyplus/Config/AdMonitorConfig.properties"; 
+	private final static String ConfigFile = "/com/joyplus/Config/admonitorconfig.properties"; 
 	/*key for ConfigFile*/
 	private final static String AdMonitorDebugEnable  = "AdMonitorDebugEnable";
 	private final static String BaseURL               = "BaseURL";
