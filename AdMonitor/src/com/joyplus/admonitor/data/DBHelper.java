@@ -23,7 +23,9 @@ public class DBHelper extends SQLiteOpenHelper {
 	private void CreateImpressionDB(SQLiteDatabase db){
 		db.execSQL("create table if not exists impression_info(_id integer PRIMARY KEY AUTOINCREMENT,"
 				+"mImpressionType char,mDisdlay_num char,mImpressionUrl char,mColumn1 char,mColumn2 char,mColumn3 char,create_date TimeStamp NOT NULL DEFAULT (datetime('now','localtime')))");		
+	    
 	}
+	
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		  try {

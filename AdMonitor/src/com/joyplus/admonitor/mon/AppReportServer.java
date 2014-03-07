@@ -14,9 +14,10 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 public class AppReportServer{
-    
+     private static boolean Debug = true;
 	 private Context mContext;
 	 private List<monitor> mMonitorList;
 	 private final static int  MAXSIZE = 100;
@@ -112,7 +113,7 @@ public class AppReportServer{
 		 }
 		 
 		 private void report_third(String url){
-			 //Log.d("Jas","report_third-->"+url);
+			    if(Debug)Log.d("Jas","report_third-->"+url);
 				FastHttp.ajaxGet(url, new AjaxCallBack() {
 					@Override
 					public void callBack(ResponseEntity arg0) {

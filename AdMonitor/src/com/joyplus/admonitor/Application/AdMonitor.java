@@ -36,7 +36,7 @@ public class AdMonitor {
 	}
 	
 	
-	//for even listener
+	//for even listener this can add VideoMonitor and AppMonitor
 	public static void AddCollertInfo(monitor info){
 		if(!AdMonitorSDKManager.IsInited()) return;
 		AppReportManager.getInstance().AddMonitor(info);
