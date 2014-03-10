@@ -48,6 +48,8 @@ public class AppMonitior implements monitor{
 		// TODO Auto-generated method stub
 		//there we should judge this is useable
 		//eg: continue time should be non-f.
+		if(mAppName==null || "".equals(mAppName)
+				|| mAppPackageName==null || "".equals(mAppPackageName))return false;
 		return true;
 	}
 	

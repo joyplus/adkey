@@ -46,6 +46,8 @@ public class VideoMonitior implements monitor{
 		// TODO Auto-generated method stub
 		//there we should judge this is useable
 		//eg: continue time should be non-f.
+		if(mProd_id==null || "".equals(mProd_id)
+				|| mProd_name==null || "".equals(mProd_name))return false;
 		return true;
 	}
 	public VideoMonitior(){
