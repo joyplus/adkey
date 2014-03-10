@@ -34,7 +34,7 @@ public class AppReportServer{
 		 if(urls == null)return;
 		 for(monitor mo :urls){
 			 if(!mo.IsAviable())continue;
-			 AddMonitor(mo);
+			 AddMonitor(mo.CreateNew());
 		 }
 	 }
 	 private void AddMonitor(monitor url){

@@ -2,19 +2,16 @@ package com.joyplus.admonitor.collect;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.joyplus.admonitor.Application.AdMonitorSDKException;
 import com.joyplus.admonitor.Application.AdMonitorSDKManager;
 import com.joyplus.admonitor.mon.AppMonitior;
 import com.joyplus.admonitor.mon.AppReportManager;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Application;
 import android.app.Application.ActivityLifecycleCallbacks;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.content.pm.ApplicationInfo;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,7 +22,7 @@ import android.util.Log;
 public class CollectManager {
 
 	   private Context mContext;
-	   private static boolean Debug = true;
+	   private static boolean Debug = false;
 	   private static CollectManager mCollectManager;
 	   public  static CollectManager getInstance(){
 		   return mCollectManager;
@@ -86,6 +83,8 @@ public class CollectManager {
 						  m.SetStartTime(start);
 						  m.SetContinueTime(con);
 						  AppReportManager.getInstance().AddMonitor(m);
+						  if(Debug)Log.d("Jas","Auto report +++++++++ mAppName="+mAppName+",mPackageName="+mPackageName
+								  +" ,start="+start+",con="+con);
 					  }else{
 						  if(Debug)Log.d("Jas","Auto report was closed !!!");
 					  }

@@ -5,6 +5,7 @@ import java.util.List;
 import com.joyplus.admonitor.AdMonitorManager;
 import com.joyplus.admonitor.IMPRESSION;
 import com.joyplus.admonitor.Monitor;
+import com.joyplus.admonitor.collect.CollectManager;
 import com.joyplus.admonitor.mon.AppReportManager;
 import com.joyplus.admonitor.mon.monitor;
 
@@ -35,16 +36,28 @@ public class AdMonitor {
 		AdMonitorManager.getInstance().AddMonitor(url);
 	}
 	
-	
 	//for even listener this can add VideoMonitor and AppMonitor
-	public static void AddCollertInfo(monitor info){
+	public static void AddCollectInfo(monitor info){
 		if(!AdMonitorSDKManager.IsInited()) return;
 		AppReportManager.getInstance().AddMonitor(info);
 	}
-	public static void AddCollertInfo(List<monitor> infos){
+	public static void AddCollectInfo(List<monitor> infos){
 		if(!AdMonitorSDKManager.IsInited()) return;
 		AppReportManager.getInstance().AddMonitor(infos);
 	}
+	//for collect app info auto
+	public static void SetCollectAppAuto(boolean auto){
+		if(!AdMonitorSDKManager.IsInited()) return;
+		CollectManager.getInstance().SetAppAutoCollect(auto);
+	}
 	
-	
+	//for collect video info auto
+	public static void SetCollectVideoStartInfo(String Prod_id, String Prod_name,long StartTime){
+		if(!AdMonitorSDKManager.IsInited()) return;
+		AppReportManager.getInstance().SetCollectVideoStartInfo(Prod_id, Prod_name, StartTime);
+	}
+    public static void SetCollectVideoEndInfo(String Prod_id, String Prod_name){
+    	if(!AdMonitorSDKManager.IsInited()) return;
+    	AppReportManager.getInstance().SetCollectVideoEndInfo(Prod_id, Prod_name);
+	}
 }
