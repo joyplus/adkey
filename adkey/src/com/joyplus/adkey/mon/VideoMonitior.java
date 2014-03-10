@@ -5,7 +5,7 @@ public class VideoMonitior implements monitor{
 	private String mProd_id      = "";//cpi
 	private String mProd_name    = "";//cpn
 	private long   mStartTime    = 0 ;//csti
-	private long   mContinueTime = 0;//ccti
+	private long   mContinueTime = 0 ;//ccti
 	
 	public  void SetProdId(String id){
 		mProd_id = id;
@@ -47,5 +47,19 @@ public class VideoMonitior implements monitor{
 		//there we should judge this is useable
 		//eg: continue time should be non-f.
 		return true;
+	}
+	public VideoMonitior(){
+		//for nothing to do.
+	}
+	public VideoMonitior(VideoMonitior info){
+		if(info != null){
+			mProd_id      = info.mProd_id;
+			mProd_name    = info.mProd_name;
+			mStartTime    = info.mStartTime;
+			mContinueTime = info.mContinueTime;
+		}
+	}
+	public VideoMonitior CreateNew(){
+		return new VideoMonitior(this);
 	}
 }

@@ -3,7 +3,6 @@ package com.joyplus.adkey.mon;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import com.common.internet.AjaxCallBack;
 import com.common.internet.FastHttp;
 import com.common.internet.ResponseEntity;
@@ -11,12 +10,10 @@ import com.joyplus.adkey.AdDeviceManager;
 import com.joyplus.adkey.AdKeyConfig;
 import com.joyplus.adkey.CUSTOMINFO;
 import com.joyplus.adkey.Monitorer.MD5Util;
-
 import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 public class AppMonitorServer{
     
@@ -36,7 +33,7 @@ public class AppMonitorServer{
 		 if(urls == null)return;
 		 for(monitor mo :urls){
 			 if(!mo.IsAviable())continue;
-			 AddMonitor(mo);
+			 AddMonitor(mo.CreateNew());
 		 }
 	 }
 	 private void AddMonitor(monitor url){

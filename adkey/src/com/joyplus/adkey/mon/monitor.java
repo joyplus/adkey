@@ -6,6 +6,8 @@ public interface monitor {
 	
 	public boolean IsAviable();
 	
+	public monitor CreateNew();
+	
 	public enum TYPE{
 		VIDEO , APP
 	}

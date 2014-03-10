@@ -3,10 +3,10 @@ package com.joyplus.adkey.mon;
 public class AppMonitior implements monitor{
 
 	
-	private  String mAppName = "";//an
-	private  String mAppPackageName = "";//apn
-	private  long   mAppStartTime   = 0 ;//asti
-	private  long   mAppContinueTime= 0 ;//acti
+	private  String mAppName         = "";//an
+	private  String mAppPackageName  = "";//apn
+	private  long   mAppStartTime    = 0 ;//asti
+	private  long   mAppContinueTime = 0 ;//acti
 	
 	public  void  SetAppName(String name){
 		mAppName = name;
@@ -49,5 +49,20 @@ public class AppMonitior implements monitor{
 		//there we should judge this is useable
 		//eg: continue time should be non-f.
 		return true;
+	}
+	
+	public AppMonitior(){
+		//for nothing to do.
+	}
+	public AppMonitior(AppMonitior info){
+		if(info != null){
+			mAppName         = info.mAppName;
+			mAppPackageName  = info.mAppPackageName;
+			mAppStartTime    = info.mAppStartTime;
+			mAppContinueTime = info.mAppContinueTime;
+		}
+	}
+	public AppMonitior CreateNew(){
+		return new AppMonitior(this);
 	}
 }
