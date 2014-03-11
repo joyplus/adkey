@@ -9,4 +9,5 @@ public class AdMonitorSDKFeature {
 	
 	public final static boolean MIAOZHEN        = true;
 	
+	public final static boolean IRESEARCH       = true;
 }

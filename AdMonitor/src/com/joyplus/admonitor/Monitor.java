@@ -95,7 +95,9 @@ public class Monitor {
 				  us.remove();
 				  continue;
 			  }
-			  if(ImpressionType.miaozhen == s.mImpressionType){
+			  if(AdMonitorSDKFeature.MIAOZHEN && ImpressionType.miaozhen == s.mImpressionType){
+				  return s;
+			  }else if(AdMonitorSDKFeature.IRESEARCH && ImpressionType.iresearch == s.mImpressionType){
 				  return s;
 			  }else if(ImpressionType.Joyplus == s.mImpressionType){
 				  String mac = GetMAC();//get user set first
