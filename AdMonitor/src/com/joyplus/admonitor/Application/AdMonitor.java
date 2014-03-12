@@ -25,7 +25,7 @@ public class AdMonitor {
 		impression.mImpressionURL = url;
 		Monitor  m = new Monitor();
 		m.AddIMPRESSION(impression);
-		AddMonitor(new Monitor());
+		AddMonitor(m);
 	}
 	public static void AddMonitor(Monitor url){
 		if(!AdMonitorSDKManager.IsInited()) return;

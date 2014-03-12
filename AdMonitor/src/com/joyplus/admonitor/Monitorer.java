@@ -122,6 +122,8 @@ public class Monitorer {
 				  Finish();
 			  }else if(ImpressionType.Joyplus==MonitorURL.mImpressionType){
 				  report_third(MonitorURL.mImpressionURL);
+			  }else if(AdMonitorSDKFeature.IRESEARCH && ImpressionType.iresearch==MonitorURL.mImpressionType){
+				  report_third(MonitorURL.mImpressionURL);
 			  }else{
 				  Finish();
 			  }
