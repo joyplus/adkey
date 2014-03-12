@@ -96,7 +96,7 @@ public class Monitor {
 					  if(MAC == null || "".equals(MAC)){
 						  url.URL=Replace(url.URL,REPLACE_MAC,"");
 					  }else{ 
-						  url.URL=Replace(url.URL,REPLACE_MAC,MD5Util.GetMD5Code(MAC));
+						  url.URL=Replace(url.URL,REPLACE_MAC,MD5Util.GetMD5Code(MAC.toUpperCase()));
 					  }
 					  if(PM == null || "".equals(PM)){
 						  url.URL=Replace(url.URL,REPLACE_DM,"");
