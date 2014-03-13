@@ -44,6 +44,10 @@ public class MainActivity extends Activity
 		Intent intent = new Intent(MainActivity.this,MiniInterstitialActivity.class);
 		startActivity(intent);
 	}
+	public void onClickShowFloatLayout(View v){
+		Intent intent = new Intent(MainActivity.this,FloatLayoutActivity.class);
+		startActivity(intent);
+	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -53,6 +57,7 @@ public class MainActivity extends Activity
 		CUSTOMINFO info = new CUSTOMINFO();
 		info.SetDEVICEMOVEMENT("JOYPLUS_TEST");
 		info.SetDEVICEMUMBER("JOYPLUS_TEST");
+		info.SetMAC("01:02:03:04:05:06");
 		AdDeviceManager.getInstance(this).SetCUSTOMINFO(info);
 	}
 }

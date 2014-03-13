@@ -33,12 +33,20 @@
         android:layout_marginTop="20dp"
         android:onClick="onClickShowMini"
         android:text="Show Mini Interstitial" />
-    
+    <Button
+        android:id="@+id/show_floatlayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/show_mini"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:onClick="onClickShowFloatLayout"
+        android:text="Show FloatLayout" />
     <Button
         android:id="@+id/show_patch_before"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/show_mini"
+        android:layout_below="@+id/show_floatlayout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:onClick="onClickShowPatchVideo"

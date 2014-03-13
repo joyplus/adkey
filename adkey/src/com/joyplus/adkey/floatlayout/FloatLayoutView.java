@@ -1,5 +1,6 @@
-package com.joyplus.adkey.mini;
+package com.joyplus.adkey.floatlayout;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
@@ -32,6 +33,7 @@ import android.media.MediaPlayer.OnPreparedListener;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -43,7 +45,7 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-public class AdMiniView extends RelativeLayout{
+public class FloatLayoutView extends RelativeLayout{
 
 	private boolean    animation  = true;
 	private Context    mContext   = null;
@@ -72,10 +74,10 @@ public class AdMiniView extends RelativeLayout{
 	
 	private boolean Completed = false;
 	
-	public AdMiniView(final Context context ,final RichMediaAd response, final AdListener adListener) {
+	public FloatLayoutView(final Context context ,final RichMediaAd response, final AdListener adListener) {
 		this(context, response, true, adListener);
 	}
-	public AdMiniView(final Context context, final RichMediaAd response, final boolean animation, final AdListener adListener) {
+	public FloatLayoutView(final Context context, final RichMediaAd response, final boolean animation, final AdListener adListener) {
 		super(context);
 		this.mAd = response;
 		mContext = context;
@@ -88,7 +90,7 @@ public class AdMiniView extends RelativeLayout{
 			notifyfinish(false);
 			return;
 		}
-		AdMiniView.this.setBackgroundColor(Color.TRANSPARENT);
+		FloatLayoutView.this.setBackgroundColor(Color.TRANSPARENT);
 		if(mAd.getType() == Const.INTERSTITIAL){
 			InitInterstitialView();
 		} else if(mAd.getType() == Const.VIDEO){
@@ -115,7 +117,7 @@ public class AdMiniView extends RelativeLayout{
 				}
 				mVideoView = null;
 			}
-			AdMiniView.this.removeAllViews();
+			FloatLayoutView.this.removeAllViews();
 			if(adListener != null){
 				adListener.adClosed(mAd, Completed);
 			}
@@ -139,7 +141,7 @@ public class AdMiniView extends RelativeLayout{
 		mVideoLayout = new FrameLayout(mContext);//add to this RelativeLayout
 		mVideoLayout.setBackgroundColor(Color.TRANSPARENT);
 		mVideoLayout.setFocusable(false);
-		AdMiniView.this.addView(mVideoLayout, new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+		FloatLayoutView.this.addView(mVideoLayout, new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
 						   LayoutParams.MATCH_PARENT, Gravity.CENTER));
 		
 		InitVideoViewUI();
@@ -291,7 +293,7 @@ public class AdMiniView extends RelativeLayout{
 		mInterstitialData = this.mAd.getInterstitial();
 		
 		mRootLayout = new FrameLayout(mContext);
-		AdMiniView.this.addView(mRootLayout, new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+		FloatLayoutView.this.addView(mRootLayout, new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
 				   LayoutParams.MATCH_PARENT, Gravity.CENTER));
 		
 		mInterstitialView = new WebFrame((Activity)mContext, true, false, false);
@@ -307,44 +309,27 @@ public class AdMiniView extends RelativeLayout{
 		
 		switch (mInterstitialData.interstitialType){
 			case InterstitialData.INTERSTITIAL_MARKUP:
-				if(mAd.GetCreative_res_url() !=null && mAd.GetCreative_res_url().length()>0){
-					ShowImage(mAd.GetCreative_res_url());//show image oline.
-				}else if(Util.isCacheLoaded()){
-					String textData = this.mInterstitialData.interstitialMarkup;
-					if(textData!=null){
-						int startInd = textData.indexOf("<img")+10;
-						int endInd = textData.indexOf(">", startInd)-1;
-						String thisImageText = textData.substring(startInd, endInd);
-						URL url = null;
-						try{
-							url = new URL(thisImageText);
-						} catch (MalformedURLException e){
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						if (url != null){
-							Util.ExternalName = "." + Util.getExtensionName(url.getPath());
-						} else {
-							Util.ExternalName = ".jpg";
-						}
-						this.mInterstitialView.loadUrl(textData);
-					}
-					mInterstitialView.setMarkup(mInterstitialData.interstitialMarkup);
-				}else{
+				if(Util.isCacheLoaded()){
+					Log.d("Jas","Util.isCacheLoaded");
+					//mInterstitialView.setMarkup(mInterstitialData.interstitialMarkup);
+					ShowImage(mAd.GetCreative_res_url(),true);//show image oline.
+				}else if(mAd.GetCreative_res_url() !=null && mAd.GetCreative_res_url().length()>0){
+					ShowImage(mAd.GetCreative_res_url(),false);//show image oline.
+				}else {
 					notifyfinish(false);
 				}
 				break;
 			case InterstitialData.INTERSTITIAL_URL:
 				this.mInterstitialView.loadUrl(mInterstitialData.interstitialUrl);
 				break;
-				default: {
+			default: {
 					notifyfinish(false);
 					return;
 				}
 		}
 		InitViewTimeOut();
 	}
-	private void ShowImage(String getCreative_res_url) {
+	private void ShowImage(String getCreative_res_url,boolean location) {
 		 //TODO Auto-generated method stub
 		if(mInterstitialImageView != null){
 			if(animation){
@@ -367,17 +352,30 @@ public class AdMiniView extends RelativeLayout{
 		 
 		mRootLayout.addView(mInterstitialImageView, new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
 				   LayoutParams.MATCH_PARENT, Gravity.CENTER));
-		String text = MessageFormat.format(Const.IMAGE_BODY,getCreative_res_url,null,null);
-		text = Uri.encode(Const.HIDE_BORDER + text);
-		mInterstitialImageView.loadData(text, "text/html", Const.ENCODING);
-		
+		if(location){
+			String baseUrl = "file://";
+			baseUrl = baseUrl+Const.DOWNLOAD_PATH+Util.VideoFileDir;
+			String textPath =  Const.HIDE_BORDER + "<img src='"
+					+ (Const.DOWNLOAD_DISPLAY_IMG)+Util.ExternalName + "'/>";
+			if(!(new File(Const.DOWNLOAD_PATH+Util.VideoFileDir
+					+(Const.DOWNLOAD_DISPLAY_IMG)+Util.ExternalName)).exists()){
+				return;
+			}
+			mInterstitialImageView.clearCache(false);
+			mInterstitialImageView.loadDataWithBaseURL(baseUrl, textPath, "text/html",
+					"utf-8", null);
+		}else{
+			String text = MessageFormat.format(Const.IMAGE_BODY,getCreative_res_url,null,null);
+			text = Uri.encode(Const.HIDE_BORDER + text);
+			mInterstitialImageView.loadData(text, "text/html", Const.ENCODING);
+		}
 		if (this.animation) {
 			TranslateAnimation fadeInAnimation = new TranslateAnimation(
 					Animation.RELATIVE_TO_PARENT, 0.0f,
 					Animation.RELATIVE_TO_PARENT, 0.0f,
 					Animation.RELATIVE_TO_PARENT, +1.0f,
 					Animation.RELATIVE_TO_PARENT, 0.0f);
-			fadeInAnimation.setDuration(1000);
+			fadeInAnimation.setDuration(1500);
 			mInterstitialImageView.startAnimation(fadeInAnimation);
 		}
 	}
