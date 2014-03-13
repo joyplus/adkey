@@ -1,4 +1,4 @@
-package com.joyplus.adkey.mon;
+package com.joyplus.admonitor.mon;
 
 public interface monitor {
 	

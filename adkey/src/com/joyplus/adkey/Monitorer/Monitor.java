@@ -3,6 +3,8 @@ package com.joyplus.adkey.Monitorer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import com.joyplus.adkey.AdDeviceManager;
 import com.joyplus.adkey.Monitorer.TRACKINGURL.TYPE;
 
 public class Monitor {
@@ -101,13 +103,32 @@ public class Monitor {
 				  if((TYPE.IRESEARCH == url.Type)
 						  ||(TYPE.ADMASTER == url.Type)
 						  ||(TYPE.NIELSEN == url.Type)){//we shoule replace url first.
+					  AdDeviceManager mDevice = AdDeviceManager.getInstance(null);
 					  if(MAC == null || "".equals(MAC)){
-						  url.URL=url.URL.replaceAll(REPLACE_MAC, "");
+						  if(mDevice != null && mDevice.GetCUSTOMINFO() != null){
+							  String mac = mDevice.GetCUSTOMINFO().GetMAC();
+							  if(!(mac == null || "".equals(mac))){
+								  url.URL=url.URL.replaceAll(REPLACE_MAC, MD5Util.GetMD5Code(mac.toUpperCase()));
+							  }else{
+								  url.URL=url.URL.replaceAll(REPLACE_MAC, "");
+							  }
+						  }else{
+						      url.URL=url.URL.replaceAll(REPLACE_MAC, "");
+						  }
 					  }else{ 
-						  url.URL=url.URL.replaceAll(REPLACE_MAC, MD5Util.GetMD5Code(MAC));
+						  url.URL=url.URL.replaceAll(REPLACE_MAC, MD5Util.GetMD5Code(MAC.toUpperCase()));
 					  }
 					  if(PM == null || "".equals(PM)){
-						  url.URL=url.URL.replaceAll(REPLACE_DM, "");
+						  if(mDevice != null && mDevice.GetCUSTOMINFO() != null){
+							  String dm = mDevice.GetCUSTOMINFO().GetDEVICEMOVEMENT();
+							  if(!(dm == null || "".equals(dm))){
+								  url.URL=url.URL.replaceAll(REPLACE_MAC, dm);
+							  }else{
+								  url.URL=url.URL.replaceAll(REPLACE_MAC, "");
+							  }
+						  }else{
+							  url.URL=url.URL.replaceAll(REPLACE_DM, "");
+						  }
 					  }else{ 
 						  url.URL=url.URL.replaceAll(REPLACE_DM, PM);
 					  }

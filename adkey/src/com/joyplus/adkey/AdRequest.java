@@ -1,5 +1,8 @@
 package com.joyplus.adkey;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import com.joyplus.adkey.Monitorer.MD5Util;
 import android.net.Uri;
 import android.os.Build;
@@ -197,11 +200,6 @@ public class AdRequest {
 		final Uri.Builder b = Uri.parse(this.getRequestURL()).buildUpon();
 		b.appendQueryParameter("rt", this.getRequestType());
 		b.appendQueryParameter("v", this.getProtocolVersion());
-		if(MacAddress == null || "".equals(MacAddress)){
-			b.appendQueryParameter("i", "");
-		}else{
-			b.appendQueryParameter("i", MD5Util.GetMD5Code(MacAddress));
-		}
 		b.appendQueryParameter("u", this.getUserAgent());
 		b.appendQueryParameter("u2", this.getUserAgent2());
 		b.appendQueryParameter("s", this.getPublisherId());
@@ -227,25 +225,100 @@ public class AdRequest {
 		b.appendQueryParameter("u_wv", this.getUserAgent());
 		//add by Jas@20140227
 		AdDeviceManager mDevice = AdDeviceManager.getInstance(null);
-		if(mDevice == null  || mDevice.GetOS()==null){
-			b.appendQueryParameter("os", "");
-		}else{
-			b.appendQueryParameter("os", mDevice.GetOS());
-		}
-		if(mDevice == null || mDevice.GetOSVersion()==null){
-			b.appendQueryParameter("osv", "");
-		}else{
-			b.appendQueryParameter("osv", mDevice.GetOSVersion());
-		}
-		if(mDevice == null){
-			b.appendQueryParameter("dss", "");
-		}else{
-			b.appendQueryParameter("dss", Integer.toString(mDevice.GetDeviceScreenSize()));
-		}
-		if(mDevice == null || mDevice.GetDeviceScreenResolution()==null){
-			b.appendQueryParameter("dsr", "");
-		}else{
-			b.appendQueryParameter("dsr", mDevice.GetDeviceScreenResolution());
+		if(mDevice != null && mDevice.GetCUSTOMINFO() != null){
+			CUSTOMINFO info = mDevice.GetCUSTOMINFO();
+			if(info.GetDEVICEMUMBER() == null){//we should get ds by-self.
+				String device_name = "V8";
+				try {
+					device_name = URLEncoder.encode(Util.GetDeviceName(), "utf-8");
+				} catch (UnsupportedEncodingException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				b.appendQueryParameter("ds", device_name);
+			}else{
+				b.appendQueryParameter("ds", info.GetDEVICEMUMBER());
+			}
+			if(info.GetSN() == null){
+				b.appendQueryParameter("sn", "");
+			}else{
+				b.appendQueryParameter("sn", info.GetSN());
+			}
+			if(info.GetDEVICETYPE() == null){
+				b.appendQueryParameter("dt", "");
+			}else{
+				b.appendQueryParameter("dt", Integer.toString(info.GetDEVICETYPE().toInt()));
+			}
+			if(info.GetUSEMODE() == null){ 
+				b.appendQueryParameter("up", "");
+			}else{
+				b.appendQueryParameter("up", Integer.toString(info.GetUSEMODE().toInt()));
+			}
+			if(info.GetLICENSEPROVIDER() == null){
+				b.appendQueryParameter("lp", "");
+			}else{
+				b.appendQueryParameter("lp", Integer.toString(info.GetLICENSEPROVIDER().toInt()));
+			}
+			if(info.GetDEVICEMOVEMENT() == null){
+				b.appendQueryParameter("dm", "");
+			}else{
+				b.appendQueryParameter("dm", info.GetDEVICEMOVEMENT());
+			}
+			if(info.GetBRAND() == null){
+				b.appendQueryParameter("b", "");
+			}else{
+				b.appendQueryParameter("b", info.GetBRAND().toString());
+			}
+			b.appendQueryParameter("ot", Integer.toString(info.GetLastBootUpCount()));
+			if(info.GetSCREEN() == null){
+				b.appendQueryParameter("screen", "");
+			}else{
+				b.appendQueryParameter("screen", info.GetSCREEN().toString());
+			}
+			if(info.GetSOURCETYPE() == null){
+				b.appendQueryParameter("mt", "");
+			}else{
+				b.appendQueryParameter("mt", info.GetSOURCETYPE().toString());
+			}
+			if(info.GetOS()==null){
+				b.appendQueryParameter("os", "");
+			}else{
+				b.appendQueryParameter("os", info.GetOS());
+			}
+			if(info.GetOSVersion()==null){
+				b.appendQueryParameter("osv", "");
+			}else{
+				b.appendQueryParameter("osv", info.GetOSVersion());
+			}
+			b.appendQueryParameter("dss", Integer.toString(info.GetDeviceScreenSize()));
+			if(info.GetDeviceScreenResolution()==null){
+				b.appendQueryParameter("dsr", "");
+			}else{
+				b.appendQueryParameter("dsr", info.GetDeviceScreenResolution());
+			}
+			if(info.GetMAC()==null || "".equals(info.GetMAC())){
+				if(MacAddress == null || "".equals(MacAddress)){
+					b.appendQueryParameter("i", "");
+				}else{
+					b.appendQueryParameter("i", MD5Util.GetMD5Code(MacAddress.toUpperCase()));
+				}
+			}else{
+				b.appendQueryParameter("i", MD5Util.GetMD5Code(info.GetMAC().toUpperCase()));
+			}
+		}else{//now we should get mac and ds by-self.
+			if(MacAddress == null || "".equals(MacAddress)){
+				b.appendQueryParameter("i", "");
+			}else{
+				b.appendQueryParameter("i", MD5Util.GetMD5Code(MacAddress.toUpperCase()));
+			}
+			String device_name = "V8";
+			try {
+				device_name = URLEncoder.encode(Util.GetDeviceName(), "utf-8");
+			} catch (UnsupportedEncodingException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			b.appendQueryParameter("ds", device_name);
 		}
 		//end add by Jas
 		return b.build();

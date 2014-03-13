@@ -43,7 +43,7 @@ public class MiniInterstitialActivity extends Activity implements AdListener{
 	@Override
 	public void adClicked(){
 		// TODO Auto-generated method stub
-		Log.i(Const.TAG,"AdViewActivity--->adClicked");
+		Log.i(Const.TAG,"MiniInterstitialActivity--->adClicked");
 	}
 
 	@Override

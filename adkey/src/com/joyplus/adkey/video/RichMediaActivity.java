@@ -745,8 +745,12 @@ public class RichMediaActivity extends Activity
 				RichMediaActivity.this.finish();
 			}
 		};
-		timer.schedule(task, 5000); // 
-		
+		//add by Jas@20140302
+		if(mAd.GetRefresh()<=0)
+		    timer.schedule(task, 5000); // 
+		else
+			timer.schedule(task, mAd.GetRefresh()*1000);
+		//end add by Jas
 		this.mInterstitialData = this.mAd.getInterstitial();
 		this.mInterstitialAutocloseReset = false;
 		
@@ -878,6 +882,9 @@ public class RichMediaActivity extends Activity
 					}
 					this.mInterstitialView
 							.setMarkup(this.mInterstitialData.interstitialMarkup);
+				}else{
+					timer.cancel();
+					finish();//for image no load.
 				}
 				break;
 			case InterstitialData.INTERSTITIAL_URL:
@@ -1203,7 +1210,6 @@ public class RichMediaActivity extends Activity
 			this.mAd = (RichMediaAd) extras.getSerializable(Const.AD_EXTRA);
 			this.mEnterAnim = Util.getEnterAnimation(this.mAd.getAnimation());
 			this.mExitAnim = Util.getExitAnimation(this.mAd.getAnimation());
-			
 			this.mCanClose = false;
 			this.mType = extras.getInt(Const.AD_TYPE_EXTRA, -1);
 			if (this.mType == -1)

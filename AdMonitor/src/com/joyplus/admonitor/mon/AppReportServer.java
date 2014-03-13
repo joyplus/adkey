@@ -1,4 +1,4 @@
-package com.joyplus.adkey.mon;
+package com.joyplus.admonitor.mon;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -6,27 +6,28 @@ import java.util.List;
 import com.common.internet.AjaxCallBack;
 import com.common.internet.FastHttp;
 import com.common.internet.ResponseEntity;
-import com.joyplus.adkey.AdDeviceManager;
-import com.joyplus.adkey.AdKeyConfig;
-import com.joyplus.adkey.CUSTOMINFO;
-import com.joyplus.adkey.Monitorer.MD5Util;
+import com.joyplus.admonitor.Application.AdMonitorConfig;
+import com.joyplus.admonitor.Application.AdMonitorSDKManager;
+import com.joyplus.admonitor.Application.CUSTOMINFO;
+import com.joyplus.admonitor.Application.MD5Util;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
-public class AppMonitorServer{
-    
+public class AppReportServer{
+     private static boolean Debug = true;
 	 private Context mContext;
 	 private List<monitor> mMonitorList;
 	 private final static int  MAXSIZE = 100;
 	 private Report mReport = null;
-	 private AdDeviceManager mAdDeviceManager;
-	 public  AppMonitorServer(Context context){
+	 //private AdDeviceManager mAdDeviceManager;
+	 public  AppReportServer(Context context){
 		 mContext     = context;
 		 mMonitorList = new ArrayList<monitor>();
 		 Checking     = false;
-		 mAdDeviceManager = AdDeviceManager.getInstance(mContext);
+		 //mAdDeviceManager = AdDeviceManager.getInstance(mContext);
 	 }
 	 
 	 public void AddMonitor(List<monitor> urls){
@@ -112,7 +113,7 @@ public class AppMonitorServer{
 		 }
 		 
 		 private void report_third(String url){
-			 //Log.d("Jas","report_third-->"+url);
+			    if(Debug)Log.d("Jas","report_third-->"+url);
 				FastHttp.ajaxGet(url, new AjaxCallBack() {
 					@Override
 					public void callBack(ResponseEntity arg0) {
@@ -127,7 +128,7 @@ public class AppMonitorServer{
 	     } 
 
 		 private Uri GetAppURL(){
-			 Uri.Builder b = Uri.parse(AdKeyConfig.getInstance().getAppREQUESTURL()).buildUpon();
+			 Uri.Builder b = Uri.parse(AdMonitorConfig.GetAppURL()).buildUpon();
 			 AppMonitior m = (AppMonitior) mMonitor;
 			 if(m.GetAppName() == null || "".equals(m.GetAppName())){
 				 b.appendQueryParameter("an", "");
@@ -141,8 +142,8 @@ public class AppMonitorServer{
 			 }
 			 b.appendQueryParameter("asti", ""+m.GetStartTime());
 			 b.appendQueryParameter("acti", ""+m.GetContinueTime());
-			 if(mAdDeviceManager != null && mAdDeviceManager.GetCUSTOMINFO()!=null){
-				 CUSTOMINFO info = mAdDeviceManager.GetCUSTOMINFO();
+			 if(AdMonitorSDKManager.IsInited() && AdMonitorSDKManager.getInstance().GetCUSTOMINFO()!=null){
+				    CUSTOMINFO info = AdMonitorSDKManager.getInstance().GetCUSTOMINFO();
 					if(info.GetDEVICEMUMBER() == null){
 						b.appendQueryParameter("ds", "");
 					}else{
@@ -205,7 +206,7 @@ public class AppMonitorServer{
 					}else{
 						b.appendQueryParameter("dsr", info.GetDeviceScreenResolution());
 					}
-					if(info.GetMAC()==null){
+					if(info.GetMAC()==null || "".equals(info.GetMAC())){
 						b.appendQueryParameter("i", "");
 					}else{
 						b.appendQueryParameter("i", MD5Util.GetMD5Code(info.GetMAC().toUpperCase()));
@@ -214,7 +215,7 @@ public class AppMonitorServer{
 			 return b.build();
 		 }
 		 private Uri GetVcURL(){
-			 Uri.Builder bc = Uri.parse(AdKeyConfig.getInstance().getVcREQUESTURL()).buildUpon();
+			 Uri.Builder bc = Uri.parse(AdMonitorConfig.GetVcURL()).buildUpon();
 			 VideoMonitior m = (VideoMonitior) mMonitor;
 			 if(m.GetProdId() == null || "".equals(m.GetProdId())){
 				 bc.appendQueryParameter("cpi", "");
@@ -228,8 +229,8 @@ public class AppMonitorServer{
 			 }
 			 bc.appendQueryParameter("csti", ""+m.GetStartTime());
 			 bc.appendQueryParameter("ccti", ""+m.GetContinueTime());
-			 if(mAdDeviceManager != null && mAdDeviceManager.GetCUSTOMINFO()!=null){
-				 CUSTOMINFO info = mAdDeviceManager.GetCUSTOMINFO();
+			 if(AdMonitorSDKManager.IsInited() && AdMonitorSDKManager.getInstance().GetCUSTOMINFO()!=null){
+				    CUSTOMINFO info = AdMonitorSDKManager.getInstance().GetCUSTOMINFO();
 					if(info.GetDEVICEMUMBER() == null){
 						bc.appendQueryParameter("ds", "");
 					}else{
@@ -292,7 +293,7 @@ public class AppMonitorServer{
 					}else{
 						bc.appendQueryParameter("dsr", info.GetDeviceScreenResolution());
 					}
-					if(info.GetMAC()==null){
+					if(info.GetMAC()==null || "".equals(info.GetMAC())){
 						bc.appendQueryParameter("i", "");
 					}else{
 						bc.appendQueryParameter("i", MD5Util.GetMD5Code(info.GetMAC().toUpperCase()));

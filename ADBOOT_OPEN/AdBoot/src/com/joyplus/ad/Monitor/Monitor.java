@@ -13,11 +13,15 @@ public class Monitor {
 	  private int   NUM  = 1;
       public final static String REPLACE_MAC  = "%mac%";
       public final static String REPLACE_DM   = "%dm%";
-	   
+      public final static String REPLACE_IP   = "%ip%";
+	  public final static String REPLACE_EX   = "%ex%";
+	  
 	  private List<TRACKINGURL>  mTrackingUrl = new ArrayList<TRACKINGURL>();
 	  
 	  private String             MAC          = "";//mac , mac , null
 	  private String             PM           = "";//ds . dm . null
+	  private String             IP           = "";//ip
+	  private String             EX           = "";//ex
 	  
 	  public boolean CheckMonitor(){
 		  if(mTrackingUrl == null || mTrackingUrl.size()<=0)return false;
@@ -54,7 +58,20 @@ public class Monitor {
 		  if(MAC == null || "".equals(MAC))return "";
 		  return MD5Util.GetMD5Code(MAC);
 	  }
-	  
+	  public void SetIP(String ip){
+		  IP = ip;
+	  }
+	  public String GetIP(){
+		  if(IP == null || "".equals(IP))return "";
+		  return IP;  
+	  }
+	  public void SetEX(String ex){
+		  EX = ex;
+	  }
+	  public String GetEX(){
+		  if(EX == null || "".equals(EX))return "";
+		  return EX;  
+	  }
 	  public void SetTRACKINGURL(List<TRACKINGURL> urls){
 		  mTrackingUrl = new ArrayList<TRACKINGURL>();
 		  if(urls != null && urls.size()>0){
@@ -96,12 +113,22 @@ public class Monitor {
 					  if(MAC == null || "".equals(MAC)){
 						  url.URL=Replace(url.URL,REPLACE_MAC,"");
 					  }else{ 
-						  url.URL=Replace(url.URL,REPLACE_MAC,MD5Util.GetMD5Code(MAC));
+						  url.URL=Replace(url.URL,REPLACE_MAC,MD5Util.GetMD5Code(MAC.toUpperCase()));
 					  }
 					  if(PM == null || "".equals(PM)){
 						  url.URL=Replace(url.URL,REPLACE_DM,"");
 					  }else{ 
 						  url.URL=Replace(url.URL,REPLACE_DM,PM);
+					  }
+					  if(IP == null || "".equals(IP)){
+						  url.URL=Replace(url.URL,REPLACE_IP,"");
+					  }else{ 
+						  url.URL=Replace(url.URL,REPLACE_IP,IP);
+					  }
+					  if(EX == null || "".equals(EX)){
+						  url.URL=Replace(url.URL,REPLACE_EX,"");
+					  }else{ 
+						  url.URL=Replace(url.URL,REPLACE_EX,EX);
 					  }
 				  }
 				  return url;

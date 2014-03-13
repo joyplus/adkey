@@ -37,6 +37,13 @@ public class RichMediaAd implements Ad {
 	public  String GetCreative_res_url(){
 		return mCreative_res_url;
 	}
+	private int    mRefresh = -1;
+	public  void SetRefresh(int refresh){
+		mRefresh = refresh;
+	}
+	public  int GetRefresh(){
+		return mRefresh;
+	}
 	//end add by Jas
 	public List<TRACKINGURL> getmTrackingUrl()
 	{
@@ -115,7 +122,8 @@ public class RichMediaAd implements Ad {
 	@Override
 	public String toString() {
 		return "RichMediaAD [timestamp=" + timestamp + ", type=" + type
-				+ ", animation=" + animation + ", mCreative_res_url="+mCreative_res_url+", video=" + video
+				+ ", animation=" + animation + ", mCreative_res_url="+mCreative_res_url
+				+ ",mRefresh="+mRefresh+", video=" + video
 				+ ", interstitial=" + interstitial + "]";
 	}
 

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import com.joyplus.admonitor.Application.AdMonitorSDKFeature;
+import com.joyplus.admonitor.Application.AdMonitorSDKManager;
+import com.joyplus.admonitor.Application.CUSTOMINFO;
 import com.joyplus.admonitor.Application.MD5Util;
 import com.joyplus.admonitor.data.ImpressionType;
 import com.joyplus.admonitor.phone.PhoneManager;
@@ -28,14 +30,24 @@ public class Monitor {
 	  }
 	  public String GetMAC(){
 		  if(MAC == null || "".equals(MAC))return "";
-		  return MAC;
+		  return MD5Util.GetMD5Code(MAC);
 	  }
 	  
 	  public void SetDM(String pm){
 		  DM = pm;
 	  }
 	  public String GetDM(){
-		  if(DM == null || "".equals(DM))return "";
+		  if(DM == null || "".equals(DM)){
+			  if(!AdMonitorSDKManager.IsInited())return "";
+			  AdMonitorSDKManager mM = AdMonitorSDKManager.getInstance();
+			  if(mM != null && mM.GetCUSTOMINFO() != null){
+				  String DM = mM.GetCUSTOMINFO().GetDEVICEMOVEMENT();
+				  if(!(DM==null)||("".equals(DM))){
+					  return DM;
+				  }
+			  }
+			  return "";
+		  }
 		  return DM;  
 	  }
 	  
@@ -93,13 +105,20 @@ public class Monitor {
 				  us.remove();
 				  continue;
 			  }
-			  if(ImpressionType.miaozhen == s.mImpressionType){
+			  if(AdMonitorSDKFeature.MIAOZHEN && ImpressionType.miaozhen == s.mImpressionType){
 				  return s;
-			  }else if(ImpressionType.Joyplus == s.mImpressionType){
-				  String mac = GetMAC();
-				  if("".equals(mac))mac = PhoneManager.getInstance().GetMac();
-				  if(!"".equals(mac)){
-					  s.mImpressionURL = Replace(s.mImpressionURL,REPLACE_MAC,MD5Util.GetMD5Code(mac));
+			  }else if((AdMonitorSDKFeature.IRESEARCH && ImpressionType.iresearch == s.mImpressionType)
+                         || (ImpressionType.Joyplus == s.mImpressionType)){
+				  String mac = GetMAC();//get user set first
+				  if("".equals(mac)){
+					  if(AdMonitorSDKManager.IsInited()){//get user base mac 
+						  CUSTOMINFO info = AdMonitorSDKManager.getInstance().GetCUSTOMINFO();
+						  if(info != null)mac = info.GetMAC();
+					  }
+					  if(mac == null || "".equals(mac))mac = PhoneManager.getInstance().GetMac();//the last to get mac by Our-self
+				  }
+				  if(!(mac == null || "".equals(mac))){
+					  s.mImpressionURL = Replace(s.mImpressionURL,REPLACE_MAC,MD5Util.GetMD5Code(mac.toUpperCase()));
 				  }else{
 					  s.mImpressionURL = Replace(s.mImpressionURL,REPLACE_MAC,"");
 				  }

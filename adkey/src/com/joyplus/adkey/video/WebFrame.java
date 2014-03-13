@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -164,6 +165,7 @@ public class WebFrame extends FrameLayout implements BrowserControl {
 		baseUrl = baseUrl+Const.DOWNLOAD_PATH+Util.VideoFileDir;
 		String textPath =  Const.HIDE_BORDER + "<img src='"
 				+ (Const.DOWNLOAD_DISPLAY_IMG)+Util.ExternalName + "'/>";
+		mWebView.clearCache(false);
 		this.mWebView.loadDataWithBaseURL(baseUrl, textPath, "text/html",
 				"utf-8", null);
 	}

@@ -29,7 +29,7 @@ public class AdKeyConfig {
 	
 	private void Load(){   
         try {
-        	InputStream is = this.getClass().getResourceAsStream("/com/joyplus/adkeyConfig/adkeyconfig.properties");
+        	InputStream is = this.getClass().getResourceAsStream("/com/joyplus/Config/adkeyconfig.properties");
             props = new Properties();
 			props.load(is);
 			LoadOK = true;
@@ -59,9 +59,17 @@ public class AdKeyConfig {
 		}
 	}
 	public String getAppREQUESTURL(){
+		if(LoadOK){
+			String custom = props.getProperty("AppURL");
+			if(custom != null)return custom;
+		}
 		return Joyplus_app_REQUESTURL;
 	}
 	public String getVcREQUESTURL(){
+		if(LoadOK){
+			String custom = props.getProperty("VcURL");
+			if(custom != null)return custom;
+		}
 		return Joyplus_vc_REQUESTURL;
 	}
     public int getCUSTOM(){

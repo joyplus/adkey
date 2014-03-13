@@ -1,15 +1,11 @@
 package com.joyplus.adkeydemo;
 
 import com.joyplus.adkey.Ad;
+import com.joyplus.adkey.AdDeviceManager;
 import com.joyplus.adkey.AdListener;
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.banner.AdView;
-import com.joyplus.adkey.mini.AdMini;
-import com.joyplus.adkey.mon.AppMonitior;
-import com.joyplus.adkey.mon.AppReportManager;
-import com.joyplus.adkey.mon.VideoMonitior;
 import com.joyplus.adkey.widget.Log;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -53,14 +49,14 @@ public class AdViewActivity extends Activity implements AdListener
 		// TODO Auto-generated method stub
 		Log.i(Const.TAG,"AdViewActivity--->adClicked");
 	}
-
-	@Override
-	public void adClosed(Ad ad, boolean completed)
-	{
+ 
+	@Override 
+	public void adClosed(Ad ad, boolean completed) 
+	{ 
 		// TODO Auto-generated method stub
 		Log.i(Const.TAG,"AdViewActivity--->adClosed");
 	}
-
+ 
 	@Override
 	public void adLoadSucceeded(Ad ad)
 	{

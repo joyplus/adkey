@@ -375,7 +375,6 @@ public class AdManager
 	public void requestAdAndShow(long timeout)
 	{
 		AdListener l = mListener;
-		
 		mListener = null;
 		requestAd();
 		long now = System.currentTimeMillis();
@@ -409,6 +408,7 @@ public class AdManager
 			return;
 		}
 		RichMediaAd ad = mResponse;
+		Log.d("Jas","showAd mResponse="+mResponse);
 		boolean result = false;
 		try
 		{
