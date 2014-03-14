@@ -95,12 +95,13 @@ public class DownLoadManager {
 	   };
 	   	   
 	   private class DownloadBackCall implements DownloaderListener{
+		    private boolean Debug = false;
             private boolean Check(){
             	if(mCrrentDownload == null)return false;
             	return true;
             }
             private void Downloadfinish(){
-            	//Log.d("DownloadManager Downloadfinish +++++ ");
+            	if(Debug)Log.d("DownloadManager Downloadfinish +++++ ");
             	mDownloader = null;
             	if(mCrrentDownload!=null)RemoveDownload(mCrrentDownload);
             	mHandler.sendEmptyMessage(MSG_DOWNLOAD_IDLE);
@@ -108,7 +109,7 @@ public class DownLoadManager {
 			@Override
 			public void DownloaderStateChange(DownloaderState state) {
 				// TODO Auto-generated method stub
-				//Log.d("DownloadManager DownloaderStateChange "+state.toString());
+				if(Debug)Log.d("DownloadManager DownloaderStateChange "+state.toString());
 				if(!Check()){Downloadfinish();return;}
 				mCrrentDownload.DownloaderStateChange(state);
 			}
@@ -118,6 +119,7 @@ public class DownLoadManager {
 				// TODO Auto-generated method stub
 				if(!Check()){Downloadfinish();return;}
 				mCrrentDownload.DownloaderProgress(Dwonloaded, TotleSize);
+				if(Debug)Log.d("DownloadManager DownloaderProgress Dwonloaded="+Dwonloaded+",TotleSize"+TotleSize);
 			}
 
 			@Override

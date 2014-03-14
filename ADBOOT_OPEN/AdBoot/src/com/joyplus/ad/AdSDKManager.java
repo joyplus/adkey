@@ -84,7 +84,8 @@ public class AdSDKManager {
 		  PANASONIC    (7,"Panasonic"),
 		  TCL          (8,"TCL"),
 		  HISENSE      (9,"Hisense"),
-		  JOYPLUS      (10,"Joyplus");
+		  JOYPLUS      (10,"Joyplus"),
+		  LENOVO       (11,"Lenovo");
 		  int CUSTOM;
 		  String BRAND;
 		  CUSTOMTYPE(int Custom,String Brand){
