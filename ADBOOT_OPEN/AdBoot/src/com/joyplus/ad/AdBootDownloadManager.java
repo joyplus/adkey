@@ -1,10 +1,10 @@
 package com.joyplus.ad;
 
 import java.io.File;
-
+import java.util.ArrayList;
+import java.util.List;
 import android.content.Context;
 import android.webkit.URLUtil;
-
 import com.joyplus.ad.application.AdBoot;
 import com.joyplus.ad.application.AdBootInfo;
 import com.joyplus.ad.application.AdBootManager;
@@ -12,11 +12,12 @@ import com.joyplus.ad.config.Log;
 import com.joyplus.ad.data.ADBOOT;
 import com.joyplus.ad.data.CODE;
 import com.joyplus.ad.data.FileUtils;
+import com.joyplus.ad.download.DownLoadListener;
 import com.joyplus.ad.download.DownLoadManager;
 import com.joyplus.ad.download.Download;
 import com.joyplus.ad.download.ImpressionThread;
 
-public class AdBootDownloadManager {
+public class AdBootDownloadManager implements DownLoadListener{
      
 	   private AdBoot     mAdBoot;  
 	   private Context    mContext;
@@ -56,6 +57,9 @@ public class AdBootDownloadManager {
 			       FileUtils.deleteFile(mAdBootInfo.GetSecondSource());
 			   if(mAdBootInfo.CheckBootAnimationZipUsable())
 			       FileUtils.deleteFile(mAdBootInfo.GetThirdSource());
+			   if(mDownLoadListener != null){// for notify no ad
+					mDownLoadListener.NoAD();
+			   }
 			   return;
 		   }
 		   
@@ -67,7 +71,13 @@ public class AdBootDownloadManager {
 		    
 		   CheckDownLoadFirst();
 		   CheckDownLoadSecond();
-		   CheckDownLoadZIP();		   
+		   CheckDownLoadZIP();
+		   
+		   if(mDownload != null && mDownload.size() <=0){
+			   if(mDownLoadListener != null){
+					mDownLoadListener.Finish(null);
+			   }
+		   }
 	   }
 	   private void CheckDownLoadFirst(){
 		   if(mAdBootInfo == null)return;
@@ -85,6 +95,8 @@ public class AdBootDownloadManager {
 				   firstdownload.URL        = mCurrentADBOOT.video.creative.URL;
 				   firstdownload.LocalFile  = mLocalAdBootInfo.GetFirstSource();
 				   firstdownload.TargetFile = mAdBootInfo.GetFirstSource();
+				   firstdownload.SetDownLoadListener(this);
+				   mDownload.add(firstdownload);
 				   DownLoadManager.getInstance().AddDownload(firstdownload);
 			   }else{//now server not get
 				   if(first.exists())first.delete();//remove it first
@@ -108,6 +120,8 @@ public class AdBootDownloadManager {
 			       seconddownload.URL        = mCurrentADBOOT.video.creative2.URL;
 			       seconddownload.LocalFile  = mLocalAdBootInfo.GetSecondSource();
 			       seconddownload.TargetFile = mAdBootInfo.GetSecondSource();
+			       seconddownload.SetDownLoadListener(this);
+			       mDownload.add(seconddownload);
 				   DownLoadManager.getInstance().AddDownload(seconddownload);
 			   }else{//now server not get
 				   if(second.exists())second.delete();//remove it first
@@ -131,6 +145,8 @@ public class AdBootDownloadManager {
 				   zipdownload.URL        = mCurrentADBOOT.video.creative3.URL;
 				   zipdownload.LocalFile  = mLocalAdBootInfo.GetThirdSource();
 				   zipdownload.TargetFile = mAdBootInfo.GetThirdSource();
+				   zipdownload.SetDownLoadListener(this);
+				   mDownload.add(zipdownload);
 				   DownLoadManager.getInstance().AddDownload(zipdownload);
 			   }else{//now server not get
 				   if(zip.exists())zip.delete();//remove it first
@@ -145,6 +161,7 @@ public class AdBootDownloadManager {
 		   mLocalAdBootInfo.SetThirdSource(AdFileManager.getInstance().GetBasePath().toString()+File.separator+mPublisherId.GetPublisherId().toString()+File.separator+"AdBootManager_bootanimation");
 		   mLocalAdBootInfo.SetFirstSource(AdFileManager.getInstance().GetBasePath().toString()+File.separator+mPublisherId.GetPublisherId().toString()+File.separator+"AdBootManager_first");
 		   mLocalAdBootInfo.SetSecondSource(AdFileManager.getInstance().GetBasePath().toString()+File.separator+mPublisherId.GetPublisherId().toString()+File.separator+"AdBootManager_second");
+           mDownload = new ArrayList<Download>();
 	   }
 	   
 	   private boolean IsBootAnimationSame(){
@@ -201,5 +218,40 @@ public class AdBootDownloadManager {
 			}
 		}
 	   
+		//for Listener
+		private List<Download> mDownload;
+
+		@Override
+		public void Start(Download download) {
+			// TODO Auto-generated method stub
+			if(mDownload != null && mDownload.size()>0){
+				if(mDownload.contains(download) && mDownLoadListener != null){
+					mDownLoadListener.Start(download);
+				}
+			}
+		}
+
+		@Override
+		public void Finish(Download download) {
+			// TODO Auto-generated method stub
+			if(mDownload != null && mDownload.size()>0){
+				mDownload.remove(download);
+				if(mDownload.size()<=0 && mDownLoadListener != null){
+					mDownLoadListener.Finish(download);
+				}
+			}
+		}
+     
+		private DownLoadListener mDownLoadListener;
+		public void SetDownLoadListener(DownLoadListener Listener){
+			   mDownLoadListener = Listener;
+		}
+
+		@Override
+		public void NoAD() {
+			// TODO Auto-generated method stub
+			
+		}
+	
 	   
 }
