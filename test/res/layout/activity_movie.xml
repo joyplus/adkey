@@ -1,0 +1,39 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MovieListActivity" >
+        <com.joyplus.ad.test.HorizontalScrollView android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scrollbars="none"
+            android:id="@+id/hscroll_back"
+            android:focusable="false">
+            <LinearLayout android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:focusable="false">
+                <ImageView android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/bg"
+                    android:scaleType="fitXY"
+                    android:focusable="false"
+                    android:src="@drawable/b3"/>
+            </LinearLayout>
+        </com.joyplus.ad.test.HorizontalScrollView>
+        <com.joyplus.ad.test.HorizontalScrollView android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/hscroll"
+            android:scrollbars="none"
+            android:focusable="false"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="40dp"
+            android:layout_alignParentBottom="true"
+            >
+            <LinearLayout android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal"
+                android:id="@+id/layout">
+                
+            </LinearLayout>
+        </com.joyplus.ad.test.HorizontalScrollView>
+</RelativeLayout>
