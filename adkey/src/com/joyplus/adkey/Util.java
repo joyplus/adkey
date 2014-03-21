@@ -1,7 +1,6 @@
 package com.joyplus.adkey;
 
 import static com.joyplus.adkey.Const.PREFS_DEVICE_ID;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -15,8 +14,8 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -36,6 +35,7 @@ import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -44,7 +44,6 @@ import android.view.animation.TranslateAnimation;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
-
 import com.joyplus.adkey.data.ScreenSaverInfo;
 import com.joyplus.adkey.video.RichMediaAd;
 import com.joyplus.adkey.widget.SerializeManager;
@@ -445,7 +444,92 @@ public class Util {
 			return 0;
 		}
 	}
-	
+	//add by Jas
+	public enum TranslateAnimationType{
+		RANDOM , LIFT , RIGHT , UP , DOWN , NOAN
+	}
+	private static TranslateAnimationType GetRandom(){
+		Random m = new Random();
+		int r = (m.nextInt(10))%4;
+		switch(r){
+		case 0: return TranslateAnimationType.LIFT;
+		case 1: return TranslateAnimationType.RIGHT;
+		case 2: return TranslateAnimationType.UP;
+		case 3: return TranslateAnimationType.DOWN;
+		}
+		return TranslateAnimationType.UP;
+	}
+	public static TranslateAnimation GetTranslateAnimation(TranslateAnimationType m){
+		TranslateAnimation fadeInAnimation = null;
+		TranslateAnimationType mTranslateAnimationType = m;
+		if(mTranslateAnimationType == null)mTranslateAnimationType=TranslateAnimationType.RANDOM;
+		if(mTranslateAnimationType == TranslateAnimationType.RANDOM){
+			mTranslateAnimationType = GetRandom();
+		}
+		if(mTranslateAnimationType==TranslateAnimationType.DOWN){
+			fadeInAnimation = new TranslateAnimation(
+					Animation.RELATIVE_TO_PARENT, 0.0f,
+					Animation.RELATIVE_TO_PARENT, 0.0f,
+					Animation.RELATIVE_TO_PARENT, -1.0f,
+					Animation.RELATIVE_TO_PARENT, 0.0f);
+		}else if(mTranslateAnimationType==TranslateAnimationType.LIFT){
+			fadeInAnimation = new TranslateAnimation(
+					Animation.RELATIVE_TO_PARENT, +1.0f,
+					Animation.RELATIVE_TO_PARENT, 0.0f,
+					Animation.RELATIVE_TO_PARENT, 0.0f,
+					Animation.RELATIVE_TO_PARENT, 0.0f);
+		}else if(mTranslateAnimationType==TranslateAnimationType.RIGHT){
+			fadeInAnimation = new TranslateAnimation(
+					Animation.RELATIVE_TO_PARENT, -1.0f,
+					Animation.RELATIVE_TO_PARENT, 0.0f,
+					Animation.RELATIVE_TO_PARENT, 0.0f,
+					Animation.RELATIVE_TO_PARENT, 0.0f);
+		}else {
+			fadeInAnimation = new TranslateAnimation(
+					Animation.RELATIVE_TO_PARENT, 0.0f,
+					Animation.RELATIVE_TO_PARENT, 0.0f,
+					Animation.RELATIVE_TO_PARENT, +1.0f,
+					Animation.RELATIVE_TO_PARENT, 0.0f);
+		}
+		fadeInAnimation.setDuration(1000);
+		return fadeInAnimation;
+	}
+	public static TranslateAnimation GetExitTranslateAnimation(TranslateAnimationType m){
+		TranslateAnimation fadeInAnimation = null;
+		TranslateAnimationType mTranslateAnimationType = m;
+		if(mTranslateAnimationType == null)mTranslateAnimationType=TranslateAnimationType.DOWN;
+		if(mTranslateAnimationType == TranslateAnimationType.RANDOM){
+			mTranslateAnimationType = GetRandom();
+		}
+		if(mTranslateAnimationType==TranslateAnimationType.DOWN){
+			fadeInAnimation = new TranslateAnimation(/*UP*/
+					Animation.RELATIVE_TO_PARENT, 0.0f,
+					Animation.RELATIVE_TO_PARENT, 0.0f,
+					Animation.RELATIVE_TO_PARENT, 0.0f,
+					Animation.RELATIVE_TO_PARENT, -1.0f);
+		}else if(mTranslateAnimationType==TranslateAnimationType.LIFT){
+			fadeInAnimation = new TranslateAnimation(/*RIGHT*/
+					Animation.RELATIVE_TO_PARENT, 0.0f,
+					Animation.RELATIVE_TO_PARENT, 1.0f,
+					Animation.RELATIVE_TO_PARENT, 0.0f,
+					Animation.RELATIVE_TO_PARENT, 0.0f);
+		}else if(mTranslateAnimationType==TranslateAnimationType.RIGHT){
+			fadeInAnimation = new TranslateAnimation(/*LIFT*/
+					Animation.RELATIVE_TO_PARENT, 0.0f,
+					Animation.RELATIVE_TO_PARENT, -1.0f,
+					Animation.RELATIVE_TO_PARENT, 0.0f,
+					Animation.RELATIVE_TO_PARENT, 0.0f);
+		}else{
+			fadeInAnimation = new TranslateAnimation(/*DOWN*/
+					Animation.RELATIVE_TO_PARENT, 0.0f,
+					Animation.RELATIVE_TO_PARENT, 0.0f,
+					Animation.RELATIVE_TO_PARENT, 0.0f,
+					Animation.RELATIVE_TO_PARENT, 1.0f);
+		}
+		fadeInAnimation.setDuration(1000);
+		return fadeInAnimation;
+	}
+	//end add by Jas
 	/*
 	 * get httpUrl Ex name
 	 */

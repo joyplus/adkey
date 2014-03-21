@@ -2,8 +2,6 @@ package com.joyplus.adkey.floatlayout;
 
 import java.io.File;
 import java.lang.Thread.UncaughtExceptionHandler;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
 import com.joyplus.adkey.Ad;
@@ -14,9 +12,10 @@ import com.joyplus.adkey.Const;
 import com.joyplus.adkey.RequestBannerAd;
 import com.joyplus.adkey.RequestRichMediaAd;
 import com.joyplus.adkey.Util;
-import com.joyplus.adkey.mini.AdMiniView;
+import com.joyplus.adkey.Util.TranslateAnimationType;
 import com.joyplus.adkey.video.ResourceManager;
 import com.joyplus.adkey.video.RichMediaAd;
+import com.joyplus.adkey.widget.DownloadBannerThread;
 import com.joyplus.adkey.widget.DownloadVideoThread;
 import com.joyplus.adkey.widget.SerializeManager;
 import android.Manifest;
@@ -28,6 +27,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.PopupWindow;
 
 public class FloatLayout implements AdListener{
@@ -37,8 +37,9 @@ public class FloatLayout implements AdListener{
 	    private int  FloatLayout_Height    = 0;
 	    private View FloatLayout_root      = null;
 	    private final static boolean Debug = true;
-	    private PopupWindow     mPopupWindow   = null;
-	    private FloatLayoutView mFloatLayoutView = null;
+	    private PopupWindow      mPopupWindow      = null;
+	    private FloatLayoutView  mFloatLayoutView  = null;
+	    private FloatLayoutView2 mFloatLayoutView2 = null;
 	    
 		public FloatLayout( Context context, String publisherId,View root, int width,int height){  
 			this(context,publisherId,root,width,height,null);
@@ -91,47 +92,90 @@ public class FloatLayout implements AdListener{
 		private void LoadResponse(){
 			if(mResponse != null){
 				if(Debug)Log.d("Jas","LoadResponse mResponse-->"+mResponse.toString());
-				if(mResponse.getType() == Const.INTERSTITIAL){
-					//notifyAdListener(true, AD_LOADSUCCESSED);
-					ShowAd((RichMediaAd) mResponse);
-					return;
+				if(mResponse instanceof RichMediaAd){
+					if(mResponse.getType() == Const.INTERSTITIAL){
+						//notifyAdListener(true, AD_LOADSUCCESSED);
+						ShowMediaAd((RichMediaAd) mResponse);
+						return;
+					}
+				}else if(mResponse instanceof BannerAd){
+			        String url = (((BannerAd)mResponse).GetCreative_res_url());
+					if(!(url==null || "".equals(url))){
+						ShowBannerAd((BannerAd)mResponse);
+						return;
+					}
 				}
 			}
 			if(Debug)Log.d("Jas","LoadResponse mResponse null !!!!");
 			mResponse = null;
 			notifyAdListener(false,AD_NOADFIND);
 		}
-		private boolean ShowAd = false;
-		private void ShowAd(final RichMediaAd response){
+		private void ShowBannerAd(final BannerAd mResponse2) {
+			// TODO Auto-generated method stub
 			mHandler.post(new Runnable(){
 				@Override
 				public void run() {
 					// TODO Auto-generated method stub
-					if(ShowAd || FloatLayout_root ==null)return;
+					if(ShowAd || FloatLayout_root ==null || mResponse2 == null)return;
 					ShowAd = true;
-					Stop();
+					Stop(mResponse2);
 					int[] location = new int[2];  
 					FloatLayout_root.getLocationOnScreen(location); 
 					mPopupWindow.showAtLocation(FloatLayout_root, Gravity.NO_GRAVITY, 
 							location[0]+FloatLayout_root.getWidth(), location[1]+FloatLayout_root.getHeight());
+					mFloatLayoutView2.SetAnimation(mTranslateAnimationType);
+					mFloatLayoutView2.InitResource();//now AD Show.
+					ShowAd = false;
+					startDismissTimer(mResponse2);
+					startReloadTimer(mResponse2);
+				}
+			});
+		}
+		private boolean ShowAd = false;
+		private void ShowMediaAd(final RichMediaAd response){
+			mHandler.post(new Runnable(){
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					if(ShowAd || FloatLayout_root ==null || response == null)return;
+					ShowAd = true;
+					Stop(response);
+					int[] location = new int[2];  
+					FloatLayout_root.getLocationOnScreen(location); 
+					mPopupWindow.showAtLocation(FloatLayout_root, Gravity.NO_GRAVITY, 
+							location[0]+FloatLayout_root.getWidth(), location[1]+FloatLayout_root.getHeight());
+					mFloatLayoutView.SetAnimation(mTranslateAnimationType);
+					mFloatLayoutView.InitResource();//now AD Show.
 					ShowAd = false;
 					startDismissTimer(response);
 					startReloadTimer(response);
 				}
 			});
-			
 		}
-		private void InitPop(){
+		
+		
+		private void InitPop(Ad Response){
 			if(mPopupWindow != null){
 				mPopupWindow.dismiss();
-				mFloatLayoutView = null;
-				mPopupWindow = null;
+				mFloatLayoutView  = null;
+				mFloatLayoutView2 = null;
+				mPopupWindow      = null;
 			}
-			mFloatLayoutView = new FloatLayoutView(mContext,(RichMediaAd)mResponse,FloatLayout.this);
-			if(FloatLayout_Height <=0 || FloatLayout_Width<=0 || FloatLayout_root == null){
-				mPopupWindow     = new PopupWindow(mFloatLayoutView);
-			}else{
-				mPopupWindow     = new PopupWindow(mFloatLayoutView, FloatLayout_Width, FloatLayout_Height);
+			if(Response == null)return;
+			if(Response instanceof RichMediaAd){
+				mFloatLayoutView = new FloatLayoutView(mContext,(RichMediaAd)mResponse,FloatLayout.this);
+				if(FloatLayout_Height <=0 || FloatLayout_Width<=0 || FloatLayout_root == null){
+					mPopupWindow = new PopupWindow(mFloatLayoutView,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT,false);
+				}else{
+					mPopupWindow = new PopupWindow(mFloatLayoutView, FloatLayout_Width, FloatLayout_Height,false);
+				}
+			}else if(Response instanceof BannerAd){
+				mFloatLayoutView2 = new FloatLayoutView2(mContext,(BannerAd)mResponse,FloatLayout.this);
+				if(FloatLayout_Height <=0 || FloatLayout_Width<=0 || FloatLayout_root == null){
+					mPopupWindow = new PopupWindow(mFloatLayoutView2,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT,false);
+				}else{
+					mPopupWindow = new PopupWindow(mFloatLayoutView2, FloatLayout_Width, FloatLayout_Height,false);
+				}
 			}
 		}
 		private void InitDismissTimer(){
@@ -142,7 +186,7 @@ public class FloatLayout implements AdListener{
 			this.DismissTimer = new Timer();
 		}
 		
-		private void startDismissTimer(RichMediaAd response){
+		private void startDismissTimer(final Ad response){
 			if (DismissTimer == null)return;
 			final int refreshTime = 10*1000;
 			DismissTimer.schedule(new TimerTask(){
@@ -153,7 +197,7 @@ public class FloatLayout implements AdListener{
 						@Override
 						public void run() {
 							// TODO Auto-generated method stub
-							InitPop();
+							InitPop(null);//don't need to init view.
 					}});
 				}
 			}, refreshTime);
@@ -166,7 +210,7 @@ public class FloatLayout implements AdListener{
 			this.reloadTimer = new Timer();
 		}
 		
-		private void startReloadTimer(RichMediaAd response){
+		private void startReloadTimer(Ad response){
 			if (this.reloadTimer == null)return;
 			final int refreshTime = 20*1000;
 			this.reloadTimer.schedule(new TimerTask(){
@@ -214,10 +258,13 @@ public class FloatLayout implements AdListener{
 		private Timer        DismissTimer;
 		private TimerTask    DismissTask;
 		//private AdMiniView   mAdMiniView;
-		public  void Stop(){
+		public   void Stop(){
+			Stop(null);
+		}
+		private  void Stop(Ad response){
 			InitDismissTimer();//remove dismiss
 			InitReloadTimer();//remove timetesk
-			InitPop();//remove pop
+			InitPop(response);//remove pop
 		};
 		public void requestAd(){
 			 if(mRequestThread != null)return;
@@ -232,13 +279,20 @@ public class FloatLayout implements AdListener{
 						} catch (InterruptedException e){
 						}
 					}
-					String path = Const.DOWNLOAD_PATH + Util.VideoFileDir + "ad";
+					String path = Const.DOWNLOAD_PATH + Util.VideoFileDir + "adfloatlayout";
 					File cacheDir = new File(Const.DOWNLOAD_PATH+Util.VideoFileDir);
 					if (!cacheDir.exists())cacheDir.mkdirs();
-					mResponse = (RichMediaAd) serializeManager.readSerializableData(path);
-					LoadResponse();
-					serializeManager.writeSerializableData(path,getRichMediaAd());
-					new DownloadVideoThread(path,mContext).start();//download resource.
+					if(MediaOrBanner){//media
+						mResponse = (RichMediaAd) serializeManager.readSerializableData(path);
+						LoadResponse();
+						serializeManager.writeSerializableData(path,getRichMediaAd());
+						new DownloadVideoThread(path,mContext).start();//download resource.
+					}else{//binner
+						mResponse = (BannerAd) serializeManager.readSerializableData(path);
+						LoadResponse();
+						serializeManager.writeSerializableData(path,getBannerAd());
+						new DownloadBannerThread(path,mContext).start();//download resource.
+					}
 					mRequestThread = null;
 				}
 			 });
@@ -269,6 +323,7 @@ public class FloatLayout implements AdListener{
 			try{
 				return requestAd.sendRequest(getRequest(AdRequest.BANNER));
 			} catch (final Throwable e){
+				if(Debug)Log.d("Jas","getBannerAd fail...");
 			}
 			return null;
 		}
@@ -369,4 +424,16 @@ public class FloatLayout implements AdListener{
 			});
 		}
 	 
+		
+		//for TranslateAnimation
+		public void SetAnimation(TranslateAnimationType type){
+			if(type != null){
+				mTranslateAnimationType = type;
+			}
+		}
+		private TranslateAnimationType mTranslateAnimationType = TranslateAnimationType.RANDOM;
+		
+		
+		private boolean MediaOrBanner = false;//Media -- true  Banner -- false
+		
 }

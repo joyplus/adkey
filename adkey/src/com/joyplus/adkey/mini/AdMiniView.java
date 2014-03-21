@@ -9,6 +9,7 @@ import java.util.Vector;
 import com.joyplus.adkey.AdListener;
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.Util;
+import com.joyplus.adkey.Util.TranslateAnimationType;
 import com.joyplus.adkey.Monitorer.AdMonitorManager;
 import com.joyplus.adkey.download.ImpressionThread;
 import com.joyplus.adkey.video.InterstitialData;
@@ -32,7 +33,9 @@ import android.media.MediaPlayer.OnPreparedListener;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -176,6 +179,8 @@ public class AdMiniView extends RelativeLayout{
 		mVideoView.setOnCompletionListener(this.mOnVideoCompletionListener);
 		mVideoView.setOnErrorListener(this.mOnVideoErrorListener);
 		mVideoView.setFocusable(false);
+		mVideoView.setFocusableInTouchMode(false);
+		//mVideoView.setOnKeyListener(this.mOnVideoKeyListener);
 		//mVideoView.setOnInfoListener(this.mOnVideoInfoListener);
 		mVideoLayout.addView(mVideoView,
 				   new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
@@ -183,11 +188,11 @@ public class AdMiniView extends RelativeLayout{
 	}
 	private void InitLoadingUI(){
 		mLoadingView = new FrameLayout(mContext);
-		mLoadingView.setFocusable(false);
+		mLoadingView.setFocusable(false);  
 		mLoadingView.setBackgroundColor(Color.TRANSPARENT);
 		TextView loadingText = new TextView(mContext);
 		loadingText.setText(Const.LOADING);
-		loadingText.setBackgroundColor(Color.TRANSPARENT);
+		loadingText.setBackgroundColor(Color.TRANSPARENT); 
 		loadingText.setFocusable(false);
 		mLoadingView.addView(loadingText, new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
 				LayoutParams.WRAP_CONTENT, Gravity.CENTER));
@@ -195,6 +200,7 @@ public class AdMiniView extends RelativeLayout{
 				new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
 						LayoutParams.WRAP_CONTENT, Gravity.CENTER));// fill_parent
 	}
+	
 	OnTimeEventListener mOnVideoTimeEventListener = new OnTimeEventListener(){
 		@Override
 		public void onTimeEvent(final int time){
@@ -206,6 +212,14 @@ public class AdMiniView extends RelativeLayout{
 					event.timestamp = System.currentTimeMillis();
 					TrackerService.requestTrack(event);
 				}
+		}
+	};
+	OnKeyListener mOnVideoKeyListener = new OnKeyListener(){
+		@Override
+		public boolean onKey(View v, int keyCode, KeyEvent event) {
+			// TODO Auto-generated method stub
+			Log.d("Jas","mOnVideoKeyListener-->"+KeyEvent.keyCodeToString(keyCode));
+			return true;
 		}
 	};
 	OnErrorListener mOnVideoErrorListener = new OnErrorListener(){
@@ -348,13 +362,10 @@ public class AdMiniView extends RelativeLayout{
 		 //TODO Auto-generated method stub
 		if(mInterstitialImageView != null){
 			if(animation){
-				TranslateAnimation fadeOutAnimation = new TranslateAnimation(
-						Animation.RELATIVE_TO_PARENT, 0.0f,
-						Animation.RELATIVE_TO_PARENT, 0.0f,
-						Animation.RELATIVE_TO_PARENT, 0.0f,
-						Animation.RELATIVE_TO_PARENT, -1.0f);
-				fadeOutAnimation.setDuration(1000);
-				mInterstitialImageView.startAnimation(fadeOutAnimation);
+				if(mTranslateAnimationType==null || mTranslateAnimationType == TranslateAnimationType.NOAN){
+				}else{
+					mInterstitialImageView.startAnimation(Util.GetTranslateAnimation(mTranslateAnimationType));
+				}
 			}
 			mRootLayout.removeView(mInterstitialImageView);
 			mInterstitialImageView = null;
@@ -370,15 +381,11 @@ public class AdMiniView extends RelativeLayout{
 		String text = MessageFormat.format(Const.IMAGE_BODY,getCreative_res_url,null,null);
 		text = Uri.encode(Const.HIDE_BORDER + text);
 		mInterstitialImageView.loadData(text, "text/html", Const.ENCODING);
-		
 		if (this.animation) {
-			TranslateAnimation fadeInAnimation = new TranslateAnimation(
-					Animation.RELATIVE_TO_PARENT, 0.0f,
-					Animation.RELATIVE_TO_PARENT, 0.0f,
-					Animation.RELATIVE_TO_PARENT, +1.0f,
-					Animation.RELATIVE_TO_PARENT, 0.0f);
-			fadeInAnimation.setDuration(1000);
-			mInterstitialImageView.startAnimation(fadeInAnimation);
+			if(mTranslateAnimationType==null || mTranslateAnimationType == TranslateAnimationType.NOAN){
+			}else{
+				mInterstitialImageView.startAnimation(Util.GetTranslateAnimation(mTranslateAnimationType));
+			}
 		}
 	}
 	
@@ -416,4 +423,11 @@ public class AdMiniView extends RelativeLayout{
 			
 		}
 	};
+	//add by Jas for animation
+	private TranslateAnimationType mTranslateAnimationType = TranslateAnimationType.RANDOM;
+	public  void SetAnimation(TranslateAnimationType type){
+		if(type != null){
+			mTranslateAnimationType = type;
+		}
+	}
 }

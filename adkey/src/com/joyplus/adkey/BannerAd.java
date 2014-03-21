@@ -26,10 +26,18 @@ public class BannerAd implements Ad {
 	private int refresh;
 	private boolean scale;
 	private boolean skipPreflight;
-	
+	//add by Jas
+	private String mCreative_res_url;
+	public  void SetCreative_res_url(String url){
+		mCreative_res_url = url;
+	}
+	public  String GetCreative_res_url(){
+		return mCreative_res_url;
+	}
+	//end add by Jas
 	private String mImpressionUrl;
 	private List<TRACKINGURL> mTrackingUrl;
-
+ 
 	public List<TRACKINGURL> getmTrackingUrl()
 	{
 		if(mTrackingUrl == null){
@@ -166,6 +174,7 @@ public class BannerAd implements Ad {
 				+ ", clickUrl=" + this.clickUrl + ", urlType=" + this.urlType
 				+ ", scale=" + this.scale + ", skipPreflight="
 				+ this.skipPreflight 
+				+",Creative_res_url="+mCreative_res_url
 				+ ap.toString()+ " ]";
 	}
 

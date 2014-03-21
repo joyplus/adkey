@@ -1,8 +1,6 @@
 package com.joyplus.adkey.floatlayout;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.MessageFormat;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -11,6 +9,7 @@ import com.joyplus.adkey.AdListener;
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.Util;
 import com.joyplus.adkey.Monitorer.AdMonitorManager;
+import com.joyplus.adkey.Util.TranslateAnimationType;
 import com.joyplus.adkey.download.ImpressionThread;
 import com.joyplus.adkey.video.InterstitialData;
 import com.joyplus.adkey.video.RichMediaAd;
@@ -33,11 +32,8 @@ import android.media.MediaPlayer.OnPreparedListener;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -83,9 +79,9 @@ public class FloatLayoutView extends RelativeLayout{
 		mContext = context;
 		this.animation = animation;
 		this.adListener = adListener;
-		InitResource();
+		//InitResource();
 	}
-	private void InitResource(){
+	public void InitResource(){
 		if(mAd == null){
 			notifyfinish(false);
 			return;
@@ -116,6 +112,16 @@ public class FloatLayoutView extends RelativeLayout{
 				}catch(Exception e){
 				}
 				mVideoView = null;
+			}
+			if(mInterstitialImageView != null){//for animation
+				if(animation){
+					if(mTranslateAnimationType == null || mTranslateAnimationType == TranslateAnimationType.NOAN){
+					}else{
+					     mInterstitialImageView.startAnimation(Util.GetExitTranslateAnimation(mTranslateAnimationType));
+					}
+				}
+				mRootLayout.removeView(mInterstitialImageView);
+				mInterstitialImageView = null;
 			}
 			FloatLayoutView.this.removeAllViews();
 			if(adListener != null){
@@ -302,15 +308,15 @@ public class FloatLayoutView extends RelativeLayout{
 		mRootLayout.addView(mInterstitialView, new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
 				   LayoutParams.MATCH_PARENT, Gravity.CENTER));
 		
-		new ImpressionThread(mContext, mAd.getmImpressionUrl(), Util.PublisherId,Util.AD_TYPE.FULL_SCREEN_VIDEO).start();
-		if(mAd.getmTrackingUrl().size()>0){
-			AdMonitorManager.getInstance(mContext).AddTRACKINGURL(mAd.getmTrackingUrl());
-		}
+//		new ImpressionThread(mContext, mAd.getmImpressionUrl(), Util.PublisherId,Util.AD_TYPE.FULL_SCREEN_VIDEO).start();
+//		if(mAd.getmTrackingUrl().size()>0){
+//			AdMonitorManager.getInstance(mContext).AddTRACKINGURL(mAd.getmTrackingUrl());
+//		}
 		
 		switch (mInterstitialData.interstitialType){
 			case InterstitialData.INTERSTITIAL_MARKUP:
 				if(Util.isCacheLoaded()){
-					Log.d("Jas","Util.isCacheLoaded");
+					//Log.d("Jas","Util.isCacheLoaded");
 					//mInterstitialView.setMarkup(mInterstitialData.interstitialMarkup);
 					ShowImage(mAd.GetCreative_res_url(),true);//show image oline.
 				}else if(mAd.GetCreative_res_url() !=null && mAd.GetCreative_res_url().length()>0){
@@ -327,19 +333,20 @@ public class FloatLayoutView extends RelativeLayout{
 					return;
 				}
 		}
-		InitViewTimeOut();
+		//InitViewTimeOut();
 	}
 	private void ShowImage(String getCreative_res_url,boolean location) {
 		 //TODO Auto-generated method stub
+		new ImpressionThread(mContext, mAd.getmImpressionUrl(), Util.PublisherId,Util.AD_TYPE.FULL_SCREEN_VIDEO).start();
+		if(mAd.getmTrackingUrl().size()>0){
+			AdMonitorManager.getInstance(mContext).AddTRACKINGURL(mAd.getmTrackingUrl());
+		}
 		if(mInterstitialImageView != null){
 			if(animation){
-				TranslateAnimation fadeOutAnimation = new TranslateAnimation(
-						Animation.RELATIVE_TO_PARENT, 0.0f,
-						Animation.RELATIVE_TO_PARENT, 0.0f,
-						Animation.RELATIVE_TO_PARENT, 0.0f,
-						Animation.RELATIVE_TO_PARENT, -1.0f);
-				fadeOutAnimation.setDuration(1000);
-				mInterstitialImageView.startAnimation(fadeOutAnimation);
+				if(mTranslateAnimationType == null || mTranslateAnimationType == TranslateAnimationType.NOAN){
+				}else{
+					mInterstitialImageView.startAnimation(Util.GetExitTranslateAnimation(mTranslateAnimationType));
+				}
 			}
 			mRootLayout.removeView(mInterstitialImageView);
 			mInterstitialImageView = null;
@@ -362,21 +369,17 @@ public class FloatLayoutView extends RelativeLayout{
 				return;
 			}
 			mInterstitialImageView.clearCache(false);
-			mInterstitialImageView.loadDataWithBaseURL(baseUrl, textPath, "text/html",
-					"utf-8", null);
+			mInterstitialImageView.loadDataWithBaseURL(baseUrl, textPath, "text/html","utf-8", null);
 		}else{
 			String text = MessageFormat.format(Const.IMAGE_BODY,getCreative_res_url,null,null);
 			text = Uri.encode(Const.HIDE_BORDER + text);
 			mInterstitialImageView.loadData(text, "text/html", Const.ENCODING);
 		}
 		if (this.animation) {
-			TranslateAnimation fadeInAnimation = new TranslateAnimation(
-					Animation.RELATIVE_TO_PARENT, 0.0f,
-					Animation.RELATIVE_TO_PARENT, 0.0f,
-					Animation.RELATIVE_TO_PARENT, +1.0f,
-					Animation.RELATIVE_TO_PARENT, 0.0f);
-			fadeInAnimation.setDuration(1500);
-			mInterstitialImageView.startAnimation(fadeInAnimation);
+			if(mTranslateAnimationType == null || mTranslateAnimationType == TranslateAnimationType.NOAN){
+			}else{
+				mInterstitialImageView.startAnimation(Util.GetTranslateAnimation(mTranslateAnimationType));
+			}
 		}
 	}
 	
@@ -414,4 +417,11 @@ public class FloatLayoutView extends RelativeLayout{
 			
 		}
 	};
+	
+	
+	//for TranslateAnimation
+	public void SetAnimation(TranslateAnimationType type){
+		mTranslateAnimationType = type;
+	}
+	private TranslateAnimationType mTranslateAnimationType = TranslateAnimationType.RANDOM;
 }

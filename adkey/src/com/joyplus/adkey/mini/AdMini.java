@@ -24,6 +24,7 @@ import com.joyplus.adkey.Const;
 import com.joyplus.adkey.RequestBannerAd;
 import com.joyplus.adkey.RequestRichMediaAd;
 import com.joyplus.adkey.Util;
+import com.joyplus.adkey.Util.TranslateAnimationType;
 import com.joyplus.adkey.video.RichMediaAd;
 import com.joyplus.adkey.widget.SerializeManager;
 
@@ -166,6 +167,8 @@ public class AdMini extends FrameLayout implements AdListener{
 				RemoveAllUI();
 				Util.CACHE_MODE = true;
 				mAdMiniView = new AdMiniView(mContext, (RichMediaAd) mResponse, AdMini.this);
+				mAdMiniView.SetAnimation(mTranslateAnimationType==null?
+						TranslateAnimationType.UP:mTranslateAnimationType);
 				AdMini.this.addView(mAdMiniView,new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
 						   LayoutParams.MATCH_PARENT, Gravity.CENTER));
 				notifyAdListener(true, AD_SHOWN);
@@ -392,4 +395,12 @@ public class AdMini extends FrameLayout implements AdListener{
 			}
 		});
 	}
+	
+	//for TranslateAnimation
+	public void SetAnimation(TranslateAnimationType type){
+		if(type != null){
+			mTranslateAnimationType = type;
+		}
+	}
+	private TranslateAnimationType mTranslateAnimationType = TranslateAnimationType.RANDOM;
 }
