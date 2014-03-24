@@ -4,26 +4,34 @@ import greendroid.widget.AsyncImageView;
 
 import java.util.List;
 
-import com.joyplus.ad.test.entity.GroupInfo;
-
+import android.app.Activity;
 import android.content.Context;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.joyplus.ad.test.entity.GroupInfo;
 
 public class GroupAdapter extends BaseAdapter {
 
 	private List<GroupInfo> data;
 	private Context c;
-	
+	private float mDensity;
 	
 	
 	public GroupAdapter(List<GroupInfo> data, Context c) {
 		super();
 		this.data = data;
 		this.c = c;
+		Display display = ((Activity)c).getWindowManager().getDefaultDisplay();
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        display.getMetrics(displayMetrics);
+        mDensity = displayMetrics.density;
 	}
 
 	@Override
@@ -45,7 +53,7 @@ public class GroupAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(final int position, View contentView, ViewGroup arg2) {
+	public View getView(final int position, View contentView, ViewGroup parent) {
 		// TODO Auto-generated method stub
 		ViewHolder holder;
 		if(contentView == null){
@@ -60,6 +68,8 @@ public class GroupAdapter extends BaseAdapter {
 //		holder.image.setImageResource(MovieListActivity.resouce[position%3]);
 		holder.image.setUrl(data.get(position).getPictureUrl());
 		holder.text.setText(data.get(position).getName());
+		int width = (int) (parent.getWidth()-80*mDensity)/3;
+		contentView.setLayoutParams(new AbsListView.LayoutParams(width, (width*4)/3));
 		return contentView;
 	}
 	

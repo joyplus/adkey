@@ -1,13 +1,13 @@
 package com.joyplus.ad.test;
 
-import com.joyplus.ad.html5.Html5DemoActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+
+import com.joyplus.ad.html5.Html5DemoActivity;
 
 public class MainActivity extends Activity implements OnClickListener{
 

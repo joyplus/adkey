@@ -5,6 +5,7 @@ public class GroupInfo {
 	private int id;
 	private String name;
 	private String pictureUrl;
+	private String movieUrl;
 	
 	public int getId() {
 		return id;
@@ -23,5 +24,11 @@ public class GroupInfo {
 	}
 	public void setPictureUrl(String pictureUrl) {
 		this.pictureUrl = pictureUrl;
+	}
+	public String getMovieUrl() {
+		return movieUrl;
+	}
+	public void setMovieUrl(String movieUrl) {
+		this.movieUrl = movieUrl;
 	}
 }
