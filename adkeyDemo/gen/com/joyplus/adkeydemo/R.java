@@ -27,20 +27,21 @@ public final class R {
         public static final int p1=0x7f020001;
     }
     public static final class id {
-        public static final int adsdkContent=0x7f080007;
-        public static final int close=0x7f08000d;
-        public static final int image=0x7f080008;
-        public static final int menu_settings=0x7f08000e;
-        public static final int showVideoInsterstitialCache=0x7f08000a;
-        public static final int showVideoInsterstitialOnline=0x7f080009;
+        public static final int adsdkContent=0x7f080008;
+        public static final int close=0x7f08000e;
+        public static final int image=0x7f080009;
+        public static final int menu_settings=0x7f08000f;
+        public static final int showVideoInsterstitialCache=0x7f08000b;
+        public static final int showVideoInsterstitialOnline=0x7f08000a;
         public static final int show_banner=0x7f080000;
+        public static final int show_floatlayout=0x7f080004;
         public static final int show_mini=0x7f080003;
-        public static final int show_patch_after=0x7f080005;
-        public static final int show_patch_before=0x7f080004;
-        public static final int show_patch_middle=0x7f080006;
+        public static final int show_patch_after=0x7f080006;
+        public static final int show_patch_before=0x7f080005;
+        public static final int show_patch_middle=0x7f080007;
         public static final int show_video=0x7f080002;
-        public static final int spinner1=0x7f08000b;
-        public static final int spinner2=0x7f08000c;
+        public static final int spinner1=0x7f08000c;
+        public static final int spinner2=0x7f08000d;
         public static final int textView1=0x7f080001;
     }
     public static final class layout {

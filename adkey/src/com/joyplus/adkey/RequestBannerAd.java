@@ -163,6 +163,8 @@ public class RequestBannerAd extends RequestAd<BannerAd> {
 					url.URL         = mTrackingUrl;
 					response.setmTrackingUrl(url);
 				}
+				String Creative_res_url = this.getAttribute(doc, "creative_res_url","src");
+				response.SetCreative_res_url(Creative_res_url);
 				//end change by Jas
 				String skipOverlay = this.getAttribute(doc, "htmlString", "skipoverlaybutton");
 				if (skipOverlay != null){

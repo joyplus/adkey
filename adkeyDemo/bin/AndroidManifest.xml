@@ -52,6 +52,9 @@
         <activity android:name="com.joyplus.adkeydemo.PatchMiddleActivity"
            	android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" /> 
+        <activity android:name="com.joyplus.adkeydemo.FloatLayoutActivity"
+           	android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
         <!--add blew two activities -->
         <activity android:name="com.joyplus.adkey.video.RichMediaActivity"
               android:configChanges="keyboard|keyboardHidden|orientation"/>

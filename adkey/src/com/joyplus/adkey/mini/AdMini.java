@@ -14,12 +14,8 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.Toast;
-
 import com.joyplus.adkey.Ad;
 import com.joyplus.adkey.AdListener;
 import com.joyplus.adkey.AdRequest;
@@ -28,9 +24,8 @@ import com.joyplus.adkey.Const;
 import com.joyplus.adkey.RequestBannerAd;
 import com.joyplus.adkey.RequestRichMediaAd;
 import com.joyplus.adkey.Util;
-import com.joyplus.adkey.video.ResourceManager;
+import com.joyplus.adkey.Util.TranslateAnimationType;
 import com.joyplus.adkey.video.RichMediaAd;
-import com.joyplus.adkey.widget.DownloadVideoThread;
 import com.joyplus.adkey.widget.SerializeManager;
 
 public class AdMini extends FrameLayout implements AdListener{
@@ -172,6 +167,8 @@ public class AdMini extends FrameLayout implements AdListener{
 				RemoveAllUI();
 				Util.CACHE_MODE = true;
 				mAdMiniView = new AdMiniView(mContext, (RichMediaAd) mResponse, AdMini.this);
+				mAdMiniView.SetAnimation(mTranslateAnimationType==null?
+						TranslateAnimationType.UP:mTranslateAnimationType);
 				AdMini.this.addView(mAdMiniView,new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
 						   LayoutParams.MATCH_PARENT, Gravity.CENTER));
 				notifyAdListener(true, AD_SHOWN);
@@ -398,4 +395,12 @@ public class AdMini extends FrameLayout implements AdListener{
 			}
 		});
 	}
+	
+	//for TranslateAnimation
+	public void SetAnimation(TranslateAnimationType type){
+		if(type != null){
+			mTranslateAnimationType = type;
+		}
+	}
+	private TranslateAnimationType mTranslateAnimationType = TranslateAnimationType.RANDOM;
 }

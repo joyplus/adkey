@@ -1,7 +1,6 @@
-package com.joyplus.adkey.mini;
+package com.joyplus.adkey.floatlayout;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.File;
 import java.text.MessageFormat;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -9,8 +8,8 @@ import java.util.Vector;
 import com.joyplus.adkey.AdListener;
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.Util;
-import com.joyplus.adkey.Util.TranslateAnimationType;
 import com.joyplus.adkey.Monitorer.AdMonitorManager;
+import com.joyplus.adkey.Util.TranslateAnimationType;
 import com.joyplus.adkey.download.ImpressionThread;
 import com.joyplus.adkey.video.InterstitialData;
 import com.joyplus.adkey.video.RichMediaAd;
@@ -33,12 +32,8 @@ import android.media.MediaPlayer.OnPreparedListener;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -46,7 +41,7 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-public class AdMiniView extends RelativeLayout{
+public class FloatLayoutView extends RelativeLayout{
 
 	private boolean    animation  = true;
 	private Context    mContext   = null;
@@ -75,23 +70,23 @@ public class AdMiniView extends RelativeLayout{
 	
 	private boolean Completed = false;
 	
-	public AdMiniView(final Context context ,final RichMediaAd response, final AdListener adListener) {
+	public FloatLayoutView(final Context context ,final RichMediaAd response, final AdListener adListener) {
 		this(context, response, true, adListener);
 	}
-	public AdMiniView(final Context context, final RichMediaAd response, final boolean animation, final AdListener adListener) {
+	public FloatLayoutView(final Context context, final RichMediaAd response, final boolean animation, final AdListener adListener) {
 		super(context);
 		this.mAd = response;
 		mContext = context;
 		this.animation = animation;
 		this.adListener = adListener;
-		InitResource();
+		//InitResource();
 	}
-	private void InitResource(){
+	public void InitResource(){
 		if(mAd == null){
 			notifyfinish(false);
 			return;
 		}
-		AdMiniView.this.setBackgroundColor(Color.TRANSPARENT);
+		FloatLayoutView.this.setBackgroundColor(Color.TRANSPARENT);
 		if(mAd.getType() == Const.INTERSTITIAL){
 			InitInterstitialView();
 		} else if(mAd.getType() == Const.VIDEO){
@@ -118,7 +113,17 @@ public class AdMiniView extends RelativeLayout{
 				}
 				mVideoView = null;
 			}
-			AdMiniView.this.removeAllViews();
+			if(mInterstitialImageView != null){//for animation
+				if(animation){
+					if(mTranslateAnimationType == null || mTranslateAnimationType == TranslateAnimationType.NOAN){
+					}else{
+					     mInterstitialImageView.startAnimation(Util.GetExitTranslateAnimation(mTranslateAnimationType));
+					}
+				}
+				mRootLayout.removeView(mInterstitialImageView);
+				mInterstitialImageView = null;
+			}
+			FloatLayoutView.this.removeAllViews();
 			if(adListener != null){
 				adListener.adClosed(mAd, Completed);
 			}
@@ -142,7 +147,7 @@ public class AdMiniView extends RelativeLayout{
 		mVideoLayout = new FrameLayout(mContext);//add to this RelativeLayout
 		mVideoLayout.setBackgroundColor(Color.TRANSPARENT);
 		mVideoLayout.setFocusable(false);
-		AdMiniView.this.addView(mVideoLayout, new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+		FloatLayoutView.this.addView(mVideoLayout, new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
 						   LayoutParams.MATCH_PARENT, Gravity.CENTER));
 		
 		InitVideoViewUI();
@@ -179,8 +184,6 @@ public class AdMiniView extends RelativeLayout{
 		mVideoView.setOnCompletionListener(this.mOnVideoCompletionListener);
 		mVideoView.setOnErrorListener(this.mOnVideoErrorListener);
 		mVideoView.setFocusable(false);
-		mVideoView.setFocusableInTouchMode(false);
-		//mVideoView.setOnKeyListener(this.mOnVideoKeyListener);
 		//mVideoView.setOnInfoListener(this.mOnVideoInfoListener);
 		mVideoLayout.addView(mVideoView,
 				   new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
@@ -188,11 +191,11 @@ public class AdMiniView extends RelativeLayout{
 	}
 	private void InitLoadingUI(){
 		mLoadingView = new FrameLayout(mContext);
-		mLoadingView.setFocusable(false);  
+		mLoadingView.setFocusable(false);
 		mLoadingView.setBackgroundColor(Color.TRANSPARENT);
 		TextView loadingText = new TextView(mContext);
 		loadingText.setText(Const.LOADING);
-		loadingText.setBackgroundColor(Color.TRANSPARENT); 
+		loadingText.setBackgroundColor(Color.TRANSPARENT);
 		loadingText.setFocusable(false);
 		mLoadingView.addView(loadingText, new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
 				LayoutParams.WRAP_CONTENT, Gravity.CENTER));
@@ -200,7 +203,6 @@ public class AdMiniView extends RelativeLayout{
 				new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
 						LayoutParams.WRAP_CONTENT, Gravity.CENTER));// fill_parent
 	}
-	
 	OnTimeEventListener mOnVideoTimeEventListener = new OnTimeEventListener(){
 		@Override
 		public void onTimeEvent(final int time){
@@ -212,14 +214,6 @@ public class AdMiniView extends RelativeLayout{
 					event.timestamp = System.currentTimeMillis();
 					TrackerService.requestTrack(event);
 				}
-		}
-	};
-	OnKeyListener mOnVideoKeyListener = new OnKeyListener(){
-		@Override
-		public boolean onKey(View v, int keyCode, KeyEvent event) {
-			// TODO Auto-generated method stub
-			Log.d("Jas","mOnVideoKeyListener-->"+KeyEvent.keyCodeToString(keyCode));
-			return true;
 		}
 	};
 	OnErrorListener mOnVideoErrorListener = new OnErrorListener(){
@@ -305,7 +299,7 @@ public class AdMiniView extends RelativeLayout{
 		mInterstitialData = this.mAd.getInterstitial();
 		
 		mRootLayout = new FrameLayout(mContext);
-		AdMiniView.this.addView(mRootLayout, new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+		FloatLayoutView.this.addView(mRootLayout, new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
 				   LayoutParams.MATCH_PARENT, Gravity.CENTER));
 		
 		mInterstitialView = new WebFrame((Activity)mContext, true, false, false);
@@ -314,57 +308,44 @@ public class AdMiniView extends RelativeLayout{
 		mRootLayout.addView(mInterstitialView, new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
 				   LayoutParams.MATCH_PARENT, Gravity.CENTER));
 		
-		new ImpressionThread(mContext, mAd.getmImpressionUrl(), Util.PublisherId,Util.AD_TYPE.FULL_SCREEN_VIDEO).start();
-		if(mAd.getmTrackingUrl().size()>0){
-			AdMonitorManager.getInstance(mContext).AddTRACKINGURL(mAd.getmTrackingUrl());
-		}
+//		new ImpressionThread(mContext, mAd.getmImpressionUrl(), Util.PublisherId,Util.AD_TYPE.FULL_SCREEN_VIDEO).start();
+//		if(mAd.getmTrackingUrl().size()>0){
+//			AdMonitorManager.getInstance(mContext).AddTRACKINGURL(mAd.getmTrackingUrl());
+//		}
 		
 		switch (mInterstitialData.interstitialType){
 			case InterstitialData.INTERSTITIAL_MARKUP:
-				if(mAd.GetCreative_res_url() !=null && mAd.GetCreative_res_url().length()>0){
-					ShowImage(mAd.GetCreative_res_url());//show image oline.
-				}else if(Util.isCacheLoaded()){
-					String textData = this.mInterstitialData.interstitialMarkup;
-					if(textData!=null){
-						int startInd = textData.indexOf("<img")+10;
-						int endInd = textData.indexOf(">", startInd)-1;
-						String thisImageText = textData.substring(startInd, endInd);
-						URL url = null;
-						try{
-							url = new URL(thisImageText);
-						} catch (MalformedURLException e){
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						if (url != null){
-							Util.ExternalName = "." + Util.getExtensionName(url.getPath());
-						} else {
-							Util.ExternalName = ".jpg";
-						}
-						this.mInterstitialView.loadUrl(textData);
-					}
-					mInterstitialView.setMarkup(mInterstitialData.interstitialMarkup);
-				}else{
+				if(Util.isCacheLoaded()){
+					//Log.d("Jas","Util.isCacheLoaded");
+					//mInterstitialView.setMarkup(mInterstitialData.interstitialMarkup);
+					ShowImage(mAd.GetCreative_res_url(),true);//show image oline.
+				}else if(mAd.GetCreative_res_url() !=null && mAd.GetCreative_res_url().length()>0){
+					ShowImage(mAd.GetCreative_res_url(),false);//show image oline.
+				}else {
 					notifyfinish(false);
 				}
 				break;
 			case InterstitialData.INTERSTITIAL_URL:
 				this.mInterstitialView.loadUrl(mInterstitialData.interstitialUrl);
 				break;
-				default: {
+			default: {
 					notifyfinish(false);
 					return;
 				}
 		}
-		InitViewTimeOut();
+		//InitViewTimeOut();
 	}
-	private void ShowImage(String getCreative_res_url) {
+	private void ShowImage(String getCreative_res_url,boolean location) {
 		 //TODO Auto-generated method stub
+		new ImpressionThread(mContext, mAd.getmImpressionUrl(), Util.PublisherId,Util.AD_TYPE.FULL_SCREEN_VIDEO).start();
+		if(mAd.getmTrackingUrl().size()>0){
+			AdMonitorManager.getInstance(mContext).AddTRACKINGURL(mAd.getmTrackingUrl());
+		}
 		if(mInterstitialImageView != null){
 			if(animation){
-				if(mTranslateAnimationType==null || mTranslateAnimationType == TranslateAnimationType.NOAN){
+				if(mTranslateAnimationType == null || mTranslateAnimationType == TranslateAnimationType.NOAN){
 				}else{
-					mInterstitialImageView.startAnimation(Util.GetTranslateAnimation(mTranslateAnimationType));
+					mInterstitialImageView.startAnimation(Util.GetExitTranslateAnimation(mTranslateAnimationType));
 				}
 			}
 			mRootLayout.removeView(mInterstitialImageView);
@@ -378,11 +359,24 @@ public class AdMiniView extends RelativeLayout{
 		 
 		mRootLayout.addView(mInterstitialImageView, new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
 				   LayoutParams.MATCH_PARENT, Gravity.CENTER));
-		String text = MessageFormat.format(Const.IMAGE_BODY,getCreative_res_url,null,null);
-		text = Uri.encode(Const.HIDE_BORDER + text);
-		mInterstitialImageView.loadData(text, "text/html", Const.ENCODING);
+		if(location){
+			String baseUrl = "file://";
+			baseUrl = baseUrl+Const.DOWNLOAD_PATH+Util.VideoFileDir;
+			String textPath =  Const.HIDE_BORDER + "<img src='"
+					+ (Const.DOWNLOAD_DISPLAY_IMG)+Util.ExternalName + "'/>";
+			if(!(new File(Const.DOWNLOAD_PATH+Util.VideoFileDir
+					+(Const.DOWNLOAD_DISPLAY_IMG)+Util.ExternalName)).exists()){
+				return;
+			}
+			mInterstitialImageView.clearCache(false);
+			mInterstitialImageView.loadDataWithBaseURL(baseUrl, textPath, "text/html","utf-8", null);
+		}else{
+			String text = MessageFormat.format(Const.IMAGE_BODY,getCreative_res_url,null,null);
+			text = Uri.encode(Const.HIDE_BORDER + text);
+			mInterstitialImageView.loadData(text, "text/html", Const.ENCODING);
+		}
 		if (this.animation) {
-			if(mTranslateAnimationType==null || mTranslateAnimationType == TranslateAnimationType.NOAN){
+			if(mTranslateAnimationType == null || mTranslateAnimationType == TranslateAnimationType.NOAN){
 			}else{
 				mInterstitialImageView.startAnimation(Util.GetTranslateAnimation(mTranslateAnimationType));
 			}
@@ -423,11 +417,11 @@ public class AdMiniView extends RelativeLayout{
 			
 		}
 	};
-	//add by Jas for animation
-	private TranslateAnimationType mTranslateAnimationType = TranslateAnimationType.RANDOM;
-	public  void SetAnimation(TranslateAnimationType type){
-		if(type != null){
-			mTranslateAnimationType = type;
-		}
+	
+	
+	//for TranslateAnimation
+	public void SetAnimation(TranslateAnimationType type){
+		mTranslateAnimationType = type;
 	}
+	private TranslateAnimationType mTranslateAnimationType = TranslateAnimationType.RANDOM;
 }

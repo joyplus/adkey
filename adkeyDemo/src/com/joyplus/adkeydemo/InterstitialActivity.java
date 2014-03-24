@@ -12,7 +12,7 @@ import android.widget.Toast;
 public class InterstitialActivity extends Activity implements AdListener
 {
 	private AdManager mManager = null;
-	private String publisherId = "9a712490063b87f2e1549be322d0a809";
+	private String publisherId = "e66444bbed23951b758ea0d6e8f407d9";
 	private boolean cacheMode = false;//
 	 
 	@Override

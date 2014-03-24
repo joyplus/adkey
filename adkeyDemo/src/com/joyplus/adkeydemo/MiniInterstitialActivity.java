@@ -16,7 +16,7 @@ import android.widget.Toast;
 public class MiniInterstitialActivity extends Activity implements AdListener{
 
 	private RelativeLayout layout;
-	private String publisherId = "f809df22cab80d0c8b7de5efb9fe52c9";
+	private String publisherId = "ec85b4cb90ec83bcf8097e207d2ea15a";
 	private boolean animation = true;
     private AdMini mAdMini;
 	@Override 

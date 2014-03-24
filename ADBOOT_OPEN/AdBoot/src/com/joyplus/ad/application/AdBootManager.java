@@ -1,9 +1,9 @@
 package com.joyplus.ad.application;
 
 import java.io.File;
+import java.lang.Thread.UncaughtExceptionHandler;
 import com.joyplus.ad.AdBootDownloadManager;
 import com.joyplus.ad.AdFileManager;
-import com.joyplus.ad.AdListener;
 import com.joyplus.ad.AdMode;
 import com.joyplus.ad.AdManager.AD;
 import com.joyplus.ad.Monitor.AdMonitorManager;
@@ -12,6 +12,8 @@ import com.joyplus.ad.PublisherId;
 import com.joyplus.ad.data.ADBOOT;
 import com.joyplus.ad.data.AdBootRequest;
 import com.joyplus.ad.data.RequestException;
+import com.joyplus.ad.download.DownLoadListener;
+import com.joyplus.ad.download.Download;
 import com.joyplus.ad.report.AdReportManager;
 import com.joyplus.ad.report.Report;
 import android.content.Context;
@@ -21,12 +23,9 @@ public class AdBootManager extends AdMode{
 	private Context       mContext;
 	private AdBoot        mAdBoot;//
 	private AdBootRequest mAdBootRequest;
+	private Thread        mAdBootRequestThread;
 	private AdBootDownloadManager mDownloadManager;
-	private AdListener    mAdListener;
 	private final static  int TIME = 10;
-	public void SetAdListener(AdListener adlistener){
-		mAdListener = adlistener;
-	}
 	
 	private AdBootManager(){
 		super(AD.ADBOOT);
@@ -42,47 +41,69 @@ public class AdBootManager extends AdMode{
 		if(mAdBoot.GetCUSTOMINFO()==null||mAdBoot.GetCUSTOMINFO().GetDEVICEMOVEMENT() == null || "".equals(mAdBoot.GetCUSTOMINFO().GetDEVICEMOVEMENT()))
 			throw new IllegalArgumentException("dm cannot be null or empty");
 		mDownloadManager = new AdBootDownloadManager(mContext,this,mAdBoot);
+		mDownloadManager.SetDownLoadListener(new AdListsnerer());
 	}
 	
 	
 	@Override
 	public void RequestAD() {
 		// TODO Auto-generated method stub
-		if(mAdBootRequest == null){
-			new Thread(){
+		if(mAdBootRequestThread == null){
+			mAdBootRequestThread = new Thread(){
 				@Override
 				public void run() {
 					// TODO Auto-generated method stub
 					super.run();
-					AddReportNUM();//add report count.
-					mAdBootRequest = new AdBootRequest(AdBootManager.this,mAdBoot);
-					ADBOOT mADBOOT = null;
-					int Count = TIME;
-					while((Count--)>0){
-						try {
-							Thread.sleep(500);
-							mADBOOT = null;
-							mADBOOT = mAdBootRequest.sendRequest();
-							break;
-						} catch (RequestException e) {
-							// TODO Auto-generated catch block
-							mADBOOT = null;
-							e.printStackTrace();
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							mADBOOT = null;
-							e.printStackTrace();
-						}
+					Request();// for request ad.
+					mAdBootRequestThread = null;
+				}
+			};
+			mAdBootRequestThread.setUncaughtExceptionHandler(new UncaughtExceptionHandler(){
+				@Override
+				public void uncaughtException(Thread thread, Throwable ex) {
+					// TODO Auto-generated method stub
+					mAdBootRequest       = null;
+					mAdBootRequestThread = null;
+					if(mAdBootListener != null){//now we can know its fail.
+						mAdBootListener.NoAn();
 					}
-					if(mDownloadManager != null && mADBOOT != null){ 
-						Report();//new we can sure network is OK ,so report first.
-						mDownloadManager.UpdateADBOOT(mADBOOT, mAdBootRequest.GetFileName(), mPublisherId);
-					}
-					mAdBootRequest = null;
-			}}.start();			
+				}}
+			);
+			mAdBootRequestThread.start();
 		}
 	}
-	
+	private void Request(){
+		if(mAdBootRequest != null)return;
+		AddReportNUM();//add report count.
+		mAdBootRequest = new AdBootRequest(AdBootManager.this,mAdBoot);
+		ADBOOT mADBOOT = null;
+		int Count = TIME;
+		while((Count--)>0){
+			try {
+				Thread.sleep(500);
+				mADBOOT = null;
+				mADBOOT = mAdBootRequest.sendRequest();
+				break;
+			} catch (RequestException e) {
+				// TODO Auto-generated catch block
+				mADBOOT = null;
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				mADBOOT = null;
+				e.printStackTrace();
+			}
+		}
+		if(mDownloadManager != null && mADBOOT != null){ 
+			Report();//new we can sure network is OK ,so report first.
+			mDownloadManager.UpdateADBOOT(mADBOOT, mAdBootRequest.GetFileName(), mPublisherId);
+		}else{
+			if(mAdBootListener != null){
+				mAdBootListener.NoAn();
+			}
+		}
+		mAdBootRequest = null;
+	}
 	//judge custom local file. we can add report num,when it exist.
 	private void AddReportNUM() {
 		// TODO Auto-generated method stub
@@ -138,4 +159,32 @@ public class AdBootManager extends AdMode{
         	AdMonitorManager.getInstance().AddMonitor(m);
         }
 	}
+	
+	private AdBootListener mAdBootListener;
+	public  void SetAdBootListener(AdBootListener listener){
+		mAdBootListener = listener;
+	}
+	
+	private class AdListsnerer implements DownLoadListener{
+		@Override
+		public void Start(Download download) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void Finish(Download download) {
+			// TODO Auto-generated method stub
+			if(mAdBootListener != null){
+				mAdBootListener.Finish();
+			}
+		}
+		@Override
+		public void NoAD() {
+			// TODO Auto-generated method stub
+			if(mAdBootListener != null){
+				mAdBootListener.NoAd();
+			}
+		}
+	}
+	
 }

@@ -15,7 +15,7 @@ public class AdViewActivity extends Activity implements AdListener
 { 
 	private RelativeLayout layout; 
 	private AdView mAdView;
-	private String publisherId = "1e744dbf3280760def03181c5d522ef7";
+	private String publisherId = "0e8c1a6799db6d261802d2d11b60e063";
 	private boolean animation = true;
     
 	@Override 

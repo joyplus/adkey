@@ -1,10 +1,9 @@
 package com.joyplus.ad.download;
 
 import com.joyplus.ad.download.Downloader.DownloaderState;
-
 import android.webkit.URLUtil;
 
-public class Download implements DownloaderListener{
+public class Download implements DownloaderListener,DownLoadListener{
       public enum STATE{
     	  IDLE , DOWNLOAD , FINISH
       }
@@ -16,8 +15,24 @@ public class Download implements DownloaderListener{
 	  
 	  public STATE  State = STATE.IDLE;
 	  
-	  
-	  
+	  public Download(){
+	  }
+	  public Download(Download down){
+		  if(down != null){
+			  URL = down.URL;
+			  WriteToTargetFile = down.WriteToTargetFile;
+			  TargetFile        = down.TargetFile;
+			  LocalFile         = down.LocalFile;
+			  State             = down.State;
+		  }
+	  }
+	  public Download CreateNew(){
+		  return new Download(this);
+	  }
+	  private DownLoadListener mDownLoadLinstener;
+	  public  void SetDownLoadListener(DownLoadListener downloadListener){
+		  mDownLoadLinstener = downloadListener;
+	  }
 	  public boolean Check(){
 		  if(URLUtil.isHttpsUrl(URL)||URLUtil.isHttpUrl(URL))return false;
 		  if(TargetFile == null || "".equals(TargetFile))return false;
@@ -30,7 +45,11 @@ public class Download implements DownloaderListener{
 		@Override
 		public void DownloaderStateChange(DownloaderState state) {
 			// TODO Auto-generated method stub
-			
+			if(DownloaderState.INIT == state){
+				if(mDownLoadLinstener != null){
+					mDownLoadLinstener.Start(this);
+				}
+			}
 		}
 	
 	
@@ -46,7 +65,9 @@ public class Download implements DownloaderListener{
 		@Override
 		public void DownloaderFinish() {
 			// TODO Auto-generated method stub
-			
+			if(mDownLoadLinstener != null){
+				mDownLoadLinstener.Finish(this);
+			}
 		}
 
 
@@ -63,6 +84,21 @@ public class Download implements DownloaderListener{
 			  .append(" ,State="+State.toString())
 			  .append(" }");			
 			return ap.toString();
+		}
+		@Override
+		public void Start(Download download) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void Finish(Download download) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void NoAD() {
+			// TODO Auto-generated method stub
+			
 		}
 		
 	 
