@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MovieListActivity" >
-        <com.joyplus.ad.test.HorizontalScrollView android:layout_width="fill_parent"
+        <com.joyplus.ad.test.ui.HorizontalScrollView android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:scrollbars="none"
             android:id="@+id/hscroll_back"
@@ -18,8 +18,8 @@
                     android:focusable="false"
                     android:src="@drawable/b3"/>
             </LinearLayout>
-        </com.joyplus.ad.test.HorizontalScrollView>
-        <com.joyplus.ad.test.HorizontalScrollView android:layout_width="fill_parent"
+        </com.joyplus.ad.test.ui.HorizontalScrollView>
+        <com.joyplus.ad.test.ui.HorizontalScrollView android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/hscroll"
             android:scrollbars="none"
@@ -35,5 +35,5 @@
                 android:id="@+id/layout">
                 
             </LinearLayout>
-        </com.joyplus.ad.test.HorizontalScrollView>
+        </com.joyplus.ad.test.ui.HorizontalScrollView>
 </RelativeLayout>

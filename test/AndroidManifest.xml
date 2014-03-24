@@ -16,16 +16,22 @@
         android:label="@string/app_name"
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         <activity
-            android:name="com.joyplus.ad.test.MovieListActivity"
+            android:name="com.joyplus.ad.test.MainActivity"
             android:label="@string/app_name" >
-        </activity>
-        <activity android:name="com.joyplus.ad.test.GroupListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.joyplus.ad.test.MovieListActivity">
+        </activity>
+        <activity android:name="com.joyplus.ad.test.GroupListActivity">
+        </activity>
+        <activity
+            android:name="com.joyplus.ad.html5.Html5DemoActivity">
+         </activity>
     </application>
 
 </manifest>

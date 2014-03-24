@@ -3,6 +3,8 @@ package com.joyplus.ad.test;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.joyplus.ad.test.entity.GroupInfo;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.GridView;
-import android.widget.Toast;
 
 public class GroupListActivity extends Activity implements OnItemSelectedListener, OnItemClickListener{
 
@@ -58,6 +59,6 @@ public class GroupListActivity extends Activity implements OnItemSelectedListene
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		// TODO Auto-generated method stub
 		startActivity(new Intent(this, MovieListActivity.class));
-		Toast.makeText(this, mGroups.get(arg2).getName() + " Click", Toast.LENGTH_SHORT).show();
+//		Toast.makeText(this, mGroups.get(arg2).getName() + " Click", Toast.LENGTH_SHORT).show();
 	}
 }

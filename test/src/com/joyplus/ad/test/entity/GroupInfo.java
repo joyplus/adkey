@@ -1,4 +1,4 @@
-package com.joyplus.ad.test;
+package com.joyplus.ad.test.entity;
 
 public class GroupInfo {
 

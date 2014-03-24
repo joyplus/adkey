@@ -1,10 +1,13 @@
 package com.joyplus.ad.test;
 
+import com.joyplus.ad.test.ui.HorizontalScrollView;
+import com.joyplus.ad.test.ui.OnScrollChangeListener;
+import com.joyplus.ad.test.util.Log;
+
 import greendroid.widget.AsyncImageView;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -90,7 +93,7 @@ public class MovieListActivity extends Activity{
     	private int mLastX = 0;
     	private int mLastOldx = 0;
 		@Override
-		void onScrollChanged(HorizontalScrollView scrollView, int x, int y,
+		public void onScrollChanged(HorizontalScrollView scrollView, int x, int y,
 				int oldx, int oldy) {
 			// TODO Auto-generated method stub
 			int dx = x*(mBackgroundImage.getWidth() - mScreenWidth)/(mLinearLayout.getWidth() - mScreenWidth);

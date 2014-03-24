@@ -1,4 +1,4 @@
-package com.joyplus.ad.test;
+package com.joyplus.ad.test.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;

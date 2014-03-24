@@ -4,6 +4,8 @@ import greendroid.widget.AsyncImageView;
 
 import java.util.List;
 
+import com.joyplus.ad.test.entity.GroupInfo;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
