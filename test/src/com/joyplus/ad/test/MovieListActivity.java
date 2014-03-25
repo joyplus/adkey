@@ -60,17 +60,18 @@ public class MovieListActivity extends Activity{
 			// TODO Auto-generated method stub
 			switch (msg.what) {
 			case MESSAGE_GETDATA_SUCCESS:
+				trackingByServer();
 				loadBackgroundImage();
 				break;
 			case MESSAGE_GETDATA_FAILED:
 			case MESSAGE_LOADBG_FAILED:
 				removeDialog(DIALOG_WAITING);
-				Toast.makeText(MovieListActivity.this, "get data failed", Toast.LENGTH_SHORT).show();
+				String error_code = (String) msg.obj;
+				Toast.makeText(MovieListActivity.this, "get data failed " + error_code, Toast.LENGTH_SHORT).show();
 				break;
 			case MESSAGE_LOADBG_SUCCESS:
 				removeDialog(DIALOG_WAITING);
 				initMovieList();
-				trackingByServer();
 				break;
 			default:
 				super.handleMessage(msg);
@@ -128,7 +129,9 @@ public class MovieListActivity extends Activity{
 			@Override
 			public void onLoadingFailed(AsyncImageView imageView, Throwable throwable) {
 				// TODO Auto-generated method stub
-				mHandler.sendEmptyMessage(MESSAGE_LOADBG_FAILED);
+				Message msg = mHandler.obtainMessage(MESSAGE_LOADBG_FAILED);
+				msg.obj = throwable.getMessage();
+				mHandler.sendMessage(msg);
 			}
 			
 			@Override
@@ -261,7 +264,9 @@ public class MovieListActivity extends Activity{
 					}
 					mHandler.sendEmptyMessage(MESSAGE_GETDATA_SUCCESS);
 				}else{
-					mHandler.sendEmptyMessage(MESSAGE_GETDATA_FAILED);
+					Message msg = mHandler.obtainMessage(MESSAGE_GETDATA_FAILED);
+					msg.obj = _metaObj.get("code");
+					mHandler.sendMessage(msg);
 				}
 			} catch (Exception e) {
 				// TODO: handle exception
