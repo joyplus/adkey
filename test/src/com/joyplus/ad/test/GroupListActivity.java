@@ -6,7 +6,6 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -32,17 +31,12 @@ public class GroupListActivity extends Activity implements OnItemSelectedListene
 	private static final int DIALOG_WAITING = 0;
 	private static final int MESSAGE_GETDATA_SUCESS = 0;
 	private static final int MESSAGE_GETDATA_FAILED = MESSAGE_GETDATA_SUCESS + 1;
-	private static final String BASE_URL = "http://advapi.yue001.com/advapi/v1/topic/list?bid=zino";
-	private static final String TAG = GroupListActivity.class.getName();
+	private static final String TAG = GroupListActivity.class.getSimpleName();
 	private GridView mGridView;
 	private GroupAdapter mAdapter;
 	private List<GroupInfo> mGroups = new ArrayList<GroupInfo>(); 
-//	private String[] resorce_urls = {"http://www.tvptv.com/UpNewImg/42%28146%29.jpg",
-//			"http://p.ganyou.com/attachment/image/2011/04/24/121323605.jpg",
-//			"http://a3.att.hudong.com/06/48/01300000931713128019481868712.jpg",
-//			"http://photocdn.sohu.com/20100612/Img272757506.jpg"};
+	private String mUrl;
 	
-	@SuppressLint("HandlerLeak")
 	private Handler mHandler = new Handler(){
 
 		@Override
@@ -69,6 +63,7 @@ public class GroupListActivity extends Activity implements OnItemSelectedListene
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_group);
+		mUrl = getIntent().getStringExtra("url");
 		mGridView = (GridView) findViewById(R.id.grid);
 		mAdapter = new GroupAdapter(mGroups, this);
 		mGridView.setAdapter(mAdapter);
@@ -126,7 +121,7 @@ public class GroupListActivity extends Activity implements OnItemSelectedListene
 		public void run() {
 			// TODO Auto-generated method stub
 			try {
-				String result = HttpTools.get(GroupListActivity.this, BASE_URL);
+				String result = HttpTools.get(GroupListActivity.this, mUrl);
 				Log.d(TAG, "bangdan result --->" + result);
 				JSONObject jsonObj = new JSONObject(result);
 				JSONObject _metaObj = jsonObj.getJSONObject("_meta");

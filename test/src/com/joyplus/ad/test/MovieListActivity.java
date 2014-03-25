@@ -1,6 +1,7 @@
 package com.joyplus.ad.test;
 
 import greendroid.widget.AsyncImageView;
+import greendroid.widget.AsyncImageView.OnImageViewLoadListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,11 +9,11 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -35,10 +36,12 @@ import com.joyplus.ad.test.util.Log;
 
 public class MovieListActivity extends Activity{
 
-	private static final String TAG = MovieListActivity.class.getName();
+	private static final String TAG = MovieListActivity.class.getSimpleName();
 	private static final int DIALOG_WAITING = 0;
 	private static final int MESSAGE_GETDATA_SUCCESS = 0;
 	private static final int MESSAGE_GETDATA_FAILED = MESSAGE_GETDATA_SUCCESS + 1;
+	private static final int MESSAGE_LOADBG_SUCCESS = MESSAGE_GETDATA_FAILED + 1;
+	private static final int MESSAGE_LOADBG_FAILED = MESSAGE_LOADBG_SUCCESS + 1;
 	
 	private LinearLayout mLinearLayout;
 	private HorizontalScrollView mScrollView;
@@ -48,12 +51,8 @@ public class MovieListActivity extends Activity{
 	private float mDensity;
 	private List<MovieInfo> mMovies = new ArrayList<MovieInfo>();
 	private String mBackGroundUrl = null;
-//	private String[] resorce_urls = {"http://www.tvptv.com/UpNewImg/42%28146%29.jpg",
-//			"http://p.ganyou.com/attachment/image/2011/04/24/121323605.jpg",
-//			"http://a3.att.hudong.com/06/48/01300000931713128019481868712.jpg",
-//			"http://photocdn.sohu.com/20100612/Img272757506.jpg"};
+	private String mTrackingUrl = null;
 	
-	@SuppressLint("HandlerLeak")
 	private Handler mHandler = new Handler(){
 
 		@Override
@@ -61,12 +60,17 @@ public class MovieListActivity extends Activity{
 			// TODO Auto-generated method stub
 			switch (msg.what) {
 			case MESSAGE_GETDATA_SUCCESS:
-				removeDialog(DIALOG_WAITING);
-				initMovieList();
+				loadBackgroundImage();
 				break;
 			case MESSAGE_GETDATA_FAILED:
+			case MESSAGE_LOADBG_FAILED:
 				removeDialog(DIALOG_WAITING);
 				Toast.makeText(MovieListActivity.this, "get data failed", Toast.LENGTH_SHORT).show();
+				break;
+			case MESSAGE_LOADBG_SUCCESS:
+				removeDialog(DIALOG_WAITING);
+				initMovieList();
+				trackingByServer();
 				break;
 			default:
 				super.handleMessage(msg);
@@ -103,19 +107,53 @@ public class MovieListActivity extends Activity{
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
-		Log.d("Main", mScrollView.getScrollX()+"");
 		return super.onKeyDown(keyCode, event);
 	}
     
-    private void initMovieList(){
+    private void loadBackgroundImage(){
+    	mBackgroundImage.setOnImageViewLoadListener(new OnImageViewLoadListener() {
+			
+			@Override
+			public void onLoadingStarted(AsyncImageView imageView) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onLoadingFailed(AsyncImageView imageView, Throwable throwable) {
+				// TODO Auto-generated method stub
+				mHandler.sendEmptyMessage(MESSAGE_LOADBG_FAILED);
+			}
+			
+			@Override
+			public void onLoadingEnded(AsyncImageView imageView, Bitmap image) {
+				// TODO Auto-generated method stub
+				mHandler.sendEmptyMessage(MESSAGE_LOADBG_SUCCESS);
+			}
+		});
     	mBackgroundImage.setUrl(mBackGroundUrl);
+    }
+    
+    private void trackingByServer(){
+    	if(mTrackingUrl!=null){
+    		new Thread(new Runnable() {
+    			
+    			@Override
+    			public void run() {
+    				// TODO Auto-generated method stub
+    				HttpTools.get(MovieListActivity.this, mTrackingUrl);
+    			}
+    		}).start();	
+    	}
+    }
+    
+    private void initMovieList(){
     	int width = (int) (mScreenWidth-40*mDensity)/5;
     	int height = (int) (width*4/3 + 40*mDensity);
     	LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
@@ -209,6 +247,9 @@ public class MovieListActivity extends Activity{
 				JSONObject _metaObj = resultObj.getJSONObject("_meta");
 				if("00000".equals(_metaObj.get("code"))){
 					mBackGroundUrl = resultObj.getString("creativeUrl");
+					if(resultObj.has("trackingUrl")){
+						mTrackingUrl = resultObj.getString("trackingUrl");
+					}
 					JSONArray items = resultObj.getJSONArray("items");
 					for(int i=0; i<items.length(); i++){
 						JSONObject item = items.getJSONObject(i);

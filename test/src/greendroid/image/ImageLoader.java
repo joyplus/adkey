@@ -17,8 +17,15 @@ package greendroid.image;
 
 import greendroid.util.Config;
 import greendroid.util.GDUtils;
+import greendroid.util.Md5Util;
+import greendroid.util.Time;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -70,6 +77,7 @@ public class ImageLoader {
     private static ExecutorService sExecutor;
     private static BitmapFactory.Options sDefaultOptions;
     private static AssetManager sAssetManager;
+    private static File sImageCacheDir;
 
     public ImageLoader(Context context) {
         if (sImageCache == null) {
@@ -86,6 +94,10 @@ public class ImageLoader {
         	sDefaultOptions.inTargetDensity = context.getResources().getDisplayMetrics().densityDpi;
         }
         sAssetManager = context.getAssets();
+        sImageCacheDir = context.getExternalCacheDir();
+        if(!sImageCacheDir.exists()){
+        	sImageCacheDir.mkdirs();
+        }
     }
 
     public Future<?> loadImage(String url, ImageLoaderCallback callback) {
@@ -113,6 +125,31 @@ public class ImageLoader {
             mBitmapProcessor = bitmapProcessor;
             mOptions = options;
         }
+        
+        private String getNameFromeUrl(String url){
+        	String name = Md5Util.md5(mUrl);
+        	return name;
+        }
+        
+        private void saveBitamp(String url, Bitmap bitmap){
+        	String fileName = getNameFromeUrl(url);
+        	try {
+        		File f = new File(sImageCacheDir, fileName);
+        		if(Config.GD_INFO_LOGS_ENABLED){
+        			Log.i(LOG_TAG, f.getAbsolutePath());
+        		}
+        		if(!f.exists()){
+        			f.createNewFile();
+        		}
+        		FileOutputStream out = new FileOutputStream(f);
+        		bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+    		    out.flush();
+    		    out.close();
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+        }
 
         public void run() {
 
@@ -133,14 +170,34 @@ public class ImageLoader {
                 InputStream inputStream = null;
                 
                 if (mUrl.startsWith("file:///android_asset/")) {
-                    inputStream = sAssetManager.open(mUrl.replaceFirst("file:///android_asset/", ""));
-                } else {
-                    inputStream = new URL(mUrl).openStream();
+                	inputStream = sAssetManager.open(mUrl.replaceFirst("file:///android_asset/", ""));
+                	bitmap = BitmapFactory.decodeStream(inputStream, null, (mOptions == null) ? sDefaultOptions : mOptions);
+                }else{
+                	File cacheFile = new File(sImageCacheDir, getNameFromeUrl(mUrl));
+                    if(cacheFile.exists()){
+                    	inputStream = new FileInputStream(cacheFile);
+                    	bitmap = BitmapFactory.decodeStream(inputStream, null, (mOptions == null) ? sDefaultOptions : mOptions);
+                    }
+                    
+                    if(bitmap == null){
+                    	// TODO Cyril: Use a AndroidHttpClient?
+//                    	inputStream = new URL(mUrl).openStream();
+                    	HttpURLConnection conn = (HttpURLConnection) new URL(mUrl).openConnection();
+                        conn.setConnectTimeout(3*Time.GD_SECOND);
+                        conn.setReadTimeout(20*Time.GD_SECOND);
+                        conn.setDoInput(true);
+                        conn.connect();
+                        inputStream = conn.getInputStream();
+                        if(inputStream!=null){
+                        	byte[] data = readStream(inputStream);
+                        	bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, (mOptions == null) ? sDefaultOptions : mOptions);
+                        	if(bitmap != null){
+                        		saveBitamp(mUrl, bitmap);
+                        	}
+                        }
+//                    	bitmap = BitmapFactory.decodeStream(inputStream, null, (mOptions == null) ? sDefaultOptions : mOptions);
+                    }
                 }
-
-                // TODO Cyril: Use a AndroidHttpClient?
-                bitmap = BitmapFactory.decodeStream(inputStream, null, (mOptions == null) ? sDefaultOptions : mOptions);
-                
                 if (mBitmapProcessor != null && bitmap != null) {
                     final Bitmap processedBitmap = mBitmapProcessor.processImage(bitmap);
                     if (processedBitmap != null) {
@@ -154,6 +211,7 @@ public class ImageLoader {
                     Log.e(LOG_TAG, "Error while fetching image", e);
                 }
                 throwable = e;
+                h.sendMessage(Message.obtain(h, ON_FAIL, throwable));
             }
 
             if (bitmap == null) {
@@ -167,6 +225,18 @@ public class ImageLoader {
                 h.sendMessage(Message.obtain(h, ON_END, bitmap));
             }
         }
+    }
+    
+    private byte[] readStream(InputStream inStream) throws Exception{      
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();      
+        byte[] buffer = new byte[1024];      
+        int len = 0;      
+        while( (len=inStream.read(buffer)) != -1){      
+            outStream.write(buffer, 0, len);      
+        }      
+        outStream.close();      
+        inStream.close();      
+        return outStream.toByteArray();      
     }
 
     private class ImageHandler extends Handler {

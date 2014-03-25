@@ -125,7 +125,12 @@ public class ImageRequest {
     }
 
     public final boolean isCancelled() {
-        return mFuture.isCancelled();
+    	if(mFuture!=null){
+    		return mFuture.isCancelled();
+    	}else{
+    		return false;
+    	}
+        
     }
 
     private class InnerCallback implements ImageLoaderCallback {

@@ -235,6 +235,9 @@ public class AsyncImageView extends ImageView implements ImageRequestCallback {
 
             if (mBitmap != null) {
                 setImageBitmap(mBitmap);
+                if (mOnImageViewLoadListener != null) {
+                    mOnImageViewLoadListener.onLoadingEnded(this, mBitmap);
+                }
                 return;
             }
 
@@ -302,6 +305,9 @@ public class AsyncImageView extends ImageView implements ImageRequestCallback {
                 mBitmap = GDUtils.getImageCache(getContext()).get(mUrl);
                 if (mBitmap != null) {
                     setImageBitmap(mBitmap);
+                    if (mOnImageViewLoadListener != null) {
+                        mOnImageViewLoadListener.onLoadingEnded(this, mBitmap);
+                    }
                     return;
                 } else {
                     setDefaultImage();

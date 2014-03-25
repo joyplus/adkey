@@ -1,6 +1,5 @@
 package com.joyplus.ad.html5;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -31,17 +30,17 @@ import android.widget.Toast;
 import com.joyplus.ad.test.R;
 import com.joyplus.ad.test.util.Log;
 
-@SuppressLint("HandlerLeak")
 public class Html5DemoActivity extends Activity {
     
 	private RelativeLayout mRoot;
 	private ProgressBar mProgressBar;
 	private WebView     mWebView;
-	
+	private String mBaseUrl = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mBaseUrl = getIntent().getStringExtra("url");
 		setContentView(R.layout.activity_html5demo);
 		mRoot = (RelativeLayout) this.findViewById(R.id.root);
 		mProgressBar = (ProgressBar) this.findViewById(R.id.progressBar1); 
@@ -49,7 +48,8 @@ public class Html5DemoActivity extends Activity {
 		InitWebView(this);
 		mWebView.addJavascriptInterface(new DemoJavaScriptInterface(), "demo");
 //		mWebView.loadUrl("file:///android_asset/index.html");
-		mWebView.loadUrl("http://new.transtrouvere.com/html5/");
+		mWebView.loadUrl(mBaseUrl);
+		
 		
 	}
 	public static final String HIDE_BORDER = "<style>* { -webkit-tap-highlight-color: rgba(0,0,0,0);} img {width:100%;height:100%}</style>";
@@ -100,7 +100,6 @@ public class Html5DemoActivity extends Activity {
 		mRoot.addView(mWebView, params);
 	}
 
-	@SuppressLint("SetJavaScriptEnabled")
 	private void InitWebViewConfig() {
 		// TODO Auto-generated method stub
 		mWebView.setFocusable(true);
@@ -176,7 +175,6 @@ public class Html5DemoActivity extends Activity {
 			super.onReceivedHttpAuthRequest(view, handler, host, realm);
 		}
 
-		@SuppressLint("NewApi")
 		@Override
 		public void onReceivedLoginRequest(WebView view, String realm,
 				String account, String args) {
@@ -216,7 +214,6 @@ public class Html5DemoActivity extends Activity {
 			super.onUnhandledKeyEvent(view, event);
 		}
 
-		@SuppressLint("NewApi")
 		@Override
 		public WebResourceResponse shouldInterceptRequest(WebView view,
 				String url) {
@@ -260,7 +257,6 @@ public class Html5DemoActivity extends Activity {
 	}
 	
 	
-	@SuppressLint("NewApi")
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
