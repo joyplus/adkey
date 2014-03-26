@@ -17,7 +17,7 @@ import android.os.Message;
 import android.util.Log;
 
 public class AppReportServer{
-     private static boolean Debug = true;
+     private static boolean Debug = false;
 	 private Context mContext;
 	 private List<monitor> mMonitorList;
 	 private final static int  MAXSIZE = 100;

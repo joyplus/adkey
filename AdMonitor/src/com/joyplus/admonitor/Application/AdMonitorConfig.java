@@ -10,7 +10,7 @@ import android.content.Context;
  * define by Jas@20140102*/
 public class AdMonitorConfig {
 	
-    private static boolean mAdBootDebugLogEnable   = true;
+    private static boolean mAdBootDebugLogEnable   = false;
     
     private final  static  String mCompany         = "joyplus.adkey";
     private final  static  String mBaseURL         = "D5313CEAA0E07E98E875117C601ABF26D0248FA1ED3572ACAE7D7F3BBCD40861110294B2C80228A23BBB1702421FFB63C0857980F9D4EE9174A9ABD4EDFBE4C14585B0F8379DFDEFB14531E5B7C4FC0FFE41A3942912F60A";
