@@ -588,7 +588,8 @@ public class Util {
 	public static boolean isCacheLoaded()
 	{
 		SerializeManager serializeManager = new SerializeManager();
-		String path = Const.DOWNLOAD_PATH + Util.VideoFileDir;		
+		String path = Const.DOWNLOAD_PATH + Util.VideoFileDir;	
+		Log.d("Jas","isCacheLoaded-->"+path);
 		File file = new File(path);
 		if (!file.exists()){
 			file.mkdir();
