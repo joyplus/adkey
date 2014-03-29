@@ -34,6 +34,16 @@ public class FloatLayoutActivity extends Activity implements AdListener{
 
 	
 	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		if(mFloatLayout != null){
+			mFloatLayout.Stop();
+			mFloatLayout = null;
+		}
+	}
+
+	@Override
 	public void adClicked(){
 		// TODO Auto-generated method stub
 		Log.i(Const.TAG,"FloatLayoutActivity--->adClicked");
