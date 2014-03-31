@@ -198,21 +198,26 @@ public class FloatView extends RelativeLayout {
 				mfirstWebView.loadData(text, "text/html", Const.ENCODING);
 				notifyLoadAdSucceeded();
 			} else if (mResponse.getType() == Const.TEXT) {
-                if(((new File(Const.DOWNLOAD_PATH+Util.VideoFileDir
-    					+(Const.DOWNLOAD_DISPLAY_IMG)+Util.ExternalName==null?"":Util.ExternalName)).exists())){
-                	String baseUrl = "file://";
-        			baseUrl = baseUrl+Const.DOWNLOAD_PATH+Util.VideoFileDir;
-        			String textPath =  Const.HIDE_BORDER + "<img src='"
-        					+ (Const.DOWNLOAD_DISPLAY_IMG)+Util.ExternalName + "'/>";
-        			Log.d("Jas","show-->"+baseUrl+","+textPath);
-        			mfirstWebView.clearCache(false);
-        			mfirstWebView.loadDataWithBaseURL(baseUrl, textPath, "text/html","utf-8", null);
-        			notifyLoadAdSucceeded();
-                }else{
+				if(LOCATION){
+	                if(((new File(Const.DOWNLOAD_PATH+Util.VideoFileDir
+	    					+(Const.DOWNLOAD_DISPLAY_IMG)+Util.ExternalName==null?"":Util.ExternalName)).exists())){
+	                	String baseUrl = "file://";
+	        			baseUrl = baseUrl+Const.DOWNLOAD_PATH+Util.VideoFileDir;
+	        			String textPath =  Const.HIDE_BORDER + "<img src='"
+	        					+ (Const.DOWNLOAD_DISPLAY_IMG)+Util.ExternalName + "'/>";
+	        			Log.d("Jas","show-->"+baseUrl+","+textPath);
+	        			mfirstWebView.clearCache(false);
+	        			mfirstWebView.loadDataWithBaseURL(baseUrl, textPath, "text/html","utf-8", null);
+	        			notifyLoadAdSucceeded();
+	                }
+				}else{
                 	mfirstWebView.clearCache(false);
-					String text = mResponse.getText();
-					text = Uri.encode(Const.HIDE_BORDER + text);
-					mfirstWebView.loadData(text, "text/html", Const.ENCODING);
+//					String text = mResponse.GetCreative_res_url();
+//					text = Uri.encode(Const.HIDE_BORDER + text);
+//					mfirstWebView.loadData(text, "text/html", Const.ENCODING);
+                	String text = MessageFormat.format(Const.IMAGE_BODY,mResponse.GetCreative_res_url(),null,null);
+            		text = Uri.encode(Const.HIDE_BORDER + text);
+            		mfirstWebView.loadData(text, "text/html", Const.ENCODING);
 				    notifyLoadAdSucceeded();
                 }
 			} 
@@ -228,4 +233,8 @@ public class FloatView extends RelativeLayout {
 		mTranslateAnimationType = type;
 	}
 	private TranslateAnimationType mTranslateAnimationType = TranslateAnimationType.RANDOM;
+	private boolean LOCATION      = false;
+	public  void SetLocation(boolean en){
+		LOCATION = en;
+	}
 }

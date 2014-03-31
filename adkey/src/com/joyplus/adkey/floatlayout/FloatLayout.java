@@ -49,7 +49,6 @@ public class FloatLayout implements AdListener{
 			FloatLayout_root   = root;
 			FloatLayout_Width  = width;
 			FloatLayout_Height = height;
-			
 		}
 		private FloatLayout(final Context context, final String requestURL,
 				final String publisherId, final boolean includeLocation,
@@ -128,6 +127,7 @@ public class FloatLayout implements AdListener{
 							location[0]+FloatLayout_root.getWidth(), location[1]+FloatLayout_root.getHeight());
 					
 					mFloatLayoutView2.SetAnimation(mTranslateAnimationType);
+					mFloatLayoutView2.SetLocation(LOCATION);
 					mFloatLayoutView2.Show();//now AD Show.
 					ShowAd = false;
 					startDismissTimer(mResponse2);
@@ -292,10 +292,16 @@ public class FloatLayout implements AdListener{
 						serializeManager.writeSerializableData(path,getRichMediaAd());
 						new DownloadVideoThread(path,mContext).start();//download resource.
 					}else{//binner
-						mResponse = (BannerAd) serializeManager.readSerializableData(path);
-						LoadResponse();
-						serializeManager.writeSerializableData(path,getBannerAd());
-						new DownloadBannerThread(path,mContext).start();//download resource.
+						if(LOCATION){
+							mResponse = (BannerAd) serializeManager.readSerializableData(path);
+							LoadResponse();
+							serializeManager.writeSerializableData(path,getBannerAd());
+							new DownloadBannerThread(path,mContext).start();//download resource.
+						}else{
+							mResponse = getBannerAd();
+							serializeManager.writeSerializableData(path,mResponse);
+							LoadResponse();
+						}
 					}
 					mRequestThread = null;
 				}
@@ -439,5 +445,10 @@ public class FloatLayout implements AdListener{
 		
 		
 		private boolean MediaOrBanner = false;//Media -- true  Banner -- false
+		
+		private boolean LOCATION      = false;
+		public  void SetLocation(boolean en){
+			LOCATION = en;
+		}
 		
 }
