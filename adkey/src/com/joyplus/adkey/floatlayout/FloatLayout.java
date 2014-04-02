@@ -39,7 +39,7 @@ public class FloatLayout implements AdListener{
 	    private final static boolean Debug = true;
 	    private PopupWindow      mPopupWindow      = null;
 	    private FloatLayoutView  mFloatLayoutView  = null;
-	    private FloatLayoutView2 mFloatLayoutView2 = null;
+	    private FloatView        mFloatLayoutView2 = null;
 	    
 		public FloatLayout( Context context, String publisherId,View root, int width,int height){  
 			this(context,publisherId,root,width,height,null);
@@ -49,7 +49,6 @@ public class FloatLayout implements AdListener{
 			FloatLayout_root   = root;
 			FloatLayout_Width  = width;
 			FloatLayout_Height = height;
-			
 		}
 		private FloatLayout(final Context context, final String requestURL,
 				final String publisherId, final boolean includeLocation,
@@ -66,6 +65,7 @@ public class FloatLayout implements AdListener{
 	    	mListener = listener;
 	    }
 		private void initialize(final Context context){
+			Util.PublisherId     = mPublisherId;
 			Util.GetPackage(mContext);
 			serializeManager = new SerializeManager();
 			mUserAgent = Util.getDefaultUserAgentString(mContext);
@@ -119,12 +119,16 @@ public class FloatLayout implements AdListener{
 					if(ShowAd || FloatLayout_root ==null || mResponse2 == null)return;
 					ShowAd = true;
 					Stop(mResponse2);
-					int[] location = new int[2];  
+					int[] location = new int[2]; 
+					Log.d("Jas","location-->"+location[0]+","+location[1]
+							+","+FloatLayout_root.getWidth()+","+FloatLayout_root.getHeight());
 					FloatLayout_root.getLocationOnScreen(location); 
 					mPopupWindow.showAtLocation(FloatLayout_root, Gravity.NO_GRAVITY, 
 							location[0]+FloatLayout_root.getWidth(), location[1]+FloatLayout_root.getHeight());
+					
 					mFloatLayoutView2.SetAnimation(mTranslateAnimationType);
-					mFloatLayoutView2.InitResource();//now AD Show.
+					mFloatLayoutView2.SetLocation(LOCATION);
+					mFloatLayoutView2.Show();//now AD Show.
 					ShowAd = false;
 					startDismissTimer(mResponse2);
 					startReloadTimer(mResponse2);
@@ -170,7 +174,7 @@ public class FloatLayout implements AdListener{
 					mPopupWindow = new PopupWindow(mFloatLayoutView, FloatLayout_Width, FloatLayout_Height,false);
 				}
 			}else if(Response instanceof BannerAd){
-				mFloatLayoutView2 = new FloatLayoutView2(mContext,(BannerAd)mResponse,FloatLayout.this);
+				mFloatLayoutView2 = new FloatView(mContext,(BannerAd)mResponse,FloatLayout.this);
 				if(FloatLayout_Height <=0 || FloatLayout_Width<=0 || FloatLayout_root == null){
 					mPopupWindow = new PopupWindow(mFloatLayoutView2,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT,false);
 				}else{
@@ -279,7 +283,7 @@ public class FloatLayout implements AdListener{
 						} catch (InterruptedException e){
 						}
 					}
-					String path = Const.DOWNLOAD_PATH + Util.VideoFileDir + "adfloatlayout";
+					String path = Const.DOWNLOAD_PATH + Util.VideoFileDir + "ad";
 					File cacheDir = new File(Const.DOWNLOAD_PATH+Util.VideoFileDir);
 					if (!cacheDir.exists())cacheDir.mkdirs();
 					if(MediaOrBanner){//media
@@ -288,10 +292,16 @@ public class FloatLayout implements AdListener{
 						serializeManager.writeSerializableData(path,getRichMediaAd());
 						new DownloadVideoThread(path,mContext).start();//download resource.
 					}else{//binner
-						mResponse = (BannerAd) serializeManager.readSerializableData(path);
-						LoadResponse();
-						serializeManager.writeSerializableData(path,getBannerAd());
-						new DownloadBannerThread(path,mContext).start();//download resource.
+						if(LOCATION){
+							mResponse = (BannerAd) serializeManager.readSerializableData(path);
+							LoadResponse();
+							serializeManager.writeSerializableData(path,getBannerAd());
+							new DownloadBannerThread(path,mContext).start();//download resource.
+						}else{
+							mResponse = getBannerAd();
+							serializeManager.writeSerializableData(path,mResponse);
+							LoadResponse();
+						}
 					}
 					mRequestThread = null;
 				}
@@ -318,7 +328,7 @@ public class FloatLayout implements AdListener{
 			return null;
 		}
 		//get banner ad
-		private BannerAd getBannerAd(){
+		public BannerAd getBannerAd(){
 			RequestBannerAd requestAd = new RequestBannerAd();
 			try{
 				return requestAd.sendRequest(getRequest(AdRequest.BANNER));
@@ -435,5 +445,10 @@ public class FloatLayout implements AdListener{
 		
 		
 		private boolean MediaOrBanner = false;//Media -- true  Banner -- false
+		
+		private boolean LOCATION      = false;
+		public  void SetLocation(boolean en){
+			LOCATION = en;
+		}
 		
 }

@@ -9,7 +9,7 @@ public class Const {
 	 * @author
 	 */
 	public static String DOWNLOAD_PATH = Environment.getExternalStorageDirectory()+"/Android/data/.adsdk/";
-	public void SetPath(String path){
+	public static void SetPath(String path){
 		if(path == null || "".equals(path))return;
 		DOWNLOAD_PATH = path;
 	}

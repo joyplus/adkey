@@ -4,7 +4,6 @@ import java.io.File;
 import java.text.MessageFormat;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -13,12 +12,9 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
-import android.widget.VideoView;
-import android.widget.RelativeLayout.LayoutParams;
 import com.joyplus.adkey.AdListener;
 import com.joyplus.adkey.BannerAd;
 import com.joyplus.adkey.Const;
@@ -26,8 +22,6 @@ import com.joyplus.adkey.Util;
 import com.joyplus.adkey.Monitorer.AdMonitorManager;
 import com.joyplus.adkey.Util.TranslateAnimationType;
 import com.joyplus.adkey.download.ImpressionThread;
-import com.joyplus.adkey.video.InterstitialData;
-import com.joyplus.adkey.video.RichMediaAd;
 import com.joyplus.adkey.video.WebFrame;
 import com.joyplus.adkey.video.WebViewClient.OnPageLoadedListener;
 
@@ -38,10 +32,10 @@ public class FloatLayoutView2 extends RelativeLayout{
 	private AdListener adListener = null;
 	private Handler    mHandler   = new Handler();
 	
-	public static final int TYPE_UNKNOWN      = -1;
-	public static final int TYPE_BROWSER      = 0;
-	public static final int TYPE_VIDEO        = 1;
-	public static final int TYPE_INTERSTITIAL = 2;
+//	public static final int TYPE_UNKNOWN      = -1;
+//	public static final int TYPE_BROWSER      = 0;
+//	public static final int TYPE_VIDEO        = 1;
+//	public static final int TYPE_INTERSTITIAL = 2;
 	
 	private BannerAd mAd;
 	private FrameLayout mRootLayout;
@@ -87,6 +81,7 @@ public class FloatLayoutView2 extends RelativeLayout{
 	}
 	
 	private void initInterstitialView(){
+	
 		mRootLayout = new FrameLayout(mContext);
 		FloatLayoutView2.this.addView(mRootLayout, new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
 				   LayoutParams.MATCH_PARENT, Gravity.CENTER));
@@ -119,7 +114,7 @@ public class FloatLayoutView2 extends RelativeLayout{
 			mInterstitialImageView = null;
 		}
 		mInterstitialImageView = new WebView(mContext);
-		mInterstitialImageView.setBackgroundColor(Color.TRANSPARENT);
+		mInterstitialImageView.setBackgroundColor(Color.RED);
 		mInterstitialImageView.getSettings().setJavaScriptEnabled(true);
 		mInterstitialImageView.setVerticalScrollBarEnabled(false);
 		mInterstitialImageView.setHapticFeedbackEnabled(false);
@@ -131,15 +126,19 @@ public class FloatLayoutView2 extends RelativeLayout{
 			baseUrl = baseUrl+Const.DOWNLOAD_PATH+Util.VideoFileDir;
 			String textPath =  Const.HIDE_BORDER + "<img src='"
 					+ (Const.DOWNLOAD_DISPLAY_IMG)+Util.ExternalName + "'/>";
-			if(!(new File(Const.DOWNLOAD_PATH+Util.VideoFileDir
-					+(Const.DOWNLOAD_DISPLAY_IMG)+Util.ExternalName)).exists()){
+			if(!((new File(Const.DOWNLOAD_PATH+Util.VideoFileDir
+					+(Const.DOWNLOAD_DISPLAY_IMG)+Util.ExternalName)).exists())){
+				Log.d("Jas","show--location null return--->");
+				notifyfinish(false);
 				return;
 			}
+			Log.d("Jas","show-->"+baseUrl+","+textPath);
 			mInterstitialImageView.clearCache(false);
 			mInterstitialImageView.loadDataWithBaseURL(baseUrl, textPath, "text/html","utf-8", null);
 		}else{
 			String text = MessageFormat.format(Const.IMAGE_BODY,getCreative_res_url,null,null);
 			text = Uri.encode(Const.HIDE_BORDER + text);
+			Log.d("Jas","show-->"+text);
 			mInterstitialImageView.loadData(text, "text/html", Const.ENCODING);
 		}
 		if (this.animation) {

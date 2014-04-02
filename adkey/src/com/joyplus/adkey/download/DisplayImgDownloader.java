@@ -82,12 +82,13 @@ public class DisplayImgDownloader {
 		@Override
 		public void run() {
 			//true
-			localfile = Const.DOWNLOAD_PATH+Util.VideoFileDir+Const.DOWNLOAD_DISPLAY_IMG+Util.ExternalName;
+			localfile = Const.DOWNLOAD_PATH+Util.VideoFileDir+Const.DOWNLOADING_FILE+Util.ExternalName;
 			File file = new File(localfile);
 			if(file.exists())
 			{
 				file.delete();
 			}
+			Log.d("Jas","download-->"+localfile);
 			HttpURLConnection connection = null;
 			RandomAccessFile randomAccessFile = null;
 			InputStream inputstream = null;
@@ -105,7 +106,16 @@ public class DisplayImgDownloader {
 				while ((length = inputstream.read(buffer)) != -1) {
 					randomAccessFile.write(buffer, 0, length);
 					compeleteSize += length;
-					if (compeleteSize == fileSize) {}
+					if (compeleteSize == fileSize) {
+						randomAccessFile.close();
+						File over = new File(Const.DOWNLOAD_PATH+Util.VideoFileDir+Const.DOWNLOAD_DISPLAY_IMG+Util.ExternalName);
+					    if(over.exists()){
+					    	over.delete();
+					    }
+					    File n = new File(localfile);
+					    n.renameTo(over);
+					    Log.d("Jas","download finish-->"+over.toString());
+					}
 					if (state == PAUSE||state == STOP) {
 						return;
 					}
