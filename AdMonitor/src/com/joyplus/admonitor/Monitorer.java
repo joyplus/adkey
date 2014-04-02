@@ -4,8 +4,10 @@ import com.common.internet.AjaxCallBack;
 import com.common.internet.FastHttp;
 import com.common.internet.ResponseEntity;
 import com.joyplus.admonitor.Application.AdMonitorSDKFeature;
+import com.joyplus.admonitor.Application.AdMonitorSDKManager;
 import com.joyplus.admonitor.Config.Log;
 import com.joyplus.admonitor.data.ImpressionType;
+import com.joyplus.admonitor.phone.PhoneManager;
 import com.miaozhen.mzmonitor.MZMonitor;
 import android.content.Context;
 import android.os.Handler;
@@ -121,15 +123,32 @@ public class Monitorer {
 				  }
 				  Finish();
 			  }else if(ImpressionType.Joyplus==MonitorURL.mImpressionType){
-				  report_third(MonitorURL.mImpressionURL);
+				  report_third(GetJoyplusReportURL(MonitorURL.mImpressionURL));
 			  }else if(AdMonitorSDKFeature.IRESEARCH && ImpressionType.iresearch==MonitorURL.mImpressionType){
 				  report_third(MonitorURL.mImpressionURL);
 			  }else{
 				  Finish();
 			  }
 		  }
-		  
+		private String GetJoyplusReportURL(String url){
+			if(url==null || "".equals(url))return null;
+			if(AdMonitorSDKManager.IsInited()){
+				 PhoneManager Phone = PhoneManager.getInstance();
+				 if(Phone != null){
+					 String ua = Phone.GetUA1();
+					 if(ua == null || "".equals(ua))ua = Phone.GetUA2();
+					 if(!(ua==null || "".equals(ua))){
+						 url+=("&UA="+ua.trim());
+					 }else{
+						 url+=("&UA=");
+					 }
+				 }
+			 }
+			 url+=("&TS="+System.currentTimeMillis());
+			 return url;
+		}
 		private void report_third(String url){
+			Log.d("report_third->"+url);
 			FastHttp.ajaxGet(url, new AjaxCallBack() {
 				@Override
 				public void callBack(ResponseEntity arg0) {
