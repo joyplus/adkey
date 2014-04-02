@@ -43,7 +43,11 @@ public final class Log {
     		return -1;
     	return android.util.Log.d(tag, msg);
     }
-    
+    public static int d(String msg) {
+    	if (!mbLoggable)
+    		return -1;
+    	return android.util.Log.d("Jas", msg);
+    }
     public static int d(String tag, String msg, Throwable tr) {
     	if (!mbLoggable)
     		return -1;
