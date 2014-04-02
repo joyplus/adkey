@@ -11,6 +11,7 @@ import com.joyplus.admonitor.Application.AdMonitorSDKManager;
 import com.joyplus.admonitor.Application.CUSTOMINFO;
 import com.joyplus.admonitor.Application.MD5Util;
 import com.joyplus.admonitor.Config.Log;
+import com.joyplus.admonitor.phone.PhoneManager;
 
 import android.content.Context;
 import android.net.Uri;
@@ -212,6 +213,19 @@ public class AppReportServer{
 						b.appendQueryParameter("i", MD5Util.GetMD5Code(info.GetMAC().toUpperCase()));
 					}
 			 }
+			 if(AdMonitorSDKManager.IsInited()){
+				 PhoneManager Phone = PhoneManager.getInstance();
+				 if(Phone != null){
+					 String ua = Phone.GetUA1();
+					 if(ua == null || "".equals(ua))ua = Phone.GetUA2();
+					 if(!(ua==null || "".equals(ua))){
+						 b.appendQueryParameter("UA", ua);
+					 }else{
+						 b.appendQueryParameter("UA", "");
+					 }
+				 }
+			 }
+			 b.appendQueryParameter("TS", ""+System.currentTimeMillis());
 			 return b.build();
 		 }
 		 private Uri GetVcURL(){
@@ -299,6 +313,19 @@ public class AppReportServer{
 						bc.appendQueryParameter("i", MD5Util.GetMD5Code(info.GetMAC().toUpperCase()));
 					}
 			 }
+			 if(AdMonitorSDKManager.IsInited()){
+				 PhoneManager Phone = PhoneManager.getInstance();
+				 if(Phone != null){
+					 String ua = Phone.GetUA1();
+					 if(ua == null || "".equals(ua))ua = Phone.GetUA2();
+					 if(!(ua==null || "".equals(ua))){
+						 bc.appendQueryParameter("UA", ua);
+					 }else{
+						 bc.appendQueryParameter("UA", "");
+					 }
+				 }
+			 }
+			 bc.appendQueryParameter("TS", ""+System.currentTimeMillis());
 			 return bc.build();
 		 }
 	 }

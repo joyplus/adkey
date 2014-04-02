@@ -2,10 +2,9 @@ package com.joyplus.admonitor.phone;
 
 
 
+import java.util.Locale;
 import com.joyplus.admonitor.Application.AdMonitorSDKException;
 import com.joyplus.admonitor.Application.AdMonitorSDKManager;
-import com.joyplus.admonitor.Application.MD5Util;
-
 import android.content.Context;
 import android.os.Build;
 import android.util.DisplayMetrics;
@@ -144,7 +143,4 @@ public class PhoneManager {
       public String GetDeviceName(){
   		return new Build().MODEL;
       }
-      
-      
-      ///////
 }
