@@ -1,5 +1,10 @@
 package com.joyplus.admonitor;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
+import org.apache.http.client.utils.URLEncodedUtils;
+
 import com.common.internet.AjaxCallBack;
 import com.common.internet.FastHttp;
 import com.common.internet.ResponseEntity;
@@ -7,6 +12,7 @@ import com.joyplus.admonitor.Application.AdMonitorSDKFeature;
 import com.joyplus.admonitor.Application.AdMonitorSDKManager;
 import com.joyplus.admonitor.Config.Log;
 import com.joyplus.admonitor.data.ImpressionType;
+import com.joyplus.admonitor.phone.Escape;
 import com.joyplus.admonitor.phone.PhoneManager;
 import com.miaozhen.mzmonitor.MZMonitor;
 import android.content.Context;
@@ -138,7 +144,7 @@ public class Monitorer {
 					 String ua = Phone.GetUA1();
 					 if(ua == null || "".equals(ua))ua = Phone.GetUA2();
 					 if(!(ua==null || "".equals(ua))){
-						 url+=("&UA="+ua.trim());
+						 url+=("&UA="+Escape.escape(ua));
 					 }else{
 						 url+=("&UA=");
 					 }
