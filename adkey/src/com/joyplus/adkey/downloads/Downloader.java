@@ -139,6 +139,7 @@ public class Downloader {
 							File filedone = new File(AdFileManager.getInstance().GetBasePath(),DOWNLOAD_FINISH);
 							if(filedone.exists())filedone.delete();
 							filetemp.renameTo(filedone);
+							FileUtils.Chmod(filedone);
 							SetDownloaderState(DownloaderState.SUCCESS);
 						}
 					}

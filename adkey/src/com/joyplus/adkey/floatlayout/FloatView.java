@@ -20,9 +20,11 @@ import com.joyplus.adkey.AdListener;
 import com.joyplus.adkey.BannerAd;
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.Util;
+import com.joyplus.adkey.Monitorer.AdMonitorManager;
 import com.joyplus.adkey.Util.TranslateAnimationType;
 import com.joyplus.adkey.banner.InAppWebView;
 import com.joyplus.adkey.data.ClickType;
+import com.joyplus.adkey.download.ImpressionThread;
 
 public class FloatView extends RelativeLayout {
 
@@ -189,6 +191,10 @@ public class FloatView extends RelativeLayout {
 
 	private void showContent() {
 		  try {
+		    new ImpressionThread(mContext, mResponse.getmImpressionUrl(), Util.PublisherId,Util.AD_TYPE.BANNER_IMAGE).start();
+			if(mResponse.getmTrackingUrl().size()>0){
+				AdMonitorManager.getInstance(mContext).AddTRACKINGURL(mResponse.getmTrackingUrl());
+			}
 			if (mResponse.getType() == Const.IMAGE) {
 				String text = MessageFormat.format(Const.IMAGE_BODY,
 						mResponse.getImageUrl(),
