@@ -9,6 +9,7 @@ import com.joyplus.admonitor.Application.AdMonitorSDKManager;
 import com.joyplus.admonitor.Application.CUSTOMINFO;
 import com.joyplus.admonitor.Application.MD5Util;
 import com.joyplus.admonitor.data.ImpressionType;
+import com.joyplus.admonitor.phone.Escape;
 import com.joyplus.admonitor.phone.PhoneManager;
 
 public class Monitor {
@@ -17,6 +18,8 @@ public class Monitor {
       public  final static String REPLACE_DM   = "%dm%";
 	  public  final static String REPLACE_IP   = "%ip%";
       public  final static String REPLACE_EX   = "%ex%";
+      public  final static String REPLACE_UA   = "%UA%";
+      public  final static String REPLACE_TS   = "%TS%";
       
 	  private List<IMPRESSION>   mIMPRESSION  = new ArrayList<IMPRESSION>();
 	  
@@ -24,6 +27,8 @@ public class Monitor {
 	  private String             DM           = "";//dm  ,devicement , null
 	  private String             IP           = "";
 	  private String             EX           = "";
+	  private String             UA           = "";
+	  private String             TS           = "";
 	  
 	  public void SetMAC(String mac){
 		  MAC = mac;
@@ -65,6 +70,22 @@ public class Monitor {
 	  public String GetEX(){
 		  if(EX == null || "".equals(EX))return "";
 		  return EX;
+	  }
+	  
+	  public void SetUA(String ua){
+		  UA = ua;
+	  }
+	  public String GetUA(){
+		  if(UA == null || "".equals(UA))return "";
+		  return UA;
+	  }
+	  
+	  public void SetTS(String ts){
+		  TS = ts;
+	  }
+	  public String GetTS(){
+		  if(TS == null || "".equals(TS))return "";
+		  return TS;
 	  }
 	  
 	  public synchronized void AddIMPRESSION(IMPRESSION s){
@@ -128,7 +149,33 @@ public class Monitor {
 				  
 				  s.mImpressionURL = Replace(s.mImpressionURL,REPLACE_DM,GetDM());
 				  s.mImpressionURL = Replace(s.mImpressionURL,REPLACE_EX,GetEX());
+				  
+				  if(ImpressionType.Joyplus == s.mImpressionType){
+					  String ua = GetUA();
+					  if(ua == null || "".equals(ua)){
+						  if(AdMonitorSDKManager.IsInited()){
+								 PhoneManager Phone = PhoneManager.getInstance();
+								 if(Phone != null){
+									 ua = Phone.GetUA1();
+									 if(ua == null || "".equals(ua))ua = Phone.GetUA2();
+								 }
+							 }
+					  }
+					  if(ua == null || "".equals(ua)){
+						  s.mImpressionURL = Replace(s.mImpressionURL,REPLACE_UA,"");
+					  }else{
+						  s.mImpressionURL = Replace(s.mImpressionURL,REPLACE_UA,Escape.escape(ua));
+					  }
+					  
+					  String ts = GetTS();
+					  if(ts == null || "".equals(ts)){
+						  s.mImpressionURL = Replace(s.mImpressionURL,REPLACE_TS,(""+System.currentTimeMillis()));
+					  }else{
+						  s.mImpressionURL = Replace(s.mImpressionURL,REPLACE_TS,ts);
+					  }
+				  }
 				  return s;
+				  
 			  }
 			  us.remove();
 			  continue;

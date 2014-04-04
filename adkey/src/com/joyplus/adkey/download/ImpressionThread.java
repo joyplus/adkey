@@ -11,8 +11,14 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import android.content.Context;
+
+import com.common.internet.AjaxCallBack;
+import com.common.internet.FastHttp;
+import com.common.internet.ResponseEntity;
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.Util;
+import com.joyplus.adkey.Monitorer.Escape;
+import com.joyplus.adkey.Monitorer.Monitor;
 import com.joyplus.adkey.data.ImpressionInfo;
 import com.joyplus.adkey.db.ImpressionDao;
 
@@ -43,7 +49,8 @@ public class ImpressionThread extends Thread{
 		}
 		NUMBER = (NUMBER>MAXNUM)?MAXNUM:NUMBER;
 	    while((NUMBER--)>0){
-			if(REPORT(url))ReportCount++;
+			//if(REPORT(url))ReportCount++;
+	    	if(report_third(url))ReportCount++;
 		}
 		if((NUMBER-ReportCount)<=0){
 			if(ad_id != null){
@@ -63,7 +70,28 @@ public class ImpressionThread extends Thread{
 		}
 	}
 	
-	
+	private boolean report_third(String url){
+		if(url == null || "".equals(url))return true;
+		url = url.replaceAll(Monitor.REPLACE_UA, Escape.escape(Util.buildUserAgent()));
+		url = url.replaceAll(Monitor.REPLACE_TS, (""+System.currentTimeMillis()));
+		FastHttp.ajaxGet(url, new AjaxCallBack() {
+			@Override
+			public void callBack(ResponseEntity arg0) {
+			}
+			@Override
+			public boolean stop() {
+				// TODO Auto-generated method stub
+				return false;
+			}}
+		);
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
+	} 
 	private boolean REPORT(String url){
 		if(url == null || "".equals(url))return true;
 		int responseCode = 0;
@@ -97,4 +125,5 @@ public class ImpressionThread extends Thread{
 		}
 		return false;
 	}
+	
 }

@@ -7,7 +7,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpProtocolParams;
-
 import com.common.internet.AjaxCallBack;
 import com.common.internet.FastHttp;
 import com.common.internet.ResponseEntity;
@@ -139,6 +138,7 @@ public class Monitorer {
 			  }else if((AdSDKFeature.MONITOR_IRESEARCH && TYPE.IRESEARCH==MonitorURL.Type)
 					  ||(AdSDKFeature.MONITOR_ADMASTER && TYPE.ADMASTER==MonitorURL.Type)
 					  ||((AdSDKFeature.MONITOR_NIELSEN && TYPE.NIELSEN==MonitorURL.Type))){
+				  //report_third(GetJoyplusReportURL(MonitorURL.URL));
 				  report_third(MonitorURL.URL);
 			  }else{
 				  Finish();
@@ -185,5 +185,21 @@ public class Monitorer {
 				}
 		  }
 	  }
+	  
+	  
+	  private String GetJoyplusReportURL(String url){
+			if(url==null || "".equals(url))return null;
+			
+			String ua = Util.getDefaultUserAgentString(mContext);
+			if(ua == null || "".equals(ua))ua = Util.buildUserAgent();
+			if(!(ua==null || "".equals(ua))){
+			 url+=("&UA="+Escape.escape(ua));
+			}else{
+			 url+=("&UA=");
+			}
+				
+			url+=("&TS="+System.currentTimeMillis());
+			return url;
+		}
 	  
 }
