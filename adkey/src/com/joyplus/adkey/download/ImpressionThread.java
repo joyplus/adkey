@@ -1,17 +1,13 @@
 package com.joyplus.adkey.download;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.URLEncoder;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import android.content.Context;
-
 import com.common.internet.AjaxCallBack;
 import com.common.internet.FastHttp;
 import com.common.internet.ResponseEntity;
@@ -34,11 +30,12 @@ public class ImpressionThread extends Thread{
 		this.mImpressionUrl = mImpressionUrl;
 		this.publisherId = publisherId;
 		this.ad_type = ad_type;
+		this.mImpressionUrl = this.mImpressionUrl.replaceAll(Monitor.REPLACE_UA, Escape.escape(Util.buildUserAgent()));
+		this.mImpressionUrl = this.mImpressionUrl.replaceAll(Monitor.REPLACE_TS, (""+System.currentTimeMillis()));
 	}
 
 	@Override
-	public void run()
-	{
+	public void run(){
 		// TODO Auto-generated method stub
 		String url = mImpressionUrl;
 		if(url==null || "".equals(url))return;
@@ -72,8 +69,6 @@ public class ImpressionThread extends Thread{
 	
 	private boolean report_third(String url){
 		if(url == null || "".equals(url))return true;
-		url = url.replaceAll(Monitor.REPLACE_UA, Escape.escape(Util.buildUserAgent()));
-		url = url.replaceAll(Monitor.REPLACE_TS, (""+System.currentTimeMillis()));
 		FastHttp.ajaxGet(url, new AjaxCallBack() {
 			@Override
 			public void callBack(ResponseEntity arg0) {

@@ -163,22 +163,22 @@ public class Monitor {
 					  }else{ 
 						  url.URL=url.URL.replaceAll(REPLACE_EX, EX);
 					  }
-					  //only use by Joyplus so remove it
-//					  if(UA == null || "".equals(UA)){
-//						  String ua = Util.buildUserAgent();
-//						  if(ua ==null || "".equals(ua)){
-//							  url.URL=url.URL.replaceAll(REPLACE_UA, "");
-//						  }else{
-//							  url.URL=url.URL.replaceAll(REPLACE_UA, Escape.escape(ua));
-//						  }
-//					  }else{
-//						  url.URL=url.URL.replaceAll(REPLACE_UA, UA);
-//					  }
-//					  if(TS == null || "".equals(TS)){
-//						  url.URL=url.URL.replaceAll(REPLACE_TS, (""+System.currentTimeMillis()));
-//					  }else{
-//						  url.URL=url.URL.replaceAll(REPLACE_TS, TS);
-//					  }
+					  
+					  if(UA == null || "".equals(UA)){
+						  String ua = Util.buildUserAgent();
+						  if(ua ==null || "".equals(ua)){
+							  url.URL=url.URL.replaceAll(REPLACE_UA, "");
+						  }else{
+							  url.URL=url.URL.replaceAll(REPLACE_UA, Escape.escape(ua));
+						  }
+					  }else{
+						  url.URL=url.URL.replaceAll(REPLACE_UA, UA);
+					  }
+					  if(TS == null || "".equals(TS)){
+						  url.URL=url.URL.replaceAll(REPLACE_TS, (""+System.currentTimeMillis()));
+					  }else{
+						  url.URL=url.URL.replaceAll(REPLACE_TS, TS);
+					  }
 				  }
 				  return url;
 			  }
