@@ -11,7 +11,6 @@ import com.joyplus.ad.data.IMPRESSIONURL;
 import com.joyplus.ad.data.TRACKINGURL;
 import com.joyplus.ad.report.AdReportManager;
 import com.joyplus.ad.report.Report;
-
 import android.content.Context;
 
 
