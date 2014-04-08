@@ -18,7 +18,7 @@ public class PatchActivity extends Activity implements AdListener{
 
 	private FrameLayout layout;
 	private AdPatchManager mManager = null;
-	private String publisherId      = "eaeb2ff0ef98dd864d900cf87e54a829";//要显示广告的publisherId
+	private String publisherId      = "68e9d5eaac266769b8110abfca7bcb5c";//要显示广告的publisherId
 	private boolean cacheMode       = true;//该广告加载时是否用本地缓存
 	
 	private Spinner   mFirst;

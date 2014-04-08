@@ -13,7 +13,7 @@ import com.joyplus.adkey.widget.Log;
 public class FloatLayoutActivity extends Activity implements AdListener{
 
 	private RelativeLayout layout;
-	private String publisherId = "7d777ccf0b170035dc586bb7d50f303f";
+	private String publisherId = "d286067f946dba267ca925e12369f050";
     private FloatLayout mFloatLayout;
 	@Override 
 	protected void onCreate(Bundle savedInstanceState){

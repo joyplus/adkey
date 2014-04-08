@@ -1,7 +1,6 @@
 package com.joyplus.adkeydemo;
 
 import com.joyplus.adkey.Ad;
-import com.joyplus.adkey.AdDeviceManager;
 import com.joyplus.adkey.AdListener;
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.banner.AdView;
@@ -15,7 +14,7 @@ public class AdViewActivity extends Activity implements AdListener
 { 
 	private RelativeLayout layout; 
 	private AdView mAdView;
-	private String publisherId = "1e744dbf3280760def03181c5d522ef7";
+	private String publisherId = "8f311026597575a5d4e2a6ec944f08bc";
 	private boolean animation = true;
     
 	@Override 

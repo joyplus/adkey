@@ -12,6 +12,8 @@ import com.joyplus.ad.PublisherId;
 import com.joyplus.ad.data.ADBOOT;
 import com.joyplus.ad.data.AdBootRequest;
 import com.joyplus.ad.data.RequestException;
+import com.joyplus.ad.db.AdBootTempDao;
+import com.joyplus.ad.db.AdBootThread;
 import com.joyplus.ad.download.DownLoadListener;
 import com.joyplus.ad.download.Download;
 import com.joyplus.ad.report.AdReportManager;
@@ -74,7 +76,7 @@ public class AdBootManager extends AdMode{
 	}
 	private void Request(){
 		if(mAdBootRequest != null)return;
-		AddReportNUM();//add report count.
+//		AddReportNUM();//add report count.
 		mAdBootRequest = new AdBootRequest(AdBootManager.this,mAdBoot);
 		ADBOOT mADBOOT = null;
 		int Count = TIME;
@@ -95,7 +97,9 @@ public class AdBootManager extends AdMode{
 			}
 		}
 		if(mDownloadManager != null && mADBOOT != null){ 
-			Report();//new we can sure network is OK ,so report first.
+			//Report();//new we can sure network is OK ,so report first.
+			AdBootTempDao.getInstance(mContext).Remove(mPublisherId.GetPublisherId());//remove it first.
+			new AdBootThread(mContext, ((mAdBoot != null && mAdBoot.GetCUSTOMINFO() != null)?mAdBoot.GetCUSTOMINFO():null)).StartReport();
 			mDownloadManager.UpdateADBOOT(mADBOOT, mAdBootRequest.GetFileName(), mPublisherId);
 		}else{
 			if(mAdBootListener != null){
@@ -104,61 +108,61 @@ public class AdBootManager extends AdMode{
 		}
 		mAdBootRequest = null;
 	}
-	//judge custom local file. we can add report num,when it exist.
-	private void AddReportNUM() {
-		// TODO Auto-generated method stub
-		if(CustomAdFileExist()){
-			AdFileManager.getInstance().AddReportNum(mPublisherId);
-		}
-	}
-    private boolean CustomAdFileExist(){
-    	if(mAdBoot == null || mAdBoot.GetAdBootInfo() == null)return false;
-    	if(CustomAdFileExist(mAdBoot.GetAdBootInfo().GetFirstSource())
-    			|| CustomAdFileExist(mAdBoot.GetAdBootInfo().GetSecondSource())
-    			|| CustomAdFileExist(mAdBoot.GetAdBootInfo().GetThirdSource())){
-    		return true;
-    	}
-    	return false;
-    }
-    private boolean CustomAdFileExist(String file){
-    	if(file ==null || "".equals(file))return false;
-    	return (new File(file)).exists();
-    }
-	public AdBoot GetAdBoot(){
-		return mAdBoot;
-	}
+//	//judge custom local file. we can add report num,when it exist.
+//	private void AddReportNUM() {
+//		// TODO Auto-generated method stub
+//		if(CustomAdFileExist()){
+//			AdFileManager.getInstance().AddReportNum(mPublisherId);
+//		}
+//	}
+//    private boolean CustomAdFileExist(){
+//    	if(mAdBoot == null || mAdBoot.GetAdBootInfo() == null)return false;
+//    	if(CustomAdFileExist(mAdBoot.GetAdBootInfo().GetFirstSource())
+//    			|| CustomAdFileExist(mAdBoot.GetAdBootInfo().GetSecondSource())
+//    			|| CustomAdFileExist(mAdBoot.GetAdBootInfo().GetThirdSource())){
+//    		return true;
+//    	}
+//    	return false;
+//    }
+//    private boolean CustomAdFileExist(String file){
+//    	if(file ==null || "".equals(file))return false;
+//    	return (new File(file)).exists();
+//    }
+//	public AdBoot GetAdBoot(){
+//		return mAdBoot;
+//	}
 	
-	private void Report(){
-		ADBOOT last = (ADBOOT) AdFileManager.getInstance()
-				.readSerializableData(mAdBootRequest.GetFileName(),mPublisherId);
-		ThirdReport(last);//third listener
-		if(last != null && last.video != null && last.video.impressionurl != null){
-			//report to joyplus
-			Report r = new Report();
-		    r.SetPublisherId(mPublisherId);
-		    r.SetIMPRESSIONURL(last.video.impressionurl);
-			AdReportManager.getInstance().AddReport(r);
-		}
-		AdFileManager.getInstance().ReSetNum(mPublisherId);//it reported.
-	}
-	private void ThirdReport(ADBOOT last){
-		if(last != null && last.video != null && last.video.trackingurl != null){
-			Monitor m = new Monitor();
-        	if(mAdBoot != null && mAdBoot.GetCUSTOMINFO() != null){
-        		if(!("".equals(mAdBoot.GetCUSTOMINFO().GetDEVICEMOVEMENT()))){//dm
-        			m.SetPM(mAdBoot.GetCUSTOMINFO().GetDEVICEMOVEMENT());
-        		}else if(!("".equals(mAdBoot.GetCUSTOMINFO().GetDEVICEMUMBER()))){//ds
-        			m.SetPM(mAdBoot.GetCUSTOMINFO().GetDEVICEMUMBER());
-        		}
-        		if(!("".equals(mAdBoot.GetCUSTOMINFO().GetMAC()))){//mac
-        			m.SetMAC(mAdBoot.GetCUSTOMINFO().GetMAC());
-        		}
-        	}
-        	m.SetTRACKINGURL(last.video.trackingurl);
-        	m.SetNUM(AdFileManager.getInstance().GetNum(mPublisherId));
-        	AdMonitorManager.getInstance().AddMonitor(m);
-        }
-	}
+//	private void Report(){
+//		ADBOOT last = (ADBOOT) AdFileManager.getInstance()
+//				.readSerializableData(mAdBootRequest.GetFileName(),mPublisherId);
+//		ThirdReport(last);//third listener
+//		if(last != null && last.video != null && last.video.impressionurl != null){
+//			//report to joyplus
+//			Report r = new Report();
+//		    r.SetPublisherId(mPublisherId);
+//		    r.SetIMPRESSIONURL(last.video.impressionurl);
+//			AdReportManager.getInstance().AddReport(r);
+//		}
+//		AdFileManager.getInstance().ReSetNum(mPublisherId);//it reported.
+//	}
+//	private void ThirdReport(ADBOOT last){
+//		if(last != null && last.video != null && last.video.trackingurl != null){
+//			Monitor m = new Monitor();
+//        	if(mAdBoot != null && mAdBoot.GetCUSTOMINFO() != null){
+//        		if(!("".equals(mAdBoot.GetCUSTOMINFO().GetDEVICEMOVEMENT()))){//dm
+//        			m.SetPM(mAdBoot.GetCUSTOMINFO().GetDEVICEMOVEMENT());
+//        		}else if(!("".equals(mAdBoot.GetCUSTOMINFO().GetDEVICEMUMBER()))){//ds
+//        			m.SetPM(mAdBoot.GetCUSTOMINFO().GetDEVICEMUMBER());
+//        		}
+//        		if(!("".equals(mAdBoot.GetCUSTOMINFO().GetMAC()))){//mac
+//        			m.SetMAC(mAdBoot.GetCUSTOMINFO().GetMAC());
+//        		}
+//        	}
+//        	m.SetTRACKINGURL(last.video.trackingurl);
+//        	m.SetNUM(AdFileManager.getInstance().GetNum(mPublisherId));
+//        	AdMonitorManager.getInstance().AddMonitor(m);
+//        }
+//	}
 	
 	private AdBootListener mAdBootListener;
 	public  void SetAdBootListener(AdBootListener listener){

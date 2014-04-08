@@ -8,11 +8,11 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-
+ 
 public class InterstitialActivity extends Activity implements AdListener
 {
 	private AdManager mManager = null;
-	private String publisherId = "9a712490063b87f2e1549be322d0a809";
+	private String publisherId = "bc42d0e425d2bcbbe24b05118e59fc07";
 	private boolean cacheMode = false;//
 	 
 	@Override
