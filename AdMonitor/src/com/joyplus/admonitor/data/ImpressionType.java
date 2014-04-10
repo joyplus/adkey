@@ -5,7 +5,8 @@ public enum ImpressionType {
 	 Unknow    ("unknow"),
 	 Joyplus   ("Joyplus"),
 	 miaozhen  ("miaozhen"),
-	 iresearch ("iresearch");
+	 iresearch ("iresearch"),
+	 admaster  ("admaster");
 	 
 	 private String Type;
 	 ImpressionType(String type){

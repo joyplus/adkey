@@ -1,5 +1,7 @@
 package com.joyplus.admonitor;
 
+import cn.com.mma.mobile.tracking.api.Countly;
+
 import com.common.internet.AjaxCallBack;
 import com.common.internet.FastHttp;
 import com.common.internet.ResponseEntity;
@@ -128,6 +130,9 @@ public class Monitorer {
 				  report_third(MonitorURL.mImpressionURL);
 			  }else if(AdMonitorSDKFeature.IRESEARCH && ImpressionType.iresearch==MonitorURL.mImpressionType){
 				  report_third(MonitorURL.mImpressionURL);
+			  }else if(AdMonitorSDKFeature.ADMASTER && ImpressionType.admaster==MonitorURL.mImpressionType){
+				  Countly.sharedInstance().onExpose(MonitorURL.mImpressionURL);
+				  Finish();
 			  }else{
 				  Finish();
 			  }

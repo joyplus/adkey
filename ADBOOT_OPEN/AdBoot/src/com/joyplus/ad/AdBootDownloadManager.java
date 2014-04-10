@@ -93,7 +93,7 @@ public class AdBootDownloadManager implements DownLoadListener{
 					   if(TRACKINGURL.TYPE.MIAOZHEN == url.Type){
 						   Info.miaozhen  = url.URL;
 					   }else if(TRACKINGURL.TYPE.ADMASTER == url.Type){
-						   Info.admaster  = GetURL(url.URL);
+						   Info.admaster  = url.URL;
 					   }else if(TRACKINGURL.TYPE.IRESEARCH == url.Type){
 						   Info.iresearch = GetURL(url.URL);
 					   }else if(TRACKINGURL.TYPE.NIELSEN == url.Type){

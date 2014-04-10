@@ -31,13 +31,13 @@ public class AdBootThread {
 				for(AdBootImpressionInfo info:Info){
 					Log.d("Report-->"+info.toString());
 					Report(info);
-					ReportThread(info);
+					ReportThird(info);
 				}
 			}
 			mAdBootDao.delAll();//make sure it work.
 		}
 	}
-	private void ReportThread(AdBootImpressionInfo info) {
+	private void ReportThird(AdBootImpressionInfo info) {
 		// TODO Auto-generated method stub
 		Monitor m = new Monitor();
     	if(Info != null ){

@@ -102,6 +102,8 @@ public class Monitor {
 			  if(mIMPRESSIONs.mImpressionType == null || ImpressionType.Unknow == mIMPRESSIONs.mImpressionType)continue;
 			  if(mIMPRESSIONs.mImpressionURL == null || "".equals(mIMPRESSIONs.mImpressionURL))continue;
 			  if((AdMonitorSDKFeature.MIAOZHEN && ImpressionType.miaozhen == mIMPRESSIONs.mImpressionType)
+					  ||(AdMonitorSDKFeature.IRESEARCH && ImpressionType.iresearch == mIMPRESSIONs.mImpressionType)
+					  ||(AdMonitorSDKFeature.ADMASTER && ImpressionType.admaster == mIMPRESSIONs.mImpressionType)
 					  ||(ImpressionType.Joyplus == mIMPRESSIONs.mImpressionType)){
 				  if(!(mIMPRESSIONs.mImpressionURL == null || "".equals(mIMPRESSIONs.mImpressionURL))){
 					  if(!mIMPRESSION.contains(mIMPRESSIONs)){
@@ -126,7 +128,8 @@ public class Monitor {
 				  us.remove();
 				  continue;
 			  }
-			  if(AdMonitorSDKFeature.MIAOZHEN && ImpressionType.miaozhen == s.mImpressionType){
+			  if((AdMonitorSDKFeature.MIAOZHEN && ImpressionType.miaozhen == s.mImpressionType)
+					  ||(AdMonitorSDKFeature.ADMASTER && ImpressionType.admaster == s.mImpressionType)){
 				  return s;
 			  }else if((AdMonitorSDKFeature.IRESEARCH && ImpressionType.iresearch == s.mImpressionType)
                          || (ImpressionType.Joyplus == s.mImpressionType)){
@@ -150,7 +153,7 @@ public class Monitor {
 				  s.mImpressionURL = Replace(s.mImpressionURL,REPLACE_DM,GetDM());
 				  s.mImpressionURL = Replace(s.mImpressionURL,REPLACE_EX,GetEX());
 				  
-				  if(ImpressionType.Joyplus == s.mImpressionType){
+				  //if(ImpressionType.Joyplus == s.mImpressionType){
 					  String ua = GetUA();
 					  if(ua == null || "".equals(ua)){
 						  if(AdMonitorSDKManager.IsInited()){
@@ -173,7 +176,7 @@ public class Monitor {
 					  }else{
 						  s.mImpressionURL = Replace(s.mImpressionURL,REPLACE_TS,ts);
 					  }
-				  }
+				  //}
 				  return s;
 				  
 			  }

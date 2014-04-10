@@ -122,7 +122,7 @@ public class Monitor {
 					  continue;
 				  }
 				  if((TYPE.IRESEARCH == url.Type)
-						  ||(TYPE.ADMASTER == url.Type)
+						 // ||(TYPE.ADMASTER == url.Type)
 						  ||(TYPE.NIELSEN == url.Type)){//we shoule replace url first.
 					  AdDeviceManager mDevice = AdDeviceManager.getInstance(null);
 					  if(MAC == null || "".equals(MAC)){
