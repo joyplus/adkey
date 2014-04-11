@@ -46,8 +46,8 @@ public class ImpressionThread extends Thread{
 		}
 		NUMBER = (NUMBER>MAXNUM)?MAXNUM:NUMBER;
 	    while((NUMBER--)>0){
-			//if(REPORT(url))ReportCount++;
-	    	if(report_third(url))ReportCount++;
+			if(REPORT(url))ReportCount++;
+	    	//if(report_third(url))ReportCount++;
 		}
 		if((NUMBER-ReportCount)<=0){
 			if(ad_id != null){

@@ -26,6 +26,7 @@ public class AdMonitorServer implements MonitorListener{
 		 mContext = context;
 		 mMonitorList = new ArrayList<Monitor>();
 		 //add by Jas for admaster
+		 Countly.sharedInstance().setLogState(true);
 		 Countly.sharedInstance().init(mContext, CONFIG_URL);
 	 }
 	 public synchronized void AddMonitor(List<Monitor> urls) {

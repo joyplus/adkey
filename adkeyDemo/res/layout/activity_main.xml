@@ -71,6 +71,16 @@
         android:onClick="onClickShowMiddlePatchVideo"
         android:text="Show Middle Patch" />
     
+    <Button
+        android:id="@+id/device_param"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/show_patch_middle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:onClick="onClickDeviceParam"
+        android:text="Setting Device Param" />
+    
      
     <TextView
         android:id="@+id/textView1"

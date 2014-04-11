@@ -3,11 +3,7 @@ package com.joyplus.adkeydemo;
 
 import com.joyplus.adkey.AdDeviceManager;
 import com.joyplus.adkey.CUSTOMINFO;
-import com.joyplus.adkey.Monitorer.MD5Util;
-import com.joyplus.adkey.mraid.MraidActivity;
-
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.app.Activity;
 import android.content.Intent;
@@ -48,16 +44,21 @@ public class MainActivity extends Activity
 		Intent intent = new Intent(MainActivity.this,FloatLayoutActivity.class);
 		startActivity(intent);
 	}
+	
+	public void onClickDeviceParam(View v){
+		Intent intent = new Intent(MainActivity.this,DeviceParamSetting.class);
+		startActivityForResult(intent, 0);
+	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		//for Init Device state
-		CUSTOMINFO info = new CUSTOMINFO();
-		info.SetDEVICEMOVEMENT("JOYPLUS_TEST");
-		info.SetDEVICEMUMBER("JOYPLUS_TEST");
-		info.SetMAC("01:02:03:04:05:06");
-		AdDeviceManager.getInstance(this).SetCUSTOMINFO(info);
+//		CUSTOMINFO info = new CUSTOMINFO();
+//		info.SetDEVICEMOVEMENT("JOYPLUS_TEST");
+//		info.SetDEVICEMUMBER("JOYPLUS_TEST");
+//		info.SetMAC("01:02:03:04:05:06");
+//		AdDeviceManager.getInstance(this).SetCUSTOMINFO(info);
 	}
 }
