@@ -16,11 +16,12 @@
 	        android:padding="10dp"
 	        android:id="@+id/item_image"
 	        android:background="@drawable/bg_button_tv_selector"
-	        greendroid:defaultSrc="@drawable/p1"/>
+	        greendroid:defaultSrc="@drawable/vedio_default"/>
         <TextView android:layout_width="fill_parent"
             android:layout_height="40dp"
             android:gravity="center"
             android:id="@+id/movie_name"
+            android:textColor="#ffffff"
             android:textSize="30dp"/>
     </LinearLayout>
     

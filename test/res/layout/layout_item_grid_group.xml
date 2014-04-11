@@ -13,7 +13,7 @@
 	        android:layout_weight="1"
 	        android:padding="10dp"
 	        android:id="@+id/item_image"
-	        greendroid:defaultSrc="@drawable/p1"/>
+	        greendroid:defaultSrc="@drawable/vedio_default"/>
 	        
         <TextView android:layout_width="fill_parent"
             android:layout_height="40dp"

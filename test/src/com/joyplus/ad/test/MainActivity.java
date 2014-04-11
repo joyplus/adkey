@@ -1,52 +1,56 @@
 package com.joyplus.ad.test;
 
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 
 import com.joyplus.ad.html5.Html5DemoActivity;
 
-public class MainActivity extends Activity implements OnClickListener{
+public class MainActivity extends Activity{
 
 	private static final String TAG = MainActivity.class.getSimpleName();
-	
-	private static final String html5BaseUrl = "http://new.transtrouvere.com/html5/";
-	private static final String nativeBaseUrl = "http://advapi.yue001.com/advapi/v1/topic/list?bid=zino";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		Button btn1 = (Button) findViewById(R.id.button1);
-		Button btn2 = (Button) findViewById(R.id.button2);
-		btn1.setOnClickListener(this);
-		btn2.setOnClickListener(this);
+		Log.d(TAG, "data --> " + getIntent().getStringExtra("data"));
+		try {
+			handleData(getIntent().getStringExtra("data"));
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally{
+			finish();
+		}
 	}
 
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
+	private void handleData(String data) throws Exception{
+		JSONObject json = new JSONObject(data);
+		int type = json.getInt("type");
 		Intent intent = null;
-		switch (v.getId()) {
-		case R.id.button1:
+		switch (type) {
+		case 0:
 			intent = new Intent(this, Html5DemoActivity.class); 
-			intent.putExtra("url", html5BaseUrl);
+			intent.putExtra("url", json.getString("url"));
 			startActivity(intent);
 			break;
-		case R.id.button2:
-			intent = new Intent(this, GroupListActivity.class);
-			intent.putExtra("url", nativeBaseUrl);
+		case 1:
+			intent = new Intent(this, OpenActivity.class);
+			intent.putExtra("url", json.getString("url"));
+			startActivity(intent);
+			break;
+		case 2:
+			intent = new Intent(this, MovieListActivity.class);
+			intent.putExtra("url", json.getString("url"));
 			startActivity(intent);
 			break;
 		default:
 			break;
 		}
 	}
-	
 	
 }

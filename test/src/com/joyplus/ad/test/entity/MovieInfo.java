@@ -5,6 +5,7 @@ public class MovieInfo {
 	private int id;
 	private String name;
 	private String pictureUrl;
+	private String uri;
 	
 	public int getId() {
 		return id;
@@ -23,5 +24,11 @@ public class MovieInfo {
 	}
 	public void setPictureUrl(String pictureUrl) {
 		this.pictureUrl = pictureUrl;
+	}
+	public String getUri() {
+		return uri;
+	}
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 }

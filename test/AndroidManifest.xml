@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.joyplus.ad.test"
-    android:versionCode="1"
+    android:versionCode="2"
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="14"
         android:targetSdkVersion="14" />
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
+    <!-- Optional. This permission allow us to send the device id to uniquely identified that device -->
+	<uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
+    <!-- Optional. This permission allow us to send the network connection type and provide better ads -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+    <!-- Optional. This permission allow us to send the device location and provide more targeted ads-->
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
+    <!-- Optional. This permission allow us to send the device location and provide more targeted ads-->
+	<uses-permission android:name="android.permission.ACCESS_COURSE_LOCATION"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <application
         android:name="greendroid.app.GDApplication"
         android:allowBackup="true"
@@ -20,8 +29,8 @@
             android:name="com.joyplus.ad.test.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
+                <action android:name="com.joyplus.ad.test.view" />
+				<category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -33,6 +42,39 @@
         <activity
             android:name="com.joyplus.ad.html5.Html5DemoActivity">
          </activity>
+         <activity
+            android:name="com.joyplus.ad.test.OpenActivity">
+         </activity>
+         <receiver
+            android:name="com.joyplus.kkmetrowidget.JoyplusWidet"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider" />
+        </receiver>
+        <receiver android:name="com.joyplus.joyplus_video.BootReceiver">
+            <intent-filter >
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+            <intent-filter >
+                <action android:name="com.example.konka"/>
+            </intent-filter>
+        </receiver>
+                <service
+            android:name="com.umeng.common.net.DownloadingService"
+            android:exported="true"
+            android:process=":DownloadingService" >
+        </service>
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="534614c756240b06fc0f0016" >
+        </meta-data>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="j001" />
     </application>
 
 </manifest>

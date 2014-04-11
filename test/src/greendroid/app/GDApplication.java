@@ -24,8 +24,19 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import android.app.AlarmManager;
 import android.app.Application;
+import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Intent;
+
+import com.joyplus.adkey.Monitorer.AdMonitorManager;
+import com.joyplus.adkey.downloads.AdFileManager;
+import com.joyplus.adkey.downloads.DownLoadManager;
+import com.joyplus.adkey.widget.Log;
+import com.joyplus.kkmetrowidget.JoyplusWidet;
+import com.joyplus.request.ADRequest;
+
 
 /**
  * Define various methods that should be overridden in order to style your
@@ -35,6 +46,12 @@ import android.content.Intent;
  */
 public class GDApplication extends Application {
 
+	
+	private static GDApplication mApp;
+	public  static GDApplication GetInstance(){
+		return mApp;
+	}
+	
     /**
      * Used for receiving low memory system notification. You should definitely
      * use it in order to clear caches and not important data every time the
@@ -73,6 +90,19 @@ public class GDApplication extends Application {
         mLowMemoryListeners = new ArrayList<WeakReference<OnLowMemoryListener>>();
     }
 
+    @Override
+    public void onCreate() {
+    	// TODO Auto-generated method stub
+    	super.onCreate();
+    	AdMonitorManager.getInstance(this.getApplicationContext());
+    	mApp = this;
+		AdFileManager.Init(this.getApplicationContext());
+		DownLoadManager.Init();
+		ADRequest.Init(this.getApplicationContext());
+		SetClock();
+		Log.setLoggable(false);
+    }
+    
     /**
      * Return an ExecutorService (global to the entire application) that may be
      * used by clients when running long tasks in the background.
@@ -166,4 +196,17 @@ public class GDApplication extends Application {
             }
         }
     }
+    
+    private boolean SetClock = false;
+	public  void SetClock(){
+		if(SetClock)return;
+		SetClock = true;
+		Intent intent = new Intent("com.joyplus.konka");
+		intent.addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
+		PendingIntent pi = PendingIntent.getBroadcast(GDApplication.this, 0, intent, 0);
+		AlarmManager  am = (AlarmManager) getSystemService(Service.ALARM_SERVICE);
+		am.cancel(pi);
+		am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+JoyplusWidet.MESSAGE_REQUEST_TIME, JoyplusWidet.MESSAGE_REQUEST_TIME, pi);
+		SetClock = false;
+	}
 }

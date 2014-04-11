@@ -13,14 +13,12 @@
                 android:layout_height="match_parent"
                 android:focusable="false">
                 <greendroid.widget.AsyncImageView 
-		            android:layout_width="wrap_content"
-			        android:layout_height="match_parent"
+		            android:layout_width="1333dp"
+			        android:layout_height="fill_parent"
 			        android:scaleType="fitXY"
 			        android:focusable="false"
 			        android:focusableInTouchMode="false"
-			        android:id="@+id/bg"
-			        android:background="@drawable/bg_button_tv_selector"
-			        greendroid:defaultSrc="@drawable/b3"/>
+			        android:id="@+id/bg"/>
             </LinearLayout>
         </com.joyplus.ad.test.ui.HorizontalScrollView>
         <com.joyplus.ad.test.ui.HorizontalScrollView android:layout_width="fill_parent"

@@ -13,16 +13,19 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +36,11 @@ import com.joyplus.ad.test.ui.OnScrollChangeListener;
 import com.joyplus.ad.test.ui.WaitingDialog;
 import com.joyplus.ad.test.util.HttpTools;
 import com.joyplus.ad.test.util.Log;
+import com.joyplus.adkey.Monitorer.AdMonitorManager;
+import com.joyplus.adkey.Monitorer.Monitor;
+import com.joyplus.adkey.Monitorer.TRACKINGURL;
+import com.joyplus.adkey.Monitorer.TRACKINGURL.TYPE;
+import com.joyplus.konka.update.UmengUpdate;
 
 public class MovieListActivity extends Activity{
 
@@ -70,6 +78,7 @@ public class MovieListActivity extends Activity{
 				Toast.makeText(MovieListActivity.this, "get data failed " + error_code, Toast.LENGTH_SHORT).show();
 				break;
 			case MESSAGE_LOADBG_SUCCESS:
+//				mBackgroundImage.setImageResource(R.drawable.bg);
 				removeDialog(DIALOG_WAITING);
 				initMovieList();
 				break;
@@ -93,7 +102,9 @@ public class MovieListActivity extends Activity{
         mScrollView = (HorizontalScrollView) findViewById(R.id.hscroll);
         mScrollViewBackground = (HorizontalScrollView) findViewById(R.id.hscroll_back);
         mBackgroundImage = (AsyncImageView) findViewById(R.id.bg);
-//        mBackgroundImage.setLayoutParams(new LinearLayout.LayoutParams((int) (mScreenWidth*1.3), LinearLayout.LayoutParams.MATCH_PARENT));
+//        int screenHeight = displayMetrics.heightPixels;
+//        int width = screenHeight*2000/1080;
+//        mBackgroundImage.setLayoutParams(new LinearLayout.LayoutParams(width, screenHeight));
         mScrollView.setOnScrollChangeListener(new MyOnScrollChangeListener());
         String mServerUrl = getIntent().getStringExtra("url");
         if(mServerUrl == null){
@@ -101,6 +112,7 @@ public class MovieListActivity extends Activity{
         	finish();
         }
         showDialog(DIALOG_WAITING);
+        UmengUpdate.update(this);
         new Thread(new GetDadaRunnable(mServerUrl)).start();
     }
 
@@ -150,7 +162,20 @@ public class MovieListActivity extends Activity{
     			@Override
     			public void run() {
     				// TODO Auto-generated method stub
-    				HttpTools.get(MovieListActivity.this, mTrackingUrl);
+    				try {
+    					Monitor m = new Monitor();
+    					TRACKINGURL url = new TRACKINGURL();
+    					url.Type = TYPE.IRESEARCH;
+    					url.URL = mTrackingUrl;
+    					List<TRACKINGURL> list = new ArrayList<TRACKINGURL>();
+    					list.add(url);
+    					m.SetTRACKINGURL(list);
+    					AdMonitorManager.getInstance(MovieListActivity.this).AddMonitor(m);
+					} catch (Exception e) {
+						// TODO: handle exception
+						e.printStackTrace();
+					}
+    				
     			}
     		}).start();	
     	}
@@ -173,7 +198,16 @@ public class MovieListActivity extends Activity{
 				@Override
 				public void onClick(View arg0) {
 					// TODO Auto-generated method stub
-					Toast.makeText(MovieListActivity.this, "click item " + posistion, Toast.LENGTH_SHORT).show();
+					MovieInfo info = mMovies.get(posistion);
+//					Toast.makeText(MovieListActivity.this, "click item " + posistion, Toast.LENGTH_SHORT).show();
+					try{
+						Intent intent = new Intent("action_com_joyplus_tv_detail");
+						intent.putExtra("prod_type", info.getUri());
+						intent.putExtra("ID", String.valueOf(info.getId()));
+						startService(intent);
+					}catch(Exception e){
+						e.printStackTrace();
+					}
 				}
 			});
     		view.setLayoutParams(params);
@@ -260,6 +294,7 @@ public class MovieListActivity extends Activity{
 						info.setId(Integer.valueOf(item.getString("id")));
 						info.setName(item.getString("name"));
 						info.setPictureUrl(item.getString("picUrl"));
+						info.setUri(item.getString("uri"));
 						mMovies.add(info);
 					}
 					mHandler.sendEmptyMessage(MESSAGE_GETDATA_SUCCESS);

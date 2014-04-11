@@ -1,5 +1,7 @@
 package com.joyplus.ad.html5;
 
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +31,7 @@ import android.widget.Toast;
 
 import com.joyplus.ad.test.R;
 import com.joyplus.ad.test.util.Log;
+import com.joyplus.konka.update.UmengUpdate;
 
 public class Html5DemoActivity extends Activity {
     
@@ -46,6 +49,7 @@ public class Html5DemoActivity extends Activity {
 		mProgressBar = (ProgressBar) this.findViewById(R.id.progressBar1); 
 		mProgressBar.setMax(100);
 		InitWebView(this);
+		UmengUpdate.update(this);
 		mWebView.addJavascriptInterface(new DemoJavaScriptInterface(), "demo");
 //		mWebView.loadUrl("file:///android_asset/index.html");
 		mWebView.loadUrl(mBaseUrl);
@@ -282,21 +286,22 @@ public class Html5DemoActivity extends Activity {
                 public void run() {  
                     // ŽËŽŠµ÷ÓÃ HTML ÖÐµÄjavaScript º¯Êý  
                 	Log.d("Jas","clickOnAndroid========="+aaq);
-                    mWebView.loadUrl("javascript:wave()"); 
-                    StartYUE();
+//                    mWebView.loadUrl("javascript:wave()"); 
+                    startPlay(aaq);
                 }   
             });  
         }  
 	}
 	
-	private void StartYUE(){
-		Intent intent = new Intent();
-		intent.setPackage("com.joyplus.tv");
-		intent.setClassName("com.joyplus.tv", "com.joyplus.tv.Main");
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_NO_HISTORY);
-		try{
-		    this.startActivity(intent);
-		}catch(Exception e){
+	private void startPlay(String data) {
+		try {
+			JSONObject json = new JSONObject(data);
+			Intent intent = new Intent("action_com_joyplus_tv_detail");
+			intent.putExtra("prod_type", json.getString("uri"));
+			intent.putExtra("ID", json.getString("id"));
+			startService(intent);
+		} catch (Exception e) {
+			// TODO: handle exception
 			e.printStackTrace();
 		}
 	}

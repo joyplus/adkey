@@ -95,6 +95,9 @@ public class ImageLoader {
         }
         sAssetManager = context.getAssets();
         sImageCacheDir = context.getExternalCacheDir();
+        if(sImageCacheDir==null){
+        	sImageCacheDir = context.getCacheDir();
+        }
         if(!sImageCacheDir.exists()){
         	sImageCacheDir.mkdirs();
         }
@@ -239,6 +242,7 @@ public class ImageLoader {
         return outStream.toByteArray();      
     }
 
+    
     private class ImageHandler extends Handler {
 
         private String mUrl;
