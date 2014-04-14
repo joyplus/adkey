@@ -14,7 +14,8 @@ public class TRACKINGURL implements Serializable{
 		 MIAOZHEN  ("miaozhen"), //ÃëÕë
 		 IRESEARCH ("iresearch"),//°¬Èð
 		 ADMASTER  ("admaster"), //ADMsater
-		 NIELSEN   ("nielsen");  //Äá¶ûÉ­
+		 NIELSEN   ("nielsen"),  //Äá¶ûÉ­
+		 JOYPLUS   ("joyplus");
 		 private String Type;
 		 TYPE(String type){
 			 Type = type;

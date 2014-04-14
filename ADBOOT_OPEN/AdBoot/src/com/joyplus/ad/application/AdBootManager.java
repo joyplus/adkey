@@ -1,13 +1,9 @@
 package com.joyplus.ad.application;
 
-import java.io.File;
 import java.lang.Thread.UncaughtExceptionHandler;
 import com.joyplus.ad.AdBootDownloadManager;
-import com.joyplus.ad.AdFileManager;
 import com.joyplus.ad.AdMode;
 import com.joyplus.ad.AdManager.AD;
-import com.joyplus.ad.Monitor.AdMonitorManager;
-import com.joyplus.ad.Monitor.Monitor;
 import com.joyplus.ad.PublisherId;
 import com.joyplus.ad.data.ADBOOT;
 import com.joyplus.ad.data.AdBootRequest;
@@ -16,8 +12,6 @@ import com.joyplus.ad.db.AdBootTempDao;
 import com.joyplus.ad.db.AdBootThread;
 import com.joyplus.ad.download.DownLoadListener;
 import com.joyplus.ad.download.Download;
-import com.joyplus.ad.report.AdReportManager;
-import com.joyplus.ad.report.Report;
 import android.content.Context;
 
 public class AdBootManager extends AdMode{

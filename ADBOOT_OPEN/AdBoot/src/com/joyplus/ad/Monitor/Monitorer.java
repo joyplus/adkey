@@ -152,7 +152,8 @@ public class Monitorer {
 				  Finish_OneTime();
 			  }else if((AdSDKFeature.MONITOR_IRESEARCH && TYPE.IRESEARCH==MonitorURL.Type)
 					  //||(AdSDKFeature.MONITOR_ADMASTER && TYPE.ADMASTER==MonitorURL.Type)
-					  ||((AdSDKFeature.MONITOR_NIELSEN && TYPE.NIELSEN==MonitorURL.Type))){
+					  ||((AdSDKFeature.MONITOR_NIELSEN && TYPE.NIELSEN==MonitorURL.Type))
+					  || TYPE.JOYPLUS==MonitorURL.Type){
 				  report_third(MonitorURL.URL);
 			  }else if(AdSDKFeature.MONITOR_ADMASTER && TYPE.ADMASTER==MonitorURL.Type){
 				  Countly.sharedInstance().onExpose(MonitorURL.URL);

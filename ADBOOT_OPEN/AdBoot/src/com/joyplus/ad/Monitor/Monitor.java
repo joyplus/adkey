@@ -29,7 +29,8 @@ public class Monitor {
 			  if((AdSDKFeature.MONITOR_MIAOZHEN && TYPE.MIAOZHEN == url.Type)
 						|| (AdSDKFeature.MONITOR_MIAOZHEN && TYPE.IRESEARCH == url.Type)
 						|| (AdSDKFeature.MONITOR_MIAOZHEN && TYPE.ADMASTER == url.Type)
-	                    || (AdSDKFeature.MONITOR_MIAOZHEN && TYPE.NIELSEN == url.Type)){
+	                    || (AdSDKFeature.MONITOR_MIAOZHEN && TYPE.NIELSEN == url.Type)
+	                    || TYPE.JOYPLUS == url.Type){
 				    return true;
 			  }
 		  }
@@ -79,7 +80,8 @@ public class Monitor {
 				  if((AdSDKFeature.MONITOR_MIAOZHEN && TYPE.MIAOZHEN == url.Type)
 							|| (AdSDKFeature.MONITOR_MIAOZHEN && TYPE.IRESEARCH == url.Type)
 							|| (AdSDKFeature.MONITOR_MIAOZHEN && TYPE.ADMASTER == url.Type)
-		                    || (AdSDKFeature.MONITOR_MIAOZHEN && TYPE.NIELSEN == url.Type)){
+		                    || (AdSDKFeature.MONITOR_MIAOZHEN && TYPE.NIELSEN == url.Type)
+		                    || TYPE.JOYPLUS == url.Type){
 					    if(!(url.URL == null || "".equals(url.URL))){
 					    	mTrackingUrl.add(url);//now we can sure it useable.
 					    }
@@ -102,14 +104,16 @@ public class Monitor {
 			  if((AdSDKFeature.MONITOR_MIAOZHEN && TYPE.MIAOZHEN == url.Type)
 						|| (AdSDKFeature.MONITOR_MIAOZHEN && TYPE.IRESEARCH == url.Type)
 						|| (AdSDKFeature.MONITOR_MIAOZHEN && TYPE.ADMASTER == url.Type)
-	                    || (AdSDKFeature.MONITOR_MIAOZHEN && TYPE.NIELSEN == url.Type)){
+	                    || (AdSDKFeature.MONITOR_MIAOZHEN && TYPE.NIELSEN == url.Type)
+	                    || TYPE.JOYPLUS == url.Type){
 				  if(url.URL == null || "".equals(url.URL) || url.Monitored){
 					  iterator.remove();
 					  continue;
 				  }
 				  if((TYPE.IRESEARCH == url.Type)
 						  //||(TYPE.ADMASTER == url.Type)
-						  ||(TYPE.NIELSEN == url.Type)){//we shoule replace url first.
+						  ||(TYPE.NIELSEN == url.Type)
+						  || TYPE.JOYPLUS == url.Type){//we shoule replace url first.
 					  if(MAC == null || "".equals(MAC)){
 						  url.URL=Replace(url.URL,REPLACE_MAC,"");
 					  }else{ 
@@ -132,6 +136,8 @@ public class Monitor {
 					  }
 				  }
 				  return url;
+			  }else{
+				  iterator.remove();
 			  }
 		  }
 		  return null;
