@@ -54,6 +54,7 @@ public class MainActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		PublisherIdManager.Init(MainActivity.this.getApplicationContext());
 		//for Init Device state
 //		CUSTOMINFO info = new CUSTOMINFO();
 //		info.SetDEVICEMOVEMENT("JOYPLUS_TEST");

@@ -13,11 +13,12 @@ import com.joyplus.adkey.widget.Log;
 public class FloatLayoutActivity extends Activity implements AdListener{
 
 	private RelativeLayout layout;
-	private String publisherId = "d286067f946dba267ca925e12369f050";
     private FloatLayout mFloatLayout;
+    private PublisherIdManager mM;
 	@Override 
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		mM = PublisherIdManager.GetInstance();
 		setContentView(R.layout.mini);
 		layout = (RelativeLayout) findViewById(R.id.adsdkContent);
 	}
@@ -27,7 +28,7 @@ public class FloatLayoutActivity extends Activity implements AdListener{
 			mFloatLayout.Stop();
 			mFloatLayout = null;
 		}
-		mFloatLayout = new FloatLayout(this, publisherId,layout,300,300);
+		mFloatLayout = new FloatLayout(this, mM.FloatLayoutPublicId,layout,300,300);
 		mFloatLayout.SetAdListener(this);
 		mFloatLayout.requestAd();
 	}

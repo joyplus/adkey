@@ -10,9 +10,9 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 
 public class DeviceParamSetting extends Activity implements OnClickListener{
-    private EditText mDM;
-    private EditText mDS;
-    private EditText mMAC;
+    private EditText   mDM;
+    private EditText   mDS;
+    private EditText   mMAC;
     private CUSTOMINFO mCUSTOMINFO;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +36,7 @@ public class DeviceParamSetting extends Activity implements OnClickListener{
 		mDM.setText(mCUSTOMINFO.GetDEVICEMOVEMENT());
 		mDS.setText(mCUSTOMINFO.GetDEVICEMUMBER());
 		mMAC.setText(mCUSTOMINFO.GetMAC());
+		InitPublisher();
 		findViewById(R.id.button1).setOnClickListener(this);
 		findViewById(R.id.button2).setOnClickListener(this);
 	}
@@ -49,6 +50,7 @@ public class DeviceParamSetting extends Activity implements OnClickListener{
 			mCUSTOMINFO.SetDEVICEMUMBER(mDS.getText().toString().trim());
 			mCUSTOMINFO.SetMAC(mMAC.getText().toString().trim());
 			AdDeviceManager.getInstance(DeviceParamSetting.this).SetCUSTOMINFO(mCUSTOMINFO);
+			SavePublisherId();
 			finish();
 			break;
 		case R.id.button2:
@@ -56,8 +58,50 @@ public class DeviceParamSetting extends Activity implements OnClickListener{
 			break;
 		}
 	}
-    
 	
+	
+	private EditText Banner;
+	private EditText AfterPatch; 
+    private EditText FloatLayout;
+    private EditText Interstitial;
+    private EditText MiniInter;
+    private EditText Patch;
+    private EditText PatchMiddle;
+    
+    private void InitPublisher(){
+    	PublisherIdManager mM = PublisherIdManager.GetInstance();
+    	Banner = (EditText) this.findViewById(R.id.Banner);
+    	Banner.setText(mM.AdViewPublicId);
+    	
+    	AfterPatch = (EditText) findViewById(R.id.AfterPatch);
+    	AfterPatch.setText(mM.AfterPatchPublicId);
+    	
+    	FloatLayout = (EditText) findViewById(R.id.FloatLayout);
+    	FloatLayout.setText(mM.FloatLayoutPublicId);
+    	
+    	Interstitial = (EditText) findViewById(R.id.Interstitial);
+    	Interstitial.setText(mM.InterstitialPublicId);
+    	
+    	MiniInter = (EditText) findViewById(R.id.MiniInter);
+    	MiniInter.setText(mM.MiniInterPublicId);
+    	
+    	Patch = (EditText) findViewById(R.id.Patch);
+    	Patch.setText(mM.PatchPublicId);
+    	
+    	PatchMiddle = (EditText) findViewById(R.id.PatchMiddle);
+    	PatchMiddle.setText(mM.PatchMiddlePublicId);
+    }
+	
+    private void SavePublisherId(){
+    	PublisherIdManager mM = PublisherIdManager.GetInstance();
+    	mM.Set("AdViewPublicId", Banner.getText().toString().trim());
+    	mM.Set("AfterPatchPublicId", AfterPatch.getText().toString().trim());
+    	mM.Set("FloatLayoutPublicId", FloatLayout.getText().toString().trim());
+    	mM.Set("InterstitialPublicId", Interstitial.getText().toString().trim());
+    	mM.Set("MiniInterPublicId", MiniInter.getText().toString().trim());
+    	mM.Set("PatchPublicId", Patch.getText().toString().trim());
+    	mM.Set("PatchMiddlePublicId", PatchMiddle.getText().toString().trim());
+    }
 	
 	
 }

@@ -14,13 +14,13 @@ public class AdViewActivity extends Activity implements AdListener
 {  
 	private RelativeLayout layout; 
 	private AdView mAdView;
-	private String publisherId = "8f311026597575a5d4e2a6ec944f08bc";
 	private boolean animation = true;
-    
+	private PublisherIdManager mM;
 	@Override 
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		mM = PublisherIdManager.GetInstance();
 		setContentView(R.layout.adview);
 		layout = (RelativeLayout) findViewById(R.id.adsdkContent);
 	}
@@ -30,7 +30,7 @@ public class AdViewActivity extends Activity implements AdListener
 		if (mAdView != null) {
 			removeBanner();
 		}
-		mAdView = new AdView(this, publisherId,animation);
+		mAdView = new AdView(this, mM.AdViewPublicId,animation);
 		mAdView.setAdListener(this);
 		layout.addView(mAdView);
 	}

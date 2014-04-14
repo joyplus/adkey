@@ -11,168 +11,311 @@
         android:text="Device Param Setting"
         android:textSize="30dp" />
 
-	<LinearLayout
-	    android:layout_below="@+id/textView1"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="vertical" >
+    <ScrollView
+        android:layout_below="@+id/textView1"
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
-		<LinearLayout
-		    android:layout_marginTop="20dp"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:orientation="vertical" >
-			<TextView
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:text="设备型号 （ds）" />
-			<EditText
-			    android:id="@+id/ds"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:ems="10" >
-			    <requestFocus />
-			</EditText>
-		</LinearLayout>
-  
-		<LinearLayout
-		    android:visibility="gone"
-		    android:layout_marginTop="20dp"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:orientation="vertical" >
-			<TextView
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:text="SN号 （sn）" />
-			<EditText
-			    android:id="@+id/sn"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:ems="10" >
-			</EditText>
-		</LinearLayout>
-		
-		<LinearLayout
-		    android:visibility="gone"
-		    android:layout_marginTop="20dp"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:orientation="vertical" >
-			<TextView
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:text="设备类型 （dt）" />
-			<Spinner
-			    android:id="@+id/dt"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content" />
-		</LinearLayout>
-		
-		<LinearLayout
-		    android:visibility="gone"
-		    android:layout_marginTop="20dp"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:orientation="vertical" >
-			<TextView
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:text="使用模式 （up）" />
-			<Spinner
-			    android:id="@+id/up"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content" />
-		</LinearLayout>
-		
-		<LinearLayout
-		    android:visibility="gone"
-		    android:layout_marginTop="20dp"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:orientation="vertical" >
-			<TextView
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:text="牌照方 （lp）" />
-			<Spinner
-			    android:id="@+id/lp"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content" />
-		</LinearLayout>
-		
-		<LinearLayout
-		    android:layout_marginTop="20dp"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:orientation="vertical" >
-			<TextView
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:text="机芯类型 （dm）" />
-			<EditText
-			    android:id="@+id/dm"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:ems="10" >
-			</EditText>
-		</LinearLayout>
-		
-		<LinearLayout
-		    android:visibility="gone"
-		    android:layout_marginTop="20dp"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:orientation="vertical" >
-			<TextView
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:text="品牌 （b）" />
-			<Spinner
-			    android:id="@+id/b"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content" />
-		</LinearLayout>
-		
-		<LinearLayout
-		    android:layout_marginTop="20dp"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:orientation="vertical" >
-			<TextView
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:text="MAC （i）" />
-			<EditText
-			    android:id="@+id/i"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:ems="10" >
-			</EditText>
-		</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-		<LinearLayout
-		    android:layout_marginTop="20dp"
-		    android:layout_weight="1"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content" >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical" >
 
-			<Button
-			    android:id="@+id/button1"
-			    android:layout_weight="1"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:text="保存" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="设备型号 （ds）" />
 
-			<Button
-			    android:id="@+id/button2"
-			    android:layout_weight="1"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:text="取消" />
+                <EditText
+                    android:id="@+id/ds"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10" />
+            </LinearLayout>
 
-		</LinearLayout>
-		
-	</LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:visibility="gone" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="SN号 （sn）" />
+
+                <EditText
+                    android:id="@+id/sn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:visibility="gone" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="设备类型 （dt）" />
+
+                <Spinner
+                    android:id="@+id/dt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:visibility="gone" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="使用模式 （up）" />
+
+                <Spinner
+                    android:id="@+id/up"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:visibility="gone" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="牌照方 （lp）" />
+
+                <Spinner
+                    android:id="@+id/lp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="机芯类型 （dm）" />
+
+                <EditText
+                    android:id="@+id/dm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:visibility="gone" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="品牌 （b）" />
+
+                <Spinner
+                    android:id="@+id/b"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="MAC （i）" />
+
+                <EditText
+                    android:id="@+id/i"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="条形横幅" />
+
+                <EditText
+                    android:id="@+id/Banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="后贴片" />
+
+                <EditText
+                    android:id="@+id/AfterPatch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="角标" />
+
+                <EditText
+                    android:id="@+id/FloatLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="全屏广告" />
+
+                <EditText
+                    android:id="@+id/Interstitial"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="小屏广告" />
+
+                <EditText
+                    android:id="@+id/MiniInter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="前贴片" />
+
+                <EditText
+                    android:id="@+id/Patch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="贴片暂停" />
+
+                <EditText
+                    android:id="@+id/PatchMiddle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1" >
+
+                <Button
+                    android:id="@+id/button1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="保存" />
+                
+                <Button
+                    android:id="@+id/button2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="取消" />
+                <requestFocus />
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
 
 </RelativeLayout>

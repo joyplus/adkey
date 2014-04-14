@@ -15,13 +15,13 @@ public class PatchMiddleActivity extends Activity implements AdListener
 {
 	private RelativeLayout layout;
 	private AdView mAdView;
-	private String publisherId = "8a4282b9981149ad1a4b0d2d81fe9bcb";//瑕佹樉绀哄箍鍛婄殑publisherId
 	private boolean animation = true;//璇ュ箍鍛婂姞杞芥椂鏄惁鐢ㄥ姩鐢绘晥鏋�
-
+	private PublisherIdManager mM;
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		mM = PublisherIdManager.GetInstance();
 		setContentView(R.layout.patchmiddle);
 		layout = (RelativeLayout) findViewById(R.id.adsdkContent);
 	}
@@ -31,7 +31,7 @@ public class PatchMiddleActivity extends Activity implements AdListener
 		if (mAdView != null) {
 			removeBanner();
 		}
-		mAdView = new AdView(this, publisherId,animation);
+		mAdView = new AdView(this, mM.PatchMiddlePublicId,animation);
 		mAdView.setAdListener(this);
 		layout.addView(mAdView);
 	}
