@@ -70,7 +70,14 @@ public class Request {
 //		mEnabled = (Util.getMemoryClass(mContext) > 16);
 	}
 	
-	//get richmedia ad
+	//get richmedia ad 
+	public RichMediaAd getRichMediaAd(boolean Report){
+		RichMediaAd ad = getRichMediaAd();
+		if(Report && ad != null){
+			new Report(mContext).report(ad);
+		}
+		return ad;
+	}
 	public RichMediaAd getRichMediaAd(){
 		RequestRichMediaAd requestAd = new RequestRichMediaAd();
 		try{
@@ -80,6 +87,13 @@ public class Request {
 		return null;
 	}
 	//get banner ad
+	public BannerAd getBannerAd(boolean report){
+		BannerAd ad = getBannerAd();
+		if(report && ad != null){
+			new Report(mContext).report(ad);
+		}
+		return ad;
+	} 
 	public BannerAd getBannerAd(){
 		RequestBannerAd requestAd = new RequestBannerAd();
 		try{
