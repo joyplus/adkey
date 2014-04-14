@@ -37,9 +37,8 @@ public class AdBootServer extends Service{
 				for(AdBootImpressionInfo info:Info){
 					if(CheckAdBootImpressionInfo(info)){
 						mAdBootDao.InsertOneInfo(info);
-					}else{
-						Dao.Remove(info.publisher_id);
 					}
+					Dao.Remove(info.publisher_id);
 				}
 			}
 		}else{
