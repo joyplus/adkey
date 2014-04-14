@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 public class AdViewActivity extends Activity implements AdListener
-{ 
+{  
 	private RelativeLayout layout; 
 	private AdView mAdView;
 	private String publisherId = "8f311026597575a5d4e2a6ec944f08bc";

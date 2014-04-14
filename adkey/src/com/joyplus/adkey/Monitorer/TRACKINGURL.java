@@ -14,7 +14,8 @@ public class TRACKINGURL implements Serializable{
 		 MIAOZHEN  ("miaozhen"), //秒针
 		 IRESEARCH ("iresearch"),//艾瑞
 		 ADMASTER  ("admaster"), //ADMsater
-		 NIELSEN   ("nielsen");  //尼尔森
+		 NIELSEN   ("nielsen"),  //尼尔森
+		 JOYPLUS   ("joyplus");
 		 private String Type;
 		 TYPE(String type){
 			 Type = type;
@@ -31,7 +32,9 @@ public class TRACKINGURL implements Serializable{
 				 return TYPE.ADMASTER;
 			 }else if("nielsen".equals(type)){
 				 return TYPE.NIELSEN;
-			 }else {
+			 }else if("joyplus".equals(type)){
+				 return TYPE.JOYPLUS;
+			 }else{
 				 return TYPE.UNKNOW;
 			 }
 		 }

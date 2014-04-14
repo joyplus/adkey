@@ -58,7 +58,8 @@ public class RichMediaAd implements Ad {
 		if(TrackingUrl == null)return;
 		if((AdSDKFeature.MONITOR_IRESEARCH && TYPE.IRESEARCH==TrackingUrl.Type)
 				  ||(AdSDKFeature.MONITOR_ADMASTER && TYPE.ADMASTER==TrackingUrl.Type)
-				  ||((AdSDKFeature.MONITOR_NIELSEN && TYPE.NIELSEN==TrackingUrl.Type))){
+				  ||((AdSDKFeature.MONITOR_NIELSEN && TYPE.NIELSEN==TrackingUrl.Type))
+				  ||((AdSDKFeature.MONITOR_MIAOZHEN && TYPE.MIAOZHEN==TrackingUrl.Type)) ){
 			if(TrackingUrl.URL==null || "".equals(TrackingUrl.URL))return;
 			if(mTrackingUrl == null){
 				mTrackingUrl = new ArrayList<TRACKINGURL>();
