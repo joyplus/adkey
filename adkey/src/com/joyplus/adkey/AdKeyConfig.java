@@ -2,7 +2,11 @@ package com.joyplus.adkey;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
+
+import com.joyplus.adkey.Debug.AdKeyDebugFeature;
 
 public class AdKeyConfig {
     
@@ -43,6 +47,8 @@ public class AdKeyConfig {
 	}
 	
 	public String getREQUESTURL(){
+		//add by Jas@20140415 for DEMO Test.
+		if(AdKeyDebugFeature.DEBUG)return DEMO_Test;
 		if(LoadOK){
 			String url = props.getProperty("REQUESTURL");
 			if(url != null)return url;
@@ -78,5 +84,26 @@ public class AdKeyConfig {
 			if(custom != null)return Integer.valueOf(custom);
 		}
 		return CUSTOM.JOYPLUS;
+    }
+    
+    ///////////////////////////////////////////////////////
+    //for Joyplus Debug Demo test 
+    private String DEMO_Test = Joyplus_REQUESTURL;
+    public List<String> GetDebugBaseUrl(){
+    	if(!AdKeyDebugFeature.DEBUG)return null;
+    	List<String> url = new ArrayList<String>();
+    	url.add(Joyplus_REQUESTURL);
+    	url.add(Konka_REQUESTURL);
+    	url.add(Runhe_REQUESTURL);
+    	url.add(Haier_REQUESTURL);
+    	return url;
+    }
+    public void SetDEMOTEST(String url){
+    	if(!AdKeyDebugFeature.DEBUG)return;
+    	DEMO_Test = url;
+    }
+    public String GetDEMOTEST(){
+    	if(!AdKeyDebugFeature.DEBUG)return null;
+    	return DEMO_Test;
     }
 }
