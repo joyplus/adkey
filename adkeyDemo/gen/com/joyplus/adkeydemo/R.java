@@ -27,12 +27,29 @@ public final class R {
         public static final int p1=0x7f020001;
     }
     public static final class id {
-        public static final int adsdkContent=0x7f080008;
-        public static final int close=0x7f08000e;
-        public static final int image=0x7f080009;
-        public static final int menu_settings=0x7f08000f;
-        public static final int showVideoInsterstitialCache=0x7f08000b;
-        public static final int showVideoInsterstitialOnline=0x7f08000a;
+        public static final int AfterPatch=0x7f080015;
+        public static final int Banner=0x7f080014;
+        public static final int FloatLayout=0x7f080016;
+        public static final int Interstitial=0x7f080017;
+        public static final int MiniInter=0x7f080018;
+        public static final int Patch=0x7f080019;
+        public static final int PatchMiddle=0x7f08001a;
+        public static final int adsdkContent=0x7f080009;
+        public static final int b=0x7f080012;
+        public static final int button1=0x7f08001b;
+        public static final int button2=0x7f08001c;
+        public static final int close=0x7f080021;
+        public static final int device_param=0x7f080008;
+        public static final int dm=0x7f080011;
+        public static final int ds=0x7f08000c;
+        public static final int dt=0x7f08000e;
+        public static final int i=0x7f080013;
+        public static final int image=0x7f08000a;
+        public static final int lp=0x7f080010;
+        public static final int menu_settings=0x7f080022;
+        public static final int scrollView1=0x7f08000b;
+        public static final int showVideoInsterstitialCache=0x7f08001e;
+        public static final int showVideoInsterstitialOnline=0x7f08001d;
         public static final int show_banner=0x7f080000;
         public static final int show_floatlayout=0x7f080004;
         public static final int show_mini=0x7f080003;
@@ -40,20 +57,23 @@ public final class R {
         public static final int show_patch_before=0x7f080005;
         public static final int show_patch_middle=0x7f080007;
         public static final int show_video=0x7f080002;
-        public static final int spinner1=0x7f08000c;
-        public static final int spinner2=0x7f08000d;
+        public static final int sn=0x7f08000d;
+        public static final int spinner1=0x7f08001f;
+        public static final int spinner2=0x7f080020;
         public static final int textView1=0x7f080001;
+        public static final int up=0x7f08000f;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
         public static final int adview=0x7f030001;
         public static final int adviewscreensaver=0x7f030002;
-        public static final int interstitial=0x7f030003;
-        public static final int logo=0x7f030004;
-        public static final int mini=0x7f030005;
-        public static final int patch=0x7f030006;
-        public static final int patchmiddle=0x7f030007;
-        public static final int small=0x7f030008;
+        public static final int devicesettingparam=0x7f030003;
+        public static final int interstitial=0x7f030004;
+        public static final int logo=0x7f030005;
+        public static final int mini=0x7f030006;
+        public static final int patch=0x7f030007;
+        public static final int patchmiddle=0x7f030008;
+        public static final int small=0x7f030009;
     }
     public static final class menu {
         public static final int activity_main=0x7f070000;

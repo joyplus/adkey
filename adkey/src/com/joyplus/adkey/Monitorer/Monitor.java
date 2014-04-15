@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.joyplus.adkey.AdDeviceManager;
+import com.joyplus.adkey.Util;
 import com.joyplus.adkey.Monitorer.TRACKINGURL.TYPE;
 
 public class Monitor {
@@ -12,6 +13,8 @@ public class Monitor {
       public final static String REPLACE_DM   = "%dm%";
 	  public final static String REPLACE_IP   = "%ip%";
 	  public final static String REPLACE_EX   = "%ex%";
+	  public final static String REPLACE_UA   = "%UA%";
+	  public final static String REPLACE_TS   = "%TS%";
 	  
 	  private List<TRACKINGURL>  mTrackingUrl = new ArrayList<TRACKINGURL>();
 	  
@@ -19,6 +22,8 @@ public class Monitor {
 	  private String             PM           = "";//ds ,dm ,null
 	  private String             IP           = "";//ip ,ip ,null
 	  private String             EX           = "";//ex ,ex ,null
+	  private String             UA           = "";//UA ,UA ,null
+	  private String             TS           = "";//TS ,TS ,null
 	  
 	  public boolean CheckMonitor(){
 		  if(mTrackingUrl == null || mTrackingUrl.size()<=0)return false;
@@ -26,7 +31,8 @@ public class Monitor {
 			  if((AdSDKFeature.MONITOR_MIAOZHEN && TYPE.MIAOZHEN == url.Type)
 						|| (AdSDKFeature.MONITOR_MIAOZHEN && TYPE.IRESEARCH == url.Type)
 						|| (AdSDKFeature.MONITOR_MIAOZHEN && TYPE.ADMASTER == url.Type)
-	                    || (AdSDKFeature.MONITOR_MIAOZHEN && TYPE.NIELSEN == url.Type)){
+	                    || (AdSDKFeature.MONITOR_MIAOZHEN && TYPE.NIELSEN == url.Type)
+	                    || TYPE.JOYPLUS == url.Type){
 				    return true;
 			  }
 		  }
@@ -65,6 +71,22 @@ public class Monitor {
 		  return EX;  
 	  }
 	  
+	  public void SetUA(String ua){
+		  UA = ua;
+	  }
+	  public String GetUA(){
+		  if(UA == null || "".equals(UA))return "";
+		  return UA;  
+	  }
+	  
+	  public void SetTS(String ts){
+		  TS = ts;
+	  }
+	  public String GetTS(){
+		  if(TS == null || "".equals(TS))return "";
+		  return TS;  
+	  }
+	  
 	  public void SetTRACKINGURL(List<TRACKINGURL> urls){
 		  mTrackingUrl = new ArrayList<TRACKINGURL>();
 		  if(urls != null && urls.size()>0){
@@ -72,7 +94,8 @@ public class Monitor {
 				  if((AdSDKFeature.MONITOR_MIAOZHEN && TYPE.MIAOZHEN == url.Type)
 							|| (AdSDKFeature.MONITOR_MIAOZHEN && TYPE.IRESEARCH == url.Type)
 							|| (AdSDKFeature.MONITOR_MIAOZHEN && TYPE.ADMASTER == url.Type)
-		                    || (AdSDKFeature.MONITOR_MIAOZHEN && TYPE.NIELSEN == url.Type)){
+		                    || (AdSDKFeature.MONITOR_MIAOZHEN && TYPE.NIELSEN == url.Type)
+		                    || TYPE.JOYPLUS == url.Type){
 					    if(!(url.URL == null || "".equals(url.URL))){
 					    	mTrackingUrl.add(url);//now we can sure it useable.
 					    }
@@ -95,14 +118,16 @@ public class Monitor {
 			  if((AdSDKFeature.MONITOR_MIAOZHEN && TYPE.MIAOZHEN == url.Type)
 						|| (AdSDKFeature.MONITOR_MIAOZHEN && TYPE.IRESEARCH == url.Type)
 						|| (AdSDKFeature.MONITOR_MIAOZHEN && TYPE.ADMASTER == url.Type)
-	                    || (AdSDKFeature.MONITOR_MIAOZHEN && TYPE.NIELSEN == url.Type)){
+	                    || (AdSDKFeature.MONITOR_MIAOZHEN && TYPE.NIELSEN == url.Type)
+	                    || TYPE.JOYPLUS == url.Type){
 				  if(url.URL == null || "".equals(url.URL) || url.Monitored){
 					  iterator.remove();
 					  continue;
 				  }
 				  if((TYPE.IRESEARCH == url.Type)
-						  ||(TYPE.ADMASTER == url.Type)
-						  ||(TYPE.NIELSEN == url.Type)){//we shoule replace url first.
+						 // ||(TYPE.ADMASTER == url.Type)
+						  ||(TYPE.NIELSEN == url.Type)
+						  || TYPE.JOYPLUS == url.Type){//we shoule replace url first.
 					  AdDeviceManager mDevice = AdDeviceManager.getInstance(null);
 					  if(MAC == null || "".equals(MAC)){
 						  if(mDevice != null && mDevice.GetCUSTOMINFO() != null){
@@ -141,6 +166,22 @@ public class Monitor {
 						  url.URL=url.URL.replaceAll(REPLACE_EX, "");
 					  }else{ 
 						  url.URL=url.URL.replaceAll(REPLACE_EX, EX);
+					  }
+					  
+					  if(UA == null || "".equals(UA)){
+						  String ua = Util.buildUserAgent();
+						  if(ua ==null || "".equals(ua)){
+							  url.URL=url.URL.replaceAll(REPLACE_UA, "");
+						  }else{
+							  url.URL=url.URL.replaceAll(REPLACE_UA, Escape.escape(ua));
+						  }
+					  }else{
+						  url.URL=url.URL.replaceAll(REPLACE_UA, UA);
+					  }
+					  if(TS == null || "".equals(TS)){
+						  url.URL=url.URL.replaceAll(REPLACE_TS, (""+System.currentTimeMillis()));
+					  }else{
+						  url.URL=url.URL.replaceAll(REPLACE_TS, TS);
 					  }
 				  }
 				  return url;

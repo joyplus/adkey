@@ -16,19 +16,20 @@ import android.widget.Toast;
 public class MiniInterstitialActivity extends Activity implements AdListener{
 
 	private RelativeLayout layout;
-	private String publisherId = "cd03d90dab5f8d14158881b69efc43e3";
 	private boolean animation = true;
     private AdMini mAdMini;
+    private PublisherIdManager mM;
 	@Override 
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		mM = PublisherIdManager.GetInstance();
 		setContentView(R.layout.mini);
 		layout = (RelativeLayout) findViewById(R.id.adsdkContent);
 	}
 	
 	public void onClickShowMini(View view) {
 		removeMiniAd();
-		mAdMini = new AdMini(this, publisherId,animation);
+		mAdMini = new AdMini(this, mM.MiniInterPublicId,animation);
 		mAdMini.SetAdListener(this);
 		layout.addView(mAdMini);
 	}

@@ -8,7 +8,7 @@ public class Report {
       
 	private PublisherId   mId;
 	private IMPRESSIONURL mURL; 
-	private int           NUM = 0;
+	private int           NUM = 1;
 	private boolean       mReported = false;
 	
 	private AdFileManager mAdFileManager;
@@ -19,7 +19,10 @@ public class Report {
 	public boolean IsReported(){
 		return mReported;
 	}
-	public  int GetNUM(){
+	public void SetNUM(int num){
+		NUM = num;
+	}
+	public int GetNUM(){
 		return NUM;
 	}
 	public boolean CanReported(){
@@ -49,6 +52,6 @@ public class Report {
 		mId = id;
 		if(mId == null || !mId.CheckId())
 			NUM = 0;
-		NUM = AdFileManager.getInstance().GetNum(mId);
+		//NUM = AdFileManager.getInstance().GetNum(mId);
 	}
 }

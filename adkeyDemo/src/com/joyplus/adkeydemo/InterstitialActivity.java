@@ -8,16 +8,16 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-
+ 
 public class InterstitialActivity extends Activity implements AdListener
 {
 	private AdManager mManager = null;
-	private String publisherId = "e66444bbed23951b758ea0d6e8f407d9";
 	private boolean cacheMode = false;//
-	 
+	private PublisherIdManager mM; 
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		mM = PublisherIdManager.GetInstance();
 		setContentView(R.layout.interstitial);
 	}
 	
@@ -26,7 +26,7 @@ public class InterstitialActivity extends Activity implements AdListener
 			mManager.release();
 		if(cacheMode)
 			cacheMode = false;
-		mManager = new AdManager(this,publisherId,cacheMode);
+		mManager = new AdManager(this,mM.InterstitialPublicId,cacheMode);
 		mManager.setListener(this);
 		mManager.requestAd();
 	}
@@ -36,7 +36,7 @@ public class InterstitialActivity extends Activity implements AdListener
 			mManager.release();
 		if(!cacheMode)
 			cacheMode = true;
-		mManager = new AdManager(this,publisherId,cacheMode);
+		mManager = new AdManager(this,mM.InterstitialPublicId,cacheMode);
 		mManager.setListener(this);
 		mManager.requestAd();
 	}

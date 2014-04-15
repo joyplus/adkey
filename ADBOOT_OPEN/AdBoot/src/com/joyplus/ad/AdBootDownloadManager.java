@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import android.content.Context;
 import android.webkit.URLUtil;
+import com.joyplus.ad.Monitor.Escape;
 import com.joyplus.ad.application.AdBoot;
 import com.joyplus.ad.application.AdBootInfo;
 import com.joyplus.ad.application.AdBootManager;
@@ -12,6 +13,9 @@ import com.joyplus.ad.config.Log;
 import com.joyplus.ad.data.ADBOOT;
 import com.joyplus.ad.data.CODE;
 import com.joyplus.ad.data.FileUtils;
+import com.joyplus.ad.data.TRACKINGURL;
+import com.joyplus.ad.db.AdBootImpressionInfo;
+import com.joyplus.ad.db.AdBootTempDao;
 import com.joyplus.ad.download.DownLoadListener;
 import com.joyplus.ad.download.DownLoadManager;
 import com.joyplus.ad.download.Download;
@@ -48,7 +52,7 @@ public class AdBootDownloadManager implements DownLoadListener{
 		   mLastADBOOT    = (ADBOOT) AdFileManager.getInstance().readSerializableData(name,id);
 		   mCurrentADBOOT = adboot;
 		   AdFileManager.getInstance().writeSerializableData(name, mCurrentADBOOT,id);
-		   AdFileManager.getInstance().ReSetNum(id);
+		   //AdFileManager.getInstance().ReSetNum(id);
 		   if(mCurrentADBOOT == null)return;
 		   if(mCurrentADBOOT.code != null && CODE.AD_NO.equals(mCurrentADBOOT.code.VALUE)){
 			   if(mAdBootInfo.CheckFirstImageUsable())
@@ -72,12 +76,51 @@ public class AdBootDownloadManager implements DownLoadListener{
 		   CheckDownLoadFirst();
 		   CheckDownLoadSecond();
 		   CheckDownLoadZIP();
-		   
+		   //add by Jas for report
+		   if(mCurrentADBOOT != null && mCurrentADBOOT.video != null){
+			   AdBootImpressionInfo Info = new AdBootImpressionInfo();
+			   Info.publisher_id         = id.GetPublisherId();
+			   if(mCurrentADBOOT.video.impressionurl!=null){
+			       Info.mImpressionUrl   = GetURL(mCurrentADBOOT.video.impressionurl.URL);
+		       }
+			   if(mAdBootInfo != null){
+				   Info.FirstSource  = mAdBootInfo.GetFirstSource();
+				   Info.SecondSource = mAdBootInfo.GetSecondSource();
+				   Info.ThirdSource  = mAdBootInfo.GetThirdSource();
+			   }
+			   if(mCurrentADBOOT.video.trackingurl != null){
+				   for(TRACKINGURL url : mCurrentADBOOT.video.trackingurl){
+					   if(TRACKINGURL.TYPE.MIAOZHEN == url.Type){
+						   Info.miaozhen  = url.URL;
+					   }else if(TRACKINGURL.TYPE.ADMASTER == url.Type){
+						   Info.admaster  = url.URL;
+					   }else if(TRACKINGURL.TYPE.IRESEARCH == url.Type){
+						   Info.iresearch = GetURL(url.URL);
+					   }else if(TRACKINGURL.TYPE.NIELSEN == url.Type){
+						   Info.nielsen   = GetURL(url.URL);
+					   }
+				   }
+			   }
+			   AdBootTempDao.getInstance(mContext).InsertOneInfo(Info);
+		   }
+		   //end add 
 		   if(mDownload != null && mDownload.size() <=0){
 			   if(mDownLoadListener != null){
 					mDownLoadListener.Finish(null);
 			   }
 		   }
+	   }
+	   private String GetURL(String url){
+		  if(url==null || "".equals(url))return url;
+		  String ua = PhoneManager.getInstance().GetUA1();
+		  if(ua ==null || "".equals(ua))ua = PhoneManager.getInstance().GetUA2();
+		  if(ua ==null || "".equals(ua)){
+			  url=url.replaceAll("%UA%", "");
+		  }else{
+			  url=url.replaceAll("%UA%", Escape.escape(ua));
+		  }
+		  url=url.replaceAll("%TS%", ""+System.currentTimeMillis());
+		  return url;
 	   }
 	   private void CheckDownLoadFirst(){
 		   if(mAdBootInfo == null)return;

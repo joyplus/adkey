@@ -1,7 +1,6 @@
 package com.joyplus.adkeydemo;
 
 import com.joyplus.adkey.Ad;
-import com.joyplus.adkey.AdDeviceManager;
 import com.joyplus.adkey.AdListener;
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.banner.AdView;
@@ -12,16 +11,16 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 public class AdViewActivity extends Activity implements AdListener
-{ 
+{  
 	private RelativeLayout layout; 
 	private AdView mAdView;
-	private String publisherId = "0e8c1a6799db6d261802d2d11b60e063";
 	private boolean animation = true;
-    
+	private PublisherIdManager mM;
 	@Override 
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		mM = PublisherIdManager.GetInstance();
 		setContentView(R.layout.adview);
 		layout = (RelativeLayout) findViewById(R.id.adsdkContent);
 	}
@@ -31,7 +30,7 @@ public class AdViewActivity extends Activity implements AdListener
 		if (mAdView != null) {
 			removeBanner();
 		}
-		mAdView = new AdView(this, publisherId,animation);
+		mAdView = new AdView(this, mM.AdViewPublicId,animation);
 		mAdView.setAdListener(this);
 		layout.addView(mAdView);
 	}

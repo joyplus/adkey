@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import cn.com.mma.mobile.tracking.api.Countly;
+
 import com.joyplus.admonitor.Monitorer.MonitorerState;
 import com.joyplus.admonitor.Application.AdMonitorSDKManager;
 import com.joyplus.admonitor.Config.Log;
@@ -17,10 +19,15 @@ public class AdMonitorServer implements MonitorListener{
 	 private Context mContext;
 	 private List<Monitor> mMonitorList;
 	 private final static int  MAXSIZE = 100;
+	 //add by Jas for admaster
+	 private final static String CONFIG_URL = "http://admaster.mobi/sdkconfig.xml";
 	 public AdMonitorServer(Context context){
 		 if(AdMonitorSDKManager.IsInited())return;
 		 mContext = context;
 		 mMonitorList = new ArrayList<Monitor>();
+		 //add by Jas for admaster
+		 Countly.sharedInstance().setLogState(true);
+		 Countly.sharedInstance().init(mContext, CONFIG_URL);
 	 }
 	 public synchronized void AddMonitor(List<Monitor> urls) {
 		// TODO Auto-generated method stub

@@ -18,7 +18,6 @@ public class PatchActivity extends Activity implements AdListener{
 
 	private FrameLayout layout;
 	private AdPatchManager mManager = null;
-	private String publisherId      = "eaeb2ff0ef98dd864d900cf87e54a829";//要显示广告的publisherId
 	private boolean cacheMode       = true;//该广告加载时是否用本地缓存
 	
 	private Spinner   mFirst;
@@ -28,10 +27,11 @@ public class PatchActivity extends Activity implements AdListener{
 	private final   static int ZONGYI  = 3;
 	private final   static int DONGMAN = 4;
 	private String  VC              = "401";
-	
+	private PublisherIdManager mM;
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		mM = PublisherIdManager.GetInstance();
 		setContentView(R.layout.patch);
 		layout = (FrameLayout) findViewById(R.id.adsdkContent);
 		InitFirst();
@@ -61,7 +61,7 @@ public class PatchActivity extends Activity implements AdListener{
 		//Toast.makeText(this, VC, Toast.LENGTH_SHORT).show();
 		if(mManager!=null)
 			mManager.release();
-		mManager = new AdPatchManager(this,publisherId,cacheMode,layout);
+		mManager = new AdPatchManager(this,mM.PatchPublicId,cacheMode,layout);
 		mManager.SetVC(VC);
 		mManager.setListener(this);
 		mManager.requestAd();

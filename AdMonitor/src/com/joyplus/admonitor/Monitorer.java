@@ -1,9 +1,6 @@
 package com.joyplus.admonitor;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-
-import org.apache.http.client.utils.URLEncodedUtils;
+import cn.com.mma.mobile.tracking.api.Countly;
 
 import com.common.internet.AjaxCallBack;
 import com.common.internet.FastHttp;
@@ -129,9 +126,13 @@ public class Monitorer {
 				  }
 				  Finish();
 			  }else if(ImpressionType.Joyplus==MonitorURL.mImpressionType){
-				  report_third(GetJoyplusReportURL(MonitorURL.mImpressionURL));
+				  //report_third(GetJoyplusReportURL(MonitorURL.mImpressionURL));
+				  report_third(MonitorURL.mImpressionURL);
 			  }else if(AdMonitorSDKFeature.IRESEARCH && ImpressionType.iresearch==MonitorURL.mImpressionType){
 				  report_third(MonitorURL.mImpressionURL);
+			  }else if(AdMonitorSDKFeature.ADMASTER && ImpressionType.admaster==MonitorURL.mImpressionType){
+				  Countly.sharedInstance().onExpose(MonitorURL.mImpressionURL);
+				  Finish();
 			  }else{
 				  Finish();
 			  }

@@ -137,7 +137,7 @@ public class CUSTOMINFO implements Parcelable{
      } 
      //end add by Jas
 	 public  CUSTOMINFO(){
-		 
+		 mBRAND = CUSTOMTYPE.JOYPLUS.toString();
 	 }
 	 public  CUSTOMINFO(CUSTOMINFO info){
 		 if(info != null){
@@ -158,6 +158,8 @@ public class CUSTOMINFO implements Parcelable{
 			 mDSS              = info.mDSS;
 			 mDSR              = info.mDSR;
 			 //end add by Jas
+		 }else{
+			 mBRAND = CUSTOMTYPE.JOYPLUS.toString();
 		 }
 	 }
 	 public CUSTOMINFO CreateNew(){

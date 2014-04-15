@@ -18,7 +18,6 @@ public class AdManager {
 	}
     private AdManager(Context context){
   	      mContext = context;
-  	     
     }
     
     /*Interface for Application*/
