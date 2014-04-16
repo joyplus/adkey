@@ -19,11 +19,13 @@ public class AdConfig {
     private final  static  String mURL_KONKA    = "D5313CEAA0E07E98E875117C601ABF26D0248FA1ED3572AC14A3CB11726A66904709C8F629FDB48C887DBE3AC49F4EDD0B3856DDE8B29AD8D0248FA1ED3572ACAB0CF9C0615443C8FE7A9A05FF18704BC1C23F62DF2D1CCC17DFA7815949350B";
     private final  static  String mURL_JOYPLUS  = "D5313CEAA0E07E98E875117C601ABF26D0248FA1ED3572ACAE7D7F3BBCD40861110294B2C80228A23BBB1702421FFB63C0857980F9D4EE9174A9ABD4EDFBE4C14585B0F8379DFDEFB14531E5B7C4FC0FFE41A3942912F60A";
     private static String  mBaseURL;
-
+    private final  static  int    DEFAULT_MAX   = 5;
+    private static int     MAXSIZE              = DEFAULT_MAX;
+    
 	public  static void Init(Context context){
 		if(AdSDKManager.IsInited())return;
 		if(AdSDKFeature.DEBUG){//advtest
-			mBaseURL = (new Des()).strDec(mDebugBaseURL, GetCompany(), "", "");
+			mBaseURL    = (new Des()).strDec(mDebugBaseURL, GetCompany(), "", "");
 		}else{
 			if(AdSDKManager.GetCustomType() == CUSTOMTYPE.KONKA){
 			   mBaseURL = (new Des()).strDec(mURL_KONKA, GetCompany(), "", "");
@@ -37,6 +39,7 @@ public class AdConfig {
 			mAdBootDebugEnable  = AdBootExternalConfig.getInstance().GetDebugEnable(mAdBootDebugEnable);
 			mBaseURL            = AdBootExternalConfig.getInstance().GetBaseURL(mBaseURL);
 			mAdBootBasePath     = AdBootExternalConfig.getInstance().GetBasePath(mAdBootBasePath);
+			MAXSIZE             = AdBootExternalConfig.getInstance().GetMAXSIZE(DEFAULT_MAX);
 		}
 	}
     
@@ -44,9 +47,11 @@ public class AdConfig {
 	public static String ToString(){
 		return ("AdBootConfig {"
 				+" ,mAdBootDebugEnable="+GetDebugEnable()
+				+" ,mAdBootBasePath="+GetBasePath()
 				+" ,mAdBootBasePathName="+GetBasePathName()
 				+" ,mBaseURL="+GetBaseURL()
 				+" ,mCompany="+GetCompany()
+				+" ,MAXSIZE="+GetMaxSize()
 				+" }");
 	}
 	/*Interface of Application*/
@@ -65,5 +70,7 @@ public class AdConfig {
 	public static String GetCompany(){
 		return mCompany;
 	}
-	
+	public static int GetMaxSize(){
+		return MAXSIZE;
+	}
 }

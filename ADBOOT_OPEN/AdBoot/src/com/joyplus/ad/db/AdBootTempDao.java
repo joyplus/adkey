@@ -43,6 +43,24 @@ public class AdBootTempDao {
 			}
 		}
 	}
+	public synchronized boolean UpdateOneInfo(AdBootImpressionInfo info) {
+		if(DEBUG)Log.d("Jas","UpdateOneInfo -->"+(info==null?"":info.toString()));
+		if(info==null || !info.IsAviable())return false;
+		SQLiteDatabase database = getConnection();
+		try {
+			ContentValues Value = AdBootImpressionInfo.GetContentValues(info);
+			if(info != null){
+				return database.update("adbootTemp_info", Value, null, null)>0;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (null != database) {
+				database.close();
+			}
+		}
+		return false;
+	}
 	public synchronized boolean InsertOneInfo(AdBootImpressionInfo info) {
 		if(DEBUG)Log.d("Jas","InsertOneInfo -->"+(info==null?"":info.toString()));
 		if(info==null || !info.IsAviable())return false;
@@ -84,7 +102,7 @@ public class AdBootTempDao {
 		}
 		return null;
 	}
-	
+	 
 	public void delAll(){
 		if(DEBUG)Log.d("Jas","delAll");
 		SQLiteDatabase database = getConnection();
