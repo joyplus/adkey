@@ -2,6 +2,8 @@ package com.joyplus.ad.db;
 
 import java.util.ArrayList;
 
+import com.joyplus.ad.AdConfig;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -10,7 +12,7 @@ import android.util.Log;
 
 public class AdBootDao {
     private final static boolean DEBUG = false;
-	public  static final int MAX = 5;
+	//public  static final int MAX = 5;
 	private static AdBootDao dao = null;
 	private Context context;
 	private AdBootDao(Context context) {
@@ -36,7 +38,7 @@ public class AdBootDao {
 		ArrayList<AdBootImpressionInfo> Info = GetAllReport();
 		SQLiteDatabase database = getConnection();
 		try {
-			if(Info!= null && Info.size()>=MAX){
+			if(Info!= null && Info.size()>=AdConfig.GetMaxSize()){
 				database.delete("adbootReport_info", "_id=?", new String[]{""+Info.get(0)._ID});
 			}
 			ContentValues Value = AdBootImpressionInfo.GetContentValues(info);
@@ -52,6 +54,7 @@ public class AdBootDao {
 		}
 		return false;
 	}
+	
 	public synchronized AdBootImpressionInfo GetFirst(){
 		SQLiteDatabase database = getConnection();
 		Cursor         cursor   = null;

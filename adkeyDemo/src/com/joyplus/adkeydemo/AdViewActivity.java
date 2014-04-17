@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 public class AdViewActivity extends Activity implements AdListener
-{  
+{   
 	private RelativeLayout layout; 
 	private AdView mAdView;
 	private boolean animation = true;

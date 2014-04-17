@@ -23,6 +23,8 @@ public class AdBootImpressionInfo {
 	public String admaster       = "";
 	public String nielsen        = "";
 	
+	public int    Count          = 0;
+	
 	public boolean IsAviable(){
 		return IsAviable(publisher_id)&&IsAviable(mImpressionUrl)
 				&&(IsAviable(FirstSource)||IsAviable(SecondSource)||IsAviable(ThirdSource));
@@ -39,7 +41,7 @@ public class AdBootImpressionInfo {
 			publisher_id    = ad.GetPublisherId().GetPublisherId();
 			AdBootInfo Info = ad.GetAdBootInfo();
 			if(Info!=null){
-				FirstSource = Info.GetFirstSource();
+				FirstSource  = Info.GetFirstSource();
 				SecondSource = Info.GetSecondSource();
 				ThirdSource  = Info.GetThirdSource();
 			}
@@ -62,6 +64,7 @@ public class AdBootImpressionInfo {
 				}
 			}
 		}
+		Count = 0;
 	}
 	
 	
@@ -78,6 +81,7 @@ public class AdBootImpressionInfo {
 		Values.put("iresearch",      info.iresearch);
 		Values.put("admaster",       info.admaster);
 		Values.put("nielsen",        info.nielsen);
+		Values.put("Count",          info.Count);
 		return Values;
 	}
 	public static AdBootImpressionInfo GetAdBootImpressionInfo(Cursor c){
@@ -93,6 +97,7 @@ public class AdBootImpressionInfo {
 		Info.iresearch      = c.getString(c.getColumnIndex("iresearch"));
 		Info.admaster       = c.getString(c.getColumnIndex("admaster"));
 		Info.nielsen        = c.getString(c.getColumnIndex("nielsen"));
+		Info.Count          = c.getInt(c.getColumnIndex("Count"));
 		return Info;
 	}
 	
@@ -109,6 +114,7 @@ public class AdBootImpressionInfo {
 		  .append(",iresearch="+iresearch)
 		  .append(",admaster="+admaster)
 		  .append(",nielsen="+nielsen)
+		  .append(",Count="+Count)
 		  .append("}");
 		return ap.toString();
 	}

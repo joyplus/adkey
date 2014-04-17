@@ -101,6 +101,7 @@ public class AdBootDownloadManager implements DownLoadListener{
 					   }
 				   }
 			   }
+			   Info.Count = 0;
 			   AdBootTempDao.getInstance(mContext).InsertOneInfo(Info);
 		   }
 		   //end add 

@@ -95,7 +95,7 @@ public class DownLoadManager {
 	   };
 	   	   
 	   private class DownloadBackCall implements DownloaderListener{
-		    private boolean Debug = true;
+		    private boolean Debug = false;
             private boolean Check(){
             	if(mCrrentDownload == null)return false;
             	return true;

@@ -1,13 +1,19 @@
 package com.joyplus.adkeydemo;
 
+import java.util.List;
+
 import com.joyplus.adkey.AdDeviceManager;
+import com.joyplus.adkey.AdKeyConfig;
 import com.joyplus.adkey.CUSTOMINFO;
+import com.joyplus.adkey.Debug.AdKeyDebugFeature;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 public class DeviceParamSetting extends Activity implements OnClickListener{
     private EditText   mDM;
@@ -90,6 +96,8 @@ public class DeviceParamSetting extends Activity implements OnClickListener{
     	
     	PatchMiddle = (EditText) findViewById(R.id.PatchMiddle);
     	PatchMiddle.setText(mM.PatchMiddlePublicId);
+    	
+    	InitRequest();
     }
 	
     private void SavePublisherId(){
@@ -101,7 +109,39 @@ public class DeviceParamSetting extends Activity implements OnClickListener{
     	mM.Set("MiniInterPublicId", MiniInter.getText().toString().trim());
     	mM.Set("PatchPublicId", Patch.getText().toString().trim());
     	mM.Set("PatchMiddlePublicId", PatchMiddle.getText().toString().trim());
+    	
+    	SaveRequest();
     }
 	
 	
+    
+    
+    private void InitRequest(){
+    	Spinner request = (Spinner) findViewById(R.id.request);
+    	List<String> requestUrl = AdKeyConfig.getInstance().GetDebugBaseUrl();
+    	if(requestUrl == null || requestUrl.size()<=0){
+    		request.setVisibility(View.GONE);
+    		return;
+    	}
+    	PublisherIdManager mM = PublisherIdManager.GetInstance();
+    	request.setVisibility(View.VISIBLE);
+    	String[] URLS = new String[requestUrl.size()];
+    	int i = 0;
+    	for(String url : requestUrl){
+    		URLS[i++] = url;
+    	}
+    	AdKeyConfig.getInstance().SetDEMOTEST(mM.Get("REQUESTURL", AdKeyConfig.getInstance().getREQUESTURL()));
+    	request.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,URLS));
+    	request.setSelection(requestUrl.indexOf(mM.Get("REQUESTURL", AdKeyConfig.getInstance().getREQUESTURL())));
+    }
+    
+    private void SaveRequest(){
+    	Spinner request = (Spinner) findViewById(R.id.request);
+    	if(request.getVisibility() != View.VISIBLE)return;
+    	List<String> requestUrl = AdKeyConfig.getInstance().GetDebugBaseUrl();
+    	PublisherIdManager mM = PublisherIdManager.GetInstance();
+    	mM.Set("REQUESTURL", requestUrl.get(request.getSelectedItemPosition()));
+    }
+    
+    
 }

@@ -15,6 +15,7 @@ public class AdBootExternalConfig {
 	private final static String AdBootDebugEnable  = "AdBootDebugEnable";
 	private final static String BaseURL            = "BaseURL";
 	private final static String mAdBootBasePath    = "AdBootBasePath";
+	private final static String MAXSIZE            = "MAXSIZE";
 	
 	private static AdBootExternalConfig mAdBootExternalConfig;
 	public  static AdBootExternalConfig getInstance(){
@@ -38,6 +39,9 @@ public class AdBootExternalConfig {
 		return GetStringConfig(BaseURL,defineValue);
 	}
 	
+	public int GetMAXSIZE(int defineValue){
+		return GetIntConfig(MAXSIZE,defineValue);
+	}
 	private void Load(){   
         try {
         	InputStream is = this.getClass().getResourceAsStream(ConfigFile);

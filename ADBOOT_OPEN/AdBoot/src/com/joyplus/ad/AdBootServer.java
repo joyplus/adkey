@@ -2,8 +2,9 @@ package com.joyplus.ad;
 
 import java.io.File;
 import java.util.ArrayList;
-
+import java.util.Iterator;
 import com.joyplus.ad.config.Log;
+import com.joyplus.ad.data.FileUtils;
 import com.joyplus.ad.db.AdBootDao;
 import com.joyplus.ad.db.AdBootImpressionInfo;
 import com.joyplus.ad.db.AdBootTempDao;
@@ -34,11 +35,16 @@ public class AdBootServer extends Service{
 			//Dao.delAll();//remove it first.
 			if(Info != null && Info.size()>0){
 				Log.d("StartCheckTemp size="+Info.size());
-				for(AdBootImpressionInfo info:Info){
+				Iterator<AdBootImpressionInfo> it = Info.iterator();
+				while(it.hasNext()){
+					AdBootImpressionInfo info = it.next();
 					if(CheckAdBootImpressionInfo(info)){
 						mAdBootDao.InsertOneInfo(info);
+						info.Count++;
+						Dao.UpdateOneInfo(info);
+					}else{//location file has be removed.
+						Dao.Remove(info.publisher_id);
 					}
-					Dao.Remove(info.publisher_id);
 				}
 			}
 		}else{
@@ -48,12 +54,16 @@ public class AdBootServer extends Service{
     
 	private synchronized boolean CheckAdBootImpressionInfo(AdBootImpressionInfo info){
 		if(info == null || !info.IsAviable())return false;
-		return (CheckFile(info.FirstSource)||CheckFile(info.SecondSource)||CheckFile(info.ThirdSource));
+		boolean Remove = (info.Count>=AdConfig.GetMaxSize());
+		return ((!Remove)|CheckFile(info.FirstSource,Remove)|CheckFile(info.SecondSource,Remove)|CheckFile(info.ThirdSource,Remove));
 	}
 	
-	private boolean CheckFile(String file){
+	private boolean CheckFile(String file,boolean remove){
 		if(file== null || "".equals(file))return false;
-		return (new File(file).exists());
+		File location        = new File(file);
+		boolean Resoult      = location.exists();
+		if(remove && Resoult)FileUtils.deleteFile(file);
+		return Resoult;
 	}
 	
 	
