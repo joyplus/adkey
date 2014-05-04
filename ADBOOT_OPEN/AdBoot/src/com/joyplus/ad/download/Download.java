@@ -3,7 +3,7 @@ package com.joyplus.ad.download;
 import com.joyplus.ad.download.Downloader.DownloaderState;
 import android.webkit.URLUtil;
 
-public class Download implements DownloaderListener,DownLoadListener{
+public class Download implements DownloaderListener{
       public enum STATE{
     	  IDLE , DOWNLOAD , FINISH
       }
@@ -57,7 +57,9 @@ public class Download implements DownloaderListener,DownLoadListener{
 		@Override
 		public void DownloaderProgress(int Dwonloaded, int TotleSize) {
 			// TODO Auto-generated method stub
-			
+			if(mDownLoadLinstener != null){
+				mDownLoadLinstener.DownLoading(TargetFile, Dwonloaded, TotleSize);
+			}
 		}
 
 
@@ -85,22 +87,5 @@ public class Download implements DownloaderListener,DownLoadListener{
 			  .append(" }");			
 			return ap.toString();
 		}
-		@Override
-		public void Start(Download download) {
-			// TODO Auto-generated method stub
-			
-		}
-		@Override
-		public void Finish(Download download) {
-			// TODO Auto-generated method stub
-			
-		}
-		@Override
-		public void NoAD() {
-			// TODO Auto-generated method stub
-			
-		}
 		
-	 
-	  
 }

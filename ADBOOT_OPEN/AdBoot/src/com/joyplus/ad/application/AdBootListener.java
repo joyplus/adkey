@@ -7,4 +7,6 @@ public interface AdBootListener {
 	public void Finish();
 	
 	public void NoAn();
+	
+	public void DownLoadProgress(String TargetFile,long complete,long Totle);
 }

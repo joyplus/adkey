@@ -183,6 +183,13 @@ public class AdBootManager extends AdMode{
 				mAdBootListener.NoAd();
 			}
 		}
+		@Override
+		public void DownLoading(String targetFile,long complete, long totle) {
+			// TODO Auto-generated method stub
+			if(mAdBootListener != null){
+				mAdBootListener.DownLoadProgress(targetFile, complete, totle);
+			}
+		}
 	}
 	
 }

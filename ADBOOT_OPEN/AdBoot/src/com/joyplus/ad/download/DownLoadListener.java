@@ -7,4 +7,6 @@ public interface DownLoadListener {
 	public void Finish(Download download);
 	
 	public void NoAD();
+	
+	public void DownLoading(String targetFile,long complete, long totle);
 }

@@ -250,17 +250,17 @@ public class AdBootDownloadManager implements DownLoadListener{
 		   return (mLastbootanimation.equals(mbootanimation));
 	   }
 	    // Interface Report count
-		private void ReportCount() {
-			new Thread(new ReportCountRunnable()).start();
-		}
-		private class ReportCountRunnable implements Runnable {
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				new ImpressionThread(mContext, mCurrentADBOOT.video.impressionurl.URL,
-						mPublisherId.GetPublisherId(), AdManager.AD.ADBOOT).start();
-			}
-		}
+//		private void ReportCount() {
+//			new Thread(new ReportCountRunnable()).start();
+//		}
+//		private class ReportCountRunnable implements Runnable {
+//			@Override
+//			public void run() {
+//				// TODO Auto-generated method stub
+//				new ImpressionThread(mContext, mCurrentADBOOT.video.impressionurl.URL,
+//						mPublisherId.GetPublisherId(), AdManager.AD.ADBOOT).start();
+//			}
+//		}
 	   
 		//for Listener
 		private List<Download> mDownload;
@@ -296,6 +296,12 @@ public class AdBootDownloadManager implements DownLoadListener{
 			// TODO Auto-generated method stub
 			
 		}
-	
-	   
+
+		@Override
+		public void DownLoading(String targetFile, long complete, long totle) {
+			// TODO Auto-generated method stub
+			if(mDownLoadListener != null){
+				mDownLoadListener.DownLoading(targetFile, complete, totle);
+			}
+		}
 }
