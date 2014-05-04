@@ -27,6 +27,7 @@ public class AdKeySDKManager {
 	private AdKeySDKManager(Context context){
 		mContext = context;
 		InitResource();
+		Inited = true;
 	}
 	private void InitResource() {
 		// TODO Auto-generated method stub
