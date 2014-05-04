@@ -2,6 +2,8 @@ package com.joyplus.adkeydemo;
 
 
 import com.joyplus.adkey.AdDeviceManager;
+import com.joyplus.adkey.AdKeySDKManager;
+import com.joyplus.adkey.AdKeySDKManagerException;
 import com.joyplus.adkey.CUSTOMINFO;
 import android.os.Bundle;
 import android.view.View;
@@ -53,6 +55,12 @@ public class MainActivity extends Activity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		try {
+			AdKeySDKManager.Init(this.getApplicationContext());
+		} catch (AdKeySDKManagerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 		setContentView(R.layout.activity_main);
 		PublisherIdManager.Init(MainActivity.this.getApplicationContext());
 		//for Init Device state

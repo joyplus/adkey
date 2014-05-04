@@ -3,18 +3,23 @@ package com.joyplus.adkey.mon;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.joyplus.adkey.AdKeySDKManager;
+
 import android.content.Context;
 
 public class AppReportManager {
     
 	   private Context mContext;
 	   private static AppReportManager mAppReportManager;
+	   public  static void Init(Context context){
+		    if(AdKeySDKManager.IsInited())return;
+		    mAppReportManager = new AppReportManager(context);
+	   }
 	   private AppMonitorServer mAppMonitorServer;
+	   public  static AppReportManager getInstance(){
+		   return mAppReportManager;
+	   }
 	   public  static AppReportManager getInstance(Context context){
-		   if(mAppReportManager == null){
-			   if(context == null)throw new IllegalArgumentException("context can't be null");
-			   mAppReportManager = new AppReportManager(context);
-		   }
 		   return mAppReportManager;
 	   }
 	   private AppReportManager(Context context){
