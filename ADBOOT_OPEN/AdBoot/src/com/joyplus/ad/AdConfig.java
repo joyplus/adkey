@@ -46,10 +46,10 @@ public class AdConfig {
 			}
 		}
 		if(AdSDKFeature.EXTERNAL_CONFIG){
-			mAdBootDebugEnable  = AdBootExternalConfig.getInstance().GetDebugEnable(mAdBootDebugEnable);
-			mBaseURL            = AdBootExternalConfig.getInstance().GetBaseURL(mBaseURL);
-			mAdBootBasePath     = AdBootExternalConfig.getInstance().GetBasePath(mAdBootBasePath);
-			MAXSIZE             = AdBootExternalConfig.getInstance().GetMAXSIZE(DEFAULT_MAX);
+			mAdBootDebugEnable  = AdBootExternalConfig.getInstance(context).GetDebugEnable(mAdBootDebugEnable);
+			mBaseURL            = AdBootExternalConfig.getInstance(context).GetBaseURL(mBaseURL);
+			mAdBootBasePath     = AdBootExternalConfig.getInstance(context).GetBasePath(mAdBootBasePath);
+			MAXSIZE             = AdBootExternalConfig.getInstance(context).GetMAXSIZE(DEFAULT_MAX);
 		}
 	}
     
