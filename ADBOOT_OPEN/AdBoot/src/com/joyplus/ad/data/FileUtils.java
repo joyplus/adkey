@@ -2,6 +2,7 @@ package com.joyplus.ad.data;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -144,6 +145,7 @@ public class FileUtils {
 
     /** Copy binary file */
     public static boolean copyFile(File srcFile, File dstFile) {
+    	Log.d("copyFile from "+srcFile.toString()+" to "+dstFile.toString());
         try {
             InputStream in = new FileInputStream(srcFile);
             if (dstFile.exists()) {
@@ -189,5 +191,25 @@ public class FileUtils {
         sd = Environment.getExternalStorageDirectory();
         return sd.toString(); 
     }
-    
+    public static long getFileSizes(File f){
+    	  FileInputStream fis = null;
+	      try {
+	    	  fis = new FileInputStream(f);
+	    	  return fis.available();
+		  } catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		  } catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		  }finally{
+				try {
+					 if(fis!=null)fis.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		  }
+	      return -1;
+    }
 }

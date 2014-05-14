@@ -129,6 +129,13 @@ public class AdBootDownloadManager implements DownLoadListener{
 			   File first = new File(mLocalAdBootInfo.GetFirstSource());
 			   if(IsFirstSame() && first.exists()){
 				   File TargetFirst = new File(mAdBootInfo.GetFirstSource());
+				   if(!AdConfig.GetCOPYALWAYS()){
+					   long t = TargetFirst.length();
+					   if(t>0 && t== first.length()){
+						   FileUtils.Chmod(TargetFirst);
+						   return;
+					   }
+				   }
 				   if(FileUtils.copyFile(first, TargetFirst)){
 					   FileUtils.Chmod(TargetFirst);
 				   }
@@ -154,7 +161,14 @@ public class AdBootDownloadManager implements DownLoadListener{
 			   File second = new File(mLocalAdBootInfo.GetSecondSource());
 			   if(IsSecondSame() && second.exists()){
 				   File TagetSecond = new File(mAdBootInfo.GetSecondSource());
-				   if(FileUtils.copyFile(second,TagetSecond)){
+				   if(!AdConfig.GetCOPYALWAYS()){
+					   long t = TagetSecond.length();
+					   if(t>0 && t== second.length()){
+						   FileUtils.Chmod(TagetSecond);
+						   return;
+					   }
+				   }
+				   if(FileUtils.copyFile(second, TagetSecond)){
 					   FileUtils.Chmod(TagetSecond);
 				   }
 			   }else if((mCurrentADBOOT.video.creative2 != null)
@@ -179,6 +193,13 @@ public class AdBootDownloadManager implements DownLoadListener{
 			   File zip = new File(mLocalAdBootInfo.GetThirdSource());
 			   if(IsBootAnimationSame() && zip.exists()){
 				   File TargetThird = new File(mAdBootInfo.GetThirdSource());
+				   if(!AdConfig.GetCOPYALWAYS()){
+					   long t = TargetThird.length();
+					   if(t>0 && t== zip.length()){
+						   FileUtils.Chmod(TargetThird);
+						   return;
+					   }
+				   }
 				   if(FileUtils.copyFile(zip, TargetThird)){
 					   FileUtils.Chmod(TargetThird);
 				   }

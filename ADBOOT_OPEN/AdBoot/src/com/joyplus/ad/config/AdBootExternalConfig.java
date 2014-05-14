@@ -18,6 +18,7 @@ public class AdBootExternalConfig {
 	private final static String BaseURL            = "BaseURL";
 	private final static String mAdBootBasePath    = "AdBootBasePath";
 	private final static String MAXSIZE            = "MAXSIZE";
+	private final static String COPYALWAYS         = "COPYALWAYS";
 	
 	private static AdBootAssertExternalConfig  mAdBootAssertExternalConfig;
 	private static AdBootExternalConfig        mAdBootExternalConfig;
@@ -57,9 +58,15 @@ public class AdBootExternalConfig {
 		}
 		return defineValue;
 	}
-	
+	public   boolean GetCOPYALWAYS(boolean defineValue){
+		if(LoadOK){
+			return GetBooleanConfig(COPYALWAYS,defineValue);
+		}else if(mAdBootAssertExternalConfig!=null && mAdBootAssertExternalConfig.getUseable()){
+			return mAdBootAssertExternalConfig.getCOPYALWAYS(defineValue);
+		}
+		return defineValue;
+	}
 	public int GetMAXSIZE(int defineValue){
-		android.util.Log.i("AdBootSDK", "GetMAXSIZE  LoadOK="+LoadOK+","+(mAdBootAssertExternalConfig!=null)+","+(mAdBootAssertExternalConfig==null?"null":mAdBootAssertExternalConfig.getUseable()));
 		if(LoadOK){
 			return GetIntConfig(MAXSIZE,defineValue);
 		}else if(mAdBootAssertExternalConfig != null && mAdBootAssertExternalConfig.getUseable()){

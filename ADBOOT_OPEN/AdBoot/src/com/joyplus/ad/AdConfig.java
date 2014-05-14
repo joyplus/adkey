@@ -27,7 +27,7 @@ public class AdConfig {
   //end add by Jas
     private final  static  int    DEFAULT_MAX   = 5;
     private static int     MAXSIZE              = DEFAULT_MAX;
-    
+    private static boolean COPYALWAYS           = true;
 	public  static void Init(Context context){
 		if(AdSDKManager.IsInited())return;
 		if(AdSDKFeature.DEBUG){//advtest
@@ -50,6 +50,7 @@ public class AdConfig {
 			mBaseURL            = AdBootExternalConfig.getInstance(context).GetBaseURL(mBaseURL);
 			mAdBootBasePath     = AdBootExternalConfig.getInstance(context).GetBasePath(mAdBootBasePath);
 			MAXSIZE             = AdBootExternalConfig.getInstance(context).GetMAXSIZE(DEFAULT_MAX);
+			COPYALWAYS          = AdBootExternalConfig.getInstance(context).GetCOPYALWAYS(COPYALWAYS);
 		}
 	}
     
@@ -63,6 +64,7 @@ public class AdConfig {
 				+" ,mCompany="+GetCompany()
 				+" ,mBaseURL_admaster="+GetBaseURLAdmaster()
 				+" ,MAXSIZE="+GetMaxSize()
+				+" ,COPYALWAYS="+GetCOPYALWAYS()
 				+" }");
 	}
 	/*Interface of Application*/
@@ -86,5 +88,8 @@ public class AdConfig {
 	}
 	public static int GetMaxSize(){
 		return MAXSIZE;
+	}
+	public static boolean GetCOPYALWAYS(){
+		return COPYALWAYS;
 	}
 }
