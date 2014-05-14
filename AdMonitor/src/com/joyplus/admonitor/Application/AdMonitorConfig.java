@@ -20,7 +20,12 @@ public class AdMonitorConfig {
     private final  static  String mVcBaceURL       = "D5313CEAA0E07E98E875117C601ABF26D0248FA1ED3572ACAE7D7F3BBCD40861110294B2C80228A23BBB1702421FFB63C0857980F9D4EE9174A9ABD4EDFBE4C14585B0F8379DFDEF16AF2741D452255050C107AA4488E854";
     private final  static  String mDebugAppBaseURL = "D5313CEAA0E07E98E875117C601ABF26D0248FA1ED3572AC5F31E91461BF151ADDD7BE9F4CAD1C0BA299B9BAC9EF1545C0857980F9D4EE9174A9ABD4EDFBE4C14585B0F8379DFDEF708A5EDF6E008A9C0375DE907C2BB3EA";
     private final  static  String mDebugVcBaseURL  = "D5313CEAA0E07E98E875117C601ABF26D0248FA1ED3572AC5F31E91461BF151ADDD7BE9F4CAD1C0BA299B9BAC9EF1545C0857980F9D4EE9174A9ABD4EDFBE4C14585B0F8379DFDEF16AF2741D452255050C107AA4488E854";
-    
+    //add by Jas@20140430 for admaster config
+  	private final  static  String     mDebugBaseURL_admaster = "http://advapi.yue001.com/advapi/config/admaster";
+  	private final  static  String     mURL_KONKA_admaster    = "http://advapikj.joyplus.tv/advapi/config/admaster";//¿µ¼Ñ
+  	private final  static  String     mBaseURL_admaster      = "http://advapi.joyplus.tv/advapi/config/admaster";
+    private static  String mURL_admaster = "";
+    //end add by Jas
     private static String  mURL;
     private static String  mAppURL;
     private static String  mVcURL;
@@ -32,10 +37,12 @@ public class AdMonitorConfig {
 			mURL    = mDes.strDec(mDebugBaseURL, GetCompany(), "", "");
 			mAppURL = mDes.strDec(mDebugAppBaseURL, GetCompany(), "", "");
 			mVcURL  = mDes.strDec(mDebugVcBaseURL, GetCompany(), "", "");
+			mURL_admaster = mDebugBaseURL_admaster;
 		}else{
 			mURL    = mDes.strDec(mBaseURL, GetCompany(), "", "");
 		    mAppURL = mDes.strDec(mAppBaseURL, GetCompany(), "", "");
 		    mVcURL  = mDes.strDec(mVcBaceURL, GetCompany(), "", "");
+			mURL_admaster = mBaseURL_admaster;
 		}
 		if(AdMonitorSDKFeature.EXTERNAL_CONFIG){
 			mAdBootDebugLogEnable  = AdMonitorExternalConfig.getInstance().GetDebugEnable(mAdBootDebugLogEnable);
@@ -52,6 +59,7 @@ public class AdMonitorConfig {
 				+" ,mURL="+GetBaseURL()
 				+" ,mCompany="+GetCompany()
 				+" ,mAppURL="+GetAppURL()
+				+" ,mURL_admaster="+GetBaseURLAdmaster()
 				+" ,mVcURL="+GetVcURL()
 				+" }");
 	}
@@ -62,6 +70,9 @@ public class AdMonitorConfig {
 	
 	public static String GetBaseURL(){
 		return mURL;
+	}
+	public static String GetBaseURLAdmaster(){
+		return mURL_admaster;
 	}
 	public static String GetAppURL(){
 		return mAppURL;

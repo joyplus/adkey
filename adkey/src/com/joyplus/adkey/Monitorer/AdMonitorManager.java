@@ -4,6 +4,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.joyplus.adkey.AdKeySDKManager;
 import com.joyplus.adkey.Util;
 import android.content.Context;
 
@@ -11,11 +13,14 @@ public class AdMonitorManager {
 	
 	private Context mContext;
 	private static AdMonitorManager mAdMonitorManager;
+	public  static void Init(Context context){
+		if(AdKeySDKManager.IsInited())return;
+		mAdMonitorManager = new AdMonitorManager(context.getApplicationContext());
+	}
+	public  static AdMonitorManager getInstance(){
+		  return mAdMonitorManager;
+	}
 	public  static AdMonitorManager getInstance(Context context){
-		  if(mAdMonitorManager == null){
-			  if(context == null)throw new IllegalArgumentException("context can't be null");
-			  mAdMonitorManager = new AdMonitorManager(context.getApplicationContext());
-		  }
 	      return mAdMonitorManager;
 	}
 	private AdMonitorManager(Context context){

@@ -50,7 +50,8 @@ public class Request {
 		// TODO Auto-generated method stub
 		Util.PublisherId     = mPublisherId;
 		Util.GetPackage(mContext);
-		mUserAgent = Util.getDefaultUserAgentString(mContext);
+		//mUserAgent = Util.getDefaultUserAgentString(mContext);
+		mUserAgent = Util.buildUserAgent();
 		locationManager        = null;
 //		int telephonyPermission    = mContext.checkCallingOrSelfPermission(Manifest.permission.READ_PHONE_STATE);
 		isAccessFineLocation   = mContext.checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);

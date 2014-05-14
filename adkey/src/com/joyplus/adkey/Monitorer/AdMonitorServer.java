@@ -6,6 +6,7 @@ import java.util.List;
 
 import cn.com.mma.mobile.tracking.api.Countly;
 
+import com.joyplus.adkey.AdKeyConfig;
 import com.joyplus.adkey.Monitorer.Monitorer.MonitorerState;
 import com.joyplus.adkey.widget.Log;
 import android.content.Context;
@@ -17,15 +18,13 @@ public class AdMonitorServer implements MonitorListener{
 	 private Context mContext;
 	 private List<Monitor> mMonitorList;
 	 private final static int  MAXSIZE = 100;
-	 //add by Jas for admaster
-	 private final static String CONFIG_URL = "http://admaster.mobi/sdkconfig.xml";
 	 
 	 public AdMonitorServer(Context context){
 		 mContext = context;
 		 mMonitorList = new ArrayList<Monitor>();
 		 mMonitorer   = new Monitorer(mContext);
 		 //add by Jas for admaster
-		 Countly.sharedInstance().init(mContext, CONFIG_URL);
+		 Countly.sharedInstance().init(mContext, AdKeyConfig.getInstance().getAdMasterConfig());
 	 }
 	 public void AddMonitor(List<Monitor> urls) {
 		// TODO Auto-generated method stub

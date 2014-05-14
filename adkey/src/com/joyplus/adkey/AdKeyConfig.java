@@ -18,6 +18,12 @@ public class AdKeyConfig {
 	private String     Joyplus_app_REQUESTURL = "http://advapi.joyplus.tv/advapi/v1/mdapplog";//for app 
 	private String     Joyplus_vc_REQUESTURL  = "http://advapi.joyplus.tv/advapi/v1/mdvclog";//for video
 	//end add by Jas
+	//add by Jas@20140430 for admaster config
+	private String     Joyplus_REQUESTURL_admaster = "http://advapi.yue001.com/advapi/config/admaster";
+	private String     Konka_REQUESTURL_admaster   = "http://advapikj.joyplus.tv/advapi/config/admaster";//康佳
+	private String     Runhe_REQUESTURL_admaster   = "http://advapi.joyplus.tv/advapi/config/admaster";//润和
+	private String     Haier_REQUESTURL_admaster   = "http://advapi.joyplus.tv/advapi/config/admaster";//海尔
+	//end add by Jas
 	private boolean    LoadOK = false;
 	private Properties props;
 	private static AdKeyConfig mAdKeyConfig;
@@ -62,6 +68,18 @@ public class AdKeyConfig {
 			return Haier_REQUESTURL;
 		}else{
 			return Joyplus_REQUESTURL;
+		}
+	}
+	public String getAdMasterConfig(){
+		int custom = getCUSTOM();
+		if(custom == CUSTOM.KONKA){
+			return Konka_REQUESTURL_admaster;
+		}else if(custom == CUSTOM.RUNHE){
+			return Runhe_REQUESTURL_admaster;
+		}else if(custom == CUSTOM.HAIER){
+			return Haier_REQUESTURL_admaster;
+		}else{
+			return Joyplus_REQUESTURL_admaster;
 		}
 	}
 	public String getAppREQUESTURL(){

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<adbootconfig.xml version="1">
+    <!--  Debug this AdBoot Enable
+          @Param boolean ; Debug true, else false
+    -->
+    <bool name="AdBootDebugEnable">true</bool>
+
+    <!--  AdBoot file base path 
+          @Param String ;
+          Its use to config cache . 
+    -->
+    <string name="AdBootBasePath">/data/misc/</string>
+
+    <!-- define for custom overwrite MAXSIZE ,
+         @Param Int ;
+         If devices power-on and no Net 
+         more than MAXSIZE.the location file will be remove -->
+    <int name="MAXSIZE">50</int>
+
+    <!--  define for custom overwrite request base URL
+          @Param String ;
+          Its use to config host. when request AD info. -->
+    
+    <string name="BaseURL">assss</string>
+    
+
+</adbootconfig.xml>

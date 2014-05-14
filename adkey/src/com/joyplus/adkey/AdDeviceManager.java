@@ -1,5 +1,7 @@
 package com.joyplus.adkey;
 
+import com.joyplus.adkey.widget.Log;
+
 import android.content.Context;
 
 public class AdDeviceManager {
@@ -7,17 +9,20 @@ public class AdDeviceManager {
 	  private Context mContext;
 	  private static AdDeviceManager mAdDeviceManager = null;
 	  private CUSTOMINFO mCUSTOMINFO;
-	  
-	  public static AdDeviceManager getInstance(Context context){
-		  if(mAdDeviceManager == null){
-			  mAdDeviceManager = new AdDeviceManager(context);
-		  }
+	  public  static void Init(Context context){
+		   if(AdKeySDKManager.IsInited())return;
+		   mAdDeviceManager = new AdDeviceManager(context);
+	  }
+	  public static AdDeviceManager getInstance(){
 		  return mAdDeviceManager;
 	  }
+	  public static AdDeviceManager getInstance(Context context){
+		  return mAdDeviceManager;//for Compatible before.
+	  }
+	  
 	  private AdDeviceManager(Context context){
-		  if(context != null){
-			  mContext = context.getApplicationContext();
-		  }
+		  Log.d("AdDeviceManager create");
+	      mContext = context.getApplicationContext();
 	  }
 	  public void SetCUSTOMINFO(CUSTOMINFO info){
 		  if(info != null){
