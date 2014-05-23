@@ -19,7 +19,6 @@ import com.joyplus.ad.db.AdBootTempDao;
 import com.joyplus.ad.download.DownLoadListener;
 import com.joyplus.ad.download.DownLoadManager;
 import com.joyplus.ad.download.Download;
-import com.joyplus.ad.download.ImpressionThread;
 
 public class AdBootDownloadManager implements DownLoadListener{
      

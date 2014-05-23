@@ -8,10 +8,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.joyplus.ad.AdSDKManager;
+import com.joyplus.ad.AdSDKManager.CUSTOMTYPE;
 import com.joyplus.ad.config.Log;
 
 import android.annotation.SuppressLint;
 import android.os.Environment;
+import android.os.StatFs;
 
 /** File copy/delete/move */
 @SuppressLint("NewApi")
@@ -147,12 +150,12 @@ public class FileUtils {
     public static boolean copyFile(File srcFile, File dstFile) {
     	Log.d("copyFile from "+srcFile.toString()+" to "+dstFile.toString());
         try {
+        	if(CUSTOMTYPE.LENOVO==AdSDKManager.GetCustomType()
+        			&&!CheckSpaceSize(srcFile))return dstFile.exists();
+        	File temp = new File(dstFile.toString()+".tmp");
             InputStream in = new FileInputStream(srcFile);
-            if (dstFile.exists()) {
-                dstFile.delete();
-            }
-        
-            OutputStream out = new FileOutputStream(dstFile);
+            if (!deleteFile(temp.toString()))return false;
+            OutputStream out = new FileOutputStream(temp);
             try {
                 int cnt;
                 byte[] buf = new byte[4096];
@@ -163,6 +166,11 @@ public class FileUtils {
                 out.close();
                 in.close();
             }
+            if (!deleteFile(dstFile.toString())){
+            	deleteFile(temp.toString());
+            	return false;
+            }
+            temp.renameTo(dstFile);
             return true;
         } catch (IOException e) {
             return false;
@@ -212,4 +220,25 @@ public class FileUtils {
 		  }
 	      return -1;
     }
+    
+    private static boolean CheckSpaceSize(File srcFile){
+    	if(srcFile==null||!srcFile.exists())return false;
+    	long size = getSystemFreeSpace();
+    	Log.d("FreeSpace="+size+",srcFileSize="+srcFile.length());
+    	if(srcFile.length()>0&& size>srcFile.length())return true;
+    	return false;
+    }
+    //////////////////////////////////////////////////
+    //lenovo提供的方法,只在联想机器上使用
+    public static long getSystemFreeSpace() {
+        File root = Environment.getDataDirectory();
+        StatFs sf = new StatFs(root.getPath());
+        long blockSize = sf.getBlockSize();
+        long availCount = sf.getAvailableBlocks();
+        long sysspace = availCount * blockSize;
+        Log.d("getSystemSpace", "getSystemSpace=" + sysspace);
+        return sysspace;
+    }
+
+    
 }
