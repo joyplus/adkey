@@ -192,7 +192,7 @@ public class FloatLayout implements AdListener{
 		
 		private void startDismissTimer(final Ad response){
 			if (DismissTimer == null)return;
-			final int refreshTime = 10*1000;
+			final int refreshTime = 50*1000;
 			DismissTimer.schedule(new TimerTask(){
 				@Override
 				public void run() {
@@ -216,7 +216,7 @@ public class FloatLayout implements AdListener{
 		
 		private void startReloadTimer(Ad response){
 			if (this.reloadTimer == null)return;
-			final int refreshTime = 20*1000;
+			final int refreshTime = 60*1000;
 			this.reloadTimer.schedule(new TimerTask(){
 				@Override
 				public void run() {
