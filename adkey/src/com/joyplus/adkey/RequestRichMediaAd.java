@@ -1,18 +1,13 @@
 package com.joyplus.adkey;
 
 import static com.joyplus.adkey.Const.RESPONSE_ENCODING;
-
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
-
 import com.joyplus.adkey.video.ResponseHandler;
 import com.joyplus.adkey.video.RichMediaAd;
 
@@ -49,7 +44,10 @@ public class RequestRichMediaAd extends RequestAd<RichMediaAd> {
 					+ e.getMessage(), e);
 		}
 	}
-
+    public RichMediaAd parse(InputStream inputStream,boolean f)
+			throws RequestException{
+    	return parse(inputStream);
+    }
 	@Override
 	RichMediaAd parse(InputStream inputStream)
 			throws RequestException {

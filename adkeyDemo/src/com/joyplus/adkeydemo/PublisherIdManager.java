@@ -28,7 +28,7 @@ public class PublisherIdManager {
 		PatchMiddlePublicId  = Get("PatchMiddlePublicId",PatchMiddlePublicId);
 	}
 	
-	public String AdViewPublicId      = "8f311026597575a5d4e2a6ec944f08bc";
+	public String AdViewPublicId      = "0e8c1a6799db6d261802d2d11b60e063";
 	public String AfterPatchPublicId  = "a7fdba4e22f6be35b664eb88db55816e";
 	public String FloatLayoutPublicId = "d286067f946dba267ca925e12369f050";
 	public String InterstitialPublicId= "bc42d0e425d2bcbbe24b05118e59fc07";

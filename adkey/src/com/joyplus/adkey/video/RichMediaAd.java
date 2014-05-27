@@ -37,6 +37,13 @@ public class RichMediaAd implements Ad {
 	public  String GetCreative_res_url(){
 		return mCreative_res_url;
 	}
+	private String mCreative_res_Hash;
+	public  void SetCreative_res_Hash(String url){
+		mCreative_res_Hash = url;
+	}
+	public  String GetCreative_res_Hash(){
+		return mCreative_res_Hash;
+	}
 	private int    mRefresh = -1;
 	public  void SetRefresh(int refresh){
 		mRefresh = refresh;

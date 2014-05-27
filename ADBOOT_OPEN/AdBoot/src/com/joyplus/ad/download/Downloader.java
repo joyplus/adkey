@@ -7,6 +7,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import com.joyplus.ad.AdFileManager;
+import com.joyplus.ad.config.Log;
+import com.joyplus.ad.data.FileUtils;
+
 import android.os.Handler;
 import android.webkit.URLUtil;
 
@@ -108,7 +111,13 @@ public class Downloader {
 			}
 			if(Running) return;
 			Running    = true;
-			localfile  = (new File(AdFileManager.getInstance().GetBasePath(),DOWNLOAD_DOWNLOAD)).toString();			
+			File local = new File(AdFileManager.getInstance().GetBasePath(),DOWNLOAD_DOWNLOAD);
+			if(local.exists()){//make sure local file is not exists.
+				Log.d("Downloader remove temp first!!!!");
+				FileUtils.Chmod(local);
+				FileUtils.deleteFile(local.toString());
+			}
+			localfile  = local.toString();
 			HttpURLConnection connection = null;
 			RandomAccessFile randomAccessFile = null;
 			InputStream inputstream = null;
@@ -134,7 +143,9 @@ public class Downloader {
 						if(filetemp.exists()){
 							File filedone = new File(AdFileManager.getInstance().GetBasePath(),DOWNLOAD_FINISH);
 							if(filedone.exists())filedone.delete();
+							Log.d("Dowerload complete and rename to filedone !!!!");
 							filetemp.renameTo(filedone);
+						    FileUtils.Chmod(filedone);
 							SetDownloaderState(DownloaderState.SUCCESS);
 						}
 					}

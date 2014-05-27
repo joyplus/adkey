@@ -12,6 +12,8 @@ public class CREATIVE implements Serializable{
 	public       String height   ="";
 	public       String URL      ="";
 	
+	public       String Hash     ="";
+	
 	public String toString() {
 		StringBuffer ap = new StringBuffer();
 		ap.append(" CREATIVE={")
@@ -23,6 +25,7 @@ public class CREATIVE implements Serializable{
 		  .append(" ,width="+width)
 		  .append(" ,height="+height)
 		  .append(" ,URL="+URL)
+		  .append(" ,Hash="+Hash)
 		  .append(" }");
 		return ap.toString();
 	}

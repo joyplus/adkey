@@ -11,6 +11,7 @@ import com.joyplus.ad.application.AdBootInfo;
 import com.joyplus.ad.application.AdBootManager;
 import com.joyplus.ad.config.Log;
 import com.joyplus.ad.data.ADBOOT;
+import com.joyplus.ad.data.AdHash;
 import com.joyplus.ad.data.CODE;
 import com.joyplus.ad.data.FileUtils;
 import com.joyplus.ad.data.TRACKINGURL;
@@ -126,28 +127,28 @@ public class AdBootDownloadManager implements DownLoadListener{
 		   if(mAdBootInfo == null)return;
 		   if(mAdBootInfo.CheckFirstImageUsable() ){
 			   File first = new File(mLocalAdBootInfo.GetFirstSource());
-			   if(IsFirstSame() && first.exists()){
-				   File TargetFirst = new File(mAdBootInfo.GetFirstSource());
-				   if(!AdConfig.GetCOPYALWAYS()){
-					   long t = TargetFirst.length();
-					   if(t>0 && t== first.length()){
-						   FileUtils.Chmod(TargetFirst);
-						   return;
+			   if(IsFirstSame() && first.exists()){//URL same and localfile is exists.
+				   if(IsFirstHashSame()){
+					   Log.d("Hash check success "+mAdBootInfo.GetFirstSource()+" then going to copy file to Target file !!!");
+					   File TargetFirst = new File(mAdBootInfo.GetFirstSource());
+					   if(!AdConfig.GetCOPYALWAYS()){
+						   long t = TargetFirst.length();
+						   if(t>0 && t== first.length()){
+							   FileUtils.Chmod(TargetFirst);
+							   return;
+						   }
 					   }
-				   }
-				   if(FileUtils.copyFile(first, TargetFirst)){
-					   FileUtils.Chmod(TargetFirst);
+					   if(FileUtils.copyFile(first, TargetFirst)){
+						   FileUtils.Chmod(TargetFirst);
+					   }
+				   }else{
+					   Log.d("Hash check fail  "+mAdBootInfo.GetFirstSource()+" then going to download file to Target file !!!");
+					   DownloadFirst();
 				   }
 			   }else if((mCurrentADBOOT.video.creative != null)
 						  && (URLUtil.isHttpsUrl(mCurrentADBOOT.video.creative.URL)||URLUtil.isHttpUrl(mCurrentADBOOT.video.creative.URL))){
 				   if(first.exists())first.delete();//remove it first
-				   Download firstdownload   = new Download();
-				   firstdownload.URL        = mCurrentADBOOT.video.creative.URL;
-				   firstdownload.LocalFile  = mLocalAdBootInfo.GetFirstSource();
-				   firstdownload.TargetFile = mAdBootInfo.GetFirstSource();
-				   firstdownload.SetDownLoadListener(this);
-				   mDownload.add(firstdownload);
-				   DownLoadManager.getInstance().AddDownload(firstdownload);
+				   DownloadFirst();
 			   }else{//now server not get
 				   if(first.exists())first.delete();//remove it first
 				   FileUtils.deleteFile(mAdBootInfo.GetFirstSource());
@@ -159,27 +160,27 @@ public class AdBootDownloadManager implements DownLoadListener{
 		   if(mAdBootInfo.CheckSecondImageUsable()){
 			   File second = new File(mLocalAdBootInfo.GetSecondSource());
 			   if(IsSecondSame() && second.exists()){
-				   File TagetSecond = new File(mAdBootInfo.GetSecondSource());
-				   if(!AdConfig.GetCOPYALWAYS()){
-					   long t = TagetSecond.length();
-					   if(t>0 && t== second.length()){
-						   FileUtils.Chmod(TagetSecond);
-						   return;
+				   if(IsSecondHashSame()){
+					   Log.d("Hash check success "+mAdBootInfo.GetSecondSource()+" then going to copy file to Target file !!!");
+					   File TagetSecond = new File(mAdBootInfo.GetSecondSource());
+					   if(!AdConfig.GetCOPYALWAYS()){
+						   long t = TagetSecond.length();
+						   if(t>0 && t== second.length()){
+							   FileUtils.Chmod(TagetSecond);
+							   return;
+						   }
 					   }
-				   }
-				   if(FileUtils.copyFile(second, TagetSecond)){
-					   FileUtils.Chmod(TagetSecond);
+					   if(FileUtils.copyFile(second, TagetSecond)){
+						   FileUtils.Chmod(TagetSecond);
+					   }
+				   }else{
+					   Log.d("Hash check fail  "+mAdBootInfo.GetSecondSource()+" then going to download file to Target file !!!");
+					   DownloadSecond();
 				   }
 			   }else if((mCurrentADBOOT.video.creative2 != null)
 						  && (URLUtil.isHttpsUrl(mCurrentADBOOT.video.creative2.URL)||URLUtil.isHttpUrl(mCurrentADBOOT.video.creative2.URL))){
 				   if(second.exists())second.delete();//remove it first
-				   Download seconddownload   = new Download();
-			       seconddownload.URL        = mCurrentADBOOT.video.creative2.URL;
-			       seconddownload.LocalFile  = mLocalAdBootInfo.GetSecondSource();
-			       seconddownload.TargetFile = mAdBootInfo.GetSecondSource();
-			       seconddownload.SetDownLoadListener(this);
-			       mDownload.add(seconddownload);
-				   DownLoadManager.getInstance().AddDownload(seconddownload);
+				   DownloadSecond();
 			   }else{//now server not get
 				   if(second.exists())second.delete();//remove it first
 				   FileUtils.deleteFile(mAdBootInfo.GetSecondSource());
@@ -191,27 +192,27 @@ public class AdBootDownloadManager implements DownLoadListener{
 		   if(mAdBootInfo.CheckBootAnimationZipUsable()){
 			   File zip = new File(mLocalAdBootInfo.GetThirdSource());
 			   if(IsBootAnimationSame() && zip.exists()){
-				   File TargetThird = new File(mAdBootInfo.GetThirdSource());
-				   if(!AdConfig.GetCOPYALWAYS()){
-					   long t = TargetThird.length();
-					   if(t>0 && t== zip.length()){
-						   FileUtils.Chmod(TargetThird);
-						   return;
+				   if(IsBootAnimationHashSame()){
+					   Log.d("Hash check success "+mAdBootInfo.GetThirdSource()+" then going to copy file to Target file !!!");
+					   File TargetThird = new File(mAdBootInfo.GetThirdSource());
+					   if(!AdConfig.GetCOPYALWAYS()){
+						   long t = TargetThird.length();
+						   if(t>0 && t== zip.length()){
+							   FileUtils.Chmod(TargetThird);
+							   return;
+						   }
 					   }
-				   }
-				   if(FileUtils.copyFile(zip, TargetThird)){
-					   FileUtils.Chmod(TargetThird);
+					   if(FileUtils.copyFile(zip, TargetThird)){
+						   FileUtils.Chmod(TargetThird);
+					   }
+				   }else{
+					   Log.d("Hash check fail  "+mAdBootInfo.GetThirdSource()+" then going to download file to Target file !!!");
+					   DownloadBootAnimation();
 				   }
 			   }else if((mCurrentADBOOT.video.creative3 != null)
 						  && (URLUtil.isHttpsUrl(mCurrentADBOOT.video.creative3.URL)||URLUtil.isHttpUrl(mCurrentADBOOT.video.creative3.URL))){
 				   if(zip.exists())zip.delete();//remove it first
-				   Download zipdownload   = new Download();
-				   zipdownload.URL        = mCurrentADBOOT.video.creative3.URL;
-				   zipdownload.LocalFile  = mLocalAdBootInfo.GetThirdSource();
-				   zipdownload.TargetFile = mAdBootInfo.GetThirdSource();
-				   zipdownload.SetDownLoadListener(this);
-				   mDownload.add(zipdownload);
-				   DownLoadManager.getInstance().AddDownload(zipdownload);
+				   DownloadBootAnimation();
 			   }else{//now server not get
 				   if(zip.exists())zip.delete();//remove it first
 				   FileUtils.deleteFile(mAdBootInfo.GetThirdSource());
@@ -241,7 +242,22 @@ public class AdBootDownloadManager implements DownLoadListener{
 		   if("".equals(mbootanimation)&&"".equals(mLastbootanimation))return false;
 		   return (mLastbootanimation.equals(mbootanimation));
 	   }
-	   
+	   private boolean IsBootAnimationHashSame(){
+		   if(mCurrentADBOOT==null||mCurrentADBOOT.video==null||mCurrentADBOOT.video.creative3==null)return false;
+		   String filehash = AdHash.getFileHash(mLocalAdBootInfo.GetThirdSource());
+		   if(filehash==null||"".equals(filehash.trim()))return false;//file no exsits
+		   if(filehash.equals(mCurrentADBOOT.video.creative3.Hash))return true;
+		   return false;
+	   }
+	   private void DownloadBootAnimation(){
+		   Download zipdownload   = new Download();
+		   zipdownload.URL        = mCurrentADBOOT.video.creative3.URL;
+		   zipdownload.LocalFile  = mLocalAdBootInfo.GetThirdSource();
+		   zipdownload.TargetFile = mAdBootInfo.GetThirdSource();
+		   zipdownload.SetDownLoadListener(this);
+		   mDownload.add(zipdownload);
+		   DownLoadManager.getInstance().AddDownload(zipdownload);
+	   }
 	   private boolean IsFirstSame(){
 		   if(!(mLastADBOOT!=null && mCurrentADBOOT!=null))
 			   return false;
@@ -255,7 +271,22 @@ public class AdBootDownloadManager implements DownLoadListener{
 		   if("".equals(mbootanimation)&&"".equals(mLastbootanimation))return false;
 		   return (mLastbootanimation.equals(mbootanimation));
 	   }
-	   
+	   private boolean IsFirstHashSame(){
+		   if(mCurrentADBOOT==null||mCurrentADBOOT.video==null||mCurrentADBOOT.video.creative==null)return false;
+		   String filehash = AdHash.getFileHash(mLocalAdBootInfo.GetFirstSource());
+		   if(filehash==null||"".equals(filehash.trim()))return false;//file no exsits
+		   if(filehash.equals(mCurrentADBOOT.video.creative.Hash))return true;
+		   return false;
+	   }
+	   private void DownloadFirst(){
+		   Download firstdownload   = new Download();
+		   firstdownload.URL        = mCurrentADBOOT.video.creative.URL;
+		   firstdownload.LocalFile  = mLocalAdBootInfo.GetFirstSource();
+		   firstdownload.TargetFile = mAdBootInfo.GetFirstSource();
+		   firstdownload.SetDownLoadListener(this);
+		   mDownload.add(firstdownload);
+		   DownLoadManager.getInstance().AddDownload(firstdownload);
+	   }
 	   private boolean IsSecondSame(){
 		   if(!(mLastADBOOT!=null && mCurrentADBOOT!=null))
 			   return false;
@@ -268,6 +299,22 @@ public class AdBootDownloadManager implements DownLoadListener{
 		   if(mLastbootanimation ==null || mbootanimation == null)return false;
 		   if("".equals(mbootanimation)&&"".equals(mLastbootanimation))return false;
 		   return (mLastbootanimation.equals(mbootanimation));
+	   }
+	   private boolean IsSecondHashSame(){
+		   if(mCurrentADBOOT==null||mCurrentADBOOT.video==null||mCurrentADBOOT.video.creative2==null)return false;
+		   String filehash = AdHash.getFileHash(mLocalAdBootInfo.GetSecondSource());
+		   if(filehash==null||"".equals(filehash.trim()))return false;//file no exsits
+		   if(filehash.equals(mCurrentADBOOT.video.creative2.Hash))return true;
+		   return false;
+	   }
+	   private void DownloadSecond(){
+		   Download seconddownload   = new Download();
+	       seconddownload.URL        = mCurrentADBOOT.video.creative2.URL;
+	       seconddownload.LocalFile  = mLocalAdBootInfo.GetSecondSource();
+	       seconddownload.TargetFile = mAdBootInfo.GetSecondSource();
+	       seconddownload.SetDownLoadListener(this);
+	       mDownload.add(seconddownload);
+		   DownLoadManager.getInstance().AddDownload(seconddownload);
 	   }
 	    // Interface Report count
 //		private void ReportCount() {
