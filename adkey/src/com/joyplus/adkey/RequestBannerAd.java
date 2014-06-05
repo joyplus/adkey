@@ -2,19 +2,15 @@ package com.joyplus.adkey;
 
 import java.io.IOException;
 import java.io.InputStream;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
 import android.webkit.URLUtil;
-
 import com.joyplus.adkey.Monitorer.TRACKINGURL;
 import com.joyplus.adkey.Monitorer.TRACKINGURL.TYPE;
 import com.joyplus.adkey.data.ClickType;
@@ -80,7 +76,9 @@ public class RequestBannerAd extends RequestAd<BannerAd> {
 			return "";
 		}
 	}
-
+    public BannerAd parse(InputStream inputStream,boolean f) throws RequestException{
+    	return parse(inputStream);
+    }
 	@Override
 	BannerAd parse(final InputStream inputStream)
 			throws RequestException {
@@ -165,6 +163,7 @@ public class RequestBannerAd extends RequestAd<BannerAd> {
 				}
 				String Creative_res_url = this.getAttribute(doc, "creative_res_url","src");
 				response.SetCreative_res_url(Creative_res_url);
+				response.SetCreative_res_hash(this.getAttribute(doc, "creative_res_url","hash"));
 				//end change by Jas
 				String skipOverlay = this.getAttribute(doc, "htmlString", "skipoverlaybutton");
 				if (skipOverlay != null){

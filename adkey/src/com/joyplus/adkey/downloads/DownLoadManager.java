@@ -7,7 +7,6 @@ import java.util.List;
 import com.joyplus.adkey.downloads.Download.STATE;
 import com.joyplus.adkey.downloads.Downloader.DownloaderState;
 import com.joyplus.adkey.widget.Log;
-
 import android.os.Handler;
 import android.os.Message;
 

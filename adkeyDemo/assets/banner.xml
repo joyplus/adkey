@@ -1,0 +1,35 @@
+<request type="textAd">
+<htmlString skipoverlaybutton="0">
+<![CDATA[
+<body style="text-align:center;margin:0;padding:0;"><div align="center"><a id="mAdserveAdLink" href="#" target="_self"><img id="mAdserveAdImage" src="http://advreskj.joyplus.tv/866a6ccbed267b7f94a5a4188ad1792b.jpg" border="0"/></a></div></body>
+]]>
+</htmlString>
+<clicktype>inapp</clicktype>
+<clickurl>
+<![CDATA[
+http://advapi.yue001.com/advapi/v1/mdclick?zone_id=169&h=4863929313829f985cd733a85177702f&type=normal&campaign_id=248&ad_id=1584&c=
+]]>
+</clickurl>
+<impressionurl>
+<![CDATA[
+http://advapi.yue001.com/advapi/v1/mdtrack?ad=bc05254a0225ba546d025c0fda020538&zone=8f311026597575a5d4e2a6ec944f08bc&ds=AMLOGIC8726MX&dm=&i=
+]]>
+</impressionurl>
+<creative_res_url src="http://advreskj.joyplus.tv/866a6ccbed267b7f94a5a4188ad1792b.jpg" hash="111111111"/>
+<trackingurl_miaozhen>
+<![CDATA[ ]]>
+</trackingurl_miaozhen>
+<trackingurl_iresearch>
+<![CDATA[ ]]>
+</trackingurl_iresearch>
+<trackingurl_admaster>
+<![CDATA[ ]]>
+</trackingurl_admaster>
+<trackingurl_nielsen>
+<![CDATA[ ]]>
+</trackingurl_nielsen>
+<urltype>link</urltype>
+<refresh>30</refresh>
+<scale>no</scale>
+<skippreflight>no</skippreflight>
+</request>

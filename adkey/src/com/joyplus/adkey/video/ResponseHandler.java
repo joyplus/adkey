@@ -606,6 +606,7 @@ public class ResponseHandler extends DefaultHandler {
 						richMediaAd.SetCreative_res_url(url);
 					}
 				}
+				if(richMediaAd!=null)richMediaAd.SetCreative_res_Hash(attributes.getValue("hash"));
 			} 
 			//end add by Jas
 		}

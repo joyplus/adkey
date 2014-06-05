@@ -5,9 +5,7 @@ import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
 import com.joyplus.adkey.widget.Log;
-
 import android.os.Handler;
 import android.webkit.URLUtil;
 

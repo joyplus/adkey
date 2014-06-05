@@ -18,7 +18,7 @@ public class AdMonitorServer implements MonitorListener{
 	 private Context mContext;
 	 private List<Monitor> mMonitorList;
 	 private final static int  MAXSIZE = 100;
-	 
+	 private Object mObject = new Object();
 	 public AdMonitorServer(Context context){
 		 mContext = context;
 		 mMonitorList = new ArrayList<Monitor>();
@@ -35,9 +35,11 @@ public class AdMonitorServer implements MonitorListener{
 		}
 	 }
 	 private void AddMonitor(Monitor url){
-		 if(mMonitorList.size()>=MAXSIZE)return;
-		 mMonitorList.add(url);
-		 mHandler.sendEmptyMessage(MSG_CHECK_MONITOR);
+		 synchronized (mObject) {
+			 if(mMonitorList.size()>=MAXSIZE)return;
+			 mMonitorList.add(url);
+			 mHandler.sendEmptyMessage(MSG_CHECK_MONITOR);
+		 }
 	 }
 	 //msg
 	 private final static int MSG_CHECK_MONITOR   = 1;
@@ -62,14 +64,19 @@ public class AdMonitorServer implements MonitorListener{
 					break;
 				}
 				Log.d("Jas","mMonitorList size = "+mMonitorList.size());
-				Iterator<Monitor> k = mMonitorList.iterator();
-				while(k.hasNext()){
-					mMonitor = k.next();
-					if(mMonitor.GetFirstTRACKINGURL() == null){
-						k.remove();
-						mMonitor = null;
-						continue;
+				synchronized (mObject) {
+					Iterator<Monitor> k = mMonitorList.iterator();
+					List<Monitor> mRemove = new ArrayList<Monitor>();
+					while(k.hasNext()){
+						mMonitor = k.next();
+						mRemove.add(mMonitor);
+						if(mMonitor.GetFirstTRACKINGURL() == null){
+							mMonitor = null;
+							continue;
+						}
+						break;
 					}
+					if(mRemove.size()>0)mMonitorList.removeAll(mRemove);
 				}
 				if(mMonitor != null)
 					mHandler.sendEmptyMessage(MSG_START_MONITOR);
@@ -85,7 +92,7 @@ public class AdMonitorServer implements MonitorListener{
 				mMonitorer.StartMonitor(mMonitor);
 				break;
 			case MSG_FINISH_MONITOR:
-				mMonitorList.remove(mMonitor);
+				//mMonitorList.remove(mMonitor);
 				mMonitor   = null;
 				mHandler.sendEmptyMessage(MSG_CHECK_MONITOR);
 				break;

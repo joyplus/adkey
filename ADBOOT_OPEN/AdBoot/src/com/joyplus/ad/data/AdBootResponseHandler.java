@@ -117,6 +117,7 @@ public class AdBootResponseHandler extends DefaultHandler{
 			  mADBOOT.video.creative.bitrate   = attributes.getValue("bitrate");
 			  mADBOOT.video.creative.width     = attributes.getValue("width");
 			  mADBOOT.video.creative.height    = attributes.getValue("height");
+			  mADBOOT.video.creative.Hash      = attributes.getValue("hash");
 		  } else if (CREATIVE2.tag.equals(localName)){
 			  if(mADBOOT.video == null || mADBOOT.video.creative2 != null)
 				  throw new SAXException("creative2");
@@ -127,6 +128,7 @@ public class AdBootResponseHandler extends DefaultHandler{
 			  mADBOOT.video.creative2.bitrate   = attributes.getValue("bitrate");
 			  mADBOOT.video.creative2.width     = attributes.getValue("width");
 			  mADBOOT.video.creative2.height    = attributes.getValue("height");
+			  mADBOOT.video.creative2.Hash      = attributes.getValue("hash");
 		  } else if (CREATIVE3.tag.equals(localName)){
 			  if(mADBOOT.video == null || mADBOOT.video.creative3 != null)
 				  throw new SAXException("creative3");
@@ -137,6 +139,7 @@ public class AdBootResponseHandler extends DefaultHandler{
 			  mADBOOT.video.creative3.bitrate   = attributes.getValue("bitrate");
 			  mADBOOT.video.creative3.width     = attributes.getValue("width");
 			  mADBOOT.video.creative3.height    = attributes.getValue("height");
+			  mADBOOT.video.creative3.Hash      = attributes.getValue("hash");
 		  } else if(SKIPBUTTON.tag.equals(localName)){
 			  if(mADBOOT.video == null || mADBOOT.video.skipbutton != null)
 				  throw new SAXException("skipbutton");
