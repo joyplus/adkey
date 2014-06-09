@@ -3,9 +3,7 @@ package com.joyplus.adkey.Monitorer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import cn.com.mma.mobile.tracking.api.Countly;
-
 import com.joyplus.adkey.AdKeyConfig;
 import com.joyplus.adkey.Monitorer.Monitorer.MonitorerState;
 import com.joyplus.adkey.widget.Log;

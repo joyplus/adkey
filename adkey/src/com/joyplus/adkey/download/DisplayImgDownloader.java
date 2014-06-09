@@ -5,11 +5,9 @@ import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.Util;
 import com.joyplus.adkey.widget.Log;
-
 import android.content.Context;
 
 public class DisplayImgDownloader {

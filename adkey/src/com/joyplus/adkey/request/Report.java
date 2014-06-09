@@ -3,6 +3,8 @@ package com.joyplus.adkey.request;
 import java.util.ArrayList;
 import java.util.List;
 import android.content.Context;
+import android.text.TextUtils;
+
 import com.joyplus.adkey.Ad;
 import com.joyplus.adkey.BannerAd;
 import com.joyplus.adkey.Monitorer.AdMonitorManager;
@@ -55,6 +57,33 @@ public class Report {
 		 URL.URL         = url;
 		 URL.Type        = type;
 		 return URL;
+	 }
+	 
+	 public  void reportClick(Ad ad){
+    	 if(ad == null)return;
+    	 if(ad instanceof BannerAd){
+    		 reportBannerClick((BannerAd) ad);
+    	 }else if(ad instanceof RichMediaAd){
+    		 reportMediaAdClick((RichMediaAd) ad);
+    	 }
+     }
+
+	 private  void reportMediaAdClick(RichMediaAd ad) {
+		// TODO Auto-generated method stub
+		if(ad == null||ad.GetClick()==null||ad.GetClick().mClickURL==null||TextUtils.isEmpty(ad.GetClick().mClickURL.trim()))return;
+		ReportClick(ad.GetClick().mClickURL.trim());
+	 }
+	 private  void reportBannerClick(BannerAd ad) {
+		// TODO Auto-generated method stub
+		if(ad == null||ad.GetClick()==null||ad.GetClick().mClickURL==null||TextUtils.isEmpty(ad.GetClick().mClickURL.trim()))return;
+		ReportClick(ad.GetClick().mClickURL.trim());
+	 }
+	 private void ReportClick(String ad){
+		if(ad==null||TextUtils.isEmpty(ad.trim()))return;
+		TRACKINGURL joyplus = GetTRACKINGURL(ad, TYPE.JOYPLUS);
+		if(joyplus != null ){
+			AdMonitorManager.getInstance(mContext).AddTRACKINGURL(joyplus);
+		}
 	 }
 	 
 }

@@ -1,21 +1,16 @@
 package com.joyplus.adkey.banner;
 
-import java.io.File;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.MessageFormat;
-
 import android.content.Context;
 import android.content.Intent;
-
 import android.graphics.Canvas;
 import android.graphics.Color;
-
 import android.net.Uri;
 import android.os.Handler;
-
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.webkit.WebSettings;
@@ -27,7 +22,6 @@ import android.widget.ViewFlipper;
 import com.joyplus.adkey.AdListener;
 import com.joyplus.adkey.BannerAd;
 import com.joyplus.adkey.Const;
-
 import com.joyplus.adkey.Util;
 import com.joyplus.adkey.data.ClickType;
 

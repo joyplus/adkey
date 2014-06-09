@@ -1,7 +1,6 @@
 package com.joyplus.adkey.downloads;
 
 import com.joyplus.adkey.downloads.Downloader.DownloaderState;
-
 import android.webkit.URLUtil;
 
 public class Download implements DownloaderListener,DownLoadListener{

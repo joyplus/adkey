@@ -2,8 +2,6 @@ package com.joyplus.adkey.video;
 
 import android.app.Activity;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.VideoView;
 
 
 public class WebChromeClient extends android.webkit.WebChromeClient {

@@ -2,7 +2,6 @@ package com.joyplus.adkey.mraid;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
-
 import com.joyplus.adkey.widget.Log;
 
 public abstract class BaseInterstitialAdapter {

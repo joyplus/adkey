@@ -3,7 +3,6 @@ package com.joyplus.adkey.mraid;
 import com.joyplus.adkey.mraid.MraidView.ExpansionStyle;
 import com.joyplus.adkey.mraid.MraidView.NativeCloseButtonStyle;
 import com.joyplus.adkey.mraid.MraidView.PlacementType;
-
 import android.view.View;
 
 public class MraidActivity extends BaseActivity {    

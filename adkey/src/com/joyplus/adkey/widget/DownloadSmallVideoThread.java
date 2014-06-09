@@ -3,16 +3,13 @@ package com.joyplus.adkey.widget;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import android.content.Context;
-
 import com.joyplus.adkey.AdRequest;
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.RequestException;
 import com.joyplus.adkey.RequestRichMediaAd;
 import com.joyplus.adkey.Util;
 import com.joyplus.adkey.download.DisplayImgDownloader;
-import com.joyplus.adkey.download.Downloader;
 import com.joyplus.adkey.download.DownloaderSmallVideo;
 import com.joyplus.adkey.video.RichMediaAd;
 

@@ -3,7 +3,6 @@ package com.joyplus.adkey.Monitorer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import com.joyplus.adkey.AdDeviceManager;
 import com.joyplus.adkey.Util;
 import com.joyplus.adkey.Monitorer.TRACKINGURL.TYPE;
