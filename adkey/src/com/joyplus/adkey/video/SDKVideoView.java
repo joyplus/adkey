@@ -1,15 +1,11 @@
 package com.joyplus.adkey.video;
 
-import static com.joyplus.adkey.Const.TAG;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Vector;
-
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.Util;
-
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;

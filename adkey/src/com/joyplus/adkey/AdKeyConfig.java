@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
 import com.joyplus.adkey.Debug.AdKeyDebugFeature;
 
 public class AdKeyConfig {

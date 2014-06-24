@@ -19,6 +19,7 @@ public class AdBootExternalConfig {
 	private final static String mAdBootBasePath    = "AdBootBasePath";
 	private final static String MAXSIZE            = "MAXSIZE";
 	private final static String COPYALWAYS         = "COPYALWAYS";
+	private final static String REQUESTALWAYS      = "REQUESTALWAYS";
 	
 	private static AdBootAssertExternalConfig  mAdBootAssertExternalConfig;
 	private static AdBootExternalConfig        mAdBootExternalConfig;
@@ -74,7 +75,14 @@ public class AdBootExternalConfig {
 		}
 		return defineValue;
 	}
-	
+	public   boolean GetREQUESTALWAYS(boolean defineValue){
+		if(LoadOK){
+			return GetBooleanConfig(REQUESTALWAYS,defineValue);
+		}else if(mAdBootAssertExternalConfig!=null && mAdBootAssertExternalConfig.getUseable()){
+			return mAdBootAssertExternalConfig.getREQUESTALWAYS(defineValue);
+		}
+		return defineValue;
+	}
 	private void Load(){   
         try {
         	InputStream is = this.getClass().getResourceAsStream(ConfigFile);

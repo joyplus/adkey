@@ -2,11 +2,11 @@ package com.joyplus.adkey;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.joyplus.adkey.Monitorer.AdSDKFeature;
 import com.joyplus.adkey.Monitorer.TRACKINGURL;
 import com.joyplus.adkey.Monitorer.TRACKINGURL.TYPE;
 import com.joyplus.adkey.data.ClickType;
+import com.joyplus.adkey.request.Click;
 
 public class BannerAd implements Ad {
 
@@ -40,6 +40,13 @@ public class BannerAd implements Ad {
 	}
 	public  String GetCreative_res_hash(){
 		return mCreative_res_hash;
+	}
+	private Click mClick = null;
+	public  void SetClick(Click cl){
+		mClick = (cl==null?null:cl.CreateNew());
+	}
+	public  Click GetClick(){
+		return mClick;
 	}
 	//end add by Jas
 	private String mImpressionUrl;
@@ -183,6 +190,7 @@ public class BannerAd implements Ad {
 				+ this.skipPreflight 
 				+",Creative_res_url="+mCreative_res_url
 				+",Creative_res_hash="+mCreative_res_hash
+				+",mClick="+(mClick==null?"":mClick.toString())
 				+ ap.toString()+ " ]";
 	}
 

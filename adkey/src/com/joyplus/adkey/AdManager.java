@@ -1,20 +1,17 @@
 package com.joyplus.adkey;
 
 import static com.joyplus.adkey.Const.AD_EXTRA;
-
 import java.io.File;
 import java.io.InputStream;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Handler;
-
 import com.joyplus.adkey.video.ResourceManager;
 import com.joyplus.adkey.video.RichMediaActivity;
 import com.joyplus.adkey.video.RichMediaAd;
@@ -24,8 +21,7 @@ import com.joyplus.adkey.widget.DownloadVideoThread;
 import com.joyplus.adkey.widget.Log;
 import com.joyplus.adkey.widget.SerializeManager;
 
-public class AdManager
-{
+public class AdManager{
 	
 	private static HashMap<Long, AdManager> sRunningAds = new HashMap<Long, AdManager>();
 	private String mPublisherId;

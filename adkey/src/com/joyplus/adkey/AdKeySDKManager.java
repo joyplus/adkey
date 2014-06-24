@@ -1,12 +1,10 @@
 package com.joyplus.adkey;
 
 import java.io.File;
-
 import com.joyplus.adkey.Monitorer.AdMonitorManager;
 import com.joyplus.adkey.downloads.AdFileManager;
 import com.joyplus.adkey.downloads.DownLoadManager;
 import com.joyplus.adkey.mon.AppReportManager;
-
 import android.content.Context;
 
 /*Add by Jas@20140421 for review adkey*/

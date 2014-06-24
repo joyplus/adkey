@@ -1,7 +1,6 @@
 package com.joyplus.adkey;
 
 import com.joyplus.adkey.widget.Log;
-
 import android.content.Context;
 
 public class AdDeviceManager {

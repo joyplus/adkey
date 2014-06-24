@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.InputStream;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.HashMap;
-
-import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 import android.os.Handler;
@@ -13,11 +11,8 @@ import android.view.View;
 import android.widget.FrameLayout;
 import com.joyplus.adkey.video.ResourceManager;
 import com.joyplus.adkey.video.RichMediaAd;
-import com.joyplus.adkey.video.RichMediaFloat;
 import com.joyplus.adkey.video.RichMediaScreenView;
-import com.joyplus.adkey.video.RichMediaView;
 import com.joyplus.adkey.video.TrackerService;
-import com.joyplus.adkey.widget.DownloadSmallVideoThread;
 import com.joyplus.adkey.widget.Log;
 import com.joyplus.adkey.widget.SerializeManager;
 

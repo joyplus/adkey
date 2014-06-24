@@ -6,9 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.StreamCorruptedException;
-
 import com.joyplus.adkey.widget.Log;
-
 import android.content.Context;
 
 /*Define by Jas@20131125

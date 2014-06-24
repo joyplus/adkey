@@ -7,17 +7,10 @@ import java.lang.reflect.Method;
 import java.text.MessageFormat;
 import android.content.Context;
 import android.content.Intent;
-
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Handler;
-import android.telephony.TelephonyManager;
-import android.view.MotionEvent;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.webkit.WebSettings;
@@ -26,15 +19,10 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.ViewFlipper;
-
 import com.joyplus.adkey.AdListener;
-import com.joyplus.adkey.AdRequest;
 import com.joyplus.adkey.BannerAd;
 import com.joyplus.adkey.Const;
-import com.joyplus.adkey.RequestBannerAd;
-import com.joyplus.adkey.Util;
 import com.joyplus.adkey.data.ClickType;
-import com.joyplus.adkey.widget.Log;
 
 public class BannerAdView extends RelativeLayout {
 
@@ -139,8 +127,7 @@ public class BannerAdView extends RelativeLayout {
 				Intent i = new Intent(Intent.ACTION_VIEW);
 				i.setDataAndType(Uri.parse(url), "video/mp4");
 				this.getContext().startActivity(i);
-			}
-			else{
+			}else{
 				final Intent intent = new Intent(this.getContext(),
 						InAppWebView.class);
 				intent.putExtra(Const.REDIRECT_URI, url);

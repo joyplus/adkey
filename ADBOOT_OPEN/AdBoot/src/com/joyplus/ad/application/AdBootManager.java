@@ -2,12 +2,14 @@ package com.joyplus.ad.application;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 import com.joyplus.ad.AdBootDownloadManager;
+import com.joyplus.ad.AdConfig;
 import com.joyplus.ad.AdMode;
 import com.joyplus.ad.AdManager.AD;
 import com.joyplus.ad.PublisherId;
 import com.joyplus.ad.data.ADBOOT;
 import com.joyplus.ad.data.AdBootRequest;
 import com.joyplus.ad.data.RequestException;
+import com.joyplus.ad.db.AdBootImpressionInfo;
 import com.joyplus.ad.db.AdBootTempDao;
 import com.joyplus.ad.db.AdBootThread;
 import com.joyplus.ad.download.DownLoadListener;
@@ -71,6 +73,10 @@ public class AdBootManager extends AdMode{
 	private void Request(){
 		if(mAdBootRequest != null)return;
 //		AddReportNUM();//add report count.
+		if(!CheckRequestAble()){//can't request AD now.so we can return.
+		    mAdBootRequest = null;
+		    return;
+		}
 		mAdBootRequest = new AdBootRequest(AdBootManager.this,mAdBoot);
 		ADBOOT mADBOOT = null;
 		int Count = TIME;
@@ -157,7 +163,17 @@ public class AdBootManager extends AdMode{
 //        	AdMonitorManager.getInstance().AddMonitor(m);
 //        }
 //	}
-	
+	private boolean CheckRequestAble(){
+		if(AdConfig.GetREQUESTALWAYS())return true;
+		AdBootImpressionInfo info = AdBootTempDao.getInstance(mContext).GetOne(mPublisherId.GetPublisherId());
+		if(info!=null && info.Count <1){
+			if(mAdBootListener != null){//last AD no show.so we return finish this request.
+				mAdBootListener.Finish();
+			}
+			return false;
+		}
+		return true;
+	}
 	private AdBootListener mAdBootListener;
 	public  void SetAdBootListener(AdBootListener listener){
 		mAdBootListener = listener;

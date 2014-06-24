@@ -2,7 +2,6 @@ package com.joyplus.adkey;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-
 import com.joyplus.adkey.Monitorer.MD5Util;
 import android.net.Uri;
 import android.os.Build;

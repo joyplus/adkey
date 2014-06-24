@@ -1,6 +1,5 @@
 package com.joyplus.ad.report;
 
-import com.joyplus.ad.AdFileManager;
 import com.joyplus.ad.PublisherId;
 import com.joyplus.ad.data.IMPRESSIONURL;
 
@@ -11,7 +10,7 @@ public class Report {
 	private int           NUM = 1;
 	private boolean       mReported = false;
 	
-	private AdFileManager mAdFileManager;
+	//private AdFileManager mAdFileManager;
 	
 	public void SetReported(){
 		mReported = true;

@@ -5,7 +5,6 @@ import java.net.URL;
 import com.joyplus.adkey.BannerAd;
 import com.joyplus.adkey.Util;
 import com.joyplus.adkey.download.DisplayImgDownloader;
-
 import android.content.Context;
 
 public class DownloadBannerThread extends Thread{

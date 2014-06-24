@@ -1,7 +1,6 @@
 package com.joyplus.adkey.video;
 
 import java.lang.reflect.Method;
-
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;

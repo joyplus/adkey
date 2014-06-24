@@ -9,7 +9,6 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -28,7 +27,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
-
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
@@ -44,16 +42,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
-
 import com.joyplus.adkey.AdManager;
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.Util;
 import com.joyplus.adkey.Monitorer.AdMonitorManager;
-import com.joyplus.adkey.banner.AdViewScreenSaver;
-import com.joyplus.adkey.download.DisplayImgDownloader;
-import com.joyplus.adkey.download.Downloader;
 import com.joyplus.adkey.download.ImpressionThread;
-import com.joyplus.adkey.download.PicDownloader;
 import com.joyplus.adkey.video.InterstitialController.OnResetAutocloseListener;
 import com.joyplus.adkey.video.MediaController.OnPauseListener;
 import com.joyplus.adkey.video.MediaController.OnReplayListener;
@@ -63,7 +56,6 @@ import com.joyplus.adkey.video.SDKVideoView.OnTimeEventListener;
 import com.joyplus.adkey.video.WebViewClient.OnPageLoadedListener;
 import com.joyplus.adkey.widget.Log;
 import com.joyplus.adkey.widget.SerializeManager;
-import com.miaozhen.mzmonitor.MZMonitor;
 
 public class RichMediaActivity extends Activity
 {
