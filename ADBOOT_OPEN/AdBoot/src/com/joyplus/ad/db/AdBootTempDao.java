@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 import android.util.Log;
 
 public class AdBootTempDao {
@@ -28,6 +29,24 @@ public class AdBootTempDao {
 		} catch (Exception e) {
 		}
 		return sqliteDatabase;
+	}
+	public synchronized AdBootImpressionInfo GetOne(String publisherId){
+		if(DEBUG)Log.d("Jas","GetOne-->"+publisherId);
+		if(TextUtils.isEmpty(publisherId))return null;
+		SQLiteDatabase database = getConnection();
+		Cursor cursor = null;
+		try{
+			cursor = database.rawQuery("select * from adbootTemp_info where publisher_id=?", new String[]{publisherId});
+			if(cursor!=null && cursor.moveToFirst()){
+				return AdBootImpressionInfo.GetAdBootImpressionInfo(cursor);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		} finally {
+			if (null != database) {database.close();}
+			if (cursor != null)cursor.close();
+		}
+		return null;
 	}
 	public synchronized void Remove(String publisherId){
 		if(DEBUG)Log.d("Jas","Remove-->"+publisherId);

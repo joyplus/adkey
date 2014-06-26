@@ -1,7 +1,8 @@
-package com.joyplus.adkey.video;import java.lang.ref.WeakReference;
+package com.joyplus.adkey.video;
+
+import java.lang.ref.WeakReference;
 import java.util.Formatter;
 import java.util.Locale;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -16,14 +17,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.MediaController.MediaPlayerControl;
 import android.widget.TextView;
-
-import com.joyplus.adkey.Const;
-import com.joyplus.adkey.Util;
 
 public class MediaController extends FrameLayout {
 

@@ -2,9 +2,7 @@ package com.joyplus.adkey.widget;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import android.content.Context;
-
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.Util;
 import com.joyplus.adkey.download.DisplayImgDownloader;

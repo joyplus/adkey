@@ -1,7 +1,6 @@
 package com.joyplus.adkey.mraid;
 
 import com.joyplus.adkey.video.ResourceManager;
-
 import android.app.Activity;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;

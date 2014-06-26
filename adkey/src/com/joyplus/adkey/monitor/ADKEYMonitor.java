@@ -6,7 +6,6 @@ import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.HashMap;
 import android.content.Context;
 import android.location.Location;
-import android.os.Handler;
 import com.joyplus.adkey.AdRequest;
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.RequestRichMediaAd;
@@ -18,7 +17,6 @@ import com.joyplus.adkey.video.RichMediaAd;
 import com.joyplus.adkey.video.TrackerService;
 import com.joyplus.adkey.widget.Log;
 import com.joyplus.adkey.widget.SerializeManager;
-import com.miaozhen.mzmonitor.MZMonitor;
 
 public class ADKEYMonitor
 {

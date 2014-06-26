@@ -2,9 +2,7 @@ package com.joyplus.adkey.mon;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.joyplus.adkey.AdKeySDKManager;
-
 import android.content.Context;
 
 public class AppReportManager {

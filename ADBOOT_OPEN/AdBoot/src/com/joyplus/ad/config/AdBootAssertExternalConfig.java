@@ -23,11 +23,16 @@ public class AdBootAssertExternalConfig {
 	private  static String  mAdBootBasePath    = null;
 	private  static int     MAXSIZE            = -1;//default is 5
 	private  static boolean COPYALWAYS         = true;
+	private  static boolean REQUESTALWAYS      = true;
+	
 	public   boolean getUseable(){
 		return Useable;
 	}
 	public   boolean getCOPYALWAYS(boolean defineValue){
 		return COPYALWAYS;
+	}
+	public   boolean getREQUESTALWAYS(boolean defineValue){
+		return REQUESTALWAYS;
 	}
 	public   boolean getAdBootDebugEnable(boolean defineValue){
 		return AdBootDebugEnable;
@@ -91,6 +96,8 @@ public class AdBootAssertExternalConfig {
                         	AdBootDebugEnable = "true".equalsIgnoreCase(text);
                         }else if("COPYALWAYS".equalsIgnoreCase(value)){
                         	COPYALWAYS = "true".equalsIgnoreCase(text);
+                        }else if("REQUESTALWAYS".equalsIgnoreCase(value)){
+                        	REQUESTALWAYS = "true".equalsIgnoreCase(text);
                         }
                     } else if ("int".equals(tag)) {
                         // int config tags go here

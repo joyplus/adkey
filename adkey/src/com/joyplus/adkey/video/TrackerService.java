@@ -1,19 +1,16 @@
 package com.joyplus.adkey.video;
 
 import static com.joyplus.adkey.Const.MAX_NUMBER_OF_TRACKING_RETRIES;
-
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.Queue;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
-
 import com.joyplus.adkey.Const;
 
 public class TrackerService {

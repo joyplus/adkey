@@ -18,13 +18,16 @@ public class AdBootThread {
 	private AdBootDao     mAdBootDao ;
 	private CUSTOMINFO    Info;
 	private Context       mContext;
+	private static        boolean Reported = false;
 	public AdBootThread(Context context,CUSTOMINFO info){
 		mContext = context;
 		Info = info;
 	}
 	public void StartReport(){
+		if(Reported)return;
 		mAdBootDao = AdBootDao.getInstance(mContext);
 		if(mAdBootDao != null){
+			Reported = true;//make sure only report once.
 			ArrayList<AdBootImpressionInfo> Info = mAdBootDao.GetAllReport();
 			Log.d("StartReport-->"+(Info==null?"NULL":Info.size()));
 			if(Info != null && Info.size()>0){

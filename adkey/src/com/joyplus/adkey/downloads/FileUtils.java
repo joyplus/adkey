@@ -6,9 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import com.joyplus.adkey.widget.Log;
-
 import android.annotation.SuppressLint;
 import android.os.Environment;
 

@@ -15,7 +15,7 @@ import android.os.Handler;
 import android.os.Message;
 
 public class DownLoadManager {
-       //private Context        mContext;
+       //private Context      mContext;
 	   private List<Download> mDownload;
 	   private Downloader     mDownloader     = null;
 	   

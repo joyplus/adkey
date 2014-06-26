@@ -3,7 +3,6 @@ package com.joyplus.adkey.db;
 
 
 import com.joyplus.adkey.widget.Log;
-
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;

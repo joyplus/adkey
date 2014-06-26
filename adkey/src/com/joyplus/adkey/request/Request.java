@@ -84,6 +84,7 @@ public class Request {
 		try{
 			return requestAd.sendRequest(getRequest(AdRequest.VAD));
 		} catch (final Throwable e){
+			Log.d("Jas","getRichMediaAd fail...");
 		}
 		return null;
 	}

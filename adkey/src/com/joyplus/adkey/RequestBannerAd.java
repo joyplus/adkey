@@ -14,6 +14,7 @@ import android.webkit.URLUtil;
 import com.joyplus.adkey.Monitorer.TRACKINGURL;
 import com.joyplus.adkey.Monitorer.TRACKINGURL.TYPE;
 import com.joyplus.adkey.data.ClickType;
+import com.joyplus.adkey.request.Click;
 import com.joyplus.adkey.widget.Log;
 
 public class RequestBannerAd extends RequestAd<BannerAd> {
@@ -124,38 +125,33 @@ public class RequestBannerAd extends RequestAd<BannerAd> {
 				response.setType(Const.TEXT);
 				response.setText(this.getValue(doc, "htmlString"));
 				String mImpressionUrl = this.getValue(doc, "impressionurl");
-				if(URLUtil.isHttpsUrl(mImpressionUrl)||URLUtil.isHttpUrl(mImpressionUrl))
-				{
+				if(URLUtil.isHttpsUrl(mImpressionUrl)||URLUtil.isHttpUrl(mImpressionUrl)){
 					response.setmImpressionUrl(mImpressionUrl);
 				}
 				//change be Jas
 				String mTrackingUrl = this.getValue(doc, "trackingurl_miaozhen");
-				if(URLUtil.isHttpsUrl(mTrackingUrl)||URLUtil.isHttpUrl(mTrackingUrl))
-				{
+				if(URLUtil.isHttpsUrl(mTrackingUrl)||URLUtil.isHttpUrl(mTrackingUrl)){
 					TRACKINGURL url = new TRACKINGURL();
 					url.Type        = TYPE.MIAOZHEN;
 					url.URL         = mTrackingUrl;
 					response.setmTrackingUrl(url);
 				}
 				mTrackingUrl = this.getValue(doc, "trackingurl_iresearch");
-				if(URLUtil.isHttpsUrl(mTrackingUrl)||URLUtil.isHttpUrl(mTrackingUrl))
-				{
+				if(URLUtil.isHttpsUrl(mTrackingUrl)||URLUtil.isHttpUrl(mTrackingUrl)){
 					TRACKINGURL url = new TRACKINGURL();
 					url.Type        = TYPE.IRESEARCH;
 					url.URL         = mTrackingUrl;
 					response.setmTrackingUrl(url);
 				}
 				mTrackingUrl = this.getValue(doc, "trackingurl_admaster");
-				if(URLUtil.isHttpsUrl(mTrackingUrl)||URLUtil.isHttpUrl(mTrackingUrl))
-				{
+				if(URLUtil.isHttpsUrl(mTrackingUrl)||URLUtil.isHttpUrl(mTrackingUrl)){
 					TRACKINGURL url = new TRACKINGURL();
 					url.Type        = TYPE.ADMASTER;
 					url.URL         = mTrackingUrl;
 					response.setmTrackingUrl(url);
 				}
 				mTrackingUrl = this.getValue(doc, "trackingurl_nielsen");
-				if(URLUtil.isHttpsUrl(mTrackingUrl)||URLUtil.isHttpUrl(mTrackingUrl))
-				{
+				if(URLUtil.isHttpsUrl(mTrackingUrl)||URLUtil.isHttpUrl(mTrackingUrl)){
 					TRACKINGURL url = new TRACKINGURL();
 					url.Type        = TYPE.NIELSEN;
 					url.URL         = mTrackingUrl;
@@ -164,6 +160,12 @@ public class RequestBannerAd extends RequestAd<BannerAd> {
 				String Creative_res_url = this.getAttribute(doc, "creative_res_url","src");
 				response.SetCreative_res_url(Creative_res_url);
 				response.SetCreative_res_hash(this.getAttribute(doc, "creative_res_url","hash"));
+				Click mClick = new Click();
+				mClick.mClickURL = this.getValue(doc, "clickurl");
+				mClick.mRes      = this.getValue(doc, "resource");
+				mClick.mTYPE     = Click.TYPE.toTYPE(this.getValue(doc, "type"));
+				response.SetClick(mClick);
+				Log.d("-->"+response.GetClick().toString());
 				//end change by Jas
 				String skipOverlay = this.getAttribute(doc, "htmlString", "skipoverlaybutton");
 				if (skipOverlay != null){

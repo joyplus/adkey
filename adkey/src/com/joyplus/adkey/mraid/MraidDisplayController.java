@@ -1,14 +1,12 @@
 package com.joyplus.adkey.mraid;
 
 import java.util.ArrayList;
-
 import com.joyplus.adkey.mraid.MraidView.ExpansionStyle;
 import com.joyplus.adkey.mraid.MraidView.NativeCloseButtonStyle;
 import com.joyplus.adkey.mraid.MraidView.PlacementType;
 import com.joyplus.adkey.mraid.MraidView.ViewState;
 import com.joyplus.adkey.video.ResourceManager;
 import com.joyplus.adkey.widget.Log;
-
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;

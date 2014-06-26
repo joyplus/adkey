@@ -3,7 +3,6 @@ package com.joyplus.adkey.video;
 import java.lang.ref.WeakReference;
 import java.util.Formatter;
 import java.util.Locale;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;

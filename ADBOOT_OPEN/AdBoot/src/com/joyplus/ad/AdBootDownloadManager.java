@@ -302,7 +302,7 @@ public class AdBootDownloadManager implements DownLoadListener{
 	   }
 	   private boolean IsSecondHashSame(){
 		   if(mCurrentADBOOT==null||mCurrentADBOOT.video==null||mCurrentADBOOT.video.creative2==null)return false;
-		   String filehash = AdHash.getFileHash(mLocalAdBootInfo.GetSecondSource());
+		   String filehash = AdHash.getFileHash(mAdBootInfo.GetSecondSource());
 		   if(filehash==null||"".equals(filehash.trim()))return false;//file no exsits
 		   if(filehash.equals(mCurrentADBOOT.video.creative2.Hash))return true;
 		   return false;

@@ -2,11 +2,11 @@ package com.joyplus.adkey.video;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.joyplus.adkey.Ad;
 import com.joyplus.adkey.Monitorer.AdSDKFeature;
 import com.joyplus.adkey.Monitorer.TRACKINGURL;
 import com.joyplus.adkey.Monitorer.TRACKINGURL.TYPE;
+import com.joyplus.adkey.request.Click;
 
 
 public class RichMediaAd implements Ad {
@@ -50,6 +50,13 @@ public class RichMediaAd implements Ad {
 	}
 	public  int GetRefresh(){
 		return mRefresh;
+	}
+	private Click mClick = null;
+	public  void SetClick(Click cl){
+		mClick = (cl==null?null:cl.CreateNew());
+	}
+	public  Click GetClick(){
+		return mClick;
 	}
 	//end add by Jas
 	public List<TRACKINGURL> getmTrackingUrl()
@@ -132,7 +139,8 @@ public class RichMediaAd implements Ad {
 		return "RichMediaAD [timestamp=" + timestamp + ", type=" + type
 				+ ", animation=" + animation + ", mCreative_res_url="+mCreative_res_url
 				+ ",mRefresh="+mRefresh+", video=" + video
-				+ ", interstitial=" + interstitial + "]";
+				+ ", interstitial=" + interstitial 
+				+ ",mClick="+(mClick==null?"":mClick.toString())+"]";
 	}
 
 }

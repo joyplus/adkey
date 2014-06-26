@@ -3,18 +3,15 @@ package com.joyplus.adkey.video;
 import java.io.CharArrayWriter;
 import java.util.HashMap;
 import java.util.Vector;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-
 import android.content.pm.ActivityInfo;
 import android.webkit.URLUtil;
-
 import com.joyplus.adkey.Const;
-import com.joyplus.adkey.Util;
 import com.joyplus.adkey.Monitorer.TRACKINGURL;
 import com.joyplus.adkey.Monitorer.TRACKINGURL.TYPE;
+import com.joyplus.adkey.request.Click;
 
 public class ResponseHandler extends DefaultHandler {
 
@@ -22,7 +19,7 @@ public class ResponseHandler extends DefaultHandler {
 
 	HashMap<String, Long> videoList = null;
 
-	private CharArrayWriter contents = new CharArrayWriter();
+	private CharArrayWriter contents   = new CharArrayWriter();
 	private TrackerData currentTracker = new TrackerData();
 	private long currentExpiration;
 
@@ -58,8 +55,7 @@ public class ResponseHandler extends DefaultHandler {
 					richMediaAd.setmImpressionUrl(mImpressionUrl);
 				}
 			}
-		} else if(localName.equals("trackingurl_miaozhen"))
-		{
+		} else if(localName.equals("trackingurl_miaozhen")){
 			mTrackingUrl = contents.toString().trim();
 			if(URLUtil.isHttpsUrl(mTrackingUrl)||URLUtil.isHttpUrl(mTrackingUrl))
 			{
@@ -68,8 +64,7 @@ public class ResponseHandler extends DefaultHandler {
 				url.URL         = mTrackingUrl;
 				richMediaAd.setmTrackingUrl(url);
 			}
-		} else if(localName.equals("trackingurl_iresearch"))
-		{
+		} else if(localName.equals("trackingurl_iresearch")){
 			mTrackingUrl = contents.toString().trim();
 			if(URLUtil.isHttpsUrl(mTrackingUrl)||URLUtil.isHttpUrl(mTrackingUrl))
 			{
@@ -78,8 +73,7 @@ public class ResponseHandler extends DefaultHandler {
 				url.URL         = mTrackingUrl;
 				richMediaAd.setmTrackingUrl(url);
 			}
-		}  else if(localName.equals("trackingurl_admaster"))
-		{
+		}  else if(localName.equals("trackingurl_admaster")){
 			mTrackingUrl = contents.toString().trim();
 			if(URLUtil.isHttpsUrl(mTrackingUrl)||URLUtil.isHttpUrl(mTrackingUrl))
 			{
@@ -88,8 +82,7 @@ public class ResponseHandler extends DefaultHandler {
 				url.URL         = mTrackingUrl;
 				richMediaAd.setmTrackingUrl(url);
 			}
-		}  else if(localName.equals("trackingurl_nielsen"))
-		{
+		}  else if(localName.equals("trackingurl_nielsen")){
 			mTrackingUrl = contents.toString().trim();
 			if(URLUtil.isHttpsUrl(mTrackingUrl)||URLUtil.isHttpUrl(mTrackingUrl))
 			{
@@ -183,6 +176,13 @@ public class ResponseHandler extends DefaultHandler {
 		//add by Jas
 		else if("refresh".equals(localName)){
 			richMediaAd.SetRefresh(getInteger(contents.toString().trim()));
+		}else if("type".equals(localName)){
+			richMediaAd.GetClick().mTYPE = Click.TYPE.toTYPE(contents.toString().trim());
+		}else if("resource".equals(localName)){
+			richMediaAd.GetClick().mRes  = contents.toString().trim();
+		}else if("clickurl".equals(localName)){
+			if(richMediaAd.GetClick()==null)richMediaAd.SetClick(new Click());
+			richMediaAd.GetClick().mClickURL = contents.toString().trim();
 		}
 		//end add by Jas
 	}
@@ -607,6 +607,8 @@ public class ResponseHandler extends DefaultHandler {
 					}
 				}
 				if(richMediaAd!=null)richMediaAd.SetCreative_res_Hash(attributes.getValue("hash"));
+			} else if("click".equals(localName)){
+				if(richMediaAd.GetClick()==null)richMediaAd.SetClick(new Click());
 			} 
 			//end add by Jas
 		}

@@ -5,9 +5,7 @@ import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
 import android.content.Context;
-
 import com.joyplus.adkey.Const;
 import com.joyplus.adkey.Util;
 

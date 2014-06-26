@@ -3,9 +3,7 @@ package com.joyplus.adkey.db;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
 import com.joyplus.adkey.data.ImpressionInfo;
-import com.joyplus.adkey.widget.Log;
 
 /**
  * 
