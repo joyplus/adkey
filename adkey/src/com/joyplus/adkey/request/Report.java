@@ -11,6 +11,7 @@ import com.joyplus.adkey.Monitorer.AdMonitorManager;
 import com.joyplus.adkey.Monitorer.TRACKINGURL;
 import com.joyplus.adkey.Monitorer.TRACKINGURL.TYPE;
 import com.joyplus.adkey.video.RichMediaAd;
+import com.joyplus.adkey.widget.Log;
 
 public class Report {
 	

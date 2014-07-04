@@ -58,6 +58,13 @@ public class RichMediaAd implements Ad {
 	public  Click GetClick(){
 		return mClick;
 	}
+	private String mCreative_res_sourcetype = "";
+	public  void SetCreative_res_sourcetype(String type){
+		mCreative_res_sourcetype = type;
+	}
+	public  String GetCreative_res_sourcetype(){
+		return mCreative_res_sourcetype;
+	}
 	//end add by Jas
 	public List<TRACKINGURL> getmTrackingUrl()
 	{
@@ -138,6 +145,7 @@ public class RichMediaAd implements Ad {
 	public String toString() {
 		return "RichMediaAD [timestamp=" + timestamp + ", type=" + type
 				+ ", animation=" + animation + ", mCreative_res_url="+mCreative_res_url
+				+ ", mCreative_res_Hash="+mCreative_res_Hash+", mCreative_res_sourcetype="+mCreative_res_sourcetype
 				+ ",mRefresh="+mRefresh+", video=" + video
 				+ ", interstitial=" + interstitial 
 				+ ",mClick="+(mClick==null?"":mClick.toString())+"]";

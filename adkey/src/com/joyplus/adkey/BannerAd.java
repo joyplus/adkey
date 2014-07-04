@@ -48,6 +48,13 @@ public class BannerAd implements Ad {
 	public  Click GetClick(){
 		return mClick;
 	}
+	private String mCreative_res_sourcetype = "";
+	public  void SetCreative_res_sourcetype(String type){
+		mCreative_res_sourcetype = type;
+	}
+	public  String GetCreative_res_sourcetype(){
+		return mCreative_res_sourcetype;
+	}
 	//end add by Jas
 	private String mImpressionUrl;
 	private List<TRACKINGURL> mTrackingUrl;
@@ -189,6 +196,7 @@ public class BannerAd implements Ad {
 				+ ", scale=" + this.scale + ", skipPreflight="
 				+ this.skipPreflight 
 				+",Creative_res_url="+mCreative_res_url
+				+",Creative_res_sourcetype="+mCreative_res_sourcetype
 				+",Creative_res_hash="+mCreative_res_hash
 				+",mClick="+(mClick==null?"":mClick.toString())
 				+ ap.toString()+ " ]";
