@@ -2,7 +2,7 @@ package com.joyplus.adkey.Debug;
 
 public class AdKeyDebugFeature {
 
-	public final static boolean DEBUG = true;
+	public final static boolean DEBUG = false;
 	
 	
 }

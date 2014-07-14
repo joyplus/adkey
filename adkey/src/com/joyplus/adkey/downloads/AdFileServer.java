@@ -3,11 +3,14 @@ package com.joyplus.adkey.downloads;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.StreamCorruptedException;
 import com.joyplus.adkey.widget.Log;
 import android.content.Context;
+import android.text.TextUtils;
 
 /*Define by Jas@20131125
  * this use to implementation Interface for AdBootFileManager*/
@@ -87,57 +90,55 @@ public class AdFileServer {
 	    	return USEABLE;
 	 }
 	 
-//	 public boolean writeSerializableData(String filename, Object o,PublisherId id){	
-//		    if(!USEABLE || id == null || !id.CheckId())return false;
-//		    //Log.d("Server writeSerializableData() name="+filename);
-//		    synchronized(mObject){
-//				try{
-//					File dir  = new File(GetBasePath(),id.GetPublisherId());
-//					dir.mkdirs();
-//					File data = new File(dir,filename);	
-//					FileOutputStream fop   = new FileOutputStream(data);
-//					ObjectOutputStream oos = new ObjectOutputStream(fop);
-//					oos.writeObject(o);
-//					oos.close();
-//					return true;
-//				} catch (FileNotFoundException e){
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				} catch (IOException e){
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//				return false;
-//			}
-//		}
-//		
-//		public Object readSerializableData(String filename,PublisherId id){
-//			   if(!USEABLE || id == null || !id.CheckId())return null;
-//			   //Log.d("Server readSerializableData() name="+filename);
-//			   synchronized(mObject){
-//					try{
-//						File              data = new File(GetBasePath(),id.GetPublisherId()+File.separator+filename);
-//						FileInputStream   fis  = new FileInputStream(data);
-//						ObjectInputStream ois  = new ObjectInputStream(fis);
-//						Object            file = (Object)ois.readObject();
-//						ois.close();
-//						return file;
-//					} catch (FileNotFoundException e){
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					} catch (StreamCorruptedException e){
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					} catch (IOException e){
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					} catch (ClassNotFoundException e){
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//					return null;
-//			   }
-//		}
+	 public boolean writeSerializableData(String filename, Object o,String id){	
+		    if(!USEABLE || TextUtils.isEmpty(id))return false;
+		    //Log.d("Server writeSerializableData() name="+filename);
+		    synchronized(mObject){
+				try{
+					File dir  = new File(GetBasePath(),id.trim());
+					dir.mkdirs();
+					File data = new File(dir,filename);
+					ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(data));
+					oos.writeObject(o);
+					oos.close();
+					return true;
+				} catch (FileNotFoundException e){
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e){
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return false;
+			}
+		}
+		
+		public Object readSerializableData(String filename,String id){
+			   if(!USEABLE || TextUtils.isEmpty(id))return null;
+			   //Log.d("Server readSerializableData() name="+filename);
+			   synchronized(mObject){
+					try{
+						File              data = new File(GetBasePath(),id.trim()+File.separator+filename);
+						ObjectInputStream ois  = new ObjectInputStream(new FileInputStream(data));
+						Object            file = (Object)ois.readObject();
+						ois.close();
+						return file;
+					} catch (FileNotFoundException e){
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (StreamCorruptedException e){
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e){
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ClassNotFoundException e){
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					return null;
+			   }
+		}
 		public Object readSerializableData(String filename){
 			synchronized(mObject){
 				try{

@@ -2,6 +2,8 @@ package com.joyplus.adkey;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -10,6 +12,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import android.text.TextUtils;
 import android.webkit.URLUtil;
 import com.joyplus.adkey.Monitorer.TRACKINGURL;
 import com.joyplus.adkey.Monitorer.TRACKINGURL.TYPE;
@@ -79,6 +83,7 @@ public class RequestBannerAd extends RequestAd<BannerAd> {
     public BannerAd parse(InputStream inputStream,boolean f) throws RequestException{
     	return parse(inputStream);
     }
+    
 	@Override
 	BannerAd parse(final InputStream inputStream)
 			throws RequestException {
@@ -223,4 +228,5 @@ public class RequestBannerAd extends RequestAd<BannerAd> {
 	BannerAd parseTestString() throws RequestException {
 		return parse(is);
 	}
+
 }
