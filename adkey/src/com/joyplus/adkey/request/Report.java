@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import android.content.Context;
 import android.text.TextUtils;
-
 import com.joyplus.adkey.Ad;
 import com.joyplus.adkey.BannerAd;
 import com.joyplus.adkey.Monitorer.AdMonitorManager;

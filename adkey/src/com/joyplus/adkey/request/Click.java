@@ -12,7 +12,8 @@ public class Click implements Serializable{
 		OPENVIDEO		("openvideo"),
 		OPENIMAGE		("openimage"),
 		OPENAPP			("openapp"),
-		SENDBROADCAST	("broadcast");
+		SENDBROADCAST	("broadcast"),
+		OPENSELF		("openself");
 		private String type;
 		TYPE(String Type ){
 			type = Type; 
@@ -64,8 +65,8 @@ public class Click implements Serializable{
 		StringBuffer ap = new StringBuffer();
 		ap.append("click{")
 		  .append("mTYPE="+(mTYPE==null?"":mTYPE.toString()))
-		  .append("mRes="+mRes)
-		  .append("mClickURL="+mClickURL)
+		  .append(",mRes="+mRes)
+		  .append(",mClickURL="+mClickURL)
 		  .append("}");
 		return ap.toString();
 	}

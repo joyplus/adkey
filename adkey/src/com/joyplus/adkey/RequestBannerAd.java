@@ -2,6 +2,8 @@ package com.joyplus.adkey;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -10,12 +12,13 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import android.text.TextUtils;
 import android.webkit.URLUtil;
 import com.joyplus.adkey.Monitorer.TRACKINGURL;
 import com.joyplus.adkey.Monitorer.TRACKINGURL.TYPE;
 import com.joyplus.adkey.data.ClickType;
 import com.joyplus.adkey.request.Click;
-import com.joyplus.adkey.widget.Log;
 
 public class RequestBannerAd extends RequestAd<BannerAd> {
 
@@ -80,6 +83,7 @@ public class RequestBannerAd extends RequestAd<BannerAd> {
     public BannerAd parse(InputStream inputStream,boolean f) throws RequestException{
     	return parse(inputStream);
     }
+    
 	@Override
 	BannerAd parse(final InputStream inputStream)
 			throws RequestException {
@@ -123,84 +127,84 @@ public class RequestBannerAd extends RequestAd<BannerAd> {
 						"skippreflight"));
 			} else if ("textAd".equalsIgnoreCase(type)) {
 				response.setType(Const.TEXT);
-				response.setText(this.getValue(doc, "htmlString"));
-				String mImpressionUrl = this.getValue(doc, "impressionurl");
+				response.setText(getValue(doc, "htmlString"));
+				String mImpressionUrl = getValue(doc, "impressionurl");
 				if(URLUtil.isHttpsUrl(mImpressionUrl)||URLUtil.isHttpUrl(mImpressionUrl)){
 					response.setmImpressionUrl(mImpressionUrl);
 				}
 				//change be Jas
-				String mTrackingUrl = this.getValue(doc, "trackingurl_miaozhen");
+				String mTrackingUrl = getValue(doc, "trackingurl_miaozhen");
 				if(URLUtil.isHttpsUrl(mTrackingUrl)||URLUtil.isHttpUrl(mTrackingUrl)){
 					TRACKINGURL url = new TRACKINGURL();
 					url.Type        = TYPE.MIAOZHEN;
 					url.URL         = mTrackingUrl;
 					response.setmTrackingUrl(url);
 				}
-				mTrackingUrl = this.getValue(doc, "trackingurl_iresearch");
+				mTrackingUrl = getValue(doc, "trackingurl_iresearch");
 				if(URLUtil.isHttpsUrl(mTrackingUrl)||URLUtil.isHttpUrl(mTrackingUrl)){
 					TRACKINGURL url = new TRACKINGURL();
 					url.Type        = TYPE.IRESEARCH;
 					url.URL         = mTrackingUrl;
 					response.setmTrackingUrl(url);
 				}
-				mTrackingUrl = this.getValue(doc, "trackingurl_admaster");
+				mTrackingUrl = getValue(doc, "trackingurl_admaster");
 				if(URLUtil.isHttpsUrl(mTrackingUrl)||URLUtil.isHttpUrl(mTrackingUrl)){
 					TRACKINGURL url = new TRACKINGURL();
 					url.Type        = TYPE.ADMASTER;
 					url.URL         = mTrackingUrl;
 					response.setmTrackingUrl(url);
 				}
-				mTrackingUrl = this.getValue(doc, "trackingurl_nielsen");
+				mTrackingUrl = getValue(doc, "trackingurl_nielsen");
 				if(URLUtil.isHttpsUrl(mTrackingUrl)||URLUtil.isHttpUrl(mTrackingUrl)){
 					TRACKINGURL url = new TRACKINGURL();
 					url.Type        = TYPE.NIELSEN;
 					url.URL         = mTrackingUrl;
 					response.setmTrackingUrl(url);
 				}
-				String Creative_res_url = this.getAttribute(doc, "creative_res_url","src");
+				String Creative_res_url = getAttribute(doc, "creative_res_url","src");
 				response.SetCreative_res_url(Creative_res_url);
-				response.SetCreative_res_hash(this.getAttribute(doc, "creative_res_url","hash"));
+				response.SetCreative_res_hash(getAttribute(doc, "creative_res_url","hash"));
+				response.SetCreative_res_sourcetype(getAttribute(doc, "creative_res_url","sourcetype"));
 				Click mClick = new Click();
-				mClick.mClickURL = this.getValue(doc, "clickurl");
-				mClick.mRes      = this.getValue(doc, "resource");
-				mClick.mTYPE     = Click.TYPE.toTYPE(this.getValue(doc, "type"));
+				mClick.mClickURL = getValue(doc, "clickurl");
+				mClick.mRes      = getValue(doc, "resource");
+				mClick.mTYPE     = Click.TYPE.toTYPE(getValue(doc, "type"));
 				response.SetClick(mClick);
-				Log.d("-->"+response.GetClick().toString());
 				//end change by Jas
-				String skipOverlay = this.getAttribute(doc, "htmlString", "skipoverlaybutton");
+				String skipOverlay = getAttribute(doc, "htmlString", "skipoverlaybutton");
 				if (skipOverlay != null){
 					response.setSkipOverlay(Integer.parseInt(skipOverlay));
 				}
-				final ClickType clickType = ClickType.getValue(this.getValue(
+				final ClickType clickType = ClickType.getValue(getValue(
 						doc, "clicktype"));
 				response.setClickType(clickType);
-				response.setClickUrl(this.getValue(doc, "clickurl"));
-				response.setRefresh(this.getValueAsInt(doc, "refresh"));
-				response.setScale(this.getValueAsBoolean(doc, "scale"));
-				response.setSkipPreflight(this.getValueAsBoolean(doc,
+				response.setClickUrl(getValue(doc, "clickurl"));
+				response.setRefresh(getValueAsInt(doc, "refresh"));
+				response.setScale(getValueAsBoolean(doc, "scale"));
+				response.setSkipPreflight(getValueAsBoolean(doc,
 						"skippreflight"));
 			} else if ("mraidAd".equalsIgnoreCase(type)) {
 				response.setType(Const.MRAID);
-				response.setText(this.getValue(doc, "htmlString"));
-				String skipOverlay = this.getAttribute(doc, "htmlString", "skipoverlaybutton");
+				response.setText(getValue(doc, "htmlString"));
+				String skipOverlay = getAttribute(doc, "htmlString", "skipoverlaybutton");
 				if (skipOverlay != null){
 					response.setSkipOverlay(Integer.parseInt(skipOverlay));
 				}
 				//add by Jas
-				String mImpressionUrl = this.getValue(doc, "impressionurl");
+				String mImpressionUrl = getValue(doc, "impressionurl");
 				if(URLUtil.isHttpsUrl(mImpressionUrl)||URLUtil.isHttpUrl(mImpressionUrl))
 				{
 					response.setmImpressionUrl(mImpressionUrl);
 				}
 				//end add by Jas
-				final ClickType clickType = ClickType.getValue(this.getValue(
+				final ClickType clickType = ClickType.getValue(getValue(
 						doc, "clicktype"));
 				response.setClickType(clickType);
-				response.setClickUrl(this.getValue(doc, "clickurl"));
-				response.setUrlType(this.getValue(doc, "urltype"));
+				response.setClickUrl(getValue(doc, "clickurl"));
+				response.setUrlType(getValue(doc, "urltype"));
 				response.setRefresh(0);
-				response.setScale(this.getValueAsBoolean(doc, "scale"));
-				response.setSkipPreflight(this.getValueAsBoolean(doc,
+				response.setScale(getValueAsBoolean(doc, "scale"));
+				response.setSkipPreflight(getValueAsBoolean(doc,
 						"skippreflight"));
 			} else if ("noAd".equalsIgnoreCase(type))
 				response.setType(Const.NO_AD);
@@ -224,4 +228,5 @@ public class RequestBannerAd extends RequestAd<BannerAd> {
 	BannerAd parseTestString() throws RequestException {
 		return parse(is);
 	}
+
 }

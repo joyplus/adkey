@@ -607,6 +607,7 @@ public class ResponseHandler extends DefaultHandler {
 					}
 				}
 				if(richMediaAd!=null)richMediaAd.SetCreative_res_Hash(attributes.getValue("hash"));
+				if(richMediaAd!=null)richMediaAd.SetCreative_res_sourcetype(attributes.getValue("sourcetype"));
 			} else if("click".equals(localName)){
 				if(richMediaAd.GetClick()==null)richMediaAd.SetClick(new Click());
 			} 

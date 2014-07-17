@@ -4,10 +4,15 @@ import static com.joyplus.adkey.Const.RESPONSE_ENCODING;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.StringReader;
+
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
+
+import android.text.TextUtils;
+
 import com.joyplus.adkey.video.ResponseHandler;
 import com.joyplus.adkey.video.RichMediaAd;
 
@@ -75,4 +80,6 @@ public class RequestRichMediaAd extends RequestAd<RichMediaAd> {
 			return "";
 		}
 	}
+
+	
 }

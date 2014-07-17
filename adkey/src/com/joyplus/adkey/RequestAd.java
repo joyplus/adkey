@@ -10,6 +10,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpProtocolParams;
 
+import com.common.internet.FastHttp;
+import com.common.internet.ResponseEntity;
 import com.joyplus.adkey.widget.Log;
 
 public abstract class RequestAd<T> {
@@ -53,7 +55,8 @@ public abstract class RequestAd<T> {
 				throw new RequestException("Error in HTTP request", e);
 			} catch (IOException e) {
 				throw new RequestException("Error in HTTP request", e);
-			} catch (Throwable t) {
+			} 
+			catch (Throwable t) {
 				throw new RequestException("Error in HTTP request", t);
 			}
 		} else {
@@ -64,5 +67,4 @@ public abstract class RequestAd<T> {
 	abstract T parseTestString() throws RequestException;
 
 	abstract T parse(InputStream inputStream) throws RequestException;
-
 }

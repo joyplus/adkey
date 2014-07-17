@@ -84,7 +84,7 @@ public class Request {
 		try{
 			return requestAd.sendRequest(getRequest(AdRequest.VAD));
 		} catch (final Throwable e){
-			Log.d("Jas","getRichMediaAd fail...");
+			Log.d("Jas","getRichMediaAd fail..."+e.toString());
 		}
 		return null;
 	}
@@ -101,7 +101,7 @@ public class Request {
 		try{
 			return requestAd.sendRequest(getRequest(AdRequest.BANNER));
 		} catch (final Throwable e){
-			Log.d("Jas","getBannerAd fail...");
+			Log.d("Jas","getBannerAd fail..."+e.toString());
 		}
 		return null;
 	}
